@@ -1,0 +1,2 @@
+Car icon: https://github.com/godotengine/godot/blob/master/editor/icons/VehicleBody3D.svg
+Car wheel icon: https://github.com/godotengine/godot/blob/master/editor/icons/VehicleWheel3D.svg

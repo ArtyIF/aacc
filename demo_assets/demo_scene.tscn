@@ -1,0 +1,237 @@
+[gd_scene load_steps=23 format=3 uid="uid://b8dibdn7lv1o0"]
+
+[ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_8gguu"]
+[ext_resource type="Script" path="res://demo_assets/scripts/camera.gd" id="2_vy2m6"]
+[ext_resource type="Material" uid="uid://b177e8ahxwwwk" path="res://demo_assets/materials/material_grey_dull.tres" id="3_fw8ok"]
+[ext_resource type="Script" path="res://demo_assets/scripts/pedestal.gd" id="5_3pldh"]
+[ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="5_attwm"]
+[ext_resource type="Material" uid="uid://dkdwn7vaymsq8" path="res://demo_assets/materials/material_red.tres" id="6_e0rsp"]
+[ext_resource type="PackedScene" uid="uid://yjspexnxe8f4" path="res://demo_assets/car_scenes/police.tscn" id="6_vheu2"]
+[ext_resource type="Material" uid="uid://d38imusg0v6nw" path="res://demo_assets/materials/material_yellow.tres" id="7_2wei2"]
+[ext_resource type="Material" uid="uid://dht45tgcjuic8" path="res://demo_assets/materials/material_grey_shiny.tres" id="7_ojujx"]
+[ext_resource type="PackedScene" uid="uid://ca5atj7t04ryr" path="res://demo_assets/car_scenes/race_future.tscn" id="7_sklo0"]
+[ext_resource type="Material" uid="uid://d2jigg1rspx0d" path="res://demo_assets/materials/material_blue.tres" id="8_uoj4g"]
+[ext_resource type="Material" uid="uid://crexapb5vviru" path="res://demo_assets/materials/material_green.tres" id="9_kym7k"]
+[ext_resource type="PackedScene" uid="uid://climotlfvecyb" path="res://demo_assets/car_scenes/suv.tscn" id="12_bket6"]
+[ext_resource type="PackedScene" uid="uid://b1wiyxnholdo" path="res://demo_assets/car_scenes/sedan_sports.tscn" id="13_cq28e"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_c6pm3"]
+material = ExtResource("7_ojujx")
+size = Vector3(2, 0.5, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xngdy"]
+size = Vector3(2, 0.5, 5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5abkn"]
+material = ExtResource("6_e0rsp")
+size = Vector3(2, 0.5, 5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_08ipd"]
+material = ExtResource("7_2wei2")
+size = Vector3(2, 0.5, 5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1ohrv"]
+material = ExtResource("8_uoj4g")
+size = Vector3(2, 0.5, 5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_o7rwf"]
+material = ExtResource("9_kym7k")
+size = Vector3(2, 0.5, 5)
+
+[sub_resource type="Curve3D" id="Curve3D_yvpfn"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 173.579, 0, 0.938695, 0, 0, 0, 0, 0, 0, 173.579, 0, -51.515, 0, 0, 0, 0, 0, 0, 145.239, 0, -130.04, 0, 0, 0, 0, 0, 0, 61.7498, 0, -210.465, 0, 0, 0, 0, 0, 0, -79.9518, 0, -189.784, 0, 0, 0, 0, 0, 0, -145.058, 0, -117.018, 0, 0, 0, 0, 0, 0, -237.093, 0, -163.036, 0, 0, 0, 0, 0, 0, -241.568, 0, -165.274, 0, 0, 0, 0, 0, 0, -234.002, 0, -283.025, 0, 0, 0, 0, 0, 0, -230.952, 0, -286.983, 0, 0, 0, 0, 0, 0, -153.063, 0, -374.919, 0, 0, 0, 0, 0, 0, -147.788, 0, -377.253, 0, 0, 0, 0, 0, 0, -23.3654, 0, -412.375, 0, 0, 0, 0, 0, 0, -15.8744, 0, -410.788, 0, 0, 0, 0, 0, 0, 82.3927, 0, -348.708, 0, 0, 0, 0, 0, 0, 228.584, 0, -328.397, 0, 0, 0, 0, 0, 0, 234.304, 0, -322.581, 0, 0, 0, 0, 0, 0, 259.725, 0, -177.935, 0, 0, 0, 0, 0, 0, 254.09, 0, -167.86, 0, 0, 0, 0, 0, 0, 231.35, 0, -153.603, 0, 0, 0, 0, 0, 0, 145.891, 10, -125.9, 0, 0, 0, 0, 0, 0, 65.1376, 0, -106.114, 0, 0, 0, 0, 0, 0, 25.2979, 1.90735e-06, -75.6067, 0, 0, 0, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, 0, 0, 0, -2.5),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 25
+
+[sub_resource type="Curve3D" id="Curve3D_jwtd4"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 2.5, 0, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, -0.832574, 0, 27.2521, 0, 0, 0, 0, 0, 0, -5.64682, 0, 43.9319, 0, 0, 0, 0, 0, 0, -38.1008, 0, 95.8314, 0, 0, 0, 0, 0, 0, -39.5519, 0, 99.7594, 0, 0, 0, 0, 0, 0, -26.6565, 0, 156.009, 0, 0, 0, 0, 0, 0, -25.6596, 0, 160.545, 0, 0, 0, 0, 0, 0, 16.4035, 0, 205.155, 0, 0, 0, 0, 0, 0, 17.7944, 0, 253.26, 0, 0, 0, 0, 0, 0, 15.3393, 0, 258.959, 0, 0, 0, 0, 0, 0, -19.916, 0, 312.713, 0, 0, 0, 0, 0, 0, -24.7715, 0, 316.086, 0, 0, 0, 0, 0, 0, -79.3758, 0, 339.866, 0, 0, 0, 0, 0, 0, -85.4474, 0, 338.722, 0, 0, 0, 0, 0, 0, -169.315, 0, 316.844, 0, 0, 0, 0, 0, 0, -233.736, 0, 265.793, 0, 0, 0, 0, 0, 0, -256.83, 0, 217.174, 0, 0, 0, 0, 0, 0, -255.479, 0, 144.262, 0, 0, 0, 0, 0, 0, -254.399, 0, 139.384, 0, 0, 0, 0, 0, 0, -231.305, 0, 96.8419, 0, 0, 0, 0, 0, 0, -189.979, 0, 55.5157, 0, 0, 0, 0, 0, 0, -169.506, 0, -1.97217, 0, 0, 0, 0, 0, 0, -169.103, 0, -5.83406, 0, 0, 0, 0, 0, 0, -179.273, 0, -59.4701, 0, 0, 0, 0, 0, 0, -181.258, 0, -64.177, 0, 0, 0, 0, 0, 0, -229.877, 0, -107.934, 0, 0, 0, 0, 0, 0, -241.722, 0, -113.153, 0, 0, 0, 0, 0, 0, -303.706, 0, -108.345, 0, 0, 0, 0, 0, 0, -311.37, 0, -107.112, 0, 0, 0, 0, 0, 0, -357.503, 0, -67.8235, 0, 0, 0, 0, 0, 0, -389.405, 0, -23.7811, 0, 0, 0, 0, 0, 0, -390.32, 0, -20.4198, 0, 0, 0, 0, 0, 0, -401.26, 0, 50.0779, 0, 0, 0, 0, 0, 0, -396.398, 0, 124.222, 0, 0, 0, 0, 0, 0, -376.95, 0, 177.703, 0, 0, 0, 0, 0, 0, -338.055, 0, 232.4, 0, 0, 0, 0, 0, 0, -331.977, 0, 272.51, 0, 0, 0, 0, 0, 0, -343.32, 0, 348.09, 0, 0, 0, 0, 0, 0, -325.163, 0, 407.143, 0, 0, 0, 0, 0, 0, -322.657, 0, 411.295, 0, 0, 0, 0, 0, 0, -274.038, 0, 451.405, 0, 0, 0, 0, 0, 0, -266.493, 0, 453.434, 0, 0, 0, 0, 0, 0, -178.527, 0, 443.919, 0, 0, 0, 0, 0, 0, -119.672, 0, 408.864, 0, 0, 0, 0, 0, 0, -115.893, 0, 407.511, 0, 0, 0, 0, 0, 0, -37.02, 0, 397.924, 0, 0, 0, 0, 0, 0, 60.2184, 0, 434.389, 0, 0, 0, 0, 0, 0, 180.286, 0, 403.755, 0, 0, 0, 0, 0, 0, 184.197, 0, 401.571, 0, 0, 0, 0, 0, 0, 248.617, 0, 322.565, 0, 0, 0, 0, 0, 0, 249.874, 0, 318.995, 0, 0, 0, 0, 0, 0, 253.479, 0, 224.111, 0, 0, 0, 0, 0, 0, 252.302, 0, 219.582, 0, 0, 0, 0, 0, 0, 202.429, 0, 142.674, 0, 0, 0, 0, 0, 0, 174.473, 0, 39.3583, 0, 0, 0, 0, 0, 0, 173.579, 0, 22.276, 0, 0, 0, 0, 0, 0, 173.579, 0, 0.939),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 58
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("1_8gguu")
+
+[node name="Sunlight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866026, 0.5, -0.707107, -0.353553, 0.612372, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera" type="Camera3D" parent="." node_paths=PackedStringArray("car")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 4)
+script = ExtResource("2_vy2m6")
+car = NodePath("../taxi")
+
+[node name="Reflection" type="ReflectionProbe" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+size = Vector3(1000, 1000, 1000)
+origin_offset = Vector3(0, 0, 25)
+enable_shadows = true
+cull_mask = 1048573
+
+[node name="LevelGeometry" type="Node3D" parent="."]
+
+[node name="BaseBlocks" type="CSGCombiner3D" parent="LevelGeometry"]
+use_collision = true
+
+[node name="Base" type="CSGBox3D" parent="LevelGeometry/BaseBlocks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+size = Vector3(1000, 1, 1000)
+material = ExtResource("3_fw8ok")
+
+[node name="PedestalBase" type="CSGBox3D" parent="LevelGeometry/BaseBlocks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+size = Vector3(12, 2, 5)
+material = ExtResource("6_e0rsp")
+
+[node name="PedestalLower" type="CSGBox3D" parent="LevelGeometry/BaseBlocks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+operation = 2
+size = Vector3(10, 2.5, 5)
+material = ExtResource("7_ojujx")
+
+[node name="PedestalPolice" type="AnimatableBody3D" parent="LevelGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.75, 0)
+script = ExtResource("5_3pldh")
+
+[node name="Visual" type="MeshInstance3D" parent="LevelGeometry/PedestalPolice"]
+gi_mode = 2
+mesh = SubResource("BoxMesh_c6pm3")
+skeleton = NodePath("../..")
+
+[node name="Collision" type="CollisionShape3D" parent="LevelGeometry/PedestalPolice"]
+shape = SubResource("BoxShape3D_xngdy")
+
+[node name="PedestalSedan" type="AnimatableBody3D" parent="LevelGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.75, 0)
+script = ExtResource("5_3pldh")
+
+[node name="Visual" type="MeshInstance3D" parent="LevelGeometry/PedestalSedan"]
+gi_mode = 2
+mesh = SubResource("BoxMesh_5abkn")
+skeleton = NodePath("../..")
+
+[node name="Collision" type="CollisionShape3D" parent="LevelGeometry/PedestalSedan"]
+shape = SubResource("BoxShape3D_xngdy")
+
+[node name="PedestalTaxi" type="AnimatableBody3D" parent="LevelGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
+script = ExtResource("5_3pldh")
+lowered = true
+
+[node name="Visual" type="MeshInstance3D" parent="LevelGeometry/PedestalTaxi"]
+gi_mode = 2
+mesh = SubResource("BoxMesh_08ipd")
+skeleton = NodePath("../..")
+
+[node name="Collision" type="CollisionShape3D" parent="LevelGeometry/PedestalTaxi"]
+shape = SubResource("BoxShape3D_xngdy")
+
+[node name="PedestalRace" type="AnimatableBody3D" parent="LevelGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.75, 0)
+script = ExtResource("5_3pldh")
+
+[node name="Visual" type="MeshInstance3D" parent="LevelGeometry/PedestalRace"]
+gi_mode = 2
+mesh = SubResource("BoxMesh_1ohrv")
+skeleton = NodePath("../..")
+
+[node name="Collision" type="CollisionShape3D" parent="LevelGeometry/PedestalRace"]
+shape = SubResource("BoxShape3D_xngdy")
+
+[node name="PedestalSUV" type="AnimatableBody3D" parent="LevelGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.75, 0)
+script = ExtResource("5_3pldh")
+
+[node name="Visual" type="MeshInstance3D" parent="LevelGeometry/PedestalSUV"]
+gi_mode = 2
+mesh = SubResource("BoxMesh_o7rwf")
+skeleton = NodePath("../..")
+
+[node name="Collision" type="CollisionShape3D" parent="LevelGeometry/PedestalSUV"]
+shape = SubResource("BoxShape3D_xngdy")
+
+[node name="RaceTrack1" type="CSGPolygon3D" parent="LevelGeometry"]
+use_collision = true
+polygon = PackedVector2Array(-5, 0, -5, 0.05, 5, 0.05, 5, 0)
+mode = 2
+path_node = NodePath("Path3D")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 1
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = ExtResource("7_ojujx")
+
+[node name="Path3D" type="Path3D" parent="LevelGeometry/RaceTrack1"]
+curve = SubResource("Curve3D_yvpfn")
+
+[node name="RaceTrack2" type="CSGPolygon3D" parent="LevelGeometry"]
+use_collision = true
+polygon = PackedVector2Array(-5, 0, -5, 0.05, 5, 0.05, 5, 0)
+mode = 2
+path_node = NodePath("Path3D")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 1
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = ExtResource("7_ojujx")
+
+[node name="Path3D" type="Path3D" parent="LevelGeometry/RaceTrack2"]
+curve = SubResource("Curve3D_jwtd4")
+
+[node name="RaceTrack1Details" type="CSGPolygon3D" parent="LevelGeometry"]
+use_collision = true
+polygon = PackedVector2Array(-6, -1, -6, 1, -5, 1, -5, -1, 5, -1, 5, 1, 6, 1, 6, -1)
+mode = 2
+path_node = NodePath("../RaceTrack1/Path3D")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 1
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = ExtResource("6_e0rsp")
+
+[node name="RaceTrack2Details" type="CSGPolygon3D" parent="LevelGeometry"]
+use_collision = true
+polygon = PackedVector2Array(-6, -1, -6, 1, -5, 1, -5, -1, 5, -1, 5, 1, 6, 1, 6, -1)
+mode = 2
+path_node = NodePath("../RaceTrack2/Path3D")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 1
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = ExtResource("6_e0rsp")
+
+[node name="taxi" parent="." instance=ExtResource("5_attwm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="police" parent="." instance=ExtResource("6_vheu2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2, 0)
+
+[node name="race-future" parent="." instance=ExtResource("7_sklo0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 0)
+
+[node name="suv" parent="." instance=ExtResource("12_bket6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, 0)
+
+[node name="sedan-sports" parent="." instance=ExtResource("13_cq28e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2, 0)

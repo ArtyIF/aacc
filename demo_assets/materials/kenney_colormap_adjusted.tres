@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://iyyp6q7p13dj"]
+
+[ext_resource type="Texture2D" uid="uid://cjps7quork0b2" path="res://demo_assets/kenney_car_kit/Textures/colormap.png" id="1_17oxx"]
+
+[resource]
+resource_name = "colormap"
+diffuse_mode = 3
+specular_mode = 1
+albedo_texture = ExtResource("1_17oxx")
+metallic_specular = 1.0
+roughness = 0.01
+rim_enabled = true
