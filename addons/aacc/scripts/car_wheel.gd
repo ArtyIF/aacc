@@ -1,18 +1,28 @@
 @icon("res://addons/aacc/icons/car_wheel.svg")
 class_name CarWheel extends Node3D
 
-@export_group("Visuals")
-@export var steerable: bool = false
-@export var mudflapped: bool = false
-
 @export_group("Shape")
+## The radius of the wheel. Half of the wheel's size.
 @export var wheel_radius: float = 0.3
+## The extra radius of the wheel to make the car stick to the ground more.
 @export var buffer_radius: float = 0.1
+## The width of the wheel.
+## 
+## AACC's wheels currently use 2 raycasts for the wheels.
 @export var wheel_width: float = 0.3
 
 @export_group("Suspension")
+## The maximum length of the suspension.
+##
+## If the suspension length gets exceeded (because of the
+## [member buffer_radius]), the suspension starts working in reverse, pulling
+## the car to the ground instead of pushing it away from it. This can be useful
+## to make the car stick to the ground better.
 @export var suspension_length: float = 0.1
+## The spring force the suspension applies.
 @export var suspension_spring: float = 3000.0
+## The damper applied to the spring force the suspension applies so it wasn't
+## too springy and out of control.
 @export var suspension_damper: float = 300.0
 
 ### NODES ###

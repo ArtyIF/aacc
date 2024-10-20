@@ -197,7 +197,6 @@ linear_grip = 10000.0
 [node name="CarWheel" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
-steerable = true
 buffer_radius = 0.0
 suspension_spring = 2000.0
 suspension_damper = 200.0
@@ -205,7 +204,6 @@ suspension_damper = 200.0
 [node name="CarWheel2" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
-steerable = true
 buffer_radius = 0.0
 suspension_spring = 2000.0
 suspension_damper = 200.0

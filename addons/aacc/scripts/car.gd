@@ -214,6 +214,7 @@ func _physics_process(delta: float):
 	input_forward = Input.get_action_strength("aacc_forward")
 	input_backward = Input.get_action_strength("aacc_backward")
 	input_steer = Input.get_action_strength("aacc_steer_right") - Input.get_action_strength("aacc_steer_left")
+	input_handbrake = Input.is_action_pressed("aacc_handbrake")
 
 	ground_coefficient = 0.0
 	average_wheel_collision_point = Vector3.ZERO
