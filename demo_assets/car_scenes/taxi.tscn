@@ -187,10 +187,11 @@ physics_material_override = SubResource("PhysicsMaterial_pe6ej")
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, 0.1, 0)
 can_sleep = false
+linear_damp_mode = 1
+angular_damp_mode = 1
 script = ExtResource("1_ik2h1")
 max_acceleration = 5000.0
 distance_between_wheels = 1.52
-smooth_steer_speed = 5.0
 linear_grip = 10000.0
 
 [node name="CarWheel" type="Node3D" parent="."]
@@ -222,6 +223,16 @@ script = ExtResource("3_gy57t")
 buffer_radius = 0.0
 suspension_spring = 2000.0
 suspension_damper = 200.0
+
+[node name="DefaultEngine" type="Node" parent="."]
+
+[node name="DefaultBrakes" type="Node" parent="."]
+
+[node name="DefaultSteering" type="Node" parent="."]
+
+[node name="DefaultLinearGrip" type="Node" parent="."]
+
+[node name="DefaultAngularGrip" type="Node" parent="."]
 
 [node name="Collision" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.18557e-09, 0.15, 0.025)

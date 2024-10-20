@@ -56,12 +56,24 @@ class_name Car extends RigidBody3D
 ## The maximum allowed steer tug.
 @export var max_steer_tug: float = 2.0
 
-# TODO: document the rest
 @export_group("Traction")
+## The amount of grip applied to the side velocity (X axis) and the velocity
+## length.
 @export var linear_grip: float = 20000.0
+## The minimum multiple of [member linear_grip] that can be applied to the side
+## velocity.
 @export_range(0.0, 1.0) var min_side_grip: float = 0.5
+## The speed along the X axis where the side grip becomes
+## [member min_side_grip].
 @export var min_side_grip_sideways_speed: float = 5.0
-@export var angular_grip: float = 10000.0
+## The amount of grip applied to angular velocity.
+##
+## I'm not sure why this works the way this works (if you set it too low you
+## start steering poorly, even though the desired angular force seems to be the
+## same?), so this needs a rewrite.
+## @experimental
+@export var angular_grip: float = 10000.0 # TODO: rewrite steering completely
+## The force applied when you hit brakes.
 @export var brake_force: float = 4000.0
 
 #== NODES ==#
@@ -202,9 +214,6 @@ func _physics_process(delta: float):
 	input_forward = Input.get_action_strength("aacc_forward")
 	input_backward = Input.get_action_strength("aacc_backward")
 	input_steer = Input.get_action_strength("aacc_steer_right") - Input.get_action_strength("aacc_steer_left")
-
-	if freeze:
-		return
 
 	ground_coefficient = 0.0
 	average_wheel_collision_point = Vector3.ZERO
