@@ -1,6 +1,6 @@
-## An AACC car plugin that applies simple suspension to the car. The wheels
-## don't apply any torque force, other plugins are used for that instead.
-class_name AACCPluginSuspension extends Node3D
+## An AACC car plugin that applies simple wheel suspension to the car. The
+## wheels don't apply any torque force, other plugins are used for that instead.
+class_name AACCPluginSuspension extends AACCPlugin
 
 @export_group("Transforms")
 ## The transforms of wheels that have the properties listed below. Also stores
@@ -31,8 +31,6 @@ class_name AACCPluginSuspension extends Node3D
 ## too springy and out of control.
 @export var suspension_damper: float = 300.0
 
-@onready var _parent_car: AACCCar = owner as AACCCar
-
 
 func _ready():
 	for wheel in wheels:
@@ -41,9 +39,18 @@ func _ready():
 
 func _physics_process(delta: float):
 	for wheel in wheels:
-		var force: float = wheel.calculate_force(delta)
+		wheel.calculate_force()
 		if wheel.is_colliding:
-			force *= wheel.collision_normal.dot(global_transform.basis.y)
+			# spring
+			var force = wheel.compression * suspension_spring
+
+			# damper
+			var compression_delta: float = (wheel.compression - wheel.last_compression) / delta
+			force += compression_delta * suspension_damper
+			wheel.set_last_compression()
 			
-			var global_parent_com: Vector3 = _parent_car.to_global(Vector3.ZERO)
-			_parent_car.add_force(wheel.collision_normal * force, wheel.collision_point - global_parent_com)
+			# aligning
+			force *= wheel.collision_normal.dot(parent_car.global_transform.basis.y)
+			
+			var global_parent_com: Vector3 = parent_car.to_global(Vector3.ZERO)
+			parent_car.add_force(wheel.collision_normal * force, wheel.collision_point - global_parent_com)

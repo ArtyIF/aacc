@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
 [ext_resource type="Material" uid="uid://iyyp6q7p13dj" path="res://demo_assets/materials/kenney_colormap_adjusted.tres" id="1_ssmxy"]
-[ext_resource type="Script" path="res://addons/aacc/scripts/plugins/resources/car_basic_wheel.gd" id="3_6vk1h"]
-[ext_resource type="Script" path="res://addons/aacc/scripts/plugins/car_basic_wheels.gd" id="3_gy57t"]
+[ext_resource type="Script" path="res://addons/aacc/scripts/plugins/resources/suspension_wheel.gd" id="3_6vk1h"]
+[ext_resource type="Script" path="res://addons/aacc/scripts/plugins/suspension.gd" id="3_gy57t"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pe6ej"]
 friction = 0.1

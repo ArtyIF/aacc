@@ -9,6 +9,7 @@ var raycast_instance_inner: RayCast3D
 var owner: AACCPluginSuspension
 
 #== COMPRESSION ==#
+var compression: float = 0.0
 var last_compression: float = 0.0
 var last_compression_set: bool = false
 
@@ -51,7 +52,7 @@ func reset():
 	raycast_instance_inner.queue_free()
 	raycast_instance_inner = null
 
-func calculate_force(delta: float) -> float:
+func calculate_force():
 	if raycast_instance_outer.is_colliding() or raycast_instance_inner.is_colliding():
 		is_colliding = true
 
@@ -86,20 +87,14 @@ func calculate_force(delta: float) -> float:
 			)
 			distance = distance_outer if raycast_instance_outer.is_colliding() else distance_inner
 
-		var compression: float = 1.0 - ((distance - owner.wheel_radius) / owner.suspension_length)
+		compression = 1.0 - ((distance - owner.wheel_radius) / owner.suspension_length)
 		if not last_compression_set:
 			last_compression = compression
 			last_compression_set = true
-
-		var suspension_magnitude: float = 0.0
-		suspension_magnitude += compression * owner.suspension_spring
-
-		var compression_delta: float = (compression - last_compression) / delta
-		suspension_magnitude += compression_delta * owner.suspension_damper
-		last_compression = compression
-		
-		return suspension_magnitude
 	else:
 		is_colliding = false
-		last_compression = 0
-		return 0.0
+		compression = 0.0
+		last_compression = 0.0
+
+func set_last_compression():
+	last_compression = compression
