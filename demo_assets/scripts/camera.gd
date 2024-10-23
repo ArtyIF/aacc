@@ -1,5 +1,5 @@
 extends Camera3D
-@export var car: AACCCar
+@export var car: Car
 var _smoothed_direction: Vector3 = Vector3.FORWARD
 var _smoothed_position: Vector3 = -Vector3.FORWARD
 
