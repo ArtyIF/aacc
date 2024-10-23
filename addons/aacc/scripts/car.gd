@@ -67,12 +67,10 @@ class_name Car extends RigidBody3D
 ## [member min_side_grip].
 @export var min_side_grip_sideways_speed: float = 5.0
 ## The amount of grip applied to angular velocity.
-##
-## I'm not sure why this works the way this works (if you set it too low you
-## start steering poorly, even though the desired angular force seems to be the
-## same?), so this needs a rewrite.
-## @experimental
-@export var angular_grip: float = 10000.0 # TODO: rewrite steering completely
+## [br][br]
+## The actual angular grip may change at higher speeds due to the difference
+## between the wheel positions and the center of mass. Adjust accordingly.
+@export var angular_grip: float = 10000.0
 ## The force applied when you hit brakes.
 @export var brake_force: float = 4000.0
 
@@ -157,7 +155,7 @@ func get_slowdown_force() -> float:
 	return clamp(local_linear_velocity.z * 10, -1, 1) * (1 - input_accel_adapted) * slowdown_force
 
 
-func convert_linear_force(input: Vector3) -> Vector3:
+func convert_linear_force(input: Vector3, delta: float) -> Vector3:
 	var converted_force: Vector3 = input
 	var side_grip: float = lerp(
 		1.0,
@@ -170,6 +168,7 @@ func convert_linear_force(input: Vector3) -> Vector3:
 
 	converted_force = global_transform.basis * converted_force
 	converted_force = Plane(average_wheel_collision_normal).project(converted_force)
+	converted_force *= delta
 
 	return converted_force
 
@@ -248,16 +247,15 @@ func _physics_process(delta: float):
 				+ desired_engine_force
 				+ desired_brake_force
 				+ desired_slowdown_force
-			)
+			), delta
 		)
-		apply_force(
+		apply_impulse(
 			sum_of_linear_forces * ground_coefficient,
 			average_wheel_collision_point - to_global(Vector3.ZERO)
 		)
 
 		# TODO: rewrite in line with linear force
 		var angular_force_to_apply: Vector3 = Vector3.ZERO
-		# TODO: check if that works as expected
 		angular_force_to_apply += (
 			get_steer_force(delta) * average_wheel_collision_normal * ground_coefficient
 		)
@@ -266,7 +264,8 @@ func _physics_process(delta: float):
 		var final_angular_force: Vector3 = angular_force_to_apply
 		final_angular_force = global_transform.basis * final_angular_force
 		final_angular_force = final_angular_force.limit_length(angular_grip)
-		apply_torque(final_angular_force)
+		final_angular_force *= delta
+		apply_torque_impulse(final_angular_force)
 
 	old_linear_velocity = linear_velocity
 	old_angular_velocity = angular_velocity

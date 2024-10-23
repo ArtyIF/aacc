@@ -190,8 +190,10 @@ can_sleep = false
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_ik2h1")
-max_acceleration = 5000.0
+target_steer_velocity = 0.785398
+max_steer_velocity = 2.35619
 distance_between_wheels = 1.52
+max_steer_tug = 1.5
 linear_grip = 10000.0
 
 [node name="CarWheel" type="Node3D" parent="."]

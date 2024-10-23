@@ -85,7 +85,7 @@ material = ExtResource("3_fw8ok")
 
 [node name="PedestalBase" type="CSGBox3D" parent="LevelGeometry/BaseBlocks"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-size = Vector3(12, 2, 5)
+size = Vector3(22, 2, 5)
 material = ExtResource("6_e0rsp")
 
 [node name="PedestalLower" type="CSGBox3D" parent="LevelGeometry/BaseBlocks"]
@@ -155,50 +155,17 @@ skeleton = NodePath("../..")
 [node name="Collision" type="CollisionShape3D" parent="LevelGeometry/PedestalSUV"]
 shape = SubResource("BoxShape3D_xngdy")
 
-[node name="RaceTrack1" type="CSGPolygon3D" parent="LevelGeometry"]
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="LevelGeometry"]
 use_collision = true
-polygon = PackedVector2Array(-5, 0, -5, 0.05, 5, 0.05, 5, 0)
-mode = 2
-path_node = NodePath("Path3D")
-path_interval_type = 0
-path_interval = 1.0
-path_simplify_angle = 0.0
-path_rotation = 1
-path_local = false
-path_continuous_u = true
-path_u_distance = 1.0
-path_joined = false
-material = ExtResource("7_ojujx")
 
-[node name="Path3D" type="Path3D" parent="LevelGeometry/RaceTrack1"]
-curve = SubResource("Curve3D_yvpfn")
-
-[node name="RaceTrack2" type="CSGPolygon3D" parent="LevelGeometry"]
+[node name="RaceTrack1Details" type="CSGPolygon3D" parent="LevelGeometry/CSGCombiner3D"]
 use_collision = true
-polygon = PackedVector2Array(-5, 0, -5, 0.05, 5, 0.05, 5, 0)
-mode = 2
-path_node = NodePath("Path3D")
-path_interval_type = 0
-path_interval = 1.0
-path_simplify_angle = 0.0
-path_rotation = 1
-path_local = false
-path_continuous_u = true
-path_u_distance = 1.0
-path_joined = false
-material = ExtResource("7_ojujx")
-
-[node name="Path3D" type="Path3D" parent="LevelGeometry/RaceTrack2"]
-curve = SubResource("Curve3D_jwtd4")
-
-[node name="RaceTrack1Details" type="CSGPolygon3D" parent="LevelGeometry"]
-use_collision = true
-polygon = PackedVector2Array(-6, -1, -6, 1, -5, 1, -5, -1, 5, -1, 5, 1, 6, 1, 6, -1)
+polygon = PackedVector2Array(-11, -1, -11, 1, 11, 1, 11, -1)
 mode = 2
 path_node = NodePath("../RaceTrack1/Path3D")
 path_interval_type = 0
-path_interval = 1.0
-path_simplify_angle = 0.0
+path_interval = 5.0
+path_simplify_angle = 1.0
 path_rotation = 1
 path_local = false
 path_continuous_u = true
@@ -206,20 +173,58 @@ path_u_distance = 1.0
 path_joined = false
 material = ExtResource("6_e0rsp")
 
-[node name="RaceTrack2Details" type="CSGPolygon3D" parent="LevelGeometry"]
+[node name="RaceTrack1" type="CSGPolygon3D" parent="LevelGeometry/CSGCombiner3D"]
+operation = 2
 use_collision = true
-polygon = PackedVector2Array(-6, -1, -6, 1, -5, 1, -5, -1, 5, -1, 5, 1, 6, 1, 6, -1)
+polygon = PackedVector2Array(-10, 0.05, -10, 2, 10, 2, 10, 0.05)
+mode = 2
+path_node = NodePath("Path3D")
+path_interval_type = 0
+path_interval = 5.0
+path_simplify_angle = 1.0
+path_rotation = 1
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = ExtResource("7_ojujx")
+
+[node name="Path3D" type="Path3D" parent="LevelGeometry/CSGCombiner3D/RaceTrack1"]
+curve = SubResource("Curve3D_yvpfn")
+
+[node name="RaceTrack2Details" type="CSGPolygon3D" parent="LevelGeometry/CSGCombiner3D"]
+use_collision = true
+polygon = PackedVector2Array(-11, -1, -11, 1, 11, 1, 11, -1)
 mode = 2
 path_node = NodePath("../RaceTrack2/Path3D")
 path_interval_type = 0
-path_interval = 1.0
-path_simplify_angle = 0.0
+path_interval = 5.0
+path_simplify_angle = 1.0
 path_rotation = 1
 path_local = false
 path_continuous_u = true
 path_u_distance = 1.0
 path_joined = false
 material = ExtResource("6_e0rsp")
+
+[node name="RaceTrack2" type="CSGPolygon3D" parent="LevelGeometry/CSGCombiner3D"]
+operation = 2
+use_collision = true
+polygon = PackedVector2Array(-10, 0.05, -10, 2, 10, 2, 10, 0.05)
+mode = 2
+path_node = NodePath("Path3D")
+path_interval_type = 0
+path_interval = 5.0
+path_simplify_angle = 1.0
+path_rotation = 1
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = ExtResource("7_ojujx")
+
+[node name="Path3D" type="Path3D" parent="LevelGeometry/CSGCombiner3D/RaceTrack2"]
+curve = SubResource("Curve3D_jwtd4")
 
 [node name="taxi" parent="." instance=ExtResource("5_attwm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
