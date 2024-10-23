@@ -1,7 +1,11 @@
 class_name AACCSuspensionWheel extends Resource
 
+@export_group("Transform")
 @export var position: Vector3 = Vector3.ZERO
 @export_range(-360.0, 360.0, 0.1, "radians") var rotation_degrees: float = 0.0
+
+@export_group("Visuals")
+@export_node_path("MeshInstance3D") var linked_visual_mesh: NodePath = NodePath()
 
 #== NODES ==#
 var raycast_instance_outer: RayCast3D
@@ -29,10 +33,8 @@ func initialize(owner: AACCPluginSuspension):
 	raycast_instance_outer.hit_back_faces = false
 	raycast_instance_outer.collision_mask = 1
 	raycast_instance_outer.process_physics_priority = -1000
-	raycast_instance_outer.transform = owner.transform.translated_local(
-		position + (Vector3.RIGHT * owner.wheel_width).rotated(Vector3.UP, rotation_degrees)
-	)
-	owner.add_child(raycast_instance_outer)
+	raycast_instance_outer.position = position + (Vector3.RIGHT * owner.wheel_width).rotated(Vector3.UP, rotation_degrees)
+	owner.parent_car.add_child.call_deferred(raycast_instance_outer)
 
 	raycast_instance_inner = RayCast3D.new()
 	raycast_instance_inner.target_position = (
@@ -43,8 +45,8 @@ func initialize(owner: AACCPluginSuspension):
 	raycast_instance_inner.hit_back_faces = false
 	raycast_instance_inner.collision_mask = 1
 	raycast_instance_inner.process_physics_priority = -1000
-	raycast_instance_inner.transform = owner.transform.translated_local(position)
-	owner.add_child(raycast_instance_inner)
+	raycast_instance_inner.position = position
+	owner.parent_car.add_child.call_deferred(raycast_instance_inner)
 
 func reset():
 	raycast_instance_outer.queue_free()
@@ -52,7 +54,7 @@ func reset():
 	raycast_instance_inner.queue_free()
 	raycast_instance_inner = null
 
-func calculate_force():
+func calculate():
 	if raycast_instance_outer.is_colliding() or raycast_instance_inner.is_colliding():
 		is_colliding = true
 

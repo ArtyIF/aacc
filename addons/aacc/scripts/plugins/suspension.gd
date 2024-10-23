@@ -2,7 +2,8 @@
 ## wheels don't apply any torque force, other plugins are used for that instead.
 class_name AACCPluginSuspension extends AACCPlugin
 
-@export_group("Transforms")
+# TODO: editor visualization
+@export_group("Wheels")
 ## The transforms of wheels that have the properties listed below. Also stores
 ## per-wheel information.
 @export var wheels: Array[AACCSuspensionWheel] = []
@@ -31,16 +32,26 @@ class_name AACCPluginSuspension extends AACCPlugin
 ## too springy and out of control.
 @export var suspension_damper: float = 300.0
 
+var average_wheel_collision_point: Vector3 = Vector3.ZERO
+var average_wheel_collision_normal: Vector3 = Vector3.ZERO
+var is_colliding: bool = false
 
 func _ready():
 	for wheel in wheels:
 		wheel.initialize(self)
 
-
 func _physics_process(delta: float):
+	average_wheel_collision_point = Vector3.ZERO
+	average_wheel_collision_normal = Vector3.ZERO
+	var colliding_wheels: float = 0.0
+
 	for wheel in wheels:
-		wheel.calculate_force()
+		wheel.calculate()
 		if wheel.is_colliding:
+			colliding_wheels += 1
+			average_wheel_collision_point += wheel.collision_point
+			average_wheel_collision_normal += wheel.collision_normal
+			
 			# spring
 			var force = wheel.compression * suspension_spring
 
@@ -54,3 +65,7 @@ func _physics_process(delta: float):
 			
 			var global_parent_com: Vector3 = parent_car.to_global(Vector3.ZERO)
 			parent_car.add_force(wheel.collision_normal * force, wheel.collision_point - global_parent_com)
+	
+	average_wheel_collision_point /= colliding_wheels
+	average_wheel_collision_normal = average_wheel_collision_normal.normalized()
+	is_colliding = colliding_wheels > 0

@@ -43,6 +43,12 @@ class Torque:
 var forces_to_apply: Array[Force] = []
 ## An array containing all torques to be applied the next physics tick.
 var torques_to_apply: Array[Torque] = []
+# TODO: add force limiters somehow
+
+## A transformed linear velocity of a car.
+var local_linear_velocity: Vector3 = Vector3()
+## A transformed angular velocity of a car.
+var local_angular_velocity: Vector3 = Vector3()
 
 ## Adds a new force to apply. See [class Car.Force] for details.
 func add_force(force: Vector3, position: Vector3 = Vector3.ZERO, is_impulse: bool = false):
@@ -52,7 +58,11 @@ func add_force(force: Vector3, position: Vector3 = Vector3.ZERO, is_impulse: boo
 func add_torque(torque: Vector3, is_impulse: bool = false):
 	torques_to_apply.append(Torque.new(torque, is_impulse))
 
+# TODO: check if this causes a one-frame lag
 func _physics_process(delta: float) -> void:
+	local_linear_velocity = global_transform.basis.inverse() * linear_velocity
+	local_angular_velocity = global_transform.basis.inverse() * angular_velocity
+	
 	for force in forces_to_apply:
 		if force.is_impulse:
 			apply_impulse(force.force, force.position)
