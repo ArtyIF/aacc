@@ -8,7 +8,8 @@ func _ready() -> void:
 
 # TODO: use _process and implement smoothing for cars
 func _physics_process(delta: float) -> void:
-	_smoothed_direction = _smoothed_direction.slerp(Plane.PLANE_XZ.project(car.global_basis.z), delta * 10.0)
-	_smoothed_position = _smoothed_position.lerp(car.global_position + (_smoothed_direction * 4.0) + (Vector3.UP * 2.0), delta * 30.0)
+	if car.ground_coefficient > 0:
+		_smoothed_direction = _smoothed_direction.slerp(Plane.PLANE_XZ.project(car.global_basis.z), delta * 10.0)
+	_smoothed_position = _smoothed_position.lerp(car.global_position + (_smoothed_direction * 4.0) + (Vector3.UP * 2.0), delta * 20.0)
 	global_position = _smoothed_position
 	global_basis = Basis.looking_at(-_smoothed_direction)

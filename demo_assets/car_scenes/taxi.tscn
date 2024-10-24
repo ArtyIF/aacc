@@ -6,7 +6,7 @@
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pe6ej"]
 friction = 0.1
-bounce = 0.1
+bounce = 0.3
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_nnrir"]
 points = PackedVector3Array(-0.571855, 0.05, -1.29505, 0.755803, 0.676587, 0.567042, -0.553486, 0.676587, 1.30906, 0.0535999, 1.3356, -0.411819, 0.638951, 0.0507564, -1.25166, 0.597786, 0.05, 1.29505, -0.65, 0.0552856, 1.20134, -0.553486, 0.589371, -1.35281, 0.581131, 0.589371, -1.35281, 0.581131, 0.676587, 1.30906, -0.771676, 0.676587, 0.436354, -0.43473, 1.12378, -0.609848, 0.452363, 1.11678, 0.280091, -0.0641351, 1.27706, 0.075, 0.455956, 1.12022, -0.604988, -0.428049, 1.11678, 0.280091, -0.68434, 0.283841, -1.26559, -0.19409, 0.0555909, 1.325, 0.668617, 0.240096, 1.30934, 0.624799, 0.283841, -1.35281, -0.68434, 0.545763, -0.916453, -0.65, 0.0552856, -1.20134, 0.668617, 0.545626, -0.916453, -0.771676, 0.545763, 0.436354, 0.624799, 0.283841, 1.35281, 0.755803, 0.545626, 0.436354, 0.638951, 0.0507564, 1.25166, -0.571855, 0.05, 1.29505, -0.771676, 0.676587, 0.567315, 0.668617, 0.283841, -1.30906, -0.19409, 0.0555909, -1.325, -0.68434, 0.502155, 1.04714)
@@ -182,7 +182,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_x7apo")
 
 [node name="taxi" type="RigidBody3D"]
-mass = 500.0
+mass = 400.0
 physics_material_override = SubResource("PhysicsMaterial_pe6ej")
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, 0.1, 0)
@@ -190,33 +190,36 @@ can_sleep = false
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_ik2h1")
-target_steer_velocity = 0.785398
-max_steer_velocity = 2.35619
 distance_between_wheels = 1.52
-max_steer_tug = 1.5
+smooth_steer_speed = 5.0
 linear_grip = 10000.0
+angular_grip = 5000.0
 
 [node name="CarWheel" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
+wheel_width = 0.2
 suspension_spring = 2000.0
 suspension_damper = 200.0
 
 [node name="CarWheel2" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
+wheel_width = 0.2
 suspension_spring = 2000.0
 suspension_damper = 200.0
 
 [node name="CarWheel3" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
+wheel_width = 0.2
 suspension_spring = 2000.0
 suspension_damper = 200.0
 
 [node name="CarWheel4" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
+wheel_width = 0.2
 suspension_spring = 2000.0
 suspension_damper = 200.0
 

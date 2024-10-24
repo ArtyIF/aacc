@@ -95,7 +95,6 @@ var average_wheel_collision_point: Vector3 = Vector3.ZERO
 var average_wheel_collision_normal: Vector3 = Vector3.ZERO
 
 #== SMOOTH VALUES ==#
-var smooth_steer_tug_reverse_coefficient: SmoothedFloat = SmoothedFloat.new()
 var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
 
@@ -123,8 +122,8 @@ func calculate_acceleration_multiplier() -> float:
 	return clamp(ease(1.0 - relative_speed, acceleration_curve), 0.0, 1.0)
 
 
-func get_side_grip_force(delta: float) -> float:
-	return -local_linear_velocity.x * mass / delta
+func get_side_grip_force() -> float:
+	return -local_linear_velocity.x * mass
 
 
 func get_engine_force() -> float:
@@ -163,39 +162,31 @@ func convert_linear_force(input: Vector3, delta: float) -> Vector3:
 		clamp(sqrt(abs(local_linear_velocity.x) / min_side_grip_sideways_speed), 0.0, 1.0)
 	)
 	
-	converted_force.x = clamp(converted_force.x, -linear_grip * side_grip, linear_grip * side_grip)
-	converted_force = converted_force.limit_length(linear_grip)
+	converted_force.x = clamp(converted_force.x, -linear_grip * side_grip * delta, linear_grip * side_grip * delta)
+	converted_force = converted_force.limit_length(linear_grip * delta)
 
 	converted_force = global_transform.basis * converted_force
 	converted_force = Plane(average_wheel_collision_normal).project(converted_force)
-	converted_force *= delta
 
 	return converted_force
 
 
 func calculate_steer_coefficient() -> float:
-	var steer_sign_coefficient: float = sign(local_linear_velocity.z)
-	return abs(local_linear_velocity.z) / distance_between_wheels * steer_sign_coefficient
+	return local_linear_velocity.z / distance_between_wheels
 
 
 func get_steer_tug_offset() -> float:
-	return clamp(
-		local_linear_velocity.x
-		/ steer_tug_slide
-		* smooth_steer_tug_reverse_coefficient.get_current_value(),
-		-max_steer_tug,
-		max_steer_tug
-	)
+	return clamp(local_linear_velocity.x / steer_tug_slide, -max_steer_tug, max_steer_tug) 
 
 
-func get_steer_force(delta: float) -> float:
+func get_steer_force() -> float:
 	var steer_amount = (
-		(smooth_steer.get_current_value() * calculate_steer_coefficient() * get_input_steer_multiplier()) + get_steer_tug_offset()
+		(smooth_steer.get_current_value() * calculate_steer_coefficient()) + get_steer_tug_offset()
 	)
 	
 	var steer_velocity: float = clamp(steer_amount * base_steer_degrees, -max_steer_velocity, max_steer_velocity)
 	var steer_force: float = steer_velocity - local_angular_velocity.y
-	return steer_force * mass / delta
+	return steer_force * mass
 
 
 func get_input_steer_multiplier() -> float:
@@ -233,14 +224,13 @@ func _physics_process(delta: float):
 	local_linear_velocity = global_transform.basis.inverse() * linear_velocity
 	local_angular_velocity = global_transform.basis.inverse() * angular_velocity
 
-	smooth_steer.advance_to(input_steer, delta)
-	smooth_steer_tug_reverse_coefficient.advance_to(0.0 if is_reversing() else 1.0, delta)
+	smooth_steer.advance_to(input_steer * get_input_steer_multiplier(), delta)
 
 	if ground_coefficient > 0:
-		var desired_linear_grip_force: Vector3 = Vector3.RIGHT * get_side_grip_force(delta)
-		var desired_engine_force: Vector3 = Vector3.FORWARD * get_engine_force()
-		var desired_brake_force: Vector3 = Vector3.FORWARD * get_brake_force()
-		var desired_slowdown_force: Vector3 = Vector3.FORWARD * get_slowdown_force()
+		var desired_linear_grip_force: Vector3 = Vector3.RIGHT * get_side_grip_force()
+		var desired_engine_force: Vector3 = Vector3.FORWARD * get_engine_force() * delta
+		var desired_brake_force: Vector3 = Vector3.FORWARD * get_brake_force() * delta
+		var desired_slowdown_force: Vector3 = Vector3.FORWARD * get_slowdown_force() * delta
 		var sum_of_linear_forces: Vector3 = convert_linear_force(
 			(
 				desired_linear_grip_force
@@ -249,23 +239,20 @@ func _physics_process(delta: float):
 				+ desired_slowdown_force
 			), delta
 		)
-		apply_impulse(
-			sum_of_linear_forces * ground_coefficient,
+		apply_force(
+			sum_of_linear_forces * ground_coefficient / delta,
 			average_wheel_collision_point - to_global(Vector3.ZERO)
 		)
 
-		# TODO: rewrite in line with linear force
-		var angular_force_to_apply: Vector3 = Vector3.ZERO
-		angular_force_to_apply += (
-			get_steer_force(delta) * average_wheel_collision_normal * ground_coefficient
+		var angular_force_to_apply: Vector3 = (
+			get_steer_force() * average_wheel_collision_normal * ground_coefficient / delta
 		)
 		# TODO: mid-air control?
 
 		var final_angular_force: Vector3 = angular_force_to_apply
 		final_angular_force = global_transform.basis * final_angular_force
 		final_angular_force = final_angular_force.limit_length(angular_grip)
-		final_angular_force *= delta
-		apply_torque_impulse(final_angular_force)
+		apply_torque(final_angular_force)
 
 	old_linear_velocity = linear_velocity
 	old_angular_velocity = angular_velocity
