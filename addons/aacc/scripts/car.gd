@@ -96,6 +96,7 @@ var average_wheel_collision_normal: Vector3 = Vector3.ZERO
 
 #== SMOOTH VALUES ==#
 var smooth_steer: SmoothedFloat = SmoothedFloat.new()
+var smooth_steer_sign: SmoothedFloat = SmoothedFloat.new()
 
 
 func _ready():
@@ -172,7 +173,7 @@ func convert_linear_force(input: Vector3, delta: float) -> Vector3:
 
 
 func calculate_steer_coefficient() -> float:
-	return local_linear_velocity.z / distance_between_wheels
+	return smooth_steer_sign.get_current_value() * local_linear_velocity.length() / distance_between_wheels
 
 
 func get_steer_tug_offset() -> float:
@@ -225,6 +226,10 @@ func _physics_process(delta: float):
 	local_angular_velocity = global_transform.basis.inverse() * angular_velocity
 
 	smooth_steer.advance_to(input_steer * get_input_steer_multiplier(), delta)
+	if local_linear_velocity.length() <= 1.0: # TODO: also reset on collisions
+		smooth_steer_sign.force_current_value(sign(local_linear_velocity.z))
+	else:
+		smooth_steer_sign.advance_to(sign(local_linear_velocity.z), delta)
 
 	if ground_coefficient > 0:
 		var desired_linear_grip_force: Vector3 = Vector3.RIGHT * get_side_grip_force()
