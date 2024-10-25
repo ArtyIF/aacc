@@ -16,5 +16,5 @@ Project Settings… → Input Map).
 
 - Hold the handbrake (Space) and steer at a high enough speed to perform a 180
   turn!
-<video src="docs/180_trick.mp4" width=180 loop autoplay controls/>
+<video src="https://github.com/ArtyIF/aacc/raw/refs/heads/main/docs/180_trick.mp4" width=180 loop autoplay controls/>
 - That's it for now
