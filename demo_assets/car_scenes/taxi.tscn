@@ -225,16 +225,6 @@ wheel_width = 0.2
 suspension_spring = 2000.0
 suspension_damper = 200.0
 
-[node name="DefaultEngine" type="Node" parent="."]
-
-[node name="DefaultBrakes" type="Node" parent="."]
-
-[node name="DefaultSteering" type="Node" parent="."]
-
-[node name="DefaultLinearGrip" type="Node" parent="."]
-
-[node name="DefaultAngularGrip" type="Node" parent="."]
-
 [node name="Collision" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.18557e-09, 0.15, 0.025)
 shape = SubResource("ConvexPolygonShape3D_nnrir")
