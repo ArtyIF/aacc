@@ -118,11 +118,11 @@ func _physics_process(delta: float):
 			suspension_magnitude += compression_delta * suspension_damper
 			last_compression = compression
 
-			suspension_magnitude *= collision_normal.dot(global_transform.basis.y)
+			suspension_magnitude *= collision_normal.dot(global_basis.y)
 
 			var global_parent_com: Vector3 = parent_car.to_global(Vector3.ZERO)
 			parent_car.apply_force(
-				collision_normal * suspension_magnitude, collision_point - global_parent_com
+				global_basis.y * suspension_magnitude, collision_point - global_parent_com
 			)
 
 		

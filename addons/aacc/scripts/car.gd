@@ -226,7 +226,7 @@ func _physics_process(delta: float):
 	local_angular_velocity = global_transform.basis.inverse() * angular_velocity
 
 	smooth_steer.advance_to(input_steer * get_input_steer_multiplier(), delta)
-	if local_linear_velocity.length() <= 1.0: # TODO: also reset on collisions
+	if local_linear_velocity.length() <= 0.1: # TODO: also reset on collisions
 		smooth_steer_sign.force_current_value(sign(local_linear_velocity.z))
 	else:
 		smooth_steer_sign.advance_to(sign(local_linear_velocity.z), delta)

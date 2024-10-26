@@ -191,10 +191,11 @@ linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_ik2h1")
 top_speed_forward = 40.0
+max_steer_velocity = 2.35619
 distance_between_wheels = 1.52
 smooth_steer_speed = 5.0
-min_side_grip = 0.25
-min_side_grip_sideways_speed = 10.0
+linear_grip = 10000.0
+min_side_grip_sideways_speed = 15.0
 
 [node name="CarWheel" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
