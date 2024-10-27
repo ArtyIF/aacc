@@ -1,14 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=12 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_8gguu"]
 [ext_resource type="Script" path="res://demo_assets/scripts/camera.gd" id="2_vy2m6"]
 [ext_resource type="Material" uid="uid://bbeplwj0un437" path="res://demo_assets/materials/material_white.tres" id="4_wmbkv"]
 [ext_resource type="Script" path="res://demo_assets/scripts/pedestal.gd" id="5_3pldh"]
 [ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="5_attwm"]
-[ext_resource type="PackedScene" uid="uid://yjspexnxe8f4" path="res://demo_assets/car_scenes/police.tscn" id="6_vheu2"]
-[ext_resource type="PackedScene" uid="uid://ca5atj7t04ryr" path="res://demo_assets/car_scenes/race_future.tscn" id="7_sklo0"]
-[ext_resource type="PackedScene" uid="uid://climotlfvecyb" path="res://demo_assets/car_scenes/suv.tscn" id="12_bket6"]
-[ext_resource type="PackedScene" uid="uid://b1wiyxnholdo" path="res://demo_assets/car_scenes/sedan_sports.tscn" id="13_cq28e"]
 [ext_resource type="Script" path="res://demo_assets/scripts/speed_label.gd" id="14_i5r8x"]
 [ext_resource type="LightmapGIData" uid="uid://bq0sjklar8sx5" path="res://demo_assets/demo_scene.lmbake" id="16_kdidh"]
 [ext_resource type="PackedScene" uid="uid://ep48diqn0vyp" path="res://demo_assets/subscenes/pathtest.glb" id="16_sjues"]
@@ -109,18 +105,6 @@ shape = SubResource("BoxShape3D_xngdy")
 [node name="taxi" parent="." instance=ExtResource("5_attwm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
-[node name="police" parent="." instance=ExtResource("6_vheu2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 2, 0)
-
-[node name="race-future" parent="." instance=ExtResource("7_sklo0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, 0)
-
-[node name="suv" parent="." instance=ExtResource("12_bket6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 2, 0)
-
-[node name="sedan-sports" parent="." instance=ExtResource("13_cq28e")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2, 0)
-
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
@@ -148,7 +132,6 @@ script = ExtResource("14_i5r8x")
 car = NodePath("../../taxi")
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
-bounces = 2
 environment_mode = 3
 environment_custom_color = Color(0.501961, 0.752941, 1, 1)
 environment_custom_energy = 1.0

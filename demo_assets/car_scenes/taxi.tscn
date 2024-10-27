@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
 [ext_resource type="Material" uid="uid://iyyp6q7p13dj" path="res://demo_assets/materials/kenney_colormap_adjusted.tres" id="1_ssmxy"]
-[ext_resource type="Shader" path="res://addons/aacc/shaders/shadow_decal_shader_compatibility.gdshader" id="3_c1c67"]
+[ext_resource type="Shader" path="res://addons/aacc/shaders/shadow_decal_shader.gdshader" id="3_c1c67"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car_wheel.gd" id="3_gy57t"]
 [ext_resource type="Texture2D" uid="uid://cmxkqo5refhiy" path="res://demo_assets/textures/car_shadows/taxi.png" id="4_8f3qw"]
 
@@ -186,13 +186,13 @@ shader = ExtResource("3_c1c67")
 shader_parameter/shadow_texture_mipmaps = 9
 shader_parameter/shadow_size = 4.0
 shader_parameter/shadow_height_above = 0.25
-shader_parameter/shadow_height_below = 0.25
+shader_parameter/shadow_height_below = 1.25
 shader_parameter/shadow_color = Color(0.501961, 0.752941, 1, 1)
 shader_parameter/shadow_texture = ExtResource("4_8f3qw")
 
 [sub_resource type="BoxMesh" id="BoxMesh_sc5a5"]
 material = SubResource("ShaderMaterial_22shy")
-size = Vector3(4, 0.5, 4)
+size = Vector3(4, 1.5, 4)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_nnrir"]
 points = PackedVector3Array(-0.571855, 0.05, -1.29505, 0.755803, 0.676587, 0.567042, -0.553486, 0.676587, 1.30906, 0.0535999, 1.3356, -0.411819, 0.638951, 0.0507564, -1.25166, 0.597786, 0.05, 1.29505, -0.65, 0.0552856, 1.20134, -0.553486, 0.589371, -1.35281, 0.581131, 0.589371, -1.35281, 0.581131, 0.676587, 1.30906, -0.771676, 0.676587, 0.436354, -0.43473, 1.12378, -0.609848, 0.452363, 1.11678, 0.280091, -0.0641351, 1.27706, 0.075, 0.455956, 1.12022, -0.604988, -0.428049, 1.11678, 0.280091, -0.68434, 0.283841, -1.26559, -0.19409, 0.0555909, 1.325, 0.668617, 0.240096, 1.30934, 0.624799, 0.283841, -1.35281, -0.68434, 0.545763, -0.916453, -0.65, 0.0552856, -1.20134, 0.668617, 0.545626, -0.916453, -0.771676, 0.545763, 0.436354, 0.624799, 0.283841, 1.35281, 0.755803, 0.545626, 0.436354, 0.638951, 0.0507564, 1.25166, -0.571855, 0.05, 1.29505, -0.771676, 0.676587, 0.567315, 0.668617, 0.283841, -1.30906, -0.19409, 0.0555909, -1.325, -0.68434, 0.502155, 1.04714)

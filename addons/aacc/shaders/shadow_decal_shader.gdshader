@@ -2,7 +2,7 @@
 // written by TwistedTwigleg and published under the MIT license
 
 shader_type spatial;
-render_mode world_vertex_coords, unshaded, cull_back, blend_mul;
+render_mode world_vertex_coords, unshaded, cull_front, depth_test_disabled, blend_mul;
 
 uniform sampler2D DEPTH_TEXTURE : hint_depth_texture, filter_linear_mipmap;
 
@@ -60,7 +60,8 @@ void fragment() {
 
 	float result = clamp((1.0 - shadow) * vertical_blend, 0.0, 1.0);
 	ALBEDO = mix(vec3(1.0), shadow_color * 0.5, result);
-	if (OUTPUT_IS_SRGB) {
-		ALBEDO *= 4.0; // I have no idea why 4.0 specifically works
+	if (OUTPUT_IS_SRGB) { // Compatibility
+		// I have no idea why I have to multiply this value. Am I missing something?
+		ALBEDO *= 4.0; // The actual point seems to be 3.723, but it causes some issues at angles
 	}
 }
