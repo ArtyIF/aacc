@@ -8,5 +8,5 @@ diffuse_mode = 3
 specular_mode = 1
 albedo_texture = ExtResource("1_17oxx")
 metallic_specular = 1.0
-roughness = 0.01
+roughness = 0.05
 rim_enabled = true

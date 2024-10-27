@@ -1,57 +1,24 @@
-[gd_scene load_steps=25 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=16 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_8gguu"]
 [ext_resource type="Script" path="res://demo_assets/scripts/camera.gd" id="2_vy2m6"]
+[ext_resource type="Material" uid="uid://bbeplwj0un437" path="res://demo_assets/materials/material_white.tres" id="4_wmbkv"]
 [ext_resource type="Script" path="res://demo_assets/scripts/pedestal.gd" id="5_3pldh"]
 [ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="5_attwm"]
-[ext_resource type="Material" uid="uid://b177e8ahxwwwk" path="res://demo_assets/materials/material_grey_dull.tres" id="5_siyol"]
-[ext_resource type="Material" uid="uid://dkdwn7vaymsq8" path="res://demo_assets/materials/material_red.tres" id="6_e0rsp"]
 [ext_resource type="PackedScene" uid="uid://yjspexnxe8f4" path="res://demo_assets/car_scenes/police.tscn" id="6_vheu2"]
-[ext_resource type="Material" uid="uid://d38imusg0v6nw" path="res://demo_assets/materials/material_yellow.tres" id="7_2wei2"]
-[ext_resource type="Material" uid="uid://dht45tgcjuic8" path="res://demo_assets/materials/material_grey_shiny.tres" id="7_ojujx"]
 [ext_resource type="PackedScene" uid="uid://ca5atj7t04ryr" path="res://demo_assets/car_scenes/race_future.tscn" id="7_sklo0"]
-[ext_resource type="Material" uid="uid://d2jigg1rspx0d" path="res://demo_assets/materials/material_blue.tres" id="8_uoj4g"]
-[ext_resource type="Material" uid="uid://crexapb5vviru" path="res://demo_assets/materials/material_green.tres" id="9_kym7k"]
 [ext_resource type="PackedScene" uid="uid://climotlfvecyb" path="res://demo_assets/car_scenes/suv.tscn" id="12_bket6"]
 [ext_resource type="PackedScene" uid="uid://b1wiyxnholdo" path="res://demo_assets/car_scenes/sedan_sports.tscn" id="13_cq28e"]
 [ext_resource type="Script" path="res://demo_assets/scripts/speed_label.gd" id="14_i5r8x"]
-
-[sub_resource type="Curve3D" id="Curve3D_yvpfn"]
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 173.579, 10, 0, 0, 0, 0, 0, 0, 0, 173.579, 0, -51.515, 0, 0, 0, 0, 0, 0, 145.239, 0, -130.04, 0, 0, 0, 0, 0, 0, 61.7498, 0, -210.465, 0, 0, 0, 0, 0, 0, -79.9518, 0, -189.784, 0, 0, 0, 0, 0, 0, -137.724, 0, -118.052, 0, 0, 0, 0, 0, 0, -149.642, 0, -116.067, 0, 0, 0, 0, 0, 0, -238.708, 0, -161.489, 0, 0, 0, 0, 0, 0, -241.568, 0, -165.274, 0, 0, 0, 0, 0, 0, -234.002, 0, -283.025, 0, 0, 0, 0, 0, 0, -230.952, 0, -286.983, 0, 0, 0, 0, 0, 0, -153.063, 0, -374.919, 0, 0, 0, 0, 0, 0, -147.788, 0, -377.253, 0, 0, 0, 0, 0, 0, -23.3654, 0, -412.375, 0, 0, 0, 0, 0, 0, -15.8744, 0, -410.788, 0, 0, 0, 0, 0, 0, 82.3927, 0, -348.708, 0, 0, 0, 0, 0, 0, 228.584, 0, -328.397, 0, 0, 0, 0, 0, 0, 234.304, 0, -322.581, 0, 0, 0, 0, 0, 0, 259.725, 0, -177.935, 0, 0, 0, 0, 0, 0, 254.09, 0, -167.86, 0, 0, 0, 0, 0, 0, 231.35, 0, -153.603, 0, 0, 0, 0, 0, 0, 148.257, 15, -125.9, 0, 0, 0, 0, 0, 0, 65.1376, 0, -106.114, 0, 0, 0, 0, 0, 0, 25.2979, 1.90735e-06, -75.6067, 0, 0, 0, 0, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-}
-point_count = 26
-
-[sub_resource type="Curve3D" id="Curve3D_jwtd4"]
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, -0.832574, 0, 27.2521, 0, 0, 0, 0, 0, 0, -5.64682, 0, 43.9319, 0, 0, 0, 0, 0, 0, -38.1008, 0, 95.8314, 0, 0, 0, 0, 0, 0, -39.5519, 0, 99.7594, 0, 0, 0, 0, 0, 0, -26.6565, 0, 156.009, 0, 0, 0, 0, 0, 0, -25.6596, 0, 160.545, 0, 0, 0, 0, 0, 0, 16.4035, 0, 205.155, 0, 0, 0, 0, 0, 0, 17.7944, 0, 253.26, 0, 0, 0, 0, 0, 0, 15.3393, 0, 258.959, 0, 0, 0, 0, 0, 0, -19.916, 0, 312.713, 0, 0, 0, 0, 0, 0, -24.7715, 0, 316.086, 0, 0, 0, 0, 0, 0, -79.3758, 0, 339.866, 0, 0, 0, 0, 0, 0, -85.4474, 0, 338.722, 0, 0, 0, 0, 0, 0, -169.315, 0, 316.844, 0, 0, 0, 0, 0, 0, -233.736, -10, 265.793, 0, 0, 0, 0, 0, 0, -256.83, 0, 217.174, 0, 0, 0, 0, 0, 0, -255.479, 0, 144.262, 0, 0, 0, 0, 0, 0, -254.399, 0, 139.384, 0, 0, 0, 0, 0, 0, -231.305, 0, 96.8419, 0, 0, 0, 0, 0, 0, -189.979, 0, 55.5157, 0, 0, 0, 0, 0, 0, -169.506, 0, -1.97217, 0, 0, 0, 0, 0, 0, -169.103, 0, -5.83406, 0, 0, 0, 0, 0, 0, -179.273, 0, -59.4701, 0, 0, 0, 0, 0, 0, -181.258, 0, -64.177, 0, 0, 0, 0, 0, 0, -229.877, 0, -107.934, 0, 0, 0, 0, 0, 0, -241.722, 0, -113.153, 0, 0, 0, 0, 0, 0, -303.706, 0, -108.345, 0, 0, 0, 0, 0, 0, -311.37, 0, -107.112, 0, 0, 0, 0, 0, 0, -357.503, 0, -67.8235, 0, 0, 0, 0, 0, 0, -389.405, 0, -23.7811, 0, 0, 0, 0, 0, 0, -390.32, 0, -20.4198, 0, 0, 0, 0, 0, 0, -401.26, 0, 50.0779, 0, 0, 0, 0, 0, 0, -396.398, 0, 124.222, 0, 0, 0, 0, 0, 0, -350.834, 0, 271.075, 0, 0, 0, 0, 0, 0, -340.926, 0, 279.513, 0, 0, 0, 0, 0, 0, -143.121, 0, 266.4, 0, 0, 0, 0, 0, 0, -33.59, 20, 316.066, 0, 0, 0, 0, 0, 0, 66.3613, 0, 357.718, 0, 0, 0, 0, 0, 0, 120.627, 0, 406.707, 0, 0, 0, 0, 0, 0, 184.197, 0, 401.571, 0, 0, 0, 0, 0, 0, 221.619, 0, 353.389, 0, 0, 0, 0, 0, 0, 177.078, 0, 142.674, 0, 0, 0, 0, 0, 0, 173.579, 10, 10),
-"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-}
-point_count = 45
+[ext_resource type="LightmapGIData" uid="uid://bq0sjklar8sx5" path="res://demo_assets/demo_scene.lmbake" id="16_kdidh"]
+[ext_resource type="PackedScene" uid="uid://ep48diqn0vyp" path="res://demo_assets/subscenes/pathtest.glb" id="16_sjues"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_c6pm3"]
-material = ExtResource("7_ojujx")
-size = Vector3(4, 0.1, 5)
+material = ExtResource("4_wmbkv")
+size = Vector3(4, 0.1, 10)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xngdy"]
-size = Vector3(4, 0.1, 5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_5abkn"]
-material = ExtResource("6_e0rsp")
-size = Vector3(4, 0.1, 5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_08ipd"]
-material = ExtResource("7_2wei2")
-size = Vector3(4, 0.1, 5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_1ohrv"]
-material = ExtResource("8_uoj4g")
-size = Vector3(4, 0.1, 5)
-
-[sub_resource type="BoxMesh" id="BoxMesh_o7rwf"]
-material = ExtResource("9_kym7k")
-size = Vector3(4, 0.1, 5)
+size = Vector3(4, 0.1, 10)
 
 [sub_resource type="LabelSettings" id="LabelSettings_3uvu3"]
 font_size = 32
@@ -64,8 +31,9 @@ outline_color = Color(0, 0, 0, 1)
 environment = ExtResource("1_8gguu")
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866026, 0.5, -0.707107, -0.353553, 0.612372, 0, 0, 0)
-shadow_enabled = true
+transform = Transform3D(0.5, -0.433013, 0.75, 0, 0.866026, 0.5, -0.866026, -0.25, 0.433012, 0, 0, 0)
+light_angular_distance = 5.0
+light_bake_mode = 1
 directional_shadow_pancake_size = 100.0
 
 [node name="Camera" type="Camera3D" parent="." node_paths=PackedStringArray("car")]
@@ -73,98 +41,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 4)
 script = ExtResource("2_vy2m6")
 car = NodePath("../taxi")
 
-[node name="Reflection" type="ReflectionProbe" parent="."]
-size = Vector3(2000, 2000, 2000)
-origin_offset = Vector3(0, 1, -20)
-box_projection = true
-enable_shadows = true
-cull_mask = 1048573
-ambient_mode = 0
-
 [node name="LevelGeometry" type="Node3D" parent="."]
-
-[node name="CSG" type="CSGCombiner3D" parent="LevelGeometry"]
-use_collision = true
-
-[node name="RaceTrack1Details" type="CSGPolygon3D" parent="LevelGeometry/CSG"]
-use_collision = true
-polygon = PackedVector2Array(-11, -1, -11, 2, 11, 2, 11, -1)
-mode = 2
-path_node = NodePath("../RaceTrack1/Path3D")
-path_interval_type = 0
-path_interval = 5.0
-path_simplify_angle = 1.0
-path_rotation = 1
-path_local = false
-path_continuous_u = true
-path_u_distance = 1.0
-path_joined = false
-material = ExtResource("6_e0rsp")
-
-[node name="RaceTrack1" type="CSGPolygon3D" parent="LevelGeometry/CSG"]
-operation = 2
-use_collision = true
-polygon = PackedVector2Array(-10, 0.05, -10, 3, 10, 3, 10, 0.05)
-mode = 2
-path_node = NodePath("Path3D")
-path_interval_type = 0
-path_interval = 5.0
-path_simplify_angle = 1.0
-path_rotation = 1
-path_local = false
-path_continuous_u = true
-path_u_distance = 1.0
-path_joined = false
-material = ExtResource("7_ojujx")
-
-[node name="Path3D" type="Path3D" parent="LevelGeometry/CSG/RaceTrack1"]
-curve = SubResource("Curve3D_yvpfn")
-
-[node name="RaceTrack2Details" type="CSGPolygon3D" parent="LevelGeometry/CSG"]
-use_collision = true
-polygon = PackedVector2Array(-11, -1, -11, 2, 11, 2, 11, -1)
-mode = 2
-path_node = NodePath("../RaceTrack2/Path3D")
-path_interval_type = 0
-path_interval = 5.0
-path_simplify_angle = 1.0
-path_rotation = 1
-path_local = false
-path_continuous_u = true
-path_u_distance = 1.0
-path_joined = false
-material = ExtResource("6_e0rsp")
-
-[node name="RaceTrack2" type="CSGPolygon3D" parent="LevelGeometry/CSG"]
-operation = 2
-use_collision = true
-polygon = PackedVector2Array(-10, 0.05, -10, 3, 10, 3, 10, 0.05)
-mode = 2
-path_node = NodePath("Path3D")
-path_interval_type = 0
-path_interval = 5.0
-path_simplify_angle = 1.0
-path_rotation = 1
-path_local = false
-path_continuous_u = true
-path_u_distance = 1.0
-path_joined = false
-material = ExtResource("7_ojujx")
-
-[node name="Path3D" type="Path3D" parent="LevelGeometry/CSG/RaceTrack2"]
-curve = SubResource("Curve3D_jwtd4")
-
-[node name="PedestalGap" type="CSGBox3D" parent="LevelGeometry/CSG"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
-operation = 2
-size = Vector3(20, 2.2, 5)
-material = ExtResource("5_siyol")
-
-[node name="BridgeGap" type="CSGBox3D" parent="LevelGeometry/CSG"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 173.5, 10, 5)
-operation = 2
-size = Vector3(40, 10, 15)
-material = ExtResource("6_e0rsp")
 
 [node name="PedestalPolice" type="AnimatableBody3D" parent="LevelGeometry"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.95, 0)
@@ -184,7 +61,7 @@ script = ExtResource("5_3pldh")
 
 [node name="Visual" type="MeshInstance3D" parent="LevelGeometry/PedestalSedan"]
 gi_mode = 2
-mesh = SubResource("BoxMesh_5abkn")
+mesh = SubResource("BoxMesh_c6pm3")
 skeleton = NodePath("../..")
 
 [node name="Collision" type="CollisionShape3D" parent="LevelGeometry/PedestalSedan"]
@@ -197,7 +74,7 @@ lowered = true
 
 [node name="Visual" type="MeshInstance3D" parent="LevelGeometry/PedestalTaxi"]
 gi_mode = 2
-mesh = SubResource("BoxMesh_08ipd")
+mesh = SubResource("BoxMesh_c6pm3")
 skeleton = NodePath("../..")
 
 [node name="Collision" type="CollisionShape3D" parent="LevelGeometry/PedestalTaxi"]
@@ -209,7 +86,7 @@ script = ExtResource("5_3pldh")
 
 [node name="Visual" type="MeshInstance3D" parent="LevelGeometry/PedestalRace"]
 gi_mode = 2
-mesh = SubResource("BoxMesh_1ohrv")
+mesh = SubResource("BoxMesh_c6pm3")
 skeleton = NodePath("../..")
 
 [node name="Collision" type="CollisionShape3D" parent="LevelGeometry/PedestalRace"]
@@ -221,11 +98,13 @@ script = ExtResource("5_3pldh")
 
 [node name="Visual" type="MeshInstance3D" parent="LevelGeometry/PedestalSUV"]
 gi_mode = 2
-mesh = SubResource("BoxMesh_o7rwf")
+mesh = SubResource("BoxMesh_c6pm3")
 skeleton = NodePath("../..")
 
 [node name="Collision" type="CollisionShape3D" parent="LevelGeometry/PedestalSUV"]
 shape = SubResource("BoxShape3D_xngdy")
+
+[node name="pathtest" parent="LevelGeometry" instance=ExtResource("16_sjues")]
 
 [node name="taxi" parent="." instance=ExtResource("5_attwm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
@@ -267,3 +146,11 @@ horizontal_alignment = 2
 vertical_alignment = 2
 script = ExtResource("14_i5r8x")
 car = NodePath("../../taxi")
+
+[node name="LightmapGI" type="LightmapGI" parent="."]
+bounces = 2
+environment_mode = 3
+environment_custom_color = Color(0.501961, 0.752941, 1, 1)
+environment_custom_energy = 1.0
+generate_probes_subdiv = 0
+light_data = ExtResource("16_kdidh")

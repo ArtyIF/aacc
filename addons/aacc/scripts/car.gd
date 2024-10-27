@@ -1,8 +1,8 @@
+@icon("res://addons/aacc/icons/car.svg")
 ## Arty's Arcadey Car Controller's main class.
 ##
 ## This is the class that stores parameters for the car and calculates
 ## engine and steering for it.
-@icon("res://addons/aacc/icons/car.svg")
 class_name Car extends RigidBody3D
 
 # TODO: split all this up into separate classes for better customization
@@ -144,12 +144,12 @@ func get_slowdown_force() -> float:
 #endregion
 
 #region Traction
-func get_side_grip_force() -> float:
-	return -local_linear_velocity.x * mass
-
 func get_brake_force() -> float:
 	var brake_speed = clamp(local_linear_velocity.z * 10.0, -1.0, 1.0)
 	return brake_speed * brake_force * (1.0 if input_handbrake else (input_forward if is_reversing() else input_backward))
+
+func get_side_grip_force() -> float:
+	return -local_linear_velocity.x * mass
 #endregion
 
 #region Steering
@@ -167,24 +167,32 @@ func get_steer_force() -> float:
 	return steer_force * mass
 #endregion
 
+#region Air Control
+func get_air_control_force() -> Vector3:
+	return -local_angular_velocity * mass
+#endregion
+
 #region Force Conversion
 func convert_linear_force(input: Vector3, delta: float) -> Vector3:
 	var converted_force: Vector3 = input
 
+	# TODO: add option for this clamp
 	var side_grip: float = lerp(1.0, min_side_grip, clamp(sqrt(abs(local_linear_velocity.x) / min_side_grip_sideways_speed), 0.0, 1.0))
 	converted_force.x = clamp(converted_force.x, -linear_grip * side_grip * delta, linear_grip * side_grip * delta)
 
 	converted_force = global_basis * converted_force
 	converted_force = Plane(average_wheel_collision_normal).project(converted_force)
+	# TODO: add option for side grip to also affect regular grip
 	converted_force = converted_force.limit_length(linear_grip * delta)
 
 	return converted_force
 
-func convert_angular_force(input: Vector3, delta: float) -> Vector3:
+func convert_angular_force(input: Vector3, delta: float, limit_length: bool = true) -> Vector3:
 	var converted_force: Vector3 = input
 
 	converted_force = global_basis * converted_force
-	converted_force = converted_force.limit_length(angular_grip)
+	if limit_length:
+		converted_force = converted_force.limit_length(angular_grip)
 
 	return converted_force
 #endregion
@@ -226,10 +234,14 @@ func _physics_process(delta: float):
 		apply_force(sum_of_linear_forces * ground_coefficient / delta, average_wheel_collision_point - global_position)
 
 		var desired_steer_force: Vector3 = Vector3.UP * get_steer_force()
-		# TODO: mid-air control?
 
 		var sum_of_angular_forces: Vector3 = convert_angular_force(desired_steer_force, delta)
 		apply_torque(sum_of_angular_forces * average_wheel_collision_normal * ground_coefficient / delta)
+	else:
+		var desired_air_control_force: Vector3 = get_air_control_force() * delta
+
+		var sum_of_angular_forces: Vector3 = convert_angular_force(desired_air_control_force, delta, false)
+		apply_torque(sum_of_angular_forces / delta)
 
 	old_linear_velocity = linear_velocity
 	old_angular_velocity = angular_velocity

@@ -106,9 +106,7 @@ func _physics_process(delta: float):
 			last_compression = compression
 
 			suspension_magnitude *= collision_normal.dot(global_basis.y)
-
-			var global_parent_com: Vector3 = parent_car.global_position
-			parent_car.apply_force(global_basis.y * suspension_magnitude, collision_point - global_parent_com)
+			parent_car.apply_force(collision_normal * suspension_magnitude, collision_point - parent_car.global_position)
 	else:
 		is_colliding = false
 		last_compression = 0.0
