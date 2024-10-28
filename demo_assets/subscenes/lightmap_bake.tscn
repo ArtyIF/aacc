@@ -11,7 +11,7 @@ lightmap_size_hint = Vector2i(512, 512)
 material = SubResource("StandardMaterial3D_6msde")
 add_uv2 = true
 uv2_padding = 0.0
-size = Vector2(4, 4)
+size = Vector2(102.4, 102.4)
 
 [sub_resource type="Environment" id="Environment_as865"]
 background_mode = 1
@@ -23,11 +23,11 @@ ambient_light_color = Color(1, 1, 1, 1)
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
 quality = 2
-directional = true
 use_texture_for_bounces = false
 light_data = ExtResource("1_7jjwi")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.039, 0, 0, 0, 0.039, 0, 0, 0, 0.039, 0, 0, 0)
 mesh = SubResource("PlaneMesh_nkcuy")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

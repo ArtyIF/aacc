@@ -1,20 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=8 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_8gguu"]
 [ext_resource type="Script" path="res://demo_assets/scripts/camera.gd" id="2_vy2m6"]
-[ext_resource type="Material" uid="uid://bbeplwj0un437" path="res://demo_assets/materials/material_white.tres" id="4_wmbkv"]
-[ext_resource type="Script" path="res://demo_assets/scripts/pedestal.gd" id="5_3pldh"]
 [ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="5_attwm"]
 [ext_resource type="Script" path="res://demo_assets/scripts/speed_label.gd" id="14_i5r8x"]
 [ext_resource type="LightmapGIData" uid="uid://bq0sjklar8sx5" path="res://demo_assets/demo_scene.lmbake" id="16_kdidh"]
 [ext_resource type="PackedScene" uid="uid://ep48diqn0vyp" path="res://demo_assets/subscenes/pathtest.glb" id="16_sjues"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_c6pm3"]
-material = ExtResource("4_wmbkv")
-size = Vector3(4, 0.1, 10)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_xngdy"]
-size = Vector3(4, 0.1, 10)
 
 [sub_resource type="LabelSettings" id="LabelSettings_3uvu3"]
 font_size = 32
@@ -37,73 +28,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 4)
 script = ExtResource("2_vy2m6")
 car = NodePath("../taxi")
 
-[node name="LevelGeometry" type="Node3D" parent="."]
-
-[node name="PedestalPolice" type="AnimatableBody3D" parent="LevelGeometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.95, 0)
-script = ExtResource("5_3pldh")
-
-[node name="Visual" type="MeshInstance3D" parent="LevelGeometry/PedestalPolice"]
-gi_mode = 2
-mesh = SubResource("BoxMesh_c6pm3")
-skeleton = NodePath("../..")
-
-[node name="Collision" type="CollisionShape3D" parent="LevelGeometry/PedestalPolice"]
-shape = SubResource("BoxShape3D_xngdy")
-
-[node name="PedestalSedan" type="AnimatableBody3D" parent="LevelGeometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.95, 0)
-script = ExtResource("5_3pldh")
-
-[node name="Visual" type="MeshInstance3D" parent="LevelGeometry/PedestalSedan"]
-gi_mode = 2
-mesh = SubResource("BoxMesh_c6pm3")
-skeleton = NodePath("../..")
-
-[node name="Collision" type="CollisionShape3D" parent="LevelGeometry/PedestalSedan"]
-shape = SubResource("BoxShape3D_xngdy")
-
-[node name="PedestalTaxi" type="AnimatableBody3D" parent="LevelGeometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.95, 0)
-script = ExtResource("5_3pldh")
-lowered = true
-
-[node name="Visual" type="MeshInstance3D" parent="LevelGeometry/PedestalTaxi"]
-gi_mode = 2
-mesh = SubResource("BoxMesh_c6pm3")
-skeleton = NodePath("../..")
-
-[node name="Collision" type="CollisionShape3D" parent="LevelGeometry/PedestalTaxi"]
-shape = SubResource("BoxShape3D_xngdy")
-
-[node name="PedestalRace" type="AnimatableBody3D" parent="LevelGeometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.95, 0)
-script = ExtResource("5_3pldh")
-
-[node name="Visual" type="MeshInstance3D" parent="LevelGeometry/PedestalRace"]
-gi_mode = 2
-mesh = SubResource("BoxMesh_c6pm3")
-skeleton = NodePath("../..")
-
-[node name="Collision" type="CollisionShape3D" parent="LevelGeometry/PedestalRace"]
-shape = SubResource("BoxShape3D_xngdy")
-
-[node name="PedestalSUV" type="AnimatableBody3D" parent="LevelGeometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1.95, 0)
-script = ExtResource("5_3pldh")
-
-[node name="Visual" type="MeshInstance3D" parent="LevelGeometry/PedestalSUV"]
-gi_mode = 2
-mesh = SubResource("BoxMesh_c6pm3")
-skeleton = NodePath("../..")
-
-[node name="Collision" type="CollisionShape3D" parent="LevelGeometry/PedestalSUV"]
-shape = SubResource("BoxShape3D_xngdy")
-
-[node name="pathtest" parent="LevelGeometry" instance=ExtResource("16_sjues")]
+[node name="pathtest" parent="." instance=ExtResource("16_sjues")]
 
 [node name="taxi" parent="." instance=ExtResource("5_attwm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3

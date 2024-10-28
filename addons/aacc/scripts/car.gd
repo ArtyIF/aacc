@@ -169,7 +169,7 @@ func get_steer_force() -> float:
 
 #region Air Control
 func get_air_control_force() -> Vector3:
-	return -local_angular_velocity * mass
+	return -local_angular_velocity * mass * 0.25
 #endregion
 
 #region Force Conversion

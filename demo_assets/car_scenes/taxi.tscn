@@ -187,7 +187,7 @@ shader_parameter/shadow_texture_mipmaps = 9
 shader_parameter/shadow_size = 4.0
 shader_parameter/shadow_height_above = 0.25
 shader_parameter/shadow_height_below = 1.25
-shader_parameter/shadow_color = Color(0.501961, 0.752941, 1, 1)
+shader_parameter/shadow_color = Color(0.25, 0.375, 0.5, 1)
 shader_parameter/shadow_texture = ExtResource("4_8f3qw")
 
 [sub_resource type="BoxMesh" id="BoxMesh_sc5a5"]

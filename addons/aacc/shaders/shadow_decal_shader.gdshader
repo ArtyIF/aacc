@@ -12,7 +12,7 @@ uniform int shadow_texture_mipmaps = 9;
 uniform float shadow_size = 5.0;
 uniform float shadow_height_above = 0.25;
 uniform float shadow_height_below = 0.25;
-uniform vec3 shadow_color : source_color = vec3(0.5, 0.75, 1.0);
+uniform vec3 shadow_color : source_color = vec3(0.0);
 
 varying mat4 INV_MODEL_MATRIX;
 
@@ -59,7 +59,7 @@ void fragment() {
 	float shadow = textureLod(shadow_texture, decal_uv, blur * texture_levels).r;
 
 	float result = clamp((1.0 - shadow) * vertical_blend, 0.0, 1.0);
-	ALBEDO = mix(vec3(1.0), shadow_color * 0.5, result);
+	ALBEDO = mix(vec3(1.0), shadow_color, result);
 	if (OUTPUT_IS_SRGB) { // Compatibility
 		// I have no idea why I have to multiply this value. Am I missing something?
 		ALBEDO *= 4.0; // The actual point seems to be 3.723, but it causes some issues at angles

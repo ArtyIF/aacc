@@ -20,3 +20,5 @@ tonemap_mode = 2
 tonemap_white = 4.0
 glow_enabled = true
 glow_intensity = 1.0
+adjustment_enabled = true
+adjustment_saturation = 1.25
