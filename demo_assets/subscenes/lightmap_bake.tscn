@@ -7,11 +7,11 @@
 metallic_specular = 0.0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nkcuy"]
-lightmap_size_hint = Vector2i(512, 512)
+lightmap_size_hint = Vector2i(509, 509)
 material = SubResource("StandardMaterial3D_6msde")
 add_uv2 = true
 uv2_padding = 0.0
-size = Vector2(102.4, 102.4)
+size = Vector2(101.8, 101.8)
 
 [sub_resource type="Environment" id="Environment_as865"]
 background_mode = 1
@@ -24,6 +24,7 @@ ambient_light_color = Color(1, 1, 1, 1)
 [node name="LightmapGI" type="LightmapGI" parent="."]
 quality = 2
 use_texture_for_bounces = false
+generate_probes_subdiv = 0
 light_data = ExtResource("1_7jjwi")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -35,4 +36,3 @@ environment = SubResource("Environment_as865")
 
 [node name="taxi" parent="." instance=ExtResource("2_53hmn")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
-visible = false

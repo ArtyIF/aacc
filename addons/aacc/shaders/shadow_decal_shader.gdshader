@@ -55,7 +55,7 @@ void fragment() {
 	}
 
 	float blur = 1.0 - pow(vertical_blend, 4.0);
-	float texture_levels = max(0.0, float(shadow_texture_mipmaps - 4));
+	float texture_levels = max(0.0, float(shadow_texture_mipmaps - 3));
 	float shadow = textureLod(shadow_texture, decal_uv, blur * texture_levels).r;
 
 	float result = clamp((1.0 - shadow) * vertical_blend, 0.0, 1.0);

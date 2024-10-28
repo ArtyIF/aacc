@@ -203,6 +203,8 @@ physics_material_override = SubResource("PhysicsMaterial_pe6ej")
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, 0.1, 0)
 can_sleep = false
+contact_monitor = true
+max_contacts_reported = 1
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_ik2h1")
@@ -291,3 +293,5 @@ script = ExtResource("3_gy57t")
 wheel_width = 0.2
 suspension_spring = 2000.0
 suspension_damper = 200.0
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
