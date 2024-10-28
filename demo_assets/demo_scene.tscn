@@ -2,10 +2,10 @@
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_8gguu"]
 [ext_resource type="Script" path="res://demo_assets/scripts/camera.gd" id="2_vy2m6"]
+[ext_resource type="LightmapGIData" uid="uid://dfd0tci5o77bn" path="res://demo_assets/demo_scene.lmbake" id="5_5iqqq"]
+[ext_resource type="PackedScene" uid="uid://cu2i0ah5ud0w1" path="res://demo_assets/subscenes/pathtest.blend" id="5_868sg"]
 [ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="5_attwm"]
 [ext_resource type="Script" path="res://demo_assets/scripts/speed_label.gd" id="14_i5r8x"]
-[ext_resource type="LightmapGIData" uid="uid://bq0sjklar8sx5" path="res://demo_assets/demo_scene.lmbake" id="16_kdidh"]
-[ext_resource type="PackedScene" uid="uid://ep48diqn0vyp" path="res://demo_assets/subscenes/pathtest.glb" id="16_sjues"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3uvu3"]
 font_size = 32
@@ -29,8 +29,6 @@ far = 1000.0
 script = ExtResource("2_vy2m6")
 car = NodePath("../taxi")
 follow_velocity = true
-
-[node name="pathtest" parent="." instance=ExtResource("16_sjues")]
 
 [node name="taxi" parent="." instance=ExtResource("5_attwm")]
 
@@ -61,5 +59,13 @@ script = ExtResource("14_i5r8x")
 car = NodePath("../../taxi")
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
+bounces = 2
 generate_probes_subdiv = 0
-light_data = ExtResource("16_kdidh")
+light_data = ExtResource("5_5iqqq")
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+size = Vector3(4000, 100, 4000)
+origin_offset = Vector3(0, 0, -25)
+
+[node name="pathtest" parent="." instance=ExtResource("5_868sg")]
