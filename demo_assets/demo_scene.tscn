@@ -19,6 +19,7 @@ environment = ExtResource("1_8gguu")
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.5, -0.433013, 0.75, 0, 0.866026, 0.5, -0.866026, -0.25, 0.433012, 0, 0, 0)
+light_energy = 2.0
 light_angular_distance = 5.0
 light_bake_mode = 1
 directional_shadow_pancake_size = 100.0
@@ -29,6 +30,10 @@ far = 1000.0
 script = ExtResource("2_vy2m6")
 car = NodePath("../taxi")
 follow_velocity = true
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Camera"]
+update_mode = 1
+size = Vector3(100, 100, 100)
 
 [node name="taxi" parent="." instance=ExtResource("5_attwm")]
 
@@ -62,10 +67,5 @@ car = NodePath("../../taxi")
 bounces = 2
 generate_probes_subdiv = 0
 light_data = ExtResource("5_5iqqq")
-
-[node name="ReflectionProbe" type="ReflectionProbe" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-size = Vector3(4000, 100, 4000)
-origin_offset = Vector3(0, 0, -25)
 
 [node name="pathtest" parent="." instance=ExtResource("5_868sg")]
