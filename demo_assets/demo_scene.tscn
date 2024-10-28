@@ -24,7 +24,8 @@ light_bake_mode = 1
 directional_shadow_pancake_size = 100.0
 
 [node name="Camera" type="Camera3D" parent="." node_paths=PackedStringArray("car")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
+far = 1000.0
 script = ExtResource("2_vy2m6")
 car = NodePath("../taxi")
 follow_velocity = true

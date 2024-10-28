@@ -7,7 +7,7 @@ class_name CarWheel extends Node3D
 ## The extra radius of the wheel to make the car stick to the ground more.
 @export var buffer_radius: float = 0.1
 ## The width of the wheel.
-## 
+##
 ## AACC's wheels currently use 2 raycasts for the wheels.
 @export var wheel_width: float = 0.3
 
@@ -25,14 +25,24 @@ class_name CarWheel extends Node3D
 ## too springy and out of control.
 @export var suspension_damper: float = 300.0
 
+@export_group("Visuals")
+@export var visual_node: Node3D
+@export var steerable: bool = false
+@export var limit_top: bool = false
+@export var limit_bottom: bool = false
+
 #== NODES ==#
 var raycast_instance_1: RayCast3D
 var raycast_instance_2: RayCast3D
 var parent_car: Car
 
 #== COMPRESSION ==#
+var compression: float = 0.0
 var last_compression: float = 0.0
 var last_compression_set: bool = false
+
+#== VISUALS ==#
+var initial_visual_node_transform: Transform3D
 
 #== EXTERNAL ==#
 var is_colliding: bool = false
@@ -46,8 +56,10 @@ func _ready():
 	raycast_instance_2 = RayCast3D.new()
 	add_child(raycast_instance_2)
 	configure_raycasts()
-	
+
 	parent_car = get_parent() as Car
+	if visual_node:
+		initial_visual_node_transform = visual_node.transform
 
 func configure_raycasts():
 	raycast_instance_1.target_position = (Vector3.DOWN * (wheel_radius + suspension_length + buffer_radius))
@@ -69,7 +81,7 @@ func set_raycast_values():
 	var collision_point_1: Vector3 = raycast_instance_1.get_collision_point()
 	var collision_normal_1: Vector3 = raycast_instance_1.get_collision_normal()
 	var distance_1: float = raycast_instance_1.global_position.distance_to(collision_point_1)
-	
+
 	var collision_point_2: Vector3 = raycast_instance_2.get_collision_point()
 	var collision_normal_2: Vector3 = raycast_instance_2.get_collision_normal()
 	var distance_2: float = raycast_instance_2.global_position.distance_to(collision_point_2)
@@ -87,12 +99,35 @@ func set_raycast_values():
 		collision_normal = collision_normal_2
 		distance = distance_2
 
+func update_visuals():
+	if !visual_node: return
+
+	var new_transform: Transform3D = initial_visual_node_transform
+
+	var suspension_translation: Vector3 = suspension_length * Vector3.DOWN
+	if is_colliding:
+		var compression_translation = 1.0 - compression
+		if limit_top:
+			compression_translation = max(0.0, compression_translation)
+		if limit_bottom:
+			compression_translation = min(0.0, compression_translation)
+		suspension_translation *= compression_translation
+
+	var steer_rotation: float = 0.0
+	if steerable:
+		steer_rotation = -parent_car.smooth_steer.get_current_value() * parent_car.base_steer_degrees
+
+	new_transform = new_transform.translated_local(suspension_translation)
+	new_transform = new_transform.rotated_local(Vector3.UP, steer_rotation)
+
+	visual_node.transform = new_transform
+
 func _physics_process(delta: float):
 	if raycast_instance_1.is_colliding() or raycast_instance_2.is_colliding():
 		is_colliding = true
 		set_raycast_values()
 
-		var compression: float = 1.0 - ((distance - wheel_radius) / suspension_length)
+		compression = 1.0 - ((distance - wheel_radius) / suspension_length)
 		if not last_compression_set:
 			last_compression = compression
 			last_compression_set = true
@@ -110,3 +145,5 @@ func _physics_process(delta: float):
 	else:
 		is_colliding = false
 		last_compression = 0.0
+
+	update_visuals()
