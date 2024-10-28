@@ -1,6 +1,9 @@
 // Based on the shader at https://godotshaders.com/shader/decal-example/
 // written by TwistedTwigleg and published under the MIT license
 
+// For some reason, it doesn't work on Mobile renderer, at least when testing
+// on my PC. I haven't tested on phones yet
+
 shader_type spatial;
 render_mode world_vertex_coords, unshaded, cull_front, depth_test_disabled, blend_mul;
 
@@ -61,7 +64,8 @@ void fragment() {
 	float result = clamp((1.0 - shadow) * vertical_blend, 0.0, 1.0);
 	ALBEDO = mix(vec3(1.0), shadow_color, result);
 	if (OUTPUT_IS_SRGB) { // Compatibility
-		// I have no idea why I have to multiply this value. Am I missing something?
-		ALBEDO *= 4.0; // The actual point seems to be 3.723, but it causes some issues at angles
+		// Compatibility renderer doesn't use HDR, so I guess it uses some tricks
+		// for multiplication to allow for a higher dynamic range
+		ALBEDO *= 4.0; // It's slightly higher than necessary, but it all gets limited to 1.0 anyway
 	}
 }

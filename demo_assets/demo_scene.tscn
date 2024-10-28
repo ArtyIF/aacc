@@ -27,6 +27,7 @@ directional_shadow_pancake_size = 100.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 4)
 script = ExtResource("2_vy2m6")
 car = NodePath("../taxi")
+follow_velocity = true
 
 [node name="pathtest" parent="." instance=ExtResource("16_sjues")]
 
@@ -59,8 +60,5 @@ script = ExtResource("14_i5r8x")
 car = NodePath("../../taxi")
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
-environment_mode = 3
-environment_custom_color = Color(0.501961, 0.752941, 1, 1)
-environment_custom_energy = 1.0
 generate_probes_subdiv = 0
 light_data = ExtResource("16_kdidh")
