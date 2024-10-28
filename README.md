@@ -3,9 +3,9 @@
 A very work-in-progress car controller that kinda resembles Midnight Club
 physics? I guess? Includes a very basic demo scene and only one proper car.
 
-Uses [lawnjelly's smoothing addon]
-(https://github.com/lawnjelly/smoothing-addon/tree/4.x) for physics
-interpolation.
+[lawnjelly's smoothing addon](https://github.com/lawnjelly/smoothing-addon/tree/4.x)
+is used for physics interpolation. Also depends on Blender to be installed for
+the demo scene.
 
 ## Demo Scene controls
 - W/S (keyboard), RT/LT (gamepad) - gas and brake/reverse
