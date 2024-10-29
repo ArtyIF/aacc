@@ -9,13 +9,15 @@ render_mode world_vertex_coords, unshaded, cull_front, depth_test_disabled, blen
 
 uniform sampler2D DEPTH_TEXTURE : hint_depth_texture, filter_linear_mipmap;
 
-uniform sampler2D shadow_texture : hint_default_black;
+uniform sampler2D shadow_texture : source_color, hint_default_black;
 uniform int shadow_texture_mipmaps = 9;
 
 uniform float shadow_size = 5.0;
 uniform float shadow_height_above = 0.25;
 uniform float shadow_height_below = 0.25;
 uniform vec3 shadow_color : source_color = vec3(0.0);
+uniform float shadow_intensity: hint_range(0.0, 1.0) = 0.5;
+uniform vec2 shadow_ramp = vec2(0.0, 1.0);
 
 varying mat4 INV_MODEL_MATRIX;
 
@@ -61,11 +63,16 @@ void fragment() {
 	float texture_levels = max(0.0, float(shadow_texture_mipmaps - 3));
 	float shadow = textureLod(shadow_texture, decal_uv, blur * texture_levels).r;
 
-	float result = clamp((1.0 - shadow) * vertical_blend, 0.0, 1.0);
-	ALBEDO = mix(vec3(1.0), shadow_color, result);
+	float result = smoothstep(shadow_ramp.x, shadow_ramp.y, clamp((1.0 - shadow) * vertical_blend, 0.0, 1.0));
+	ALBEDO = mix(vec3(1.0), shadow_color * shadow_intensity, result);
 	if (OUTPUT_IS_SRGB) { // Compatibility
 		// Compatibility renderer doesn't use HDR, so I guess it uses some tricks
 		// for multiplication to allow for a higher dynamic range
-		ALBEDO *= 4.0; // It's slightly higher than necessary, but it all gets limited to 1.0 anyway
+		//
+		// Not sure where the value below comes from (got it from trial and
+		// error, and may not even be right on other GPUs/platforms), but this
+		// is where the shadow cube completely stops darkening the image (at
+		// least on my PC).
+		ALBEDO *= 3.719675661;
 	}
 }

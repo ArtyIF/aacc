@@ -19,10 +19,8 @@ environment = ExtResource("1_8gguu")
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.5, -0.433013, 0.75, 0, 0.866026, 0.5, -0.866026, -0.25, 0.433012, 0, 0, 0)
-light_energy = 2.0
 light_angular_distance = 5.0
 light_bake_mode = 1
-directional_shadow_pancake_size = 100.0
 
 [node name="Camera" type="Camera3D" parent="." node_paths=PackedStringArray("car")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
@@ -64,7 +62,6 @@ script = ExtResource("14_i5r8x")
 car = NodePath("../../taxi")
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
-bounces = 2
 generate_probes_subdiv = 0
 light_data = ExtResource("5_5iqqq")
 

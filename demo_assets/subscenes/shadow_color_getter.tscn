@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://digmgsesj0spx"]
+
+[ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_msylg"]
+[ext_resource type="LightmapGIData" uid="uid://bihvgg0wptynf" path="res://demo_assets/subscenes/shadow_color_getter.lmbake" id="2_re3cq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gujfx"]
+metallic_specular = 0.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_47edg"]
+lightmap_size_hint = Vector2i(252, 252)
+material = SubResource("StandardMaterial3D_gujfx")
+add_uv2 = true
+size = Vector2(50, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nnv06"]
+albedo_color = Color(0, 0, 0, 1)
+metallic_specular = 0.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_3jt54"]
+lightmap_size_hint = Vector2i(24, 116)
+material = SubResource("StandardMaterial3D_nnv06")
+add_uv2 = true
+size = Vector3(2, 10, 2)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("1_msylg")
+
+[node name="Plane" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_47edg")
+skeleton = NodePath("../WorldEnvironment")
+
+[node name="Cube" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+mesh = SubResource("BoxMesh_3jt54")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.5, -0.433013, 0.75, 0, 0.866026, 0.5, -0.866026, -0.25, 0.433013, 0, 0, 0)
+light_bake_mode = 1
+
+[node name="LightmapGI" type="LightmapGI" parent="."]
+generate_probes_subdiv = 0
+light_data = ExtResource("2_re3cq")
