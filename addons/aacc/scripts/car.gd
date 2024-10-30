@@ -47,14 +47,14 @@ class_name Car extends RigidBody3D
 @export var distance_between_wheels: float = 1.5
 ## The speed per second at which the final steer value moves at.
 @export var smooth_steer_speed: float = 10.0
-## The slide velocity at which the steer tug becomes 1.
+@export_subgroup("Steer Tug")
+## The maximum allowed steer tug.
 ## [br][br]
 ## The steer tug offsets the final steer value to simulate the difficulty of
 ## straightening the car during a drift.
-## TODO: rewrite steer tug properties to be more clear
-@export var steer_tug_slide: float = 5.0
-## The maximum allowed steer tug.
 @export var max_steer_tug: float = 2.0
+## The sideways speed at which the steer tug reaches its peak value.
+@export var max_steer_tug_sideways_speed: float = 10.0
 
 @export_group("Traction")
 ## The amount of grip applied to the side velocity (X axis) and the velocity
@@ -63,8 +63,7 @@ class_name Car extends RigidBody3D
 ## The minimum multiple of [member linear_grip] that can be applied to the side
 ## velocity.
 @export_range(0.0, 1.0) var min_side_grip: float = 0.5
-## The speed along the X axis where the side grip becomes
-## [member min_side_grip].
+## The sideways speed where the side grip becomes [member min_side_grip].
 @export var min_side_grip_sideways_speed: float = 5.0
 ## The amount of grip applied to angular velocity.
 ## [br][br]
@@ -120,11 +119,13 @@ func get_input_steer_multiplier() -> float:
 	return min(distance_between_wheels * (target_steer_velocity / base_steer_degrees) / velocity_z, 1.0)
 
 func process_smooth_values(delta: float):
+	# TODO: slow down when handbrake is on
 	smooth_steer.advance_to(input_steer * get_input_steer_multiplier(), delta)
+	# TODO: option for smooth steer sign, may be unnecessary for some cars
 	if local_linear_velocity.length() <= 1.0:
 		smooth_steer_sign.force_current_value(sign(local_linear_velocity.z))
 	else:
-		smooth_steer_sign.advance_to(sign(local_linear_velocity.z), delta)
+		smooth_steer_sign.advance_to(sign(local_linear_velocity.z), delta) # TODO: configurable speed
 #endregion
 
 #region Engine
@@ -157,7 +158,8 @@ func calculate_steer_coefficient() -> float:
 	return smooth_steer_sign.get_current_value() * local_linear_velocity.length() / distance_between_wheels
 
 func get_steer_tug_offset() -> float:
-	return clamp(local_linear_velocity.x / steer_tug_slide, -max_steer_tug, max_steer_tug)
+	if is_zero_approx(max_steer_tug): return 0.0
+	return clamp(local_linear_velocity.x / (max_steer_tug_sideways_speed / max_steer_tug), -max_steer_tug, max_steer_tug)
 
 func get_steer_force() -> float:
 	var steer_amount = (smooth_steer.get_current_value() * calculate_steer_coefficient()) + get_steer_tug_offset()

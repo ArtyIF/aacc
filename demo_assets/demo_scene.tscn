@@ -27,11 +27,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
 far = 1000.0
 script = ExtResource("2_vy2m6")
 car = NodePath("../taxi")
-follow_velocity = true
-
-[node name="ReflectionProbe" type="ReflectionProbe" parent="Camera"]
-update_mode = 1
-size = Vector3(100, 100, 100)
 
 [node name="taxi" parent="." instance=ExtResource("5_attwm")]
 

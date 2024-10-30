@@ -116,6 +116,8 @@ func update_visuals():
 	var steer_rotation: float = 0.0
 	if steerable:
 		steer_rotation = -parent_car.smooth_steer.get_current_value() * parent_car.base_steer_degrees
+	
+	# TODO: forward spinning
 
 	new_transform = new_transform.translated_local(suspension_translation)
 	new_transform = new_transform.rotated_local(Vector3.UP, steer_rotation)

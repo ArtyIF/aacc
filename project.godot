@@ -60,6 +60,11 @@ aacc_handbrake={
 
 3d_render/layer_2="Car"
 
+[physics]
+
+common/physics_ticks_per_second=120
+common/physics_jitter_fix=0.0
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
