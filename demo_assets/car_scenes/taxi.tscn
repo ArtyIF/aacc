@@ -218,7 +218,7 @@ distance_between_wheels = 1.52
 smooth_steer_speed = 5.0
 max_steer_tug_sideways_speed = 5.0
 linear_grip = 7000.0
-min_side_grip = 0.333
+min_side_grip = 0.4
 min_side_grip_sideways_speed = 10.0
 angular_grip = 8000.0
 
