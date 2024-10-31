@@ -50,7 +50,7 @@ var collision_point: Vector3
 var collision_normal: Vector3
 var distance: float
 
-func _ready():
+func _ready() -> void:
 	raycast_instance_1 = RayCast3D.new()
 	add_child(raycast_instance_1)
 	raycast_instance_2 = RayCast3D.new()
@@ -61,7 +61,7 @@ func _ready():
 	if visual_node:
 		initial_visual_node_transform = visual_node.transform
 
-func configure_raycasts():
+func configure_raycasts() -> void:
 	raycast_instance_1.target_position = (Vector3.DOWN * (wheel_radius + suspension_length + buffer_radius))
 	raycast_instance_1.enabled = true
 	raycast_instance_1.hit_from_inside = false
@@ -77,7 +77,7 @@ func configure_raycasts():
 	raycast_instance_2.collision_mask = 1
 	raycast_instance_2.process_physics_priority = -1000
 
-func set_raycast_values():
+func set_raycast_values() -> void:
 	var collision_point_1: Vector3 = raycast_instance_1.get_collision_point()
 	var collision_normal_1: Vector3 = raycast_instance_1.get_collision_normal()
 	var distance_1: float = raycast_instance_1.global_position.distance_to(collision_point_1)
@@ -99,7 +99,7 @@ func set_raycast_values():
 		collision_normal = collision_normal_2
 		distance = distance_2
 
-func update_visuals():
+func update_visuals() -> void:
 	if !visual_node: return
 
 	var new_transform: Transform3D = initial_visual_node_transform
@@ -124,7 +124,7 @@ func update_visuals():
 
 	visual_node.transform = new_transform
 
-func _physics_process(delta: float):
+func _physics_process(delta: float) -> void:
 	if raycast_instance_1.is_colliding() or raycast_instance_2.is_colliding():
 		is_colliding = true
 		set_raycast_values()

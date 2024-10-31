@@ -213,12 +213,8 @@ func convert_angular_force(input: Vector3, delta: float, limit_length: bool = tr
 	return converted_force
 #endregion
 
-func _physics_process(delta: float):
+func _physics_process(delta: float) -> void:
 	smooth_steer.speed = smooth_steer_speed
-	input_forward = Input.get_action_strength("aacc_forward")
-	input_backward = Input.get_action_strength("aacc_backward")
-	input_steer = Input.get_action_strength("aacc_steer_right") - Input.get_action_strength("aacc_steer_left")
-	input_handbrake = Input.is_action_pressed("aacc_handbrake")
 
 	ground_coefficient = 0.0
 	average_wheel_collision_point = Vector3.ZERO
@@ -262,5 +258,5 @@ func _physics_process(delta: float):
 	old_linear_velocity = linear_velocity
 	old_angular_velocity = angular_velocity
 
-func _on_body_entered(body: Node):
+func _on_body_entered(body: Node) -> void:
 	pass

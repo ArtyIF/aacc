@@ -1,2 +1,3 @@
 Car icon: https://github.com/godotengine/godot/blob/master/editor/icons/VehicleBody3D.svg
 Car wheel icon: https://github.com/godotengine/godot/blob/master/editor/icons/VehicleWheel3D.svg
+Car input icon recolored from: https://github.com/godotengine/godot/blob/master/editor/icons/InputEventAction.svg

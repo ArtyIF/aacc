@@ -14,7 +14,7 @@ var _up_vector_target: Vector3 = Vector3.UP
 var _smoothed_up_vector: Vector3 = Vector3.UP
 var _smoothed_handbrake: SmoothedFloat = SmoothedFloat.new(0.0, 2.0)
 
-func _ready():
+func _ready() -> void:
 	process_priority = 1000
 
 func _process(delta: float) -> void:
