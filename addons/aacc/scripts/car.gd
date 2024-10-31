@@ -40,31 +40,42 @@ class_name Car extends RigidBody3D
 ## [br][br]
 ## For relevant steering properties, see [member base_steer_degrees] and
 ## [member target_steer_velocity]. For steer tug properties, see
-## [member steer_tug_slide] and [member max_steer_tug].
+## [member steer_tug].
 @export_range(0.0, 360.0, 0.1, "or_greater", "radians", "suffix:°/sec") var max_steer_velocity: float = deg_to_rad(180.0)
 ## The distance between front and rear wheels. Used to calculate the appropriate
 ## steer velocity.
 @export var distance_between_wheels: float = 1.5
 ## The speed per second at which the final steer value moves at.
 @export var smooth_steer_speed: float = 10.0
-@export_subgroup("Steer Tug")
-## The maximum allowed steer tug.
-## [br][br]
 ## The steer tug offsets the final steer value to simulate the difficulty of
 ## straightening the car during a drift.
-@export var max_steer_tug: float = 2.0
-## The sideways speed at which the steer tug reaches its peak value.
-@export var max_steer_tug_sideways_speed: float = 10.0
+## [br][br]
+## Value is the steer tug amount, input is the sideways velocity.
+## [br][br]
+## Default values are (TODO remove):[br]
+## Left Value: 0[br]
+## Right Value: 2[br]
+## Max Input: 10[br]
+## Input Curve: 1.00
+@export var steer_tug_curve: ProceduralCurve
 
 @export_group("Traction")
 ## The amount of grip applied to the side velocity (X axis) and the velocity
 ## length.
 @export var linear_grip: float = 20000.0
-## The minimum multiple of [member linear_grip] that can be applied to the side
-## velocity.
-@export_range(0.0, 1.0) var min_side_grip: float = 0.5
-## The sideways speed where the side grip becomes [member min_side_grip].
-@export var min_side_grip_sideways_speed: float = 5.0
+## The multiple of [member linear_grip] that's applied depending on the sideways
+## velocity. Currently only applied to the sideways grip.
+## [br][br]
+## Left value is the starting value and is usually 1. Right value is the
+## reduced grip amount. Input is the sideways velocity.
+## [br][br]
+## Default values are (TODO remove):[br]
+## Left Value: 1[br]
+## Right Value: 0.5[br]
+## Max Input: 5[br]
+## Input Curve: 0.500
+@export var reduced_grip_curve: ProceduralCurve
+
 ## The amount of grip applied to angular velocity.
 ## [br][br]
 ## The actual angular grip may change at higher speeds due to the difference
@@ -158,8 +169,8 @@ func calculate_steer_coefficient() -> float:
 	return smooth_steer_sign.get_current_value() * local_linear_velocity.length() / distance_between_wheels
 
 func get_steer_tug_offset() -> float:
-	if is_zero_approx(max_steer_tug): return 0.0
-	return clamp(local_linear_velocity.x / (max_steer_tug_sideways_speed / max_steer_tug), -max_steer_tug, max_steer_tug)
+	if not steer_tug_curve: return 0.0
+	return steer_tug_curve.sample(abs(local_linear_velocity.x)) * sign(local_linear_velocity.x)
 
 func get_steer_force() -> float:
 	var steer_amount = (smooth_steer.get_current_value() * calculate_steer_coefficient()) + get_steer_tug_offset()
@@ -171,6 +182,7 @@ func get_steer_force() -> float:
 
 #region Air Control
 func get_air_control_force() -> Vector3:
+	# TODO: parametrize
 	return -local_angular_velocity * mass * 0.25
 #endregion
 
@@ -178,13 +190,13 @@ func get_air_control_force() -> Vector3:
 func convert_linear_force(input: Vector3, delta: float) -> Vector3:
 	var converted_force: Vector3 = input
 
+	var reduced_grip: float = reduced_grip_curve.sample(abs(local_linear_velocity.x))
 	# TODO: add option for this clamp
-	var side_grip: float = lerp(1.0, min_side_grip, clamp(sqrt(abs(local_linear_velocity.x) / min_side_grip_sideways_speed), 0.0, 1.0))
-	converted_force.x = clamp(converted_force.x, -linear_grip * side_grip * delta, linear_grip * side_grip * delta)
+	converted_force.x = clamp(converted_force.x, -linear_grip * reduced_grip * delta, linear_grip * reduced_grip * delta)
 
 	converted_force = global_basis * converted_force
 	converted_force = Plane(average_wheel_collision_normal).project(converted_force)
-	# TODO: add option for side grip to also affect regular grip
+	# TODO: add option for reduced grip to also affect regular grip
 	converted_force = converted_force.limit_length(linear_grip * delta)
 
 	return converted_force
