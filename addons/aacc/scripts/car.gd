@@ -132,11 +132,13 @@ func get_input_steer_multiplier() -> float:
 func process_smooth_values(delta: float):
 	# TODO: slow down when handbrake is on
 	smooth_steer.advance_to(input_steer * get_input_steer_multiplier(), delta)
+
 	# TODO: option for smooth steer sign, may be unnecessary for some cars
-	if local_linear_velocity.length() <= 1.0:
-		smooth_steer_sign.force_current_value(sign(local_linear_velocity.z))
+	var target_steer_sign = sign(local_linear_velocity.z)
+	if local_linear_velocity.length() > 1.0 and (input_handbrake or smooth_steer_sign.get_current_value() != target_steer_sign):
+		smooth_steer_sign.advance_to(target_steer_sign, delta) # TODO: configurable speed
 	else:
-		smooth_steer_sign.advance_to(sign(local_linear_velocity.z), delta) # TODO: configurable speed
+		smooth_steer_sign.force_current_value(target_steer_sign)
 #endregion
 
 #region Engine
@@ -260,5 +262,5 @@ func _physics_process(delta: float):
 	old_linear_velocity = linear_velocity
 	old_angular_velocity = angular_velocity
 
-func _on_body_entered(body: Node) -> void:
-	smooth_steer_sign.force_current_value(sign(local_linear_velocity.z))
+func _on_body_entered(body: Node):
+	pass

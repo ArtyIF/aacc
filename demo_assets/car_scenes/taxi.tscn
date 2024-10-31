@@ -1,5 +1,6 @@
 [gd_scene load_steps=24 format=4 uid="uid://crko52geporbo"]
 
+[ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
 [ext_resource type="Material" uid="uid://iyyp6q7p13dj" path="res://demo_assets/materials/kenney_colormap_adjusted.tres" id="1_ssmxy"]
 [ext_resource type="Script" path="res://addons/smoothing/smoothing.gd" id="2_56av6"]
@@ -7,10 +8,6 @@
 [ext_resource type="Shader" path="res://addons/aacc/shaders/shadow_decal_shader.gdshader" id="3_c1c67"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car_wheel.gd" id="3_gy57t"]
 [ext_resource type="Texture2D" uid="uid://cmxkqo5refhiy" path="res://demo_assets/textures/car_shadows/taxi.png" id="4_8f3qw"]
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pe6ej"]
-friction = 0.4
-bounce = 0.2
 
 [sub_resource type="Resource" id="Resource_sei37"]
 script = ExtResource("2_q0glx")
@@ -217,7 +214,7 @@ points = PackedVector3Array(-0.571855, 0.05, -1.29505, 0.755803, 0.676587, 0.567
 
 [node name="Taxi" type="RigidBody3D"]
 mass = 400.0
-physics_material_override = SubResource("PhysicsMaterial_pe6ej")
+physics_material_override = ExtResource("1_av0nu")
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, 0.1, 0)
 can_sleep = false
