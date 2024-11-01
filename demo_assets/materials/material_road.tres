@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://4qpswjsdvx57" path="res://demo_assets/textures/rough_texture.tres" id="1_s003w"]
 
 [resource]
-albedo_color = Color(0.25098, 0.25098, 0.25098, 1)
+albedo_color = Color(0.376471, 0.376471, 0.376471, 1)
 albedo_texture = ExtResource("1_s003w")
 metallic_specular = 0.0
 uv1_triplanar = true

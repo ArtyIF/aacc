@@ -14,7 +14,7 @@ script = ExtResource("2_q0glx")
 left_value = 0.0
 right_value = 2.0
 max_input = 10.0
-input_curve = 1.0
+input_curve = 0.5
 
 [sub_resource type="Resource" id="Resource_qkpdq"]
 script = ExtResource("2_q0glx")
@@ -201,7 +201,7 @@ shader_parameter/shadow_size = 4.0
 shader_parameter/shadow_height_above = 0.25
 shader_parameter/shadow_height_below = 1.25
 shader_parameter/shadow_color = Color(0.509804, 0.694118, 0.807843, 1)
-shader_parameter/shadow_intensity = 0.5
+shader_parameter/shadow_intensity = 0.75
 shader_parameter/shadow_ramp = Vector2(0.05, 1)
 shader_parameter/shadow_texture = ExtResource("4_8f3qw")
 

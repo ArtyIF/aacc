@@ -29,16 +29,16 @@ class_name Car extends RigidBody3D
 ## and after it steers faster. See also [member target_steer_velocity] and
 ## [member max_steer_velocity].
 ## TODO: rename to base_steer_velocity
-@export_range(0.0, 360.0, 0.1, "or_greater", "radians", "suffix:°/sec") var base_steer_degrees: float = deg_to_rad(30.0)
+@export_range(0.0, 360.0, 0.1, "or_greater", "radians", "suffix:°/sec") var base_steer_velocity: float = deg_to_rad(30.0)
 ## The steer velocity per second that the car targets.
 ## [br][br]
 ## This is done by reducing the final steer input accordingly when the speed is
-## high enough. See also [member base_steer_degrees] and
+## high enough. See also [member base_steer_velocity] and
 ## [member max_steer_velocity].
 @export_range(0.0, 360.0, 0.1, "or_greater", "radians", "suffix:°/sec") var target_steer_velocity: float = deg_to_rad(60.0)
 ## The maximum steer velocity per second. Used to limit steer tug.
 ## [br][br]
-## For relevant steering properties, see [member base_steer_degrees] and
+## For relevant steering properties, see [member base_steer_velocity] and
 ## [member target_steer_velocity]. For steer tug properties, see
 ## [member steer_tug].
 @export_range(0.0, 360.0, 0.1, "or_greater", "radians", "suffix:°/sec") var max_steer_velocity: float = deg_to_rad(180.0)
@@ -75,7 +75,6 @@ class_name Car extends RigidBody3D
 ## Max Input: 5[br]
 ## Input Curve: 0.500
 @export var reduced_grip_curve: ProceduralCurve
-
 ## The amount of grip applied to angular velocity.
 ## [br][br]
 ## The actual angular grip may change at higher speeds due to the difference
@@ -83,6 +82,10 @@ class_name Car extends RigidBody3D
 @export var angular_grip: float = 10000.0
 ## The force applied when you hit brakes.
 @export var brake_force: float = 4000.0
+
+@export_group("Air Forces")
+## The force applied to the car when it's mid-air to stabilize it.
+@export var air_stabilization_force: float = 200.0
 
 #== NODES ==#
 var wheels: Array[CarWheel]
@@ -127,7 +130,7 @@ func get_input_steer_multiplier() -> float:
 	if input_handbrake: return 1.0
 
 	var velocity_z = abs(local_linear_velocity.z)
-	return min(distance_between_wheels * (target_steer_velocity / base_steer_degrees) / velocity_z, 1.0)
+	return min(distance_between_wheels * (target_steer_velocity / base_steer_velocity) / velocity_z, 1.0)
 
 func process_smooth_values(delta: float):
 	# TODO: slow down when handbrake is on
@@ -177,15 +180,14 @@ func get_steer_tug_offset() -> float:
 func get_steer_force() -> float:
 	var steer_amount = (smooth_steer.get_current_value() * calculate_steer_coefficient()) + get_steer_tug_offset()
 
-	var steer_velocity: float = clamp(steer_amount * base_steer_degrees, -max_steer_velocity, max_steer_velocity)
+	var steer_velocity: float = clamp(steer_amount * base_steer_velocity, -max_steer_velocity, max_steer_velocity)
 	var steer_force: float = steer_velocity - local_angular_velocity.y
 	return steer_force * mass
 #endregion
 
-#region Air Control
-func get_air_control_force() -> Vector3:
-	# TODO: parametrize
-	return -local_angular_velocity * mass * 0.25
+#region Air Stabilization
+func get_air_stabilization_force() -> Vector3:
+	return -local_angular_velocity * air_stabilization_force
 #endregion
 
 #region Force Conversion
@@ -250,9 +252,9 @@ func _physics_process(delta: float) -> void:
 		var sum_of_angular_forces: Vector3 = convert_angular_force(desired_steer_force, delta)
 		apply_torque(sum_of_angular_forces * average_wheel_collision_normal * ground_coefficient / delta)
 	else:
-		var desired_air_control_force: Vector3 = get_air_control_force() * delta
+		var desired_air_stabilization_force: Vector3 = get_air_stabilization_force() * delta
 
-		var sum_of_angular_forces: Vector3 = convert_angular_force(desired_air_control_force, delta, false)
+		var sum_of_angular_forces: Vector3 = convert_angular_force(desired_air_stabilization_force, delta, false)
 		apply_torque(sum_of_angular_forces / delta)
 
 	old_linear_velocity = linear_velocity

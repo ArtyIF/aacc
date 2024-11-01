@@ -1,4 +1,4 @@
-## A basic class to smoothly move floating point values over time.
+## A class to help smoothly move floating point values over time.
 ## 
 ## The value is moved linearly, similar to the
 ## [method @GlobalScope.move_toward] method.
