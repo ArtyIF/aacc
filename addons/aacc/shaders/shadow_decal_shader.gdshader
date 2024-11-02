@@ -16,7 +16,7 @@ uniform float shadow_size = 5.0;
 uniform float shadow_height_above = 0.25;
 uniform float shadow_height_below = 0.25;
 uniform vec3 shadow_color : source_color = vec3(0.0);
-uniform float shadow_intensity: hint_range(0.0, 1.0) = 0.5;
+uniform float shadow_lightness: hint_range(0.0, 1.0) = 0.5;
 uniform vec2 shadow_ramp = vec2(0.0, 1.0);
 
 varying mat4 INV_MODEL_MATRIX;
@@ -37,6 +37,10 @@ vec3 world_pos_from_depth(float depth, vec2 screen_uv, mat4 inverse_proj, mat4 i
 	viewSpacePosition /= viewSpacePosition.w;
 	vec4 worldSpacePosition = inverse_view * viewSpacePosition;
 	return worldSpacePosition.xyz;
+}
+
+float inverse_lerp(float a, float b, float x) {
+	return (x - a) / (b - a);
 }
 
 void fragment() {
@@ -63,8 +67,8 @@ void fragment() {
 	float texture_levels = max(0.0, float(shadow_texture_mipmaps - 3));
 	float shadow = textureLod(shadow_texture, decal_uv, blur * texture_levels).r;
 
-	float result = smoothstep(shadow_ramp.x, shadow_ramp.y, clamp((1.0 - shadow) * vertical_blend, 0.0, 1.0));
-	ALBEDO = mix(vec3(1.0), shadow_color * shadow_intensity, result);
+	float result = inverse_lerp(shadow_ramp.x, shadow_ramp.y, clamp((1.0 - shadow) * vertical_blend, 0.0, 1.0));
+	ALBEDO = mix(vec3(1.0), shadow_color * shadow_lightness, result);
 	if (OUTPUT_IS_SRGB) { // Compatibility
 		// Compatibility renderer doesn't use HDR, so I guess it uses some tricks
 		// for multiplication to allow for a higher dynamic range

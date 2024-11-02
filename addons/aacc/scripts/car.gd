@@ -5,21 +5,41 @@
 ## engine and steering for it.
 class_name Car extends RigidBody3D
 
-# TODO: split all this up into separate classes for better customization
-@export_group("Engine")
+@export_group("Acceleration")
 ## The top speed in meters per second when going forward.
 @export var top_speed_forward: float = 50.0
 ## The top speed in meters per second when going in reverse.
 @export var top_speed_reverse: float = 10.0
-## The maximum acceleration at first gear.
-## TODO: implement gears
+## The maximum acceleration, applied at 0 velocity.
 @export var max_acceleration: float = 2000.0
-## The curve applied to acceleration for each gear.
-## TODO: implement gears
+## The curve applied to acceleration.
 @export_exp_easing("attenuation") var acceleration_curve: float = 1.0
 ## The force that simulates resistance. Makes the car slow down when no
 ## acceleration is applied.
 @export var slowdown_force: float = 200.0
+
+@export_group("Gearbox")
+## The amount of gears, not counting neutral and reverse.
+## [br][br]
+## NOTE: gears themselves don't affect the acceleration currently, they're only
+## for visual purposes. Only the gear switching does. Later, there'll be an
+## option for gears to actually affect the acceleration and top speed, as well
+## as a manual gearbox option.
+## TODO: aforementioned
+@export var gears_amount: int = 6
+## The time it takes to switch a gear. During a gear switch, acceleration forces
+## are not applied.
+## [br][br]
+## Some caveats:[br]
+## - Switching the gear from neutral happens instantly.[br]
+## - If another gear switch is requested during the gear switch, the timer
+##   resets.[br]
+## - If the requested gear changes to the one the switch is happening from, the
+##   switch gets cancelled.[br]
+## Currently, the last two caveats lead to a bug of the current gear changing
+## back and forth if the speed where the gear switch happens is maintained.
+## TODO: fix, maybe with a leeway when switching down and/or with a timeout
+@export var gear_switch_time: float = 0.1
 
 @export_group("Steering")
 ## The base steer velocity per second that the car turns at when a speed of
@@ -28,7 +48,6 @@ class_name Car extends RigidBody3D
 ## Before reaching [member distance_between_wheels] m/s, the car steers slower,
 ## and after it steers faster. See also [member target_steer_velocity] and
 ## [member max_steer_velocity].
-## TODO: rename to base_steer_velocity
 @export_range(0.0, 360.0, 0.1, "or_greater", "radians", "suffix:°/sec") var base_steer_velocity: float = deg_to_rad(30.0)
 ## The steer velocity per second that the car targets.
 ## [br][br]
@@ -111,20 +130,18 @@ var average_wheel_collision_normal: Vector3 = Vector3.ZERO
 var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 var smooth_steer_sign: SmoothedFloat = SmoothedFloat.new()
 
+#== GEARS ==#
+var current_gear: int = 0
+var target_gear: int = 0
+var switching_gears: bool = false
+var gear_switch_timer: float = 0.0
+
 func _ready():
 	for wheel in get_children():
 		if wheel is CarWheel:
 			wheels.append(wheel)
 
 #region Processing
-func is_reversing() -> bool:
-	if local_linear_velocity.z >= 0.1:
-		return true
-	elif local_linear_velocity.z <= -0.1:
-		return false
-	else:
-		return input_backward > 0.0 and input_forward == 0.0
-
 func get_input_steer_multiplier() -> float:
 	if local_linear_velocity.z > 0.0: return 1.0
 	if input_handbrake: return 1.0
@@ -144,20 +161,60 @@ func process_smooth_values(delta: float):
 		smooth_steer_sign.force_current_value(target_steer_sign)
 #endregion
 
-#region Engine
+#region Acceleration
+func is_reversing() -> bool:
+	if local_linear_velocity.z >= 0.1:
+		return true
+	elif local_linear_velocity.z <= -0.1:
+		return false
+	else:
+		return input_backward > 0.0 and input_forward == 0.0
+
 func calculate_acceleration_multiplier() -> float:
 	var relative_speed: float = abs(local_linear_velocity.z) / (top_speed_reverse if is_reversing() else top_speed_forward)
 	return clamp(ease(1.0 - relative_speed, acceleration_curve), 0.0, 1.0)
 
 func get_engine_force() -> float:
+	if switching_gears: return 0.0
 	return (-input_backward if is_reversing() else input_forward) * max_acceleration * calculate_acceleration_multiplier()
 
 func get_slowdown_force() -> float:
+	if switching_gears: return 0.0
 	var is_beyond_limit: bool = -local_linear_velocity.z >= top_speed_forward or -local_linear_velocity.z <= -top_speed_reverse
 	var input_accel_adapted: float = 0.0 if is_beyond_limit else (input_backward if is_reversing() else input_forward)
-	return clamp(local_linear_velocity.z * 10, -1, 1) * (1 - input_accel_adapted) * slowdown_force
+	return clamp(local_linear_velocity.z * 10.0, -1.0, 1.0) * (1.0 - input_accel_adapted) * slowdown_force
+#endregion
 
-# TODO: gears
+#region Gearbox
+func update_gear(delta: float):
+	if target_gear != current_gear and not switching_gears and not current_gear == 0:
+		gear_switch_timer = gear_switch_time
+		switching_gears = true
+
+	if gear_switch_timer <= 0 or target_gear == current_gear:
+		current_gear = target_gear
+		switching_gears = false
+
+	gear_switch_timer -= delta
+
+func get_gear_limit(gear: int) -> float:
+	return (1.0 / gears_amount) * gear
+
+func set_current_gear():
+	if is_reversing():
+		target_gear = -1
+		return
+
+	if abs(local_linear_velocity.z) < 0.1 and input_forward == 0 and input_backward == 0:
+		target_gear = 0
+		return
+
+	var forward_speed_ratio: float = abs(local_linear_velocity.z / top_speed_forward)
+
+	if target_gear > 0 and forward_speed_ratio < get_gear_limit(target_gear - 1):
+		target_gear -= 1
+	if forward_speed_ratio > get_gear_limit(target_gear) and target_gear < gears_amount:
+		target_gear += 1
 #endregion
 
 #region Traction
@@ -239,6 +296,9 @@ func _physics_process(delta: float) -> void:
 	process_smooth_values(delta)
 
 	if ground_coefficient > 0.0:
+		set_current_gear()
+		update_gear(delta)
+
 		var desired_linear_grip_force: Vector3 = Vector3.RIGHT * get_side_grip_force()
 		var desired_engine_force: Vector3 = Vector3.FORWARD * get_engine_force() * delta
 		var desired_brake_force: Vector3 = Vector3.FORWARD * get_brake_force() * delta
