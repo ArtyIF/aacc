@@ -35,10 +35,7 @@ class_name Car extends RigidBody3D
 ## - If another gear switch is requested during the gear switch, the timer
 ##   resets.[br]
 ## - If the requested gear changes to the one the switch is happening from, the
-##   switch gets cancelled.[br]
-## Currently, the last two caveats lead to a bug of the current gear changing
-## back and forth if the speed where the gear switch happens is maintained.
-## TODO: fix, maybe with a leeway when switching down and/or with a timeout
+##   switch gets cancelled.
 @export var gear_switch_time: float = 0.1
 
 @export_group("Steering")
