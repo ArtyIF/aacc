@@ -179,7 +179,6 @@ func get_engine_force() -> float:
 	return (-input_backward if is_reversing() else input_forward) * max_acceleration * calculate_acceleration_multiplier()
 
 func get_slowdown_force() -> float:
-	if switching_gears: return 0.0
 	var is_beyond_limit: bool = -local_linear_velocity.z >= top_speed_forward or -local_linear_velocity.z <= -top_speed_reverse
 	var input_accel_adapted: float = 0.0 if is_beyond_limit else (input_backward if is_reversing() else input_forward)
 	return clamp(local_linear_velocity.z * 10.0, -1.0, 1.0) * (1.0 - input_accel_adapted) * slowdown_force
@@ -187,7 +186,7 @@ func get_slowdown_force() -> float:
 
 #region Gearbox
 func update_gear(delta: float):
-	if target_gear != current_gear and not switching_gears and not current_gear == 0:
+	if target_gear != current_gear and not switching_gears and (not current_gear == 0 or target_gear == 0):
 		gear_switch_timer = gear_switch_time
 		switching_gears = true
 
@@ -201,6 +200,9 @@ func get_gear_limit(gear: int) -> float:
 	return (1.0 / gears_amount) * gear
 
 func set_current_gear():
+	if input_handbrake and local_linear_velocity.length() >= 0.1:
+		return
+	
 	if is_reversing():
 		target_gear = -1
 		return
@@ -210,8 +212,9 @@ func set_current_gear():
 		return
 
 	var forward_speed_ratio: float = abs(local_linear_velocity.z / top_speed_forward)
+	var lower_gear_limit_offset: float = (5.0 / 3.6) / top_speed_forward
 
-	if target_gear > 0 and forward_speed_ratio < get_gear_limit(target_gear - 1):
+	if target_gear > 0 and forward_speed_ratio < get_gear_limit(target_gear - 1) - lower_gear_limit_offset:
 		target_gear -= 1
 	if forward_speed_ratio > get_gear_limit(target_gear) and target_gear < gears_amount:
 		target_gear += 1

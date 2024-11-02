@@ -27,9 +27,10 @@ class_name CarWheel extends Node3D
 
 @export_group("Visuals")
 @export var visual_node: Node3D
-@export var steerable: bool = false
+@export_range(-1, 1) var steer_multiplier: float = 0.0
 @export var limit_top: bool = false
 @export var limit_bottom: bool = false
+@export var skid_trail: TrailRenderer
 
 #== NODES ==#
 var raycast_instance_1: RayCast3D
@@ -114,9 +115,7 @@ func update_visuals(delta: float) -> void:
 			compression_translation = min(0.0, compression_translation)
 		suspension_translation *= compression_translation
 
-	var steer_rotation: float = 0.0
-	if steerable:
-		steer_rotation = -parent_car.smooth_steer.get_current_value() * parent_car.base_steer_velocity
+	var steer_rotation: float = -parent_car.smooth_steer.get_current_value() * parent_car.base_steer_velocity * steer_multiplier
 	
 	current_forward_spin -= parent_car.local_linear_velocity.z * delta / wheel_radius
 	var forward_spin: float = current_forward_spin
@@ -126,6 +125,19 @@ func update_visuals(delta: float) -> void:
 	new_transform = new_transform.rotated_local(Vector3.RIGHT, forward_spin)
 
 	visual_node.transform = new_transform
+
+func update_skid_trail() -> void:
+	if not skid_trail: return
+
+	var emit_colliding_check: bool = is_colliding
+	var emit_side_check: bool = abs(parent_car.local_linear_velocity.x) > 0.5
+	var emit_handbrake_check: bool = parent_car.input_handbrake
+	var emit: bool = emit_colliding_check and (emit_side_check or emit_handbrake_check)
+
+	skid_trail.is_emitting = emit
+	if emit:
+		skid_trail.global_position = collision_point + (collision_normal * 0.01)
+		skid_trail.global_basis = skid_trail.global_basis.looking_at(-(collision_normal).cross(parent_car.global_basis.z), parent_car.global_basis.z)
 
 func _physics_process(delta: float) -> void:
 	if raycast_instance_1.is_colliding() or raycast_instance_2.is_colliding():
@@ -152,3 +164,4 @@ func _physics_process(delta: float) -> void:
 		last_compression = 0.0
 
 	update_visuals(delta)
+	update_skid_trail()

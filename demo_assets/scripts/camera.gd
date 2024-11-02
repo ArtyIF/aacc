@@ -21,12 +21,14 @@ func _process(delta: float) -> void:
 	_smoothed_handbrake.advance_to(1.0 if car.input_handbrake else 0.0, delta)
 	
 	if car.ground_coefficient > 0.0:
-		_up_vector_target = car.average_wheel_collision_normal.normalized()
+		_up_vector_target = car.average_wheel_collision_normal
 	else:
 		_up_vector_target = _follow_node.global_basis.y.normalized()
-	# BUG: somewhere around here it spams the debugger with the vector needing
-	# to be normalized. It seems to be random for me sadly.
-	_smoothed_up_vector = _smoothed_up_vector.slerp(_up_vector_target, delta)
+	
+	if _smoothed_up_vector.distance_to(_up_vector_target) > 0.001:
+		_smoothed_up_vector = _smoothed_up_vector.slerp(_up_vector_target, delta)
+	else:
+		_smoothed_up_vector = _up_vector_target
 	var project_plane: Plane = Plane(_smoothed_up_vector)
 	
 	var velocity: Vector3 = (_last_position - _follow_node.global_position) / delta

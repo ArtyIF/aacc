@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://crfcs3rsv2p1k"]
+
+[ext_resource type="Script" path="res://addons/TrailRenderer/Runtime/GD/trail_renderer.gd" id="1_402nv"]
+
+[sub_resource type="Curve" id="Curve_mr4if"]
+max_value = 0.1
+_data = [Vector2(0, 0.1), 0.0, 0.0, 0, 0]
+point_count = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ywys4"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 0.501961)
+
+[node name="SkidTrail" type="Node3D"]
+script = ExtResource("1_402nv")
+lifetime = 10.0
+curve = SubResource("Curve_mr4if")
+alignment = 2
+material = SubResource("StandardMaterial3D_ywys4")
+texture_mode = 1
