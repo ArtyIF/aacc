@@ -43,6 +43,7 @@ var last_compression_set: bool = false
 
 #== VISUALS ==#
 var initial_visual_node_transform: Transform3D
+var current_forward_spin: float = 0.0
 
 #== EXTERNAL ==#
 var is_colliding: bool = false
@@ -99,7 +100,7 @@ func set_raycast_values() -> void:
 		collision_normal = collision_normal_2
 		distance = distance_2
 
-func update_visuals() -> void:
+func update_visuals(delta: float) -> void:
 	if !visual_node: return
 
 	var new_transform: Transform3D = initial_visual_node_transform
@@ -117,10 +118,12 @@ func update_visuals() -> void:
 	if steerable:
 		steer_rotation = -parent_car.smooth_steer.get_current_value() * parent_car.base_steer_velocity
 	
-	# TODO: forward spinning
+	current_forward_spin -= parent_car.local_linear_velocity.z * delta / wheel_radius
+	var forward_spin: float = current_forward_spin
 
 	new_transform = new_transform.translated_local(suspension_translation)
 	new_transform = new_transform.rotated_local(Vector3.UP, steer_rotation)
+	new_transform = new_transform.rotated_local(Vector3.RIGHT, forward_spin)
 
 	visual_node.transform = new_transform
 
@@ -148,4 +151,4 @@ func _physics_process(delta: float) -> void:
 		is_colliding = false
 		last_compression = 0.0
 
-	update_visuals()
+	update_visuals(delta)
