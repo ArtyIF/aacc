@@ -2,6 +2,7 @@
 ## TODO: docs
 class_name CarInput extends Node
 
+# TODO: use a global variable instead
 @export var controlled_car: Car
 
 func _physics_process(delta: float) -> void:

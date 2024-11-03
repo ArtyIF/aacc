@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=10 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_8gguu"]
 [ext_resource type="Script" path="res://demo_assets/scripts/camera.gd" id="2_vy2m6"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cu2i0ah5ud0w1" path="res://demo_assets/subscenes/pathtest.blend" id="5_868sg"]
 [ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="5_attwm"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car_input.gd" id="7_67ns0"]
+[ext_resource type="Script" path="res://demo_assets/scripts/car_resetter.gd" id="8_i5b6w"]
 [ext_resource type="Script" path="res://demo_assets/scripts/speed_label.gd" id="14_i5r8x"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3uvu3"]
@@ -72,3 +73,7 @@ light_data = ExtResource("5_5iqqq")
 [node name="CarInput" type="Node" parent="." node_paths=PackedStringArray("controlled_car")]
 script = ExtResource("7_67ns0")
 controlled_car = NodePath("../Taxi")
+
+[node name="CarResetter" type="Node" parent="." node_paths=PackedStringArray("car")]
+script = ExtResource("8_i5b6w")
+car = NodePath("../Taxi")

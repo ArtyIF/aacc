@@ -118,6 +118,11 @@ func update_visuals(delta: float) -> void:
 	var steer_rotation: float = -parent_car.smooth_steer.get_current_value() * parent_car.base_steer_velocity * steer_multiplier
 	
 	current_forward_spin -= parent_car.local_linear_velocity.z * delta / wheel_radius
+	if current_forward_spin > 2 * PI:
+		current_forward_spin -= 2 * PI
+	elif current_forward_spin < 2 * PI:
+		current_forward_spin += 2 * PI
+
 	var forward_spin: float = current_forward_spin
 
 	new_transform = new_transform.translated_local(suspension_translation)

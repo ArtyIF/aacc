@@ -12,9 +12,9 @@ uniform sampler2D DEPTH_TEXTURE : hint_depth_texture, filter_linear_mipmap;
 uniform sampler2D shadow_texture : source_color, hint_default_black;
 uniform int shadow_texture_mipmaps = 9;
 
-uniform float shadow_size = 5.0;
+uniform float shadow_size = 4.0;
 uniform float shadow_height_above = 0.25;
-uniform float shadow_height_below = 0.25;
+uniform float shadow_height_below = 1.25;
 uniform vec3 shadow_color : source_color = vec3(0.0);
 uniform float shadow_lightness: hint_range(0.0, 1.0) = 0.5;
 uniform vec2 shadow_ramp = vec2(0.0, 1.0);

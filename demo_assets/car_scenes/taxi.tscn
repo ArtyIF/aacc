@@ -1,13 +1,12 @@
-[gd_scene load_steps=25 format=4 uid="uid://crko52geporbo"]
+[gd_scene load_steps=23 format=4 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
 [ext_resource type="Material" uid="uid://iyyp6q7p13dj" path="res://demo_assets/materials/kenney_colormap_adjusted.tres" id="1_ssmxy"]
 [ext_resource type="Script" path="res://addons/smoothing/smoothing.gd" id="2_56av6"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/helper_classes/procedural_curve.gd" id="2_q0glx"]
-[ext_resource type="Shader" path="res://addons/aacc/shaders/shadow_decal_shader.gdshader" id="3_c1c67"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car_wheel.gd" id="3_gy57t"]
-[ext_resource type="Texture2D" uid="uid://cmxkqo5refhiy" path="res://demo_assets/textures/car_shadows/taxi.png" id="4_8f3qw"]
+[ext_resource type="Material" uid="uid://cpuf4tdbx4tnp" path="res://demo_assets/materials/taxi_shadow.tres" id="6_b84xa"]
 [ext_resource type="PackedScene" uid="uid://crfcs3rsv2p1k" path="res://addons/aacc/scenes/skid_trail.tscn" id="9_06vfh"]
 
 [sub_resource type="Resource" id="Resource_sei37"]
@@ -194,20 +193,8 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_4s8o0")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_22shy"]
-render_priority = 0
-shader = ExtResource("3_c1c67")
-shader_parameter/shadow_texture_mipmaps = 9
-shader_parameter/shadow_size = 4.0
-shader_parameter/shadow_height_above = 0.25
-shader_parameter/shadow_height_below = 1.25
-shader_parameter/shadow_color = Color(0.509804, 0.694118, 0.807843, 1)
-shader_parameter/shadow_lightness = 0.75
-shader_parameter/shadow_ramp = Vector2(0.15, 1)
-shader_parameter/shadow_texture = ExtResource("4_8f3qw")
-
 [sub_resource type="BoxMesh" id="BoxMesh_sc5a5"]
-material = SubResource("ShaderMaterial_22shy")
+material = ExtResource("6_b84xa")
 size = Vector3(4, 1.5, 4)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_nnrir"]

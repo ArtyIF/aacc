@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://djob4fi3si5om"]
+
+[ext_resource type="Shader" path="res://addons/aacc/shaders/shadow_decal_shader.gdshader" id="1_fpexx"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_fpexx")
+shader_parameter/shadow_texture_mipmaps = 9
+shader_parameter/shadow_size = 4.0
+shader_parameter/shadow_height_above = 0.25
+shader_parameter/shadow_height_below = 1.25
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/shadow_lightness = 0.5
+shader_parameter/shadow_ramp = Vector2(0, 1)

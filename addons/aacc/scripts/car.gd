@@ -126,6 +126,7 @@ var average_wheel_collision_normal: Vector3 = Vector3.ZERO
 #== SMOOTH VALUES ==#
 var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 var smooth_steer_sign: SmoothedFloat = SmoothedFloat.new()
+var use_smooth_steer_sign_value: bool = false
 
 #== GEARS ==#
 var current_gear: int = 0
@@ -150,9 +151,17 @@ func process_smooth_values(delta: float):
 	# TODO: slow down when handbrake is on
 	smooth_steer.advance_to(input_steer * get_input_steer_multiplier(), delta)
 
-	# TODO: option for smooth steer sign, may be unnecessary for some cars
 	var target_steer_sign = sign(local_linear_velocity.z)
-	if local_linear_velocity.length() > 1.0 and (input_handbrake or smooth_steer_sign.get_current_value() != target_steer_sign):
+
+	if use_smooth_steer_sign_value and smooth_steer_sign.get_current_value() == target_steer_sign:
+		use_smooth_steer_sign_value = false
+	if input_handbrake:
+		use_smooth_steer_sign_value = true
+	if local_linear_velocity.length() <= 1.0:
+		use_smooth_steer_sign_value = false
+
+	# TODO: option for smooth steer sign, may be unnecessary for some cars
+	if use_smooth_steer_sign_value:
 		smooth_steer_sign.advance_to(target_steer_sign, delta) # TODO: configurable speed
 	else:
 		smooth_steer_sign.force_current_value(target_steer_sign)
@@ -173,6 +182,7 @@ func calculate_acceleration_multiplier() -> float:
 
 func get_engine_force() -> float:
 	if switching_gears: return 0.0
+	if input_handbrake: return 0.0
 	return (-input_backward if is_reversing() else input_forward) * max_acceleration * calculate_acceleration_multiplier()
 
 func get_slowdown_force() -> float:
@@ -183,7 +193,7 @@ func get_slowdown_force() -> float:
 
 #region Gearbox
 func update_gear(delta: float):
-	if target_gear != current_gear and not switching_gears and (not current_gear == 0 or target_gear == 0):
+	if target_gear != current_gear and not switching_gears and sign(current_gear) == sign(target_gear):
 		gear_switch_timer = gear_switch_time
 		switching_gears = true
 
@@ -204,8 +214,13 @@ func set_current_gear():
 		target_gear = -1
 		return
 
-	if abs(local_linear_velocity.z) < 0.1 and input_forward == 0 and input_backward == 0:
-		target_gear = 0
+	if abs(local_linear_velocity.z) < 0.1:
+		if input_forward == 0 and input_backward == 0:
+			target_gear = 0
+		elif input_forward > 0:
+			target_gear = 1
+		elif input_backward > 0:
+			target_gear = -1
 		return
 
 	var forward_speed_ratio: float = abs(local_linear_velocity.z / top_speed_forward)
@@ -228,7 +243,8 @@ func get_side_grip_force() -> float:
 
 #region Steering
 func calculate_steer_coefficient() -> float:
-	return smooth_steer_sign.get_current_value() * local_linear_velocity.length() / distance_between_wheels
+	var velocity_multiplier: float = local_linear_velocity.length() if use_smooth_steer_sign_value else abs(local_linear_velocity.z)
+	return smooth_steer_sign.get_current_value() * velocity_multiplier / distance_between_wheels
 
 func get_steer_tug_offset() -> float:
 	if not steer_tug_curve: return 0.0

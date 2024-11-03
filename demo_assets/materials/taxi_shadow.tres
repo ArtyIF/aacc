@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://cpuf4tdbx4tnp"]
+
+[ext_resource type="Shader" path="res://addons/aacc/shaders/shadow_decal_shader.gdshader" id="1_fmhi6"]
+[ext_resource type="Texture2D" uid="uid://cmxkqo5refhiy" path="res://demo_assets/textures/car_shadows/taxi.png" id="2_6braa"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_fmhi6")
+shader_parameter/shadow_texture_mipmaps = 9
+shader_parameter/shadow_size = 4.0
+shader_parameter/shadow_height_above = 0.25
+shader_parameter/shadow_height_below = 1.25
+shader_parameter/shadow_color = Color(0.509804, 0.694118, 0.807843, 1)
+shader_parameter/shadow_lightness = 0.75
+shader_parameter/shadow_ramp = Vector2(0.1, 1)
+shader_parameter/shadow_texture = ExtResource("2_6braa")
