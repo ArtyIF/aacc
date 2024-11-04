@@ -8,8 +8,7 @@ physics? I guess? Includes a very basic demo scene and only one proper car.
 - [lawnjelly's smoothing addon](https://github.com/lawnjelly/smoothing-addon/tree/4.x)
   for physics interpolation in Godot versions below 4.4
 - [Hydraboo's TrailRenderer](https://github.com/Hyrdaboo/TrailRenderer)
-  (preferably in this repository currently, as the original one has a bug until
-  its PR #3 is merged) for skid trails
+  for skid trails
 - Blender 3.5 or later (3.0-3.4 might also work) for the demo scene
 
 ## Demo Scene controls
@@ -19,7 +18,6 @@ physics? I guess? Includes a very basic demo scene and only one proper car.
   handbrake
 
 ## Tricks
-
 - Hold the handbrake (Space) and steer at a high enough speed to perform a 180
   turn!
 

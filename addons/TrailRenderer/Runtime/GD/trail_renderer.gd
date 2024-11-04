@@ -17,8 +17,6 @@ func _enter_tree() -> void:
 
 func _process(delta: float) -> void:
 	if not _is_emitting_last_frame and is_emitting:
-		# Below is edited for AACC: the original code threw an error if the
-		# trail hasn't been emitting for a while. See PR #3 in the original repo
 		if _trail_pieces.size() == 0 or _trail_pieces[0].is_dirty():
 			_trail_pieces.insert(0, TrailPiece.new(self))
 	_is_emitting_last_frame = is_emitting
