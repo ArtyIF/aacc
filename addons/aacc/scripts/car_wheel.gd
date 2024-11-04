@@ -31,6 +31,7 @@ class_name CarWheel extends Node3D
 @export var limit_top: bool = false
 @export var limit_bottom: bool = false
 @export var skid_trail: TrailRenderer
+@export var burnout_particles: GPUParticles3D
 
 #== NODES ==#
 var raycast_instance_1: RayCast3D
@@ -131,18 +132,23 @@ func update_visuals(delta: float) -> void:
 
 	visual_node.transform = new_transform
 
-func update_skid_trail() -> void:
-	if not skid_trail: return
+func update_burnout() -> void:
+	var emit_colliding: float = 1.0 if is_colliding else 0.0
+	var emit_velocity: float = abs(parent_car.local_linear_velocity.x) / 10.0
+	var emit_handbrake: float = 0.0
+	if parent_car.input_handbrake and (parent_car.linear_velocity.length() >= 0.1 or parent_car.input_forward or parent_car.input_backward):
+		emit_handbrake = 1.0
+	var emit_amount: float = emit_colliding * (emit_velocity + emit_handbrake)
 
-	var emit_colliding_check: bool = is_colliding
-	var emit_side_check: bool = abs(parent_car.local_linear_velocity.x) > 0.5
-	var emit_handbrake_check: bool = parent_car.input_handbrake
-	var emit: bool = emit_colliding_check and (emit_side_check or emit_handbrake_check)
+	if skid_trail:
+		skid_trail.is_emitting = emit_amount >= 0.05
+		if skid_trail.is_emitting:
+			skid_trail.global_position = collision_point + (collision_normal * 0.01)
+			skid_trail.global_basis = skid_trail.global_basis.looking_at(-(collision_normal).cross(parent_car.global_basis.z), parent_car.global_basis.z)
 
-	skid_trail.is_emitting = emit
-	if emit:
-		skid_trail.global_position = collision_point + (collision_normal * 0.01)
-		skid_trail.global_basis = skid_trail.global_basis.looking_at(-(collision_normal).cross(parent_car.global_basis.z), parent_car.global_basis.z)
+	if burnout_particles:
+		burnout_particles.amount_ratio = clamp(emit_amount - 0.1, 0.0, 1.0)
+		burnout_particles.global_position = collision_point
 
 func _physics_process(delta: float) -> void:
 	if raycast_instance_1.is_colliding() or raycast_instance_2.is_colliding():
@@ -169,4 +175,4 @@ func _physics_process(delta: float) -> void:
 		last_compression = 0.0
 
 	update_visuals(delta)
-	update_skid_trail()
+	update_burnout()

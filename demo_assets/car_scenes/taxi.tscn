@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://crko52geporbo"]
+[gd_scene load_steps=24 format=4 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://addons/aacc/scripts/car_wheel.gd" id="3_gy57t"]
 [ext_resource type="Material" uid="uid://cpuf4tdbx4tnp" path="res://demo_assets/materials/taxi_shadow.tres" id="6_b84xa"]
 [ext_resource type="PackedScene" uid="uid://crfcs3rsv2p1k" path="res://addons/aacc/scenes/skid_trail.tscn" id="9_06vfh"]
+[ext_resource type="PackedScene" uid="uid://bgcsoin0se8xf" path="res://addons/aacc/scenes/burnout_particles.tscn" id="9_tliwu"]
 
 [sub_resource type="Resource" id="Resource_sei37"]
 script = ExtResource("2_q0glx")
@@ -273,7 +274,7 @@ skeleton = NodePath("../..")
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.18557e-09, 0.15, 0.025)
 shape = SubResource("ConvexPolygonShape3D_nnrir")
 
-[node name="WheelBL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail")]
+[node name="WheelBL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.2
@@ -281,10 +282,14 @@ suspension_spring = 2000.0
 suspension_damper = 200.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelBL")
 skid_trail = NodePath("SkidTrail")
+burnout_particles = NodePath("BurnoutParticles")
 
 [node name="SkidTrail" parent="WheelBL" instance=ExtResource("9_06vfh")]
 
-[node name="WheelBR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail")]
+[node name="BurnoutParticles" parent="WheelBL" instance=ExtResource("9_tliwu")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="WheelBR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.2
@@ -292,10 +297,13 @@ suspension_spring = 2000.0
 suspension_damper = 200.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelBR")
 skid_trail = NodePath("SkidTrail")
+burnout_particles = NodePath("BurnoutParticles")
 
 [node name="SkidTrail" parent="WheelBR" instance=ExtResource("9_06vfh")]
 
-[node name="WheelFL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail")]
+[node name="BurnoutParticles" parent="WheelBR" instance=ExtResource("9_tliwu")]
+
+[node name="WheelFL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.2
@@ -304,10 +312,14 @@ suspension_damper = 200.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelFL")
 steer_multiplier = 1.0
 skid_trail = NodePath("SkidTrail")
+burnout_particles = NodePath("BurnoutParticles")
 
 [node name="SkidTrail" parent="WheelFL" instance=ExtResource("9_06vfh")]
 
-[node name="WheelFR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail")]
+[node name="BurnoutParticles" parent="WheelFL" instance=ExtResource("9_tliwu")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="WheelFR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.2
@@ -316,7 +328,10 @@ suspension_damper = 200.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelFR")
 steer_multiplier = 1.0
 skid_trail = NodePath("SkidTrail")
+burnout_particles = NodePath("BurnoutParticles")
 
 [node name="SkidTrail" parent="WheelFR" instance=ExtResource("9_06vfh")]
+
+[node name="BurnoutParticles" parent="WheelFR" instance=ExtResource("9_tliwu")]
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
