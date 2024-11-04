@@ -8,9 +8,10 @@ material = ExtResource("2_smf7g")
 size = Vector2(2, 2)
 
 [node name="BurnoutParticles" type="GPUParticles3D"]
-sorting_offset = 1.0
+sorting_offset = 10.0
 cast_shadow = 0
 gi_mode = 0
+emitting = false
 amount = 50
 amount_ratio = 0.0
 lifetime = 2.0

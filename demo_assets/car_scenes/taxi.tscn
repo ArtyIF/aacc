@@ -216,7 +216,6 @@ top_speed_forward = 40.0
 gears_amount = 4
 gear_switch_time = 0.2
 target_steer_velocity = 0.872665
-max_steer_velocity = 2.35619
 distance_between_wheels = 1.52
 smooth_steer_speed = 5.0
 steer_tug_curve = SubResource("Resource_sei37")

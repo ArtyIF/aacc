@@ -52,11 +52,10 @@ class_name Car extends RigidBody3D
 ## high enough. See also [member base_steer_velocity] and
 ## [member max_steer_velocity].
 @export_range(0.0, 360.0, 0.1, "or_greater", "radians", "suffix:°/sec") var target_steer_velocity: float = deg_to_rad(60.0)
-## The maximum steer velocity per second. Used to limit steer tug.
+## The maximum steer velocity per second. Used to limit handbrake turns.
 ## [br][br]
 ## For relevant steering properties, see [member base_steer_velocity] and
-## [member target_steer_velocity]. For steer tug properties, see
-## [member steer_tug].
+## [member target_steer_velocity].
 @export_range(0.0, 360.0, 0.1, "or_greater", "radians", "suffix:°/sec") var max_steer_velocity: float = deg_to_rad(180.0)
 ## The distance between front and rear wheels. Used to calculate the appropriate
 ## steer velocity.
