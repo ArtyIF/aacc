@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://crko52geporbo"]
+[gd_scene load_steps=26 format=4 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -7,6 +7,8 @@
 [ext_resource type="Script" path="res://addons/aacc/scripts/helper_classes/procedural_curve.gd" id="2_q0glx"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car_wheel.gd" id="3_gy57t"]
 [ext_resource type="Material" uid="uid://cpuf4tdbx4tnp" path="res://demo_assets/materials/taxi_shadow.tres" id="6_b84xa"]
+[ext_resource type="AudioStream" uid="uid://crib4agfyleol" path="res://addons/aacc/sounds/engine_temp.ogg" id="7_q8r43"]
+[ext_resource type="Script" path="res://addons/aacc/scripts/car_engine_sound_basic.gd" id="8_os6lh"]
 [ext_resource type="PackedScene" uid="uid://crfcs3rsv2p1k" path="res://addons/aacc/scenes/skid_trail.tscn" id="9_06vfh"]
 [ext_resource type="PackedScene" uid="uid://bgcsoin0se8xf" path="res://addons/aacc/scenes/burnout_particles.tscn" id="9_tliwu"]
 
@@ -268,6 +270,18 @@ skeleton = NodePath("")
 gi_mode = 0
 mesh = SubResource("BoxMesh_sc5a5")
 skeleton = NodePath("../..")
+
+[node name="Engine" type="AudioStreamPlayer3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, -0.85)
+stream = ExtResource("7_q8r43")
+volume_db = -15.0
+pitch_scale = 0.33
+autoplay = true
+bus = &"Car Engine"
+attenuation_filter_cutoff_hz = 20500.0
+doppler_tracking = 1
+script = ExtResource("8_os6lh")
+engine_pitch_range = Vector2(0.33, 1)
 
 [node name="Collision" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.18557e-09, 0.15, 0.025)

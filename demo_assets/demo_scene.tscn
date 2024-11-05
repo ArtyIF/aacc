@@ -1,7 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=12 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_8gguu"]
 [ext_resource type="Script" path="res://demo_assets/scripts/camera.gd" id="2_vy2m6"]
+[ext_resource type="Script" path="res://demo_assets/scripts/gear_label.gd" id="4_0y4aa"]
+[ext_resource type="Script" path="res://demo_assets/scripts/revs_progress.gd" id="4_d88wf"]
 [ext_resource type="LightmapGIData" uid="uid://dfd0tci5o77bn" path="res://demo_assets/demo_scene.lmbake" id="5_5iqqq"]
 [ext_resource type="PackedScene" uid="uid://cu2i0ah5ud0w1" path="res://demo_assets/subscenes/pathtest.blend" id="5_868sg"]
 [ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="5_attwm"]
@@ -34,6 +36,7 @@ sky_mode = 2
 
 [node name="Camera" type="Camera3D" parent="." node_paths=PackedStringArray("car")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
+doppler_tracking = 1
 far = 1000.0
 script = ExtResource("2_vy2m6")
 car = NodePath("../Taxi")
@@ -48,23 +51,47 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SpeedLabel" type="Label" parent="UI" node_paths=PackedStringArray("car")]
+[node name="CarUI" type="VBoxContainer" parent="UI"]
+custom_minimum_size = Vector2(192, 0)
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -64.0
-offset_top = -23.0
+offset_left = -127.0
+offset_top = -45.0
 grow_horizontal = 0
 grow_vertical = 0
+
+[node name="Revs" type="ProgressBar" parent="UI/CarUI" node_paths=PackedStringArray("car")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.0
+value = 0.3
+fill_mode = 1
+script = ExtResource("4_d88wf")
+car = NodePath("../../../Taxi")
+
+[node name="Gear" type="Label" parent="UI/CarUI" node_paths=PackedStringArray("car")]
+layout_mode = 2
+text = "3"
+label_settings = SubResource("LabelSettings_3uvu3")
+horizontal_alignment = 2
+vertical_alignment = 2
+script = ExtResource("4_0y4aa")
+car = NodePath("../../../Taxi")
+
+[node name="Speed" type="Label" parent="UI/CarUI" node_paths=PackedStringArray("car")]
+layout_mode = 2
 text = "30 km/h"
 label_settings = SubResource("LabelSettings_3uvu3")
 horizontal_alignment = 2
 vertical_alignment = 2
 script = ExtResource("14_i5r8x")
-car = NodePath("../../Taxi")
+car = NodePath("../../../Taxi")
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
 generate_probes_subdiv = 0

@@ -132,6 +132,8 @@ var current_gear: int = 0
 var target_gear: int = 0
 var switching_gears: bool = false
 var gear_switch_timer: float = 0.0
+var revs: SmoothedFloat = SmoothedFloat.new()
+var accel_amount: SmoothedFloat = SmoothedFloat.new(0.0, 2.0)
 
 func _ready():
 	for wheel in get_children():
@@ -229,6 +231,24 @@ func set_current_gear():
 		target_gear -= 1
 	if forward_speed_ratio > get_gear_limit(target_gear) and target_gear < gears_amount:
 		target_gear += 1
+
+func update_accel_amount(delta: float) -> void:
+	if switching_gears:
+		accel_amount.advance_to(0.0, delta)
+	else:
+		accel_amount.advance_to(input_backward if is_reversing() else input_forward, delta)
+
+func update_revs(delta: float) -> void:
+	var target_revs: float = 0.0
+	if abs(local_linear_velocity.z) < 0.1 or ground_coefficient == 0.0:
+		target_revs = accel_amount.get_current_value()
+	elif not switching_gears:
+		if current_gear > 0:
+			target_revs = clamp(inverse_lerp(0.0, top_speed_forward * get_gear_limit(current_gear), abs(local_linear_velocity.z)), 0.0, 1.0)
+		elif current_gear < 0:
+			target_revs = clamp(inverse_lerp(0.0, top_speed_reverse, abs(local_linear_velocity.z)), 0.0, 1.0)
+
+	revs.advance_to(target_revs, delta)
 #endregion
 
 #region Traction
@@ -332,6 +352,8 @@ func _physics_process(delta: float) -> void:
 		var sum_of_angular_forces: Vector3 = convert_angular_force(desired_air_stabilization_force, delta, false)
 		apply_torque(sum_of_angular_forces / delta)
 
+	update_accel_amount(delta)
+	update_revs(delta)
 	old_linear_velocity = linear_velocity
 	old_angular_velocity = angular_velocity
 
