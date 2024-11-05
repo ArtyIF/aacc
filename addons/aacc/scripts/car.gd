@@ -135,6 +135,9 @@ var gear_switch_timer: float = 0.0
 var revs: SmoothedFloat = SmoothedFloat.new()
 var accel_amount: SmoothedFloat = SmoothedFloat.new(0.0, 2.0)
 
+#== BURNOUT AMOUNT ==#
+var burnout_amount: float = 0.0
+
 func _ready():
 	for wheel in get_children():
 		if wheel is CarWheel:
@@ -258,6 +261,18 @@ func get_brake_force() -> float:
 
 func get_side_grip_force() -> float:
 	return -local_linear_velocity.x * mass
+
+func update_burnout_amount():
+	var burnout_colliding: float = 1.0 if ground_coefficient > 0.0 else 0.0
+	var burnout_velocity: float = (abs(local_linear_velocity.x) - 0.5) / 10.0
+	var burnout_handbrake: float = 0.0
+	if input_handbrake:
+		if linear_velocity.length() >= 0.1:
+			burnout_handbrake = 1.0
+		else:
+			burnout_handbrake = revs.get_current_value()
+	
+	burnout_amount = clamp(burnout_colliding * (burnout_velocity + burnout_handbrake), 0.0, 1.0)
 #endregion
 
 #region Steering
@@ -354,6 +369,8 @@ func _physics_process(delta: float) -> void:
 
 	update_accel_amount(delta)
 	update_revs(delta)
+	update_burnout_amount()
+
 	old_linear_velocity = linear_velocity
 	old_angular_velocity = angular_velocity
 

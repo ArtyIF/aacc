@@ -133,22 +133,14 @@ func update_visuals(delta: float) -> void:
 	visual_node.transform = new_transform
 
 func update_burnout() -> void:
-	var emit_colliding: float = 1.0 if is_colliding else 0.0
-	var emit_velocity: float = abs(parent_car.local_linear_velocity.x) / 10.0
-	var emit_handbrake: float = 0.0
-	# TODO: use revs instead
-	if parent_car.input_handbrake and (parent_car.linear_velocity.length() >= 0.1 or parent_car.input_forward or parent_car.input_backward):
-		emit_handbrake = 1.0
-	var emit_amount: float = emit_colliding * (emit_velocity + emit_handbrake)
-
 	if skid_trail:
-		skid_trail.is_emitting = emit_amount >= 0.1
+		skid_trail.is_emitting = parent_car.burnout_amount > 0.0
 		if skid_trail.is_emitting:
 			skid_trail.global_position = collision_point + (collision_normal * 0.01)
 			skid_trail.global_basis = skid_trail.global_basis.looking_at(-(collision_normal).cross(parent_car.global_basis.z), parent_car.global_basis.z)
 
 	if burnout_particles:
-		burnout_particles.amount_ratio = clamp(emit_amount - 0.1, 0.0, 1.0)
+		burnout_particles.amount_ratio = parent_car.burnout_amount
 		burnout_particles.emitting = burnout_particles.amount_ratio > 0 # to fix the random emissions
 		burnout_particles.global_position = collision_point
 

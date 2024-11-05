@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=4 uid="uid://crko52geporbo"]
+[gd_scene load_steps=28 format=4 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -10,7 +10,9 @@
 [ext_resource type="AudioStream" uid="uid://be2onum31r06b" path="res://addons/aacc/sounds/engine_default.ogg" id="7_jbi7w"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car_engine_sound_basic.gd" id="8_os6lh"]
 [ext_resource type="PackedScene" uid="uid://crfcs3rsv2p1k" path="res://addons/aacc/scenes/skid_trail.tscn" id="9_06vfh"]
+[ext_resource type="AudioStream" uid="uid://c23hw5dbnhtdl" path="res://addons/aacc/sounds/tire_screech.ogg" id="9_8cvhf"]
 [ext_resource type="PackedScene" uid="uid://bgcsoin0se8xf" path="res://addons/aacc/scenes/burnout_particles.tscn" id="9_tliwu"]
+[ext_resource type="Script" path="res://addons/aacc/scripts/car_tire_screech_sound.gd" id="10_nd533"]
 
 [sub_resource type="Resource" id="Resource_sei37"]
 script = ExtResource("2_q0glx")
@@ -275,6 +277,7 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, -0.85)
 stream = ExtResource("7_jbi7w")
 volume_db = -15.0
+unit_size = 5.0
 pitch_scale = 0.1
 autoplay = true
 bus = &"Engine"
@@ -282,6 +285,14 @@ attenuation_filter_db = -12.0
 doppler_tracking = 1
 script = ExtResource("8_os6lh")
 engine_pitch_range = Vector2(0.1, 1)
+
+[node name="TireScreech" type="AudioStreamPlayer3D" parent="Visuals"]
+stream = ExtResource("9_8cvhf")
+volume_db = -80.0
+bus = &"SFX"
+attenuation_filter_cutoff_hz = 20500.0
+doppler_tracking = 1
+script = ExtResource("10_nd533")
 
 [node name="Collision" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.18557e-09, 0.15, 0.025)
