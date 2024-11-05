@@ -268,7 +268,7 @@ func update_burnout_amount():
 	var burnout_handbrake: float = 0.0
 	if input_handbrake:
 		if linear_velocity.length() >= 0.1:
-			burnout_handbrake = 1.0
+			burnout_handbrake = linear_velocity.length() / 10.0
 		else:
 			burnout_handbrake = revs.get_current_value()
 	

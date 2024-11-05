@@ -281,6 +281,7 @@ unit_size = 5.0
 pitch_scale = 0.1
 autoplay = true
 bus = &"Engine"
+playback_type = 1
 attenuation_filter_db = -12.0
 doppler_tracking = 1
 script = ExtResource("8_os6lh")
@@ -289,7 +290,9 @@ engine_pitch_range = Vector2(0.1, 1)
 [node name="TireScreech" type="AudioStreamPlayer3D" parent="Visuals"]
 stream = ExtResource("9_8cvhf")
 volume_db = -80.0
+autoplay = true
 bus = &"SFX"
+playback_type = 1
 attenuation_filter_cutoff_hz = 20500.0
 doppler_tracking = 1
 script = ExtResource("10_nd533")
