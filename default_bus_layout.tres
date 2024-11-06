@@ -1,30 +1,59 @@
-[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://dlvooltmwt87l"]
+[gd_resource type="AudioBusLayout" load_steps=6 format=3 uid="uid://dlvooltmwt87l"]
+
+[sub_resource type="AudioEffectHardLimiter" id="AudioEffectHardLimiter_uymns"]
+resource_name = "HardLimiter"
+
+[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_wcfe8"]
+resource_name = "Compressor"
+threshold = -3.0
+release_ms = 1000.0
+sidechain = &"Compressor"
+
+[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_rpiba"]
+resource_name = "Compressor"
+threshold = -12.0
+release_ms = 1000.0
+sidechain = &"Voice"
 
 [sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_qnybs"]
 resource_name = "Compressor"
 release_ms = 1000.0
 
+[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_20ygi"]
+resource_name = "Compressor"
+threshold = -12.0
+release_ms = 1000.0
+sidechain = &"Voice"
+
 [resource]
-bus/1/name = &"Compressor"
+bus/0/effect/0/effect = SubResource("AudioEffectHardLimiter_uymns")
+bus/0/effect/0/enabled = true
+bus/1/name = &"BGM"
 bus/1/solo = false
 bus/1/mute = false
 bus/1/bypass_fx = false
 bus/1/volume_db = 0.0
 bus/1/send = &"Master"
-bus/1/effect/0/effect = SubResource("AudioEffectCompressor_qnybs")
+bus/1/effect/0/effect = SubResource("AudioEffectCompressor_wcfe8")
 bus/1/effect/0/enabled = true
-bus/2/name = &"In-Game"
+bus/1/effect/1/effect = SubResource("AudioEffectCompressor_rpiba")
+bus/1/effect/1/enabled = true
+bus/2/name = &"Compressor"
 bus/2/solo = false
 bus/2/mute = false
 bus/2/bypass_fx = false
 bus/2/volume_db = 0.0
-bus/2/send = &"Compressor"
+bus/2/send = &"Master"
+bus/2/effect/0/effect = SubResource("AudioEffectCompressor_qnybs")
+bus/2/effect/0/enabled = true
+bus/2/effect/1/effect = SubResource("AudioEffectCompressor_20ygi")
+bus/2/effect/1/enabled = true
 bus/3/name = &"SFX"
 bus/3/solo = false
 bus/3/mute = false
 bus/3/bypass_fx = false
 bus/3/volume_db = 0.0
-bus/3/send = &"In-Game"
+bus/3/send = &"Compressor"
 bus/4/name = &"Engine"
 bus/4/solo = false
 bus/4/mute = false
@@ -36,16 +65,10 @@ bus/5/solo = false
 bus/5/mute = false
 bus/5/bypass_fx = false
 bus/5/volume_db = 0.0
-bus/5/send = &"In-Game"
-bus/6/name = &"BGM"
+bus/5/send = &"Master"
+bus/6/name = &"UI"
 bus/6/solo = false
 bus/6/mute = false
 bus/6/bypass_fx = false
 bus/6/volume_db = 0.0
-bus/6/send = &"Compressor"
-bus/7/name = &"UI"
-bus/7/solo = false
-bus/7/mute = false
-bus/7/bypass_fx = false
-bus/7/volume_db = 0.0
-bus/7/send = &"Master"
+bus/6/send = &"Master"

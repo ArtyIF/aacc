@@ -277,7 +277,6 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, -0.85)
 stream = ExtResource("7_jbi7w")
 volume_db = -15.0
-unit_size = 5.0
 pitch_scale = 0.1
 autoplay = true
 bus = &"Engine"
