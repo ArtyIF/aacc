@@ -68,7 +68,7 @@ void fragment() {
 	float shadow = textureLod(shadow_texture, decal_uv, blur * texture_levels).r;
 
 	float result = inverse_lerp(shadow_ramp.x, shadow_ramp.y, clamp((1.0 - shadow) * vertical_blend, 0.0, 1.0));
-	ALBEDO = mix(vec3(1.0), shadow_color * shadow_lightness, result);
+	ALBEDO = mix(vec3(1.0), shadow_color * shadow_lightness, clamp(result, 0.0, 1.0));
 	if (OUTPUT_IS_SRGB) { // Compatibility
 		// Compatibility renderer doesn't use HDR, so I guess it uses some tricks
 		// for multiplication to allow for a higher dynamic range

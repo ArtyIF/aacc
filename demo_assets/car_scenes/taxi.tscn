@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=4 uid="uid://crko52geporbo"]
+[gd_scene load_steps=31 format=4 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -13,6 +13,9 @@
 [ext_resource type="AudioStream" uid="uid://c23hw5dbnhtdl" path="res://addons/aacc/sounds/tire_screech.ogg" id="9_8cvhf"]
 [ext_resource type="PackedScene" uid="uid://bgcsoin0se8xf" path="res://addons/aacc/scenes/burnout_particles.tscn" id="9_tliwu"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car_tire_screech_sound.gd" id="10_nd533"]
+[ext_resource type="PackedScene" uid="uid://brllbm6wk0371" path="res://addons/aacc/scenes/grazing_particles.tscn" id="14_f5y41"]
+[ext_resource type="Script" path="res://addons/aacc/scripts/grazing_particles.gd" id="15_hypc8"]
+[ext_resource type="PackedScene" uid="uid://85rxsnvp8yp" path="res://addons/aacc/scenes/hit_particle.tscn" id="16_vaii0"]
 
 [sub_resource type="Resource" id="Resource_sei37"]
 script = ExtResource("2_q0glx")
@@ -359,4 +362,7 @@ burnout_particles = NodePath("BurnoutParticles")
 
 [node name="BurnoutParticles" parent="WheelFR" instance=ExtResource("9_tliwu")]
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[node name="GrazingParticles" parent="." instance=ExtResource("14_f5y41")]
+script = ExtResource("15_hypc8")
+
+[node name="HitParticle" parent="." instance=ExtResource("16_vaii0")]

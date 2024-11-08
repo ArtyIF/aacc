@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://85rxsnvp8yp"]
+
+[ext_resource type="Material" uid="uid://byy4g5meme8kr" path="res://addons/aacc/materials/particles/hit/hit_particle_process.tres" id="1_ronfm"]
+[ext_resource type="Material" uid="uid://b41outi3l8r5h" path="res://addons/aacc/materials/particles/hit/hit_particle_render_compatibility.tres" id="2_nf58x"]
+[ext_resource type="Script" path="res://addons/aacc/scripts/hit_particle.gd" id="3_80obw"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_v20hs"]
+material = ExtResource("2_nf58x")
+size = Vector2(2, 2)
+
+[node name="HitParticle" type="GPUParticles3D"]
+emitting = false
+amount = 1
+lifetime = 0.25
+one_shot = true
+process_material = ExtResource("1_ronfm")
+draw_pass_1 = SubResource("QuadMesh_v20hs")
+script = ExtResource("3_80obw")

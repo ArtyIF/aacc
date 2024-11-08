@@ -373,6 +373,3 @@ func _physics_process(delta: float) -> void:
 
 	old_linear_velocity = linear_velocity
 	old_angular_velocity = angular_velocity
-
-func _on_body_entered(body: Node) -> void:
-	pass

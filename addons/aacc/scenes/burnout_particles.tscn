@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bgcsoin0se8xf"]
 
-[ext_resource type="Material" uid="uid://0nsued0at226" path="res://addons/aacc/materials/burnout_process.tres" id="1_urvgu"]
-[ext_resource type="Material" uid="uid://3pj8yaou00og" path="res://addons/aacc/materials/burnout_render_compatibility.tres" id="2_smf7g"]
+[ext_resource type="Material" uid="uid://0nsued0at226" path="res://addons/aacc/materials/particles/burnout/burnout_process.tres" id="1_urvgu"]
+[ext_resource type="Material" uid="uid://3pj8yaou00og" path="res://addons/aacc/materials/particles/burnout/burnout_render_compatibility.tres" id="2_smf7g"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_si8b4"]
 material = ExtResource("2_smf7g")
