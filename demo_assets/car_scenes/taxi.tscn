@@ -26,7 +26,7 @@ input_curve = 0.5
 [sub_resource type="Resource" id="Resource_qkpdq"]
 script = ExtResource("2_q0glx")
 left_value = 1.0
-right_value = 0.5
+right_value = 0.4
 max_input = 10.0
 input_curve = 0.5
 
@@ -218,14 +218,14 @@ max_contacts_reported = 4
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_ik2h1")
-top_speed_forward = 80.0
-max_acceleration = 4000.0
+gears_amount = 4
+target_steer_velocity = 0.872665
 distance_between_wheels = 1.52
+smooth_steer_speed = 5.0
 steer_tug_curve = SubResource("Resource_sei37")
-linear_grip = 15000.0
+linear_grip = 7000.0
 reduced_grip_curve = SubResource("Resource_qkpdq")
-angular_grip = 15000.0
-brake_force = 8000.0
+angular_grip = 7000.0
 
 [node name="Visuals" type="Node3D" parent="."]
 script = ExtResource("2_56av6")
