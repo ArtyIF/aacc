@@ -35,7 +35,7 @@ func spawn_particle(_body: Node) -> void:
 			collision_sound.volume_db = linear_to_db(hit_amount)
 			collision_sound.play()
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if collision_sound:
 		if collision_sound.playing:
 			collision_sound.global_position = last_average_contact_point

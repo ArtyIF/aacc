@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=13 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_8gguu"]
+[ext_resource type="Script" path="res://demo_assets/scripts/light_compatibility_adjustment.gd" id="2_gvx2t"]
 [ext_resource type="Script" path="res://demo_assets/scripts/camera.gd" id="2_vy2m6"]
 [ext_resource type="Script" path="res://demo_assets/scripts/gear_label.gd" id="4_0y4aa"]
 [ext_resource type="Script" path="res://demo_assets/scripts/revs_progress.gd" id="4_d88wf"]
@@ -23,10 +24,13 @@ environment = ExtResource("1_8gguu")
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.5, -0.433013, 0.75, 0, 0.866026, 0.5, -0.866026, -0.25, 0.433012, 0, 0, 0)
-light_energy = 3.0
+light_energy = 1.2
 light_angular_distance = 10.0
 light_bake_mode = 1
+shadow_enabled = true
 sky_mode = 1
+script = ExtResource("2_gvx2t")
+actual_energy = 3.0
 
 [node name="SunlightSky" type="DirectionalLight3D" parent="Sunlight"]
 light_energy = 3.0

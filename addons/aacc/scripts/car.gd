@@ -204,6 +204,10 @@ func update_gear(delta: float):
 	if gear_switch_timer <= 0 or target_gear == current_gear:
 		current_gear = target_gear
 		switching_gears = false
+		
+	if is_zero_approx(ground_coefficient):
+		target_gear = current_gear
+		switching_gears = false
 
 	gear_switch_timer -= delta
 
@@ -211,7 +215,7 @@ func get_gear_limit(gear: int) -> float:
 	return (1.0 / gears_amount) * gear
 
 func set_current_gear():
-	if input_handbrake and local_linear_velocity.length() >= 0.1:
+	if (input_handbrake and local_linear_velocity.length() >= 0.1) or is_zero_approx(ground_coefficient):
 		return
 	
 	if is_reversing():
@@ -236,14 +240,14 @@ func set_current_gear():
 		target_gear += 1
 
 func update_accel_amount(delta: float) -> void:
-	if switching_gears:
+	if switching_gears or is_zero_approx(ground_coefficient):
 		accel_amount.advance_to(0.0, delta)
 	else:
 		accel_amount.advance_to(input_backward if is_reversing() else input_forward, delta)
 
 func update_revs(delta: float) -> void:
 	var target_revs: float = 0.0
-	if abs(local_linear_velocity.z) < 0.1 or ground_coefficient == 0.0:
+	if abs(local_linear_velocity.z) < 0.1 or is_zero_approx(ground_coefficient):
 		target_revs = accel_amount.get_current_value()
 	elif not switching_gears:
 		if current_gear > 0:
@@ -343,11 +347,13 @@ func _physics_process(delta: float) -> void:
 	local_angular_velocity = global_transform.basis.inverse() * angular_velocity
 
 	process_smooth_values(delta)
+	set_current_gear()
+	update_gear(delta)
+	update_accel_amount(delta)
+	update_revs(delta)
+	update_burnout_amount()
 
 	if ground_coefficient > 0.0:
-		set_current_gear()
-		update_gear(delta)
-
 		var desired_linear_grip_force: Vector3 = Vector3.RIGHT * get_side_grip_force()
 		var desired_engine_force: Vector3 = Vector3.FORWARD * get_engine_force() * delta
 		var desired_brake_force: Vector3 = Vector3.FORWARD * get_brake_force() * delta
@@ -366,9 +372,6 @@ func _physics_process(delta: float) -> void:
 		var sum_of_angular_forces: Vector3 = convert_angular_force(desired_air_stabilization_force, delta, false)
 		apply_torque(sum_of_angular_forces / delta)
 
-	update_accel_amount(delta)
-	update_revs(delta)
-	update_burnout_amount()
 
 	old_linear_velocity = linear_velocity
 	old_angular_velocity = angular_velocity

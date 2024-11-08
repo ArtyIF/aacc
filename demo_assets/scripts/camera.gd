@@ -23,7 +23,7 @@ func _process(delta: float) -> void:
 	if car.ground_coefficient > 0.0:
 		_up_vector_target = car.average_wheel_collision_normal
 	else:
-		_up_vector_target = _follow_node.global_basis.y.normalized()
+		_up_vector_target = Vector3.UP
 	
 	if _smoothed_up_vector.distance_to(_up_vector_target) > 0.001:
 		_smoothed_up_vector = _smoothed_up_vector.slerp(_up_vector_target, delta)
