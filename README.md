@@ -3,6 +3,10 @@
 A very work-in-progress car controller that kinda resembles Midnight Club
 physics? I guess? Includes a very basic demo scene and only one proper car.
 
+**NOTE**: please pay attention to the `attribution.txt` files in the
+`addons/aacc` folder! Some files' licenses require attribution if you're going
+to use them!
+
 ## Dependencies
 - Godot 4.x (tested on 4.3)
 - [lawnjelly's smoothing addon](https://github.com/lawnjelly/smoothing-addon/tree/4.x)
