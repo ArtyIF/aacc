@@ -26,11 +26,13 @@ func spawn_particle(_body: Node) -> void:
 
 	if average_contact_velocity.length() > 0.1:
 		global_position = average_contact_point
+
+		var hit_amount = clamp((average_contact_velocity.length() - 0.1) / 10.0, 0.0, 1.0)
+		(process_material as ParticleProcessMaterial).color = Color(Color.WHITE, hit_amount)
 		emitting = true
-		# TODO: bigger/brighter depending on speed
-		
+
 		if collision_sound:
-			collision_sound.volume_db = linear_to_db(clamp((average_contact_velocity.length() - 0.1) / 10.0, 0.0, 1.0))
+			collision_sound.volume_db = linear_to_db(hit_amount)
 			collision_sound.play()
 
 func _physics_process(delta: float) -> void:
