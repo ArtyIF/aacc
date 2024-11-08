@@ -1,7 +1,7 @@
 ## TODO: documentation
 class_name CarTireScreechSound extends AudioStreamPlayer3D
 
-@onready var car: Car = get_node("../..")
+@onready var car: Car = get_node("..")
 var smoothed_burnout_amount: SmoothedFloat = SmoothedFloat.new(0.0, 5.0)
 
 func _process(delta: float) -> void:

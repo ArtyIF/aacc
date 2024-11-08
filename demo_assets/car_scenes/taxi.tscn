@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=4 uid="uid://crko52geporbo"]
+[gd_scene load_steps=30 format=4 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -14,7 +14,6 @@
 [ext_resource type="PackedScene" uid="uid://bgcsoin0se8xf" path="res://addons/aacc/scenes/burnout_particles.tscn" id="9_tliwu"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car_tire_screech_sound.gd" id="10_nd533"]
 [ext_resource type="PackedScene" uid="uid://brllbm6wk0371" path="res://addons/aacc/scenes/grazing_particles.tscn" id="14_f5y41"]
-[ext_resource type="Script" path="res://addons/aacc/scripts/grazing_particles.gd" id="15_hypc8"]
 [ext_resource type="PackedScene" uid="uid://85rxsnvp8yp" path="res://addons/aacc/scenes/hit_particle.tscn" id="16_vaii0"]
 
 [sub_resource type="Resource" id="Resource_sei37"]
@@ -215,7 +214,7 @@ center_of_mass_mode = 1
 center_of_mass = Vector3(0, 0.1, 0)
 can_sleep = false
 contact_monitor = true
-max_contacts_reported = 1
+max_contacts_reported = 4
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_ik2h1")
@@ -276,9 +275,14 @@ gi_mode = 0
 mesh = SubResource("BoxMesh_sc5a5")
 skeleton = NodePath("../..")
 
-[node name="Engine" type="AudioStreamPlayer3D" parent="Visuals"]
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.18557e-09, 0.15, 0.025)
+shape = SubResource("ConvexPolygonShape3D_nnrir")
+
+[node name="Engine" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, -0.85)
 stream = ExtResource("7_edvvc")
+unit_size = 5.0
 autoplay = true
 bus = &"Engine"
 playback_type = 1
@@ -288,19 +292,16 @@ script = ExtResource("8_os6lh")
 engine_pitch_range = Vector2(0.1, 1)
 min_volume = 0.2
 
-[node name="TireScreech" type="AudioStreamPlayer3D" parent="Visuals"]
+[node name="TireScreech" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("9_8cvhf")
 volume_db = -80.0
+unit_size = 5.0
 autoplay = true
 bus = &"SFX"
 playback_type = 1
 attenuation_filter_cutoff_hz = 20500.0
 doppler_tracking = 1
 script = ExtResource("10_nd533")
-
-[node name="Collision" type="CollisionShape3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.18557e-09, 0.15, 0.025)
-shape = SubResource("ConvexPolygonShape3D_nnrir")
 
 [node name="WheelBL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
@@ -363,6 +364,5 @@ burnout_particles = NodePath("BurnoutParticles")
 [node name="BurnoutParticles" parent="WheelFR" instance=ExtResource("9_tliwu")]
 
 [node name="GrazingParticles" parent="." instance=ExtResource("14_f5y41")]
-script = ExtResource("15_hypc8")
 
 [node name="HitParticle" parent="." instance=ExtResource("16_vaii0")]

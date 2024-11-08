@@ -3,7 +3,7 @@ class_name CarEngineSoundBasic extends AudioStreamPlayer3D
 @export var engine_pitch_range: Vector2 = Vector2(0.0, 1.0)
 @export_range(0.0, 1.0) var min_volume: float = 0.1
 
-@onready var car: Car = get_node("../..")
+@onready var car: Car = get_node("..")
 
 func _ready() -> void:
 	volume_db = linear_to_db(min_volume)

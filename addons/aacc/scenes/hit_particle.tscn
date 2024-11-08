@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://85rxsnvp8yp"]
+[gd_scene load_steps=6 format=3 uid="uid://85rxsnvp8yp"]
 
 [ext_resource type="Material" uid="uid://byy4g5meme8kr" path="res://addons/aacc/materials/particles/hit/hit_particle_process.tres" id="1_ronfm"]
 [ext_resource type="Material" uid="uid://b41outi3l8r5h" path="res://addons/aacc/materials/particles/hit/hit_particle_render_compatibility.tres" id="2_nf58x"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/hit_particle.gd" id="3_80obw"]
+[ext_resource type="AudioStream" uid="uid://4rg0lpch7t07" path="res://addons/aacc/sounds/collision.ogg" id="4_5ixi1"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_v20hs"]
 material = ExtResource("2_nf58x")
@@ -11,8 +12,15 @@ size = Vector2(2, 2)
 [node name="HitParticle" type="GPUParticles3D"]
 emitting = false
 amount = 1
-lifetime = 0.25
+lifetime = 0.1
 one_shot = true
 process_material = ExtResource("1_ronfm")
 draw_pass_1 = SubResource("QuadMesh_v20hs")
 script = ExtResource("3_80obw")
+
+[node name="CollisionSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_5ixi1")
+unit_size = 5.0
+bus = &"SFX"
+playback_type = 1
+doppler_tracking = 1
