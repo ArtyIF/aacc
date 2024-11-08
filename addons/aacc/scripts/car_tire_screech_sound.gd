@@ -4,7 +4,7 @@ class_name CarTireScreechSound extends AudioStreamPlayer3D
 @onready var car: Car = get_node("..")
 
 func _process(delta: float) -> void:
-	pitch_scale = lerp(0.5, 1.25, smoothed_burnout_amount.get_current_value())
+	pitch_scale = lerp(0.5, 1.25, car.burnout_amount)
 	
 	volume_db = linear_to_db(car.burnout_amount)
 	if is_inf(volume_db):
