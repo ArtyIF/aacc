@@ -19,15 +19,15 @@
 [sub_resource type="Resource" id="Resource_sei37"]
 script = ExtResource("3_tres0")
 left_value = 0.0
-right_value = 1.75
-max_input = 20.0
+right_value = 2.0
+max_input = 10.0
 input_curve = 0.5
 
 [sub_resource type="Resource" id="Resource_qkpdq"]
 script = ExtResource("3_tres0")
 left_value = 1.0
-right_value = 0.1
-max_input = 20.0
+right_value = 0.2
+max_input = 10.0
 input_curve = 0.5
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f2x0p"]
@@ -229,7 +229,7 @@ points = PackedVector3Array(-0.10002, -5.87404e-05, 0.3, -0.20001, -5.87404e-05,
 mass = 200.0
 physics_material_override = ExtResource("1_kvx2t")
 center_of_mass_mode = 1
-center_of_mass = Vector3(0, 0.05, 0)
+center_of_mass = Vector3(0, 0.05, -0.24)
 can_sleep = false
 contact_monitor = true
 max_contacts_reported = 1
@@ -240,11 +240,11 @@ top_speed_forward = 100.0
 top_speed_reverse = 12.5
 max_acceleration = 5000.0
 gears_amount = 8
-max_steer_velocity = 6.28319
+max_steer_velocity = 4.71239
 distance_between_wheels = 1.52
 steer_tug_curve = SubResource("Resource_sei37")
 reduced_grip_curve = SubResource("Resource_qkpdq")
-angular_grip = 40000.0
+angular_grip = 30000.0
 brake_force = 6000.0
 
 [node name="Visuals" type="Node3D" parent="."]

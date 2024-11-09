@@ -1,7 +1,7 @@
 # Arty's Arcadey Car Controller
 
-A very work-in-progress car controller that kinda resembles Midnight Club
-physics? I guess? Includes a very basic demo scene and only one proper car.
+A very work-in-progress car controller. Includes a very basic demo scene and
+two cars (no way to easily switch between them).
 
 **NOTE**: please pay attention to the `attribution.txt` files in the
 `addons/aacc` folder! Some files' licenses require attribution if you're going
@@ -20,10 +20,3 @@ to use them!
 - A/D (keyboard), Left Stick Left/Right (gamepad) - steer
 - Space (keyboard), X (Xbox gamepad), Cross (DualShock), Y (Switch gamepad) -
   handbrake
-
-## Tricks
-- Hold the handbrake (Space) and steer at a high enough speed to perform a 180
-  turn!
-
-https://github.com/user-attachments/assets/0ea0236d-79a3-41c5-b0a3-a695d730ea14
-- That's it for now
