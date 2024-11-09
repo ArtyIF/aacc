@@ -33,7 +33,7 @@ func _process(delta: float) -> void:
 	
 	var velocity: Vector3 = (_last_position - _follow_node.global_position) / delta
 	velocity = project_plane.project(velocity)
-	var smooth_amount: float = clamp(remap(velocity.length(), 0.0, 5.0, 0.0, 10.0), 0.0, 10.0)
+	var smooth_amount: float = clamp(remap(velocity.length(), 0.0, 10.0, 0.0, 10.0), 0.0, 10.0)
 
 	var direction_target_velocity: Vector3 = velocity.normalized()
 	var direction_target_forward: Vector3 = direction_target_velocity

@@ -132,7 +132,7 @@ var current_gear: int = 0
 var target_gear: int = 0
 var switching_gears: bool = false
 var gear_switch_timer: float = 0.0
-var revs: SmoothedFloat = SmoothedFloat.new()
+var revs: SmoothedFloat = SmoothedFloat.new(0.0, 2.0)
 var accel_amount: SmoothedFloat = SmoothedFloat.new(0.0, 10.0)
 
 #== BURNOUT AMOUNT ==#
@@ -260,7 +260,7 @@ func update_revs(delta: float) -> void:
 
 #region Traction
 func get_brake_force() -> float:
-	var brake_speed = clamp(local_linear_velocity.z * 10.0, -1.0, 1.0)
+	var brake_speed = clamp(local_linear_velocity.z, -1.0, 1.0)
 	return brake_speed * brake_force * (1.0 if input_handbrake else (input_forward if is_reversing() else input_backward))
 
 func get_side_grip_force() -> float:

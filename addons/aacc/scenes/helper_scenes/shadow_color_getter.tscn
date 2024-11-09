@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://digmgsesj0spx"]
+[gd_scene load_steps=6 format=3 uid="uid://digmgsesj0spx"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_msylg"]
-[ext_resource type="LightmapGIData" uid="uid://bihvgg0wptynf" path="res://demo_assets/subscenes/shadow_color_getter.lmbake" id="2_re3cq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gujfx"]
 metallic_specular = 0.0
@@ -22,7 +21,12 @@ material = SubResource("StandardMaterial3D_nnv06")
 add_uv2 = true
 size = Vector3(2, 10, 2)
 
-[node name="Node3D" type="Node3D"]
+[node name="HoverMe" type="Node3D"]
+editor_description = "1. Set the lighting conditions
+2. Bake the lighting
+3. Open the exr file in something like GIMP
+4. Pick color from somewhere close to the end of the shadow
+5. Use that color for the car shadows"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("1_msylg")
@@ -39,7 +43,7 @@ mesh = SubResource("BoxMesh_3jt54")
 transform = Transform3D(0.5, -0.433013, 0.75, 0, 0.866026, 0.5, -0.866026, -0.25, 0.433013, 0, 0, 0)
 light_energy = 3.0
 light_bake_mode = 1
+shadow_enabled = true
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
 generate_probes_subdiv = 0
-light_data = ExtResource("2_re3cq")
