@@ -36,7 +36,7 @@ class_name CarWheel extends Node3D
 #== NODES ==#
 var raycast_instance_1: RayCast3D
 var raycast_instance_2: RayCast3D
-var parent_car: Car
+var car: Car
 
 #== COMPRESSION ==#
 var compression: float = 0.0
@@ -60,7 +60,7 @@ func _ready() -> void:
 	add_child(raycast_instance_2)
 	configure_raycasts()
 
-	parent_car = get_parent() as Car
+	car = get_parent() as Car
 	if visual_node:
 		initial_visual_node_transform = visual_node.transform
 
@@ -116,9 +116,11 @@ func update_visuals(delta: float) -> void:
 			compression_translation = min(0.0, compression_translation)
 		suspension_translation *= compression_translation
 
-	var steer_rotation: float = -parent_car.smooth_steer.get_current_value() * parent_car.base_steer_velocity * steer_multiplier
+	var steer_rotation: float = -car.smooth_steer.get_current_value() * car.base_steer_velocity * steer_multiplier
 	
-	current_forward_spin -= parent_car.local_linear_velocity.z * delta / wheel_radius
+	current_forward_spin -= car.local_linear_velocity.z * delta / wheel_radius
+	if car.input_handbrake and abs(car.current_gear) == 1 and car.local_linear_velocity.length() < 0.1:
+		current_forward_spin += ((car.top_speed_forward if car.current_gear > 0 else -car.top_speed_reverse) * car.revs.get_current_value() / (car.gears_amount if car.current_gear > 0 else 1.0)) * delta / wheel_radius
 	if current_forward_spin > 2 * PI:
 		current_forward_spin -= 2 * PI
 	elif current_forward_spin < 2 * PI:
@@ -140,13 +142,13 @@ func update_burnout() -> void:
 		return
 
 	if skid_trail:
-		skid_trail.is_emitting = parent_car.burnout_amount > 0.0
+		skid_trail.is_emitting = car.burnout_amount > 0.0
 		if skid_trail.is_emitting:
 			skid_trail.global_position = collision_point + (collision_normal * 0.01)
-			skid_trail.global_basis = skid_trail.global_basis.looking_at(-(collision_normal).cross(parent_car.global_basis.z), parent_car.global_basis.z)
+			skid_trail.global_basis = skid_trail.global_basis.looking_at(-(collision_normal).cross(car.global_basis.z), car.global_basis.z)
 
 	if burnout_particles:
-		burnout_particles.amount_ratio = parent_car.burnout_amount
+		burnout_particles.amount_ratio = car.burnout_amount
 		burnout_particles.emitting = burnout_particles.amount_ratio > 0 # to fix the random emissions
 		burnout_particles.global_position = collision_point
 
@@ -160,7 +162,7 @@ func _physics_process(delta: float) -> void:
 			last_compression = compression
 			last_compression_set = true
 
-		if not parent_car.freeze:
+		if not car.freeze:
 			var suspension_magnitude: float = 0.0
 			suspension_magnitude += compression * suspension_spring
 
@@ -169,7 +171,7 @@ func _physics_process(delta: float) -> void:
 			last_compression = compression
 
 			suspension_magnitude *= collision_normal.dot(global_basis.y)
-			parent_car.apply_force(collision_normal * suspension_magnitude, collision_point - parent_car.global_position)
+			car.apply_force(collision_normal * suspension_magnitude, collision_point - car.global_position)
 	else:
 		is_colliding = false
 		last_compression = 0.0

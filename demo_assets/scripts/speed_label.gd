@@ -1,5 +1,4 @@
 extends Label
-@export var car: Car
 
 func _process(_delta: float) -> void:
-	text = "%d km/h" % (car.linear_velocity.length() * 3.6)
+	text = "%d km/h" % (AACCGlobal.current_car.linear_velocity.length() * 3.6)

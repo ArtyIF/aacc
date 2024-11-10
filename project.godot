@@ -15,6 +15,10 @@ run/main_scene="res://demo_assets/demo_scene.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+AACCGlobal="*res://addons/aacc/scripts/aacc_global.gd"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/aacc/plugin.cfg", "res://addons/smoothing/plugin.cfg")

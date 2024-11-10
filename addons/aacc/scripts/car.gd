@@ -71,7 +71,7 @@ class_name Car extends RigidBody3D
 ## Left Value: 0[br]
 ## Right Value: 2[br]
 ## Max Input: 10[br]
-## Input Curve: 1.00
+## Input Curve: 0.500
 @export var steer_tug_curve: ProceduralCurve
 
 @export_group("Traction")

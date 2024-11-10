@@ -6,10 +6,10 @@
 [ext_resource type="Script" path="res://addons/smoothing/smoothing.gd" id="4_d7o5p"]
 [ext_resource type="Texture2D" uid="uid://cjps7quork0b2" path="res://demo_assets/kenney_car_kit/Textures/colormap.png" id="5_m0k3u"]
 [ext_resource type="Material" uid="uid://dhvix21u07c64" path="res://demo_assets/materials/race_shadow.tres" id="6_6s3l5"]
-[ext_resource type="AudioStream" uid="uid://be2onum31r06b" path="res://addons/aacc/sounds/engine_default.ogg" id="7_j1ide"]
-[ext_resource type="Script" path="res://addons/aacc/scripts/car_engine_sound_basic.gd" id="8_6wxmd"]
+[ext_resource type="AudioStream" uid="uid://bpawd6w0fj8be" path="res://addons/aacc/sounds/engine/v8_rev_high.ogg" id="7_hd8sx"]
+[ext_resource type="Script" path="res://addons/aacc/scripts/audio/car_engine_sound_basic.gd" id="8_6wxmd"]
 [ext_resource type="AudioStream" uid="uid://c23hw5dbnhtdl" path="res://addons/aacc/sounds/tire_screech.ogg" id="9_se4n0"]
-[ext_resource type="Script" path="res://addons/aacc/scripts/car_tire_screech_sound.gd" id="10_7ntn4"]
+[ext_resource type="Script" path="res://addons/aacc/scripts/audio/car_tire_screech_sound.gd" id="10_7ntn4"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car_wheel.gd" id="11_5tcrt"]
 [ext_resource type="PackedScene" uid="uid://crfcs3rsv2p1k" path="res://addons/aacc/scenes/skid_trail.tscn" id="12_i4s1x"]
 [ext_resource type="PackedScene" uid="uid://bgcsoin0se8xf" path="res://addons/aacc/scenes/burnout_particles.tscn" id="13_mb7np"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://85rxsnvp8yp" path="res://addons/aacc/scenes/hit_particle.tscn" id="15_fnqje"]
 
 [sub_resource type="Resource" id="Resource_sei37"]
+resource_local_to_scene = true
 script = ExtResource("3_tres0")
 left_value = 0.0
 right_value = 2.0
@@ -24,6 +25,7 @@ max_input = 10.0
 input_curve = 0.5
 
 [sub_resource type="Resource" id="Resource_qkpdq"]
+resource_local_to_scene = true
 script = ExtResource("3_tres0")
 left_value = 1.0
 right_value = 0.2
@@ -305,7 +307,7 @@ shape = SubResource("ConvexPolygonShape3D_guhhe")
 
 [node name="Engine" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, -0.85)
-stream = ExtResource("7_j1ide")
+stream = ExtResource("7_hd8sx")
 unit_size = 5.0
 autoplay = true
 bus = &"Engine"

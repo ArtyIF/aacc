@@ -2,7 +2,7 @@
 
 [ext_resource type="Material" uid="uid://byy4g5meme8kr" path="res://addons/aacc/materials/particles/hit/hit_particle_process.tres" id="1_ronfm"]
 [ext_resource type="Material" uid="uid://b41outi3l8r5h" path="res://addons/aacc/materials/particles/hit/hit_particle_render_compatibility.tres" id="2_nf58x"]
-[ext_resource type="Script" path="res://addons/aacc/scripts/hit_particle.gd" id="3_80obw"]
+[ext_resource type="Script" path="res://addons/aacc/scripts/particles/hit_particle.gd" id="3_80obw"]
 [ext_resource type="AudioStream" uid="uid://4rg0lpch7t07" path="res://addons/aacc/sounds/collision.ogg" id="4_5ixi1"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_v20hs"]

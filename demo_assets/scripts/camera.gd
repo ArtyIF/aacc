@@ -1,10 +1,9 @@
 extends Camera3D
 
-@export var car: Car
-
 @export_range(0.0, 1.0) var forward_direction_amount: float = 0.5
 
-@onready var _follow_node: Node3D = car.get_node("Visuals")
+@onready var _car: Car = AACCGlobal.current_car
+@onready var _follow_node: Node3D = _car.get_node("Visuals")
 @onready var _last_position: Vector3 = _follow_node.global_position
 
 @onready var _direction_target: Vector3 = global_basis.z
@@ -18,10 +17,10 @@ func _ready() -> void:
 	process_priority = 1000
 
 func _process(delta: float) -> void:
-	_smoothed_handbrake.advance_to(1.0 if car.input_handbrake else 0.0, delta)
+	_smoothed_handbrake.advance_to(1.0 if _car.input_handbrake else 0.0, delta)
 	
-	if car.ground_coefficient > 0.0:
-		_up_vector_target = car.average_wheel_collision_normal
+	if _car.ground_coefficient > 0.0:
+		_up_vector_target = _car.average_wheel_collision_normal
 	else:
 		_up_vector_target = Vector3.UP
 	
@@ -38,7 +37,7 @@ func _process(delta: float) -> void:
 	var direction_target_velocity: Vector3 = velocity.normalized()
 	var direction_target_forward: Vector3 = direction_target_velocity
 	var local_velocity_z: float = (_follow_node.global_basis.inverse() * velocity).z
-	if car.ground_coefficient > 0.0:
+	if _car.ground_coefficient > 0.0:
 		direction_target_forward = _follow_node.global_basis.z.normalized()
 	_direction_target = direction_target_velocity.slerp(direction_target_forward, forward_direction_amount * clamp(local_velocity_z / 15.0, 0.0, 1.0) * (1.0 - _smoothed_handbrake.get_current_value()))
 
