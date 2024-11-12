@@ -15,8 +15,9 @@ uniform int shadow_texture_mipmaps = 9;
 uniform float shadow_size = 4.0;
 uniform float shadow_height_above = 0.25;
 uniform float shadow_height_below = 1.25;
+uniform float shadow_grayscale : hint_range(0.0, 1.0) = 0.0;
 uniform vec3 shadow_color : source_color = vec3(0.0);
-uniform float shadow_color_amount: hint_range(0.0, 1.0) = 0.5;
+uniform float shadow_color_amount : hint_range(0.0, 1.0) = 0.5;
 uniform vec2 shadow_ramp = vec2(0.1, 1.0);
 
 varying mat4 INV_MODEL_MATRIX;
@@ -51,6 +52,10 @@ vec3 multi_channel_inverse_lerp(vec3 a, vec3 b, vec3 x) {
 	return result;
 }
 
+float grayscale(vec3 input) {
+	return dot(input, vec3(0.2126, 0.7152, 0.0722));
+}
+
 void fragment() {
 	float depth = texture(DEPTH_TEXTURE, SCREEN_UV).x;
 	vec3 world_pos = world_pos_from_depth(depth, SCREEN_UV, INV_PROJECTION_MATRIX, INV_VIEW_MATRIX, OUTPUT_IS_SRGB);
@@ -72,14 +77,16 @@ void fragment() {
 
 	float blur = 1.0 - pow(vertical_blend, 4.0);
 	float texture_levels = max(0.0, float(shadow_texture_mipmaps - 3));
+
 	vec3 shadow = textureLod(shadow_texture, decal_uv, blur * texture_levels).rgb;
-	vec3 ramped_shadow = multi_channel_inverse_lerp(vec3(shadow_ramp.x), vec3(shadow_ramp.y), clamp(shadow, vec3(0.0), vec3(1.0)));
+	shadow = multi_channel_inverse_lerp(vec3(shadow_ramp.x), vec3(shadow_ramp.y), clamp(shadow, vec3(0.0), vec3(1.0)));
+	shadow = mix(shadow, vec3(grayscale(shadow)), shadow_grayscale);
 
-	vec3 colorized_shadow = vec3(1.0) - ramped_shadow;
-	colorized_shadow *= vec3(1.0) - (shadow_color * shadow_color_amount);
-	colorized_shadow = vec3(1.0) - colorized_shadow;
+	shadow = vec3(1.0) - shadow;
+	shadow *= vec3(1.0) - (shadow_color * shadow_color_amount);
+	shadow = clamp(vec3(1.0) - shadow, 0.0, 1.0);
 
-	ALBEDO = mix(vec3(1.0), colorized_shadow, vertical_blend);
+	ALBEDO = mix(vec3(1.0), shadow, vertical_blend);
 	if (OUTPUT_IS_SRGB) { // Compatibility
 		// Compatibility renderer doesn't use HDR, so I guess it uses some tricks
 		// for multiplication to allow for a higher dynamic range

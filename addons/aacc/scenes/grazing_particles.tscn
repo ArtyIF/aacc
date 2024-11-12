@@ -7,7 +7,7 @@
 
 [sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_ei8gh"]
 material = ExtResource("2_w1dyw")
-size = 0.01
+size = 0.02
 
 [node name="GrazingParticles" type="GPUParticles3D"]
 emitting = false

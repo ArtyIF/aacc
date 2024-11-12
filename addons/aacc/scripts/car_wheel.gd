@@ -119,8 +119,9 @@ func update_visuals(delta: float) -> void:
 	var steer_rotation: float = -car.smooth_steer.get_current_value() * car.base_steer_velocity * steer_multiplier
 	
 	current_forward_spin -= car.local_linear_velocity.z * delta / wheel_radius
-	if car.input_handbrake and abs(car.current_gear) == 1 and car.local_linear_velocity.length() < 0.1:
-		current_forward_spin += ((car.top_speed_forward if car.current_gear > 0 else -car.top_speed_reverse) * car.revs.get_current_value() / (car.gears_amount if car.current_gear > 0 else 1.0)) * delta / wheel_radius
+	if car.local_linear_velocity.length() < 0.1:
+		current_forward_spin += (car.max_acceleration * delta * (1.0 if car.current_gear > 0 else -1.0) * car.burnout_amount) / wheel_radius
+
 	if current_forward_spin > 2 * PI:
 		current_forward_spin -= 2 * PI
 	elif current_forward_spin < 2 * PI:

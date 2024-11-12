@@ -43,8 +43,9 @@ func _process(delta: float) -> void:
 
 	_smoothed_direction = _smoothed_direction.slerp(_direction_target, delta * smooth_amount)
 	_smoothed_direction = project_plane.project(_smoothed_direction).normalized()
-
 	global_basis = Basis.looking_at(-_smoothed_direction, _smoothed_up_vector)
-	global_position = _follow_node.global_position + (_smoothed_direction * lerp(4.0, 6.0, min(velocity.length() / 100.0, 1.0))) + (_smoothed_up_vector * 2.0)
+	
+	var follow_camera_offset: Vector3 = _car.get_node("FollowCameraOffset").position
+	global_position = _follow_node.global_position + (_smoothed_direction * lerp(follow_camera_offset.z, follow_camera_offset.z + 2.0, min(velocity.length() / 100.0, 1.0))) + (_smoothed_up_vector * follow_camera_offset.y)
 
 	_last_position = _follow_node.global_position

@@ -1,8 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=21 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_8gguu"]
 [ext_resource type="Script" path="res://demo_assets/scripts/car_setter.gd" id="1_gsqbk"]
 [ext_resource type="Script" path="res://demo_assets/scripts/light_compatibility_adjustment.gd" id="2_gvx2t"]
+[ext_resource type="Script" path="res://demo_assets/scripts/shadow_color_setter.gd" id="2_qcqa7"]
 [ext_resource type="Script" path="res://demo_assets/scripts/camera.gd" id="2_vy2m6"]
 [ext_resource type="Script" path="res://demo_assets/scripts/gear_label.gd" id="4_0y4aa"]
 [ext_resource type="Script" path="res://demo_assets/scripts/revs_progress.gd" id="4_d88wf"]
@@ -52,12 +53,16 @@ font_size = 32
 outline_size = 8
 outline_color = Color(0, 0, 0, 1)
 
-[node name="Node3D" type="Node3D"]
+[node name="DemoScene" type="Node3D"]
 
 [node name="CarSetter" type="Node" parent="." node_paths=PackedStringArray("car")]
 process_priority = -1000
 script = ExtResource("1_gsqbk")
 car = NodePath("../Race")
+
+[node name="ShadowColorSetter" type="Node" parent="."]
+script = ExtResource("2_qcqa7")
+shadow_color = Color(0.572549, 0.690196, 0.772549, 1)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("1_8gguu")
@@ -65,7 +70,7 @@ environment = ExtResource("1_8gguu")
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.5, -0.433013, 0.75, 0, 0.866026, 0.5, -0.866026, -0.25, 0.433012, 0, 0, 0)
 light_energy = 1.2
-light_angular_distance = 10.0
+light_angular_distance = 5.0
 light_bake_mode = 1
 shadow_enabled = true
 directional_shadow_mode = 0

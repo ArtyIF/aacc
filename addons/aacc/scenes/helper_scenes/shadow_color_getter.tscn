@@ -35,15 +35,23 @@ environment = ExtResource("1_msylg")
 mesh = SubResource("PlaneMesh_47edg")
 skeleton = NodePath("../WorldEnvironment")
 
-[node name="Cube" type="MeshInstance3D" parent="."]
+[node name="Pole" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
 mesh = SubResource("BoxMesh_3jt54")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="Sunlight" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.5, -0.433013, 0.75, 0, 0.866026, 0.5, -0.866026, -0.25, 0.433013, 0, 0, 0)
 light_energy = 3.0
 light_bake_mode = 1
 shadow_enabled = true
+sky_mode = 1
+
+[node name="SunlightSky" type="DirectionalLight3D" parent="Sunlight"]
+transform = Transform3D(0.5, -0.433013, 0.75, 0, 0.866026, 0.5, -0.866026, -0.25, 0.433013, 0, 0, 0)
+light_energy = 3.0
+light_angular_distance = 1.0
+light_bake_mode = 1
+sky_mode = 2
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
 generate_probes_subdiv = 0

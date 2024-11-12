@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://crko52geporbo"]
+[gd_scene load_steps=35 format=4 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://addons/aacc/scripts/car_wheel.gd" id="3_gy57t"]
 [ext_resource type="Material" uid="uid://cpuf4tdbx4tnp" path="res://demo_assets/materials/taxi_shadow.tres" id="6_b84xa"]
 [ext_resource type="AudioStream" uid="uid://bpawd6w0fj8be" path="res://addons/aacc/sounds/engine/v8_rev_high.ogg" id="7_1b5mp"]
+[ext_resource type="Script" path="res://addons/aacc/scripts/car_shadow.gd" id="7_ljguu"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/audio/car_engine_sound_basic.gd" id="8_os6lh"]
 [ext_resource type="PackedScene" uid="uid://crfcs3rsv2p1k" path="res://addons/aacc/scenes/skid_trail.tscn" id="9_06vfh"]
 [ext_resource type="AudioStream" uid="uid://c23hw5dbnhtdl" path="res://addons/aacc/sounds/tire_screech.ogg" id="9_8cvhf"]
@@ -238,9 +239,9 @@ target_steer_velocity = 0.872665
 distance_between_wheels = 1.52
 smooth_steer_speed = 5.0
 steer_tug_curve = SubResource("Resource_sei37")
-linear_grip = 7000.0
+linear_grip = 8000.0
 reduced_grip_curve = SubResource("Resource_qkpdq")
-angular_grip = 7000.0
+angular_grip = 8000.0
 
 [node name="Visuals" type="Node3D" parent="."]
 script = ExtResource("2_56av6")
@@ -287,8 +288,9 @@ skeleton = NodePath("")
 gi_mode = 0
 mesh = SubResource("BoxMesh_sc5a5")
 skeleton = NodePath("../..")
+script = ExtResource("7_ljguu")
 
-[node name="Collision" type="CollisionShape3D" parent="."]
+[node name="CollisionBody" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.18557e-09, 0.15, 0.025)
 shape = SubResource("ConvexPolygonShape3D_8m1l8")
 
@@ -311,7 +313,6 @@ shape = SubResource("ConvexPolygonShape3D_s6wnr")
 [node name="Engine" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, -0.85)
 stream = ExtResource("7_1b5mp")
-unit_size = 5.0
 autoplay = true
 bus = &"Engine"
 playback_type = 1
@@ -336,8 +337,6 @@ script = ExtResource("10_nd533")
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.2
-suspension_spring = 2000.0
-suspension_damper = 200.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelBL")
 skid_trail = NodePath("SkidTrail")
 burnout_particles = NodePath("BurnoutParticles")
@@ -351,8 +350,6 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.2
-suspension_spring = 2000.0
-suspension_damper = 200.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelBR")
 skid_trail = NodePath("SkidTrail")
 burnout_particles = NodePath("BurnoutParticles")
@@ -365,8 +362,6 @@ burnout_particles = NodePath("BurnoutParticles")
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.2
-suspension_spring = 2000.0
-suspension_damper = 200.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelFL")
 steer_multiplier = 1.0
 skid_trail = NodePath("SkidTrail")
@@ -381,8 +376,6 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.2
-suspension_spring = 2000.0
-suspension_damper = 200.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelFR")
 steer_multiplier = 1.0
 skid_trail = NodePath("SkidTrail")
@@ -395,3 +388,6 @@ burnout_particles = NodePath("BurnoutParticles")
 [node name="GrazingParticles" parent="." instance=ExtResource("14_f5y41")]
 
 [node name="HitParticle" parent="." instance=ExtResource("16_vaii0")]
+
+[node name="FollowCameraOffset" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)

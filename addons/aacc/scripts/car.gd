@@ -140,7 +140,7 @@ var current_gear: int = 0
 var target_gear: int = 0
 var switching_gears: bool = false
 var gear_switch_timer: float = 0.0
-var revs: SmoothedFloat = SmoothedFloat.new(0.0, 2.0)
+var revs: SmoothedFloat = SmoothedFloat.new(0.0, 1.0)
 var accel_amount: SmoothedFloat = SmoothedFloat.new(0.0, 10.0)
 
 #== BURNOUT AMOUNT ==#
