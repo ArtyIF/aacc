@@ -12,7 +12,7 @@
 [ext_resource type="Script" path="res://addons/aacc/scripts/helper_classes/procedural_curve.gd" id="6_g4he2"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car_input.gd" id="7_67ns0"]
 [ext_resource type="Script" path="res://demo_assets/scripts/car_resetter.gd" id="8_i5b6w"]
-[ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="13_f5mkb"]
+[ext_resource type="PackedScene" uid="uid://bmlsbg56bgev6" path="res://demo_assets/car_scenes/race.tscn" id="13_4hrqd"]
 [ext_resource type="Script" path="res://demo_assets/scripts/speed_label.gd" id="14_i5r8x"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3uvu3"]
@@ -20,7 +20,7 @@ font_size = 32
 outline_size = 8
 outline_color = Color(0, 0, 0, 1)
 
-[sub_resource type="Resource" id="Resource_558wg"]
+[sub_resource type="Resource" id="Resource_vmgi2"]
 resource_local_to_scene = true
 script = ExtResource("6_g4he2")
 left_value = 0.0
@@ -28,11 +28,11 @@ right_value = 2.0
 max_input = 10.0
 input_curve = 0.5
 
-[sub_resource type="Resource" id="Resource_dhst0"]
+[sub_resource type="Resource" id="Resource_qxfxh"]
 resource_local_to_scene = true
 script = ExtResource("6_g4he2")
 left_value = 1.0
-right_value = 0.4
+right_value = 0.2
 max_input = 10.0
 input_curve = 0.5
 
@@ -41,7 +41,7 @@ input_curve = 0.5
 [node name="CarSetter" type="Node" parent="." node_paths=PackedStringArray("car")]
 process_priority = -1000
 script = ExtResource("1_gsqbk")
-car = NodePath("../Taxi")
+car = NodePath("../Race")
 
 [node name="ShadowColorSetter" type="Node" parent="."]
 script = ExtResource("2_qcqa7")
@@ -134,6 +134,6 @@ script = ExtResource("7_67ns0")
 [node name="CarResetter" type="Node" parent="."]
 script = ExtResource("8_i5b6w")
 
-[node name="Taxi" parent="." instance=ExtResource("13_f5mkb")]
-steer_tug_curve = SubResource("Resource_558wg")
-reduced_grip_curve = SubResource("Resource_dhst0")
+[node name="Race" parent="." instance=ExtResource("13_4hrqd")]
+steer_tug_curve = SubResource("Resource_vmgi2")
+reduced_grip_curve = SubResource("Resource_qxfxh")
