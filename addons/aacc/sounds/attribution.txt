@@ -1,3 +1,4 @@
 tire_screech.ogg: screeching tyres / tires by fractanimal -- https://freesound.org/s/614627/ -- License: Creative Commons 0
-collision.ogg: Collision 1 by JustInvoke -- https://freesound.org/s/446126/ -- License: Attribution 4.0
+collision.ogg: Collision 2 by JustInvoke -- https://freesound.org/s/446125/ -- License: Attribution 4.0
 scratch.ogg: metal plate scratch by Ridderick -- https://freesound.org/s/707639/ -- License: Creative Commons 0
+landing.ogg: Car Land/Hit by JustInvoke -- https://freesound.org/s/446135/ -- License: Attribution 4.0

@@ -6,16 +6,16 @@
 [ext_resource type="Script" path="res://addons/smoothing/smoothing.gd" id="4_d7o5p"]
 [ext_resource type="Material" uid="uid://iyyp6q7p13dj" path="res://demo_assets/materials/kenney_colormap_adjusted.tres" id="5_xqywu"]
 [ext_resource type="Material" uid="uid://dhvix21u07c64" path="res://demo_assets/materials/race_shadow.tres" id="6_6s3l5"]
-[ext_resource type="AudioStream" uid="uid://bpawd6w0fj8be" path="res://addons/aacc/sounds/engine/v8_rev_high.ogg" id="7_hd8sx"]
+[ext_resource type="AudioStream" uid="uid://bpawd6w0fj8be" path="res://addons/aacc/sounds/default_engine.ogg" id="7_hd8sx"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car_shadow.gd" id="7_kexbn"]
-[ext_resource type="Script" path="res://addons/aacc/scripts/audio/car_engine_sound_basic.gd" id="8_6wxmd"]
 [ext_resource type="AudioStream" uid="uid://c23hw5dbnhtdl" path="res://addons/aacc/sounds/tire_screech.ogg" id="9_se4n0"]
+[ext_resource type="Script" path="res://addons/aacc/scripts/audio/car_engine_sound_basic.gd" id="9_y0173"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/audio/car_tire_screech_sound.gd" id="10_7ntn4"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car_wheel.gd" id="11_5tcrt"]
 [ext_resource type="PackedScene" uid="uid://crfcs3rsv2p1k" path="res://addons/aacc/scenes/skid_trail.tscn" id="12_i4s1x"]
 [ext_resource type="PackedScene" uid="uid://bgcsoin0se8xf" path="res://addons/aacc/scenes/burnout_particles.tscn" id="13_mb7np"]
 [ext_resource type="PackedScene" uid="uid://brllbm6wk0371" path="res://addons/aacc/scenes/grazing_particles.tscn" id="14_bl51l"]
-[ext_resource type="PackedScene" uid="uid://85rxsnvp8yp" path="res://addons/aacc/scenes/hit_particle.tscn" id="15_fnqje"]
+[ext_resource type="PackedScene" uid="uid://cu5rgr0wdwdmv" path="res://addons/aacc/scenes/hit_sound.tscn" id="16_oxk7k"]
 
 [sub_resource type="Resource" id="Resource_sei37"]
 resource_local_to_scene = true
@@ -301,15 +301,15 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.35, 
 shape = SubResource("ConvexPolygonShape3D_guhhe")
 
 [node name="Engine" type="AudioStreamPlayer3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, -0.85)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.4)
 stream = ExtResource("7_hd8sx")
 autoplay = true
 bus = &"Engine"
 playback_type = 1
 attenuation_filter_db = -12.0
-doppler_tracking = 1
-script = ExtResource("8_6wxmd")
-engine_pitch_range = Vector2(0.25, 1.5)
+doppler_tracking = 2
+script = ExtResource("9_y0173")
+engine_pitch_range = Vector2(0.1, 1.5)
 min_volume = 0.2
 
 [node name="TireScreech" type="AudioStreamPlayer3D" parent="."]
@@ -381,7 +381,7 @@ burnout_particles = NodePath("BurnoutParticles")
 
 [node name="GrazingParticles" parent="." instance=ExtResource("14_bl51l")]
 
-[node name="HitParticle" parent="." instance=ExtResource("15_fnqje")]
+[node name="HitSound" parent="." instance=ExtResource("16_oxk7k")]
 
 [node name="FollowCameraOffset" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 3.5)

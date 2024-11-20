@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://addons/aacc/scripts/helper_classes/procedural_curve.gd" id="2_q0glx"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car_wheel.gd" id="3_gy57t"]
 [ext_resource type="Material" uid="uid://cpuf4tdbx4tnp" path="res://demo_assets/materials/taxi_shadow.tres" id="6_b84xa"]
-[ext_resource type="AudioStream" uid="uid://bpawd6w0fj8be" path="res://addons/aacc/sounds/engine/v8_rev_high.ogg" id="7_1b5mp"]
+[ext_resource type="AudioStream" uid="uid://bpawd6w0fj8be" path="res://addons/aacc/sounds/default_engine.ogg" id="7_1b5mp"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car_shadow.gd" id="7_ljguu"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/audio/car_engine_sound_basic.gd" id="8_os6lh"]
 [ext_resource type="PackedScene" uid="uid://crfcs3rsv2p1k" path="res://addons/aacc/scenes/skid_trail.tscn" id="9_06vfh"]
@@ -15,7 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://bgcsoin0se8xf" path="res://addons/aacc/scenes/burnout_particles.tscn" id="9_tliwu"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/audio/car_tire_screech_sound.gd" id="10_nd533"]
 [ext_resource type="PackedScene" uid="uid://brllbm6wk0371" path="res://addons/aacc/scenes/grazing_particles.tscn" id="14_f5y41"]
-[ext_resource type="PackedScene" uid="uid://85rxsnvp8yp" path="res://addons/aacc/scenes/hit_particle.tscn" id="16_vaii0"]
+[ext_resource type="PackedScene" uid="uid://cu5rgr0wdwdmv" path="res://addons/aacc/scenes/hit_sound.tscn" id="16_w577x"]
 
 [sub_resource type="Resource" id="Resource_sei37"]
 resource_local_to_scene = true
@@ -317,7 +317,7 @@ autoplay = true
 bus = &"Engine"
 playback_type = 1
 attenuation_filter_db = -12.0
-doppler_tracking = 1
+doppler_tracking = 2
 script = ExtResource("8_os6lh")
 engine_pitch_range = Vector2(0.1, 1)
 min_volume = 0.2
@@ -387,7 +387,7 @@ burnout_particles = NodePath("BurnoutParticles")
 
 [node name="GrazingParticles" parent="." instance=ExtResource("14_f5y41")]
 
-[node name="HitParticle" parent="." instance=ExtResource("16_vaii0")]
+[node name="HitSound" parent="." instance=ExtResource("16_w577x")]
 
 [node name="FollowCameraOffset" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)

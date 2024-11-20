@@ -11,7 +11,6 @@ curve = SubResource("Curve_avug2")
 particle_flag_align_y = true
 direction = Vector3(0, 1, -1)
 spread = 30.0
-flatness = 1.0
 initial_velocity_min = 5.0
 initial_velocity_max = 10.0
 alpha_curve = SubResource("CurveTexture_iglnt")

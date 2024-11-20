@@ -2,7 +2,9 @@ extends GPUParticles3D
 
 @onready var car: Car = get_node("..")
 @onready var car_rid: RID = car.get_rid()
-@onready var scratch_sound: AudioStreamPlayer3D = get_node_or_null("ScratchSound")
+@onready var scratch_sound: AudioStreamPlayer3D = get_node("ScratchSound")
+@onready var glow: OmniLight3D = get_node("Glow")
+@onready var glow_volumetrics: MeshInstance3D = get_node("Glow/Volumetrics")
 
 func _physics_process(delta: float) -> void:
 	var state: PhysicsDirectBodyState3D = PhysicsServer3D.body_get_direct_state(car_rid)
@@ -33,14 +35,19 @@ func _physics_process(delta: float) -> void:
 
 		var scratch_amount: float = clamp((average_contact_velocity - 0.1) / 10.0, 0.0, 1.0)
 		amount_ratio = scratch_amount
-		emitting = amount_ratio > 0
+		emitting = scratch_amount > 0.0
 		
-		if scratch_sound:
-			scratch_sound.global_position = average_contact_point
-			if not scratch_sound.playing: scratch_sound.play()
-			scratch_sound.volume_db = linear_to_db(scratch_amount)
+		glow.light_energy = scratch_amount * 5.0
+		(glow_volumetrics.material_override as StandardMaterial3D).albedo_color = Color(1.0, 0.5, 0.0, scratch_amount)
+		glow_volumetrics.visible = scratch_amount > 0.0
+		
+		scratch_sound.global_position = average_contact_point
+		if not scratch_sound.playing: scratch_sound.play()
+		scratch_sound.volume_db = linear_to_db(scratch_amount)
+		scratch_sound.pitch_scale = lerp(0.5, 1.0, clamp(scratch_amount, 0.0, 1.0))
 	else:
-		amount_ratio = 0
+		amount_ratio = 0.0
 		emitting = false
-		if scratch_sound:
-			scratch_sound.stop()
+		glow.light_energy = 0.0
+		glow_volumetrics.visible = false
+		scratch_sound.stop()
