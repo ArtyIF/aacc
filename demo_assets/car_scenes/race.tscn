@@ -280,6 +280,7 @@ mesh = SubResource("ArrayMesh_or4d8")
 skeleton = NodePath("")
 
 [node name="Shadow" type="MeshInstance3D" parent="Visuals/180Turnaround"]
+sorting_offset = -1000.0
 gi_mode = 0
 mesh = SubResource("BoxMesh_sc5a5")
 skeleton = NodePath("../..")
