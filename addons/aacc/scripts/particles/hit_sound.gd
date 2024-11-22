@@ -1,5 +1,6 @@
 extends AudioStreamPlayer3D
 
+@export var landing_sound: bool = false
 @onready var car: Car = get_node("..")
 @onready var car_rid: RID = car.get_rid()
 
@@ -16,7 +17,7 @@ func spawn_particle(_body: Node) -> void:
 
 	if state.get_contact_count() > 0:
 		for i in range(state.get_contact_count()):
-			if car.global_basis.y.dot(state.get_contact_local_normal(i)) < 0.9659:
+			if (car.global_basis.y.dot(state.get_contact_local_normal(i)) >= 0.9659) if landing_sound else (car.global_basis.y.dot(state.get_contact_local_normal(i)) < 0.9659):
 				average_contact_point += state.get_contact_local_position(i)
 				average_contact_normal += state.get_contact_local_normal(i)
 				average_contact_velocity += state.get_contact_local_velocity_at_position(i)

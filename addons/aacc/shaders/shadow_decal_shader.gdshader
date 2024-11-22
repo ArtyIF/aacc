@@ -5,7 +5,7 @@
 // on my PC. I haven't tested on phones yet
 
 shader_type spatial;
-render_mode world_vertex_coords, unshaded, cull_front, depth_test_disabled, blend_mul;
+render_mode world_vertex_coords, unshaded, cull_front, depth_test_disabled, blend_mul, fog_disabled;
 
 uniform sampler2D DEPTH_TEXTURE : hint_depth_texture, filter_linear_mipmap;
 

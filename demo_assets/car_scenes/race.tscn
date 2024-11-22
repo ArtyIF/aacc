@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=4 uid="uid://bmlsbg56bgev6"]
+[gd_scene load_steps=36 format=4 uid="uid://bmlsbg56bgev6"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_kvx2t"]
 [ext_resource type="Script" path="res://addons/aacc/scripts/car.gd" id="2_7b26q"]
@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://bgcsoin0se8xf" path="res://addons/aacc/scenes/burnout_particles.tscn" id="13_mb7np"]
 [ext_resource type="PackedScene" uid="uid://brllbm6wk0371" path="res://addons/aacc/scenes/grazing_particles.tscn" id="14_bl51l"]
 [ext_resource type="PackedScene" uid="uid://cu5rgr0wdwdmv" path="res://addons/aacc/scenes/hit_sound.tscn" id="16_oxk7k"]
+[ext_resource type="PackedScene" uid="uid://ikhso41tkthv" path="res://addons/aacc/scenes/land_sound.tscn" id="17_rrwvu"]
 
 [sub_resource type="Resource" id="Resource_sei37"]
 resource_local_to_scene = true
@@ -226,7 +227,7 @@ points = PackedVector3Array(-0.10002, -5.87404e-05, 0.3, -0.20001, -5.87404e-05,
 mass = 200.0
 physics_material_override = ExtResource("1_kvx2t")
 center_of_mass_mode = 1
-center_of_mass = Vector3(0, 0.05, -0.12)
+center_of_mass = Vector3(0, 0.05, 0)
 can_sleep = false
 contact_monitor = true
 max_contacts_reported = 1
@@ -239,12 +240,16 @@ gears_amount = 8
 max_steer_velocity = 4.71239
 distance_between_wheels = 1.52
 steer_tug_curve = SubResource("Resource_sei37")
+linear_grip = 30000.0
 reduced_grip_curve = SubResource("Resource_qkpdq")
 angular_grip = 30000.0
 brake_force = 6000.0
 
 [node name="Visuals" type="Node3D" parent="."]
 script = ExtResource("4_d7o5p")
+
+[node name="HoodCameraPosition" type="Node3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, -0.25)
 
 [node name="180Turnaround" type="Node3D" parent="Visuals"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
@@ -303,6 +308,7 @@ shape = SubResource("ConvexPolygonShape3D_guhhe")
 [node name="Engine" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.4)
 stream = ExtResource("7_hd8sx")
+max_db = 0.0
 autoplay = true
 bus = &"Engine"
 playback_type = 1
@@ -382,6 +388,8 @@ burnout_particles = NodePath("BurnoutParticles")
 [node name="GrazingParticles" parent="." instance=ExtResource("14_bl51l")]
 
 [node name="HitSound" parent="." instance=ExtResource("16_oxk7k")]
+
+[node name="LandSound" parent="." instance=ExtResource("17_rrwvu")]
 
 [node name="FollowCameraOffset" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 3.5)

@@ -305,6 +305,8 @@ func get_steer_force() -> float:
 
 	var steer_velocity: float = clamp(steer_amount * base_steer_velocity, -max_steer_velocity, max_steer_velocity)
 	var steer_force: float = steer_velocity - local_angular_velocity.y
+	if abs(steer_force) < 0.01:
+		return 0
 	return steer_force * mass
 #endregion
 
@@ -379,7 +381,6 @@ func _physics_process(delta: float) -> void:
 		apply_force(Plane(average_wheel_collision_normal).project(global_basis * desired_takeoff_force) * ground_coefficient / delta, average_wheel_collision_point - global_position)
 
 		var desired_steer_force: Vector3 = Vector3.UP * get_steer_force()
-
 		var sum_of_angular_forces: Vector3 = convert_angular_force(desired_steer_force, delta)
 		apply_torque(sum_of_angular_forces * average_wheel_collision_normal * ground_coefficient / delta)
 	else:

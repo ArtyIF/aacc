@@ -1,9 +1,11 @@
 extends Camera3D
 
 @export_range(0.0, 1.0) var forward_direction_amount: float = 0.5
+@export var use_hood_camera: bool = false
 
 @onready var _car: Car = AACCGlobal.current_car
 @onready var _follow_node: Node3D = _car.get_node("Visuals")
+@onready var _hood_follow_node: Node3D = _follow_node.get_node("HoodCameraPosition")
 @onready var _last_position: Vector3 = _follow_node.global_position
 
 @onready var _direction_target: Vector3 = global_basis.z
@@ -17,6 +19,10 @@ func _ready() -> void:
 	process_priority = 1000
 
 func _process(delta: float) -> void:
+	if use_hood_camera:
+		global_transform = _hood_follow_node.global_transform
+		return
+	
 	_smoothed_handbrake.advance_to(1.0 if _car.input_handbrake else 0.0, delta)
 	
 	if _car.ground_coefficient > 0.0:

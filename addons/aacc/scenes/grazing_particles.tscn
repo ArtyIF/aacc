@@ -22,6 +22,7 @@ fill_to = Vector2(1, 0.5)
 transparency = 1
 blend_mode = 1
 shading_mode = 0
+disable_fog = true
 albedo_color = Color(1, 0.5, 0, 1)
 albedo_texture = SubResource("GradientTexture2D_4m7ks")
 billboard_mode = 1

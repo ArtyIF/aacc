@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://ikhso41tkthv"]
+
+[ext_resource type="AudioStream" uid="uid://dfujyp0h8vst1" path="res://addons/aacc/sounds/landing.ogg" id="1_2inf4"]
+[ext_resource type="Script" path="res://addons/aacc/scripts/particles/hit_sound.gd" id="2_ty1ah"]
+
+[node name="LandSound" type="AudioStreamPlayer3D"]
+stream = ExtResource("1_2inf4")
+bus = &"SFX"
+playback_type = 1
+script = ExtResource("2_ty1ah")
+landing_sound = true
