@@ -1,17 +1,17 @@
 [gd_scene load_steps=36 format=4 uid="uid://bmlsbg56bgev6"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_kvx2t"]
-[ext_resource type="Script" path="res://addons/aacc/scripts/car.gd" id="2_7b26q"]
-[ext_resource type="Script" path="res://addons/aacc/scripts/helper_classes/procedural_curve.gd" id="3_tres0"]
-[ext_resource type="Script" path="res://addons/smoothing/smoothing.gd" id="4_d7o5p"]
+[ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="2_7b26q"]
+[ext_resource type="Script" uid="uid://crrd7ugev6afh" path="res://addons/aacc/scripts/helper_classes/procedural_curve.gd" id="3_tres0"]
+[ext_resource type="Script" uid="uid://bry54wpt37ira" path="res://addons/smoothing/smoothing.gd" id="4_d7o5p"]
 [ext_resource type="Material" uid="uid://iyyp6q7p13dj" path="res://demo_assets/materials/kenney_colormap_adjusted.tres" id="5_xqywu"]
 [ext_resource type="Material" uid="uid://dhvix21u07c64" path="res://demo_assets/materials/race_shadow.tres" id="6_6s3l5"]
 [ext_resource type="AudioStream" uid="uid://bpawd6w0fj8be" path="res://addons/aacc/sounds/default_engine.ogg" id="7_hd8sx"]
-[ext_resource type="Script" path="res://addons/aacc/scripts/car_shadow.gd" id="7_kexbn"]
+[ext_resource type="Script" uid="uid://bf1xbn8a0sqtj" path="res://addons/aacc/scripts/car_shadow.gd" id="7_kexbn"]
 [ext_resource type="AudioStream" uid="uid://c23hw5dbnhtdl" path="res://addons/aacc/sounds/tire_screech.ogg" id="9_se4n0"]
-[ext_resource type="Script" path="res://addons/aacc/scripts/audio/car_engine_sound_basic.gd" id="9_y0173"]
-[ext_resource type="Script" path="res://addons/aacc/scripts/audio/car_tire_screech_sound.gd" id="10_7ntn4"]
-[ext_resource type="Script" path="res://addons/aacc/scripts/car_wheel.gd" id="11_5tcrt"]
+[ext_resource type="Script" uid="uid://wwwk6psnhcay" path="res://addons/aacc/scripts/audio/car_engine_sound_basic.gd" id="9_y0173"]
+[ext_resource type="Script" uid="uid://c2n5f44kxf8r1" path="res://addons/aacc/scripts/audio/car_tire_screech_sound.gd" id="10_7ntn4"]
+[ext_resource type="Script" uid="uid://cffihwqtqvy4x" path="res://addons/aacc/scripts/car_wheel.gd" id="11_5tcrt"]
 [ext_resource type="PackedScene" uid="uid://crfcs3rsv2p1k" path="res://addons/aacc/scenes/skid_trail.tscn" id="12_i4s1x"]
 [ext_resource type="PackedScene" uid="uid://bgcsoin0se8xf" path="res://addons/aacc/scenes/burnout_particles.tscn" id="13_mb7np"]
 [ext_resource type="PackedScene" uid="uid://brllbm6wk0371" path="res://addons/aacc/scenes/grazing_particles.tscn" id="14_bl51l"]
@@ -30,7 +30,7 @@ input_curve = 0.5
 resource_local_to_scene = true
 script = ExtResource("3_tres0")
 left_value = 1.0
-right_value = 0.2
+right_value = 0.05
 max_input = 10.0
 input_curve = 0.5
 
@@ -228,22 +228,23 @@ mass = 200.0
 physics_material_override = ExtResource("1_kvx2t")
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, 0.05, 0)
-can_sleep = false
 contact_monitor = true
 max_contacts_reported = 1
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("2_7b26q")
-top_speed_forward = 80.0
-max_acceleration = 5000.0
-gears_amount = 8
+top_speed_forward = 100.0
+max_acceleration = 6000.0
+gears_amount = 10
+gear_switch_time = 0.05
 max_steer_velocity = 4.71239
 distance_between_wheels = 1.52
 steer_tug_curve = SubResource("Resource_sei37")
-linear_grip = 30000.0
+linear_grip = 60000.0
 reduced_grip_curve = SubResource("Resource_qkpdq")
-angular_grip = 30000.0
-brake_force = 6000.0
+angular_grip = 60000.0
+brake_force = 9000.0
+takeoff_force_multiplier = 1.0
 
 [node name="Visuals" type="Node3D" parent="."]
 script = ExtResource("4_d7o5p")
@@ -285,6 +286,9 @@ gi_mode = 0
 mesh = SubResource("BoxMesh_sc5a5")
 skeleton = NodePath("../..")
 script = ExtResource("7_kexbn")
+
+[node name="FollowCameraOffset" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 3.5)
 
 [node name="CollisionBody" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.34997e-13, 0.1, 3.60944e-16)
@@ -391,6 +395,3 @@ burnout_particles = NodePath("BurnoutParticles")
 [node name="HitSound" parent="." instance=ExtResource("16_oxk7k")]
 
 [node name="LandSound" parent="." instance=ExtResource("17_rrwvu")]
-
-[node name="FollowCameraOffset" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 3.5)

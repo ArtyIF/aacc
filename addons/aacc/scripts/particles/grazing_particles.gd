@@ -42,7 +42,8 @@ func _physics_process(delta: float) -> void:
 		glow_volumetrics.visible = scratch_amount > 0.0
 		
 		scratch_sound.global_position = average_contact_point
-		if not scratch_sound.playing: scratch_sound.play()
+		if not scratch_sound.playing:
+			scratch_sound.play(randf_range(0.0, scratch_sound.stream.get_length()))
 		scratch_sound.volume_db = linear_to_db(scratch_amount)
 		scratch_sound.pitch_scale = lerp(0.5, 1.0, clamp(scratch_amount, 0.0, 1.0))
 	else:

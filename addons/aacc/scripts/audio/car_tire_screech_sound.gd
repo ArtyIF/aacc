@@ -10,6 +10,6 @@ func _process(_delta: float) -> void:
 	if is_inf(volume_db):
 		volume_db = -80.0
 	if volume_db > -60.0 and not playing:
-		play()
+		play(randf_range(0.0, stream.get_length()))
 	elif volume_db <= -60.0 and playing:
 		stop()

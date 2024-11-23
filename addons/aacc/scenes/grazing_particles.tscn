@@ -2,7 +2,7 @@
 
 [ext_resource type="Material" uid="uid://khid5v6c0yoy" path="res://addons/aacc/materials/particles/hit/grazing_particles_process.tres" id="1_rxs6f"]
 [ext_resource type="Material" uid="uid://dhrnjkq6055cs" path="res://addons/aacc/materials/particles/hit/grazing_particles_render.tres" id="2_w1dyw"]
-[ext_resource type="Script" path="res://addons/aacc/scripts/particles/grazing_particles.gd" id="3_iykqh"]
+[ext_resource type="Script" uid="uid://bb1qkgl6iw2v4" path="res://addons/aacc/scripts/particles/grazing_particles.gd" id="3_iykqh"]
 [ext_resource type="AudioStream" uid="uid://bl6w1j0kv7hte" path="res://addons/aacc/sounds/scratch.ogg" id="3_l1xrg"]
 
 [sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_ei8gh"]
@@ -33,7 +33,7 @@ size = Vector2(4, 4)
 
 [node name="GrazingParticles" type="GPUParticles3D"]
 emitting = false
-amount = 120
+amount = 240
 amount_ratio = 0.0
 trail_enabled = true
 trail_lifetime = 0.2
