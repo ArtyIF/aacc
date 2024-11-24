@@ -93,7 +93,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
 doppler_tracking = 1
 far = 1000.0
 script = ExtResource("2_vy2m6")
-forward_direction_amount = 0.0
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -156,17 +155,17 @@ script = ExtResource("7_67ns0")
 script = ExtResource("8_i5b6w")
 
 [node name="Race" parent="." instance=ExtResource("13_4hrqd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
 steer_tug_curve = SubResource("Resource_vmgi2")
 reduced_grip_curve = SubResource("Resource_qxfxh")
+
+[node name="Taxi" parent="." instance=ExtResource("16_37bxw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+steer_tug_curve = SubResource("Resource_k47vb")
+reduced_grip_curve = SubResource("Resource_mruix")
 
 [node name="ramptest" parent="." instance=ExtResource("15_lentq")]
 transform = Transform3D(-0.952601, -0.0225841, -0.304014, -0.0107575, 1.99987, -0.00343316, 0.304033, -9.31321e-09, -0.952662, 145.31, 9.88008, -125.437)
 
 [node name="ramptest2" parent="." instance=ExtResource("15_lentq")]
 transform = Transform3D(-0.999863, -2.11876e-08, 0.0331244, -0.00285096, 0.985073, -0.344223, -0.016315, -0.172135, -1.96988, 172.325, 8.77901, -0.812098)
-
-[node name="Taxi" parent="." instance=ExtResource("16_37bxw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
-steer_tug_curve = SubResource("Resource_k47vb")
-reduced_grip_curve = SubResource("Resource_mruix")

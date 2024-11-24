@@ -161,7 +161,7 @@ func get_input_steer_multiplier() -> float:
 
 func process_smooth_values(delta: float):
 	# TODO: slow down when handbrake is on
-	smooth_steer.advance_to(input_steer * get_input_steer_multiplier(), delta)
+	smooth_steer.advance_to(input_steer * (get_input_steer_multiplier() if ground_coefficient > 0.0 else 1.0), delta)
 
 	var target_steer_sign = sign(local_linear_velocity.z)
 
@@ -305,8 +305,6 @@ func get_steer_force() -> float:
 
 	var steer_velocity: float = clamp(steer_amount * base_steer_velocity, -max_steer_velocity, max_steer_velocity)
 	var steer_force: float = steer_velocity - local_angular_velocity.y
-	if abs(steer_force) < 0.01:
-		return 0
 	return steer_force * mass
 #endregion
 
