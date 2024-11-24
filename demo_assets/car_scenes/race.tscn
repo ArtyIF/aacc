@@ -30,7 +30,7 @@ input_curve = 0.5
 resource_local_to_scene = true
 script = ExtResource("3_tres0")
 left_value = 1.0
-right_value = 0.05
+right_value = 0.075
 max_input = 10.0
 input_curve = 0.5
 
@@ -224,7 +224,7 @@ points = PackedVector3Array(0.19998, -5.87404e-05, 0.3, 0.0999902, -5.87404e-05,
 points = PackedVector3Array(-0.10002, -5.87404e-05, 0.3, -0.20001, -5.87404e-05, 0.3, -0.10002, -0.0777017, 0.289722, 0, -0.0660141, 0.246261, 0, -5.87404e-05, 0.254953, 0, 0.0659554, 0.246261, -0.10002, 0.0775842, 0.289722, -0.3, -5.87404e-05, 0.254953, -0.3, -0.0660141, 0.246261, -0.20001, -0.0777017, 0.289722, -0.20001, 0.0775842, 0.289722, -0.3, 0.0659554, 0.246261, -0.10002, -0.150059, 0.259769, 0, -0.127506, 0.22083, 0, 0.127447, 0.22083, -0.10002, 0.149941, 0.259769, -0.3, -0.127506, 0.22083, -0.20001, -0.150059, 0.259769, -0.20001, 0.149941, 0.259769, -0.3, 0.127447, 0.22083, -0.10002, -0.212138, 0.212079, 0, -0.180364, 0.180305, 0, 0.180305, 0.180305, -0.10002, 0.212079, 0.212079, -0.3, -0.180364, 0.180305, -0.20001, -0.212138, 0.212079, -0.20001, 0.212079, 0.212079, -0.3, 0.180305, 0.180305, -0.10002, -0.259828, 0.149941, 0, -0.220889, 0.127447, 0, 0.22083, 0.127447, -0.10002, 0.259769, 0.149941, -0.3, -0.220889, 0.127447, -0.20001, -0.259828, 0.149941, -0.20001, 0.259769, 0.149941, -0.3, 0.22083, 0.127447, -0.10002, -0.289839, 0.0775842, 0, -0.24632, 0.0659554, 0, 0.246261, 0.0659554, -0.10002, 0.289722, 0.0775842, -0.3, -0.24632, 0.0659554, -0.20001, -0.289839, 0.0775842, -0.20001, 0.289722, 0.0775842, -0.3, 0.246261, 0.0659554, -0.10002, -0.3, -5.87404e-05, 0, -0.255012, -5.87404e-05, 0, 0.254953, -5.87404e-05, -0.10002, 0.3, -5.87404e-05, -0.3, -0.255012, -5.87404e-05, -0.20001, -0.3, -5.87404e-05, -0.20001, 0.3, -5.87404e-05, -0.3, 0.254953, -5.87404e-05, -0.10002, -0.289839, -0.0777017, 0, -0.24632, -0.0660141, 0, 0.246261, -0.0660141, -0.10002, 0.289722, -0.0777017, -0.3, -0.24632, -0.0660141, -0.20001, -0.289839, -0.0777017, -0.20001, 0.289722, -0.0777017, -0.3, 0.246261, -0.0660141, -0.10002, -0.259828, -0.150059, 0, -0.220889, -0.127506, 0, 0.22083, -0.127506, -0.10002, 0.259769, -0.150059, -0.3, -0.220889, -0.127506, -0.20001, -0.259828, -0.150059, -0.20001, 0.259769, -0.150059, -0.3, 0.22083, -0.127506, -0.10002, -0.212138, -0.212138, 0, -0.180364, -0.180364, 0, 0.180305, -0.180364, -0.10002, 0.212079, -0.212138, -0.3, -0.180364, -0.180364, -0.20001, -0.212138, -0.212138, -0.20001, 0.212079, -0.212138, -0.3, 0.180305, -0.180364, -0.10002, -0.150059, -0.259828, 0, -0.127506, -0.220889, 0, 0.127447, -0.220889, -0.10002, 0.149941, -0.259828, -0.3, -0.127506, -0.220889, -0.20001, -0.150059, -0.259828, -0.20001, 0.149941, -0.259828, -0.3, 0.127447, -0.220889, -0.10002, -0.0777017, -0.289839, 0, -0.0660141, -0.24632, 0, 0.0659554, -0.24632, -0.10002, 0.0775842, -0.289839, -0.3, -0.0660141, -0.24632, -0.20001, -0.0777017, -0.289839, -0.20001, 0.0775842, -0.289839, -0.3, 0.0659554, -0.24632, -0.10002, -5.87404e-05, -0.3, 0, -5.87404e-05, -0.255012, -0.3, -5.87404e-05, -0.255012, -0.20001, -5.87404e-05, -0.3)
 
 [node name="Race" type="RigidBody3D"]
-mass = 200.0
+mass = 740.0
 physics_material_override = ExtResource("1_kvx2t")
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, 0.05, 0)
@@ -234,17 +234,19 @@ linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("2_7b26q")
 top_speed_forward = 100.0
-max_acceleration = 6000.0
+top_speed_reverse = 20.0
+max_acceleration = 24000.0
 gears_amount = 10
 gear_switch_time = 0.05
 max_steer_velocity = 4.71239
 distance_between_wheels = 1.52
 steer_tug_curve = SubResource("Resource_sei37")
-linear_grip = 60000.0
+linear_grip = 180000.0
 reduced_grip_curve = SubResource("Resource_qkpdq")
-angular_grip = 60000.0
-brake_force = 9000.0
+angular_grip = 180000.0
+brake_force = 36000.0
 takeoff_force_multiplier = 1.0
+air_stabilization_force = 100.0
 
 [node name="Visuals" type="Node3D" parent="."]
 script = ExtResource("4_d7o5p")
@@ -337,8 +339,8 @@ script = ExtResource("10_7ntn4")
 [node name="WheelBL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("11_5tcrt")
-suspension_spring = 5000.0
-suspension_damper = 500.0
+suspension_spring = 20000.0
+suspension_damper = 2000.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelBL")
 skid_trail = NodePath("SkidTrail")
 burnout_particles = NodePath("BurnoutParticles")
@@ -351,8 +353,8 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 [node name="WheelBR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
 script = ExtResource("11_5tcrt")
-suspension_spring = 5000.0
-suspension_damper = 500.0
+suspension_spring = 20000.0
+suspension_damper = 2000.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelBR")
 skid_trail = NodePath("SkidTrail")
 burnout_particles = NodePath("BurnoutParticles")
@@ -364,8 +366,8 @@ burnout_particles = NodePath("BurnoutParticles")
 [node name="WheelFL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
 script = ExtResource("11_5tcrt")
-suspension_spring = 5000.0
-suspension_damper = 500.0
+suspension_spring = 20000.0
+suspension_damper = 2000.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelFL")
 steer_multiplier = 1.0
 skid_trail = NodePath("SkidTrail")
@@ -379,8 +381,8 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 [node name="WheelFR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
 script = ExtResource("11_5tcrt")
-suspension_spring = 5000.0
-suspension_damper = 500.0
+suspension_spring = 20000.0
+suspension_damper = 2000.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelFR")
 steer_multiplier = 1.0
 skid_trail = NodePath("SkidTrail")

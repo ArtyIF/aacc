@@ -120,7 +120,7 @@ func update_visuals(delta: float) -> void:
 	
 	current_forward_spin -= car.local_linear_velocity.z * delta / wheel_radius
 	if car.local_linear_velocity.length() < 0.1:
-		current_forward_spin += (car.max_acceleration * delta * (1.0 if car.current_gear > 0 else -1.0) * car.burnout_amount) / wheel_radius
+		current_forward_spin += (car.max_acceleration * delta * (1.0 if car.current_gear > 0 else -1.0) * car.burnout_amount) / (car.mass * wheel_radius)
 
 	if current_forward_spin > 2 * PI:
 		current_forward_spin -= 2 * PI

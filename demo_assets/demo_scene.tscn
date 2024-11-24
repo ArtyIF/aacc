@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=22 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_8gguu"]
 [ext_resource type="Script" uid="uid://be5ommjjotu3v" path="res://demo_assets/scripts/car_setter.gd" id="1_gsqbk"]
@@ -7,14 +7,15 @@
 [ext_resource type="Script" uid="uid://dncrn8e6ld0ld" path="res://demo_assets/scripts/camera.gd" id="2_vy2m6"]
 [ext_resource type="Script" uid="uid://bdvurklyft1eu" path="res://demo_assets/scripts/gear_label.gd" id="4_0y4aa"]
 [ext_resource type="Script" uid="uid://l1fginr1hyby" path="res://demo_assets/scripts/revs_progress.gd" id="4_d88wf"]
-[ext_resource type="LightmapGIData" uid="uid://dfd0tci5o77bn" path="res://demo_assets/demo_scene.lmbake" id="5_5iqqq"]
 [ext_resource type="PackedScene" uid="uid://cu2i0ah5ud0w1" path="res://demo_assets/subscenes/pathtest.blend" id="5_868sg"]
 [ext_resource type="Script" uid="uid://crrd7ugev6afh" path="res://addons/aacc/scripts/helper_classes/procedural_curve.gd" id="6_g4he2"]
 [ext_resource type="Script" uid="uid://tr0544b3fh36" path="res://addons/aacc/scripts/car_input.gd" id="7_67ns0"]
 [ext_resource type="Script" uid="uid://boouw6vvcjw40" path="res://demo_assets/scripts/car_resetter.gd" id="8_i5b6w"]
+[ext_resource type="LightmapGIData" uid="uid://df0hgkk0j8a1" path="res://demo_assets/demo_scene.lmbake" id="9_lentq"]
 [ext_resource type="PackedScene" uid="uid://bmlsbg56bgev6" path="res://demo_assets/car_scenes/race.tscn" id="13_4hrqd"]
 [ext_resource type="Script" uid="uid://bc8mdmqla4bv" path="res://demo_assets/scripts/speed_label.gd" id="14_i5r8x"]
 [ext_resource type="PackedScene" uid="uid://ca1oyf482fq72" path="res://demo_assets/subscenes/ramptest.blend" id="15_lentq"]
+[ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="16_37bxw"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3uvu3"]
 font_size = 32
@@ -34,6 +35,22 @@ resource_local_to_scene = true
 script = ExtResource("6_g4he2")
 left_value = 1.0
 right_value = 0.2
+max_input = 10.0
+input_curve = 0.5
+
+[sub_resource type="Resource" id="Resource_k47vb"]
+resource_local_to_scene = true
+script = ExtResource("6_g4he2")
+left_value = 0.0
+right_value = 2.0
+max_input = 10.0
+input_curve = 0.5
+
+[sub_resource type="Resource" id="Resource_mruix"]
+resource_local_to_scene = true
+script = ExtResource("6_g4he2")
+left_value = 1.0
+right_value = 0.4
 max_input = 10.0
 input_curve = 0.5
 
@@ -58,7 +75,8 @@ light_angular_distance = 5.0
 light_bake_mode = 1
 shadow_enabled = true
 directional_shadow_mode = 0
-directional_shadow_max_distance = 10.0
+directional_shadow_fade_start = 1.0
+directional_shadow_max_distance = 20.0
 directional_shadow_pancake_size = 50.0
 sky_mode = 1
 script = ExtResource("2_gvx2t")
@@ -75,6 +93,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
 doppler_tracking = 1
 far = 1000.0
 script = ExtResource("2_vy2m6")
+forward_direction_amount = 0.0
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -124,8 +143,9 @@ vertical_alignment = 2
 script = ExtResource("14_i5r8x")
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
+quality = 0
 generate_probes_subdiv = 0
-light_data = ExtResource("5_5iqqq")
+light_data = ExtResource("9_lentq")
 
 [node name="pathtest" parent="." instance=ExtResource("5_868sg")]
 
@@ -136,8 +156,17 @@ script = ExtResource("7_67ns0")
 script = ExtResource("8_i5b6w")
 
 [node name="Race" parent="." instance=ExtResource("13_4hrqd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 steer_tug_curve = SubResource("Resource_vmgi2")
 reduced_grip_curve = SubResource("Resource_qxfxh")
 
 [node name="ramptest" parent="." instance=ExtResource("15_lentq")]
-transform = Transform3D(-0.659766, 0, -0.751471, 0, 1, 0, 0.751471, 0, -0.659766, 96.5678, 1.644e-06, -174.103)
+transform = Transform3D(-0.952601, -0.0225841, -0.304014, -0.0107575, 1.99987, -0.00343316, 0.304033, -9.31321e-09, -0.952662, 145.31, 9.88008, -125.437)
+
+[node name="ramptest2" parent="." instance=ExtResource("15_lentq")]
+transform = Transform3D(-0.999863, -2.11876e-08, 0.0331244, -0.00285096, 0.985073, -0.344223, -0.016315, -0.172135, -1.96988, 172.325, 8.77901, -0.812098)
+
+[node name="Taxi" parent="." instance=ExtResource("16_37bxw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+steer_tug_curve = SubResource("Resource_k47vb")
+reduced_grip_curve = SubResource("Resource_mruix")
