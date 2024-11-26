@@ -3,8 +3,6 @@ extends GPUParticles3D
 @onready var car: Car = get_node("..")
 @onready var car_rid: RID = car.get_rid()
 @onready var scratch_sound: AudioStreamPlayer3D = get_node("ScratchSound")
-@onready var glow: OmniLight3D = get_node("Glow")
-@onready var glow_volumetrics: MeshInstance3D = get_node("Glow/Volumetrics")
 
 func _physics_process(delta: float) -> void:
 	var state: PhysicsDirectBodyState3D = PhysicsServer3D.body_get_direct_state(car_rid)
@@ -37,10 +35,6 @@ func _physics_process(delta: float) -> void:
 		amount_ratio = scratch_amount
 		emitting = scratch_amount > 0.0
 		
-		glow.light_energy = scratch_amount * 5.0
-		(glow_volumetrics.material_override as StandardMaterial3D).albedo_color = Color(1.0, 0.5, 0.0, scratch_amount)
-		glow_volumetrics.visible = scratch_amount > 0.0
-		
 		scratch_sound.global_position = average_contact_point
 		if not scratch_sound.playing:
 			scratch_sound.play(randf_range(0.0, scratch_sound.stream.get_length()))
@@ -49,6 +43,4 @@ func _physics_process(delta: float) -> void:
 	else:
 		amount_ratio = 0.0
 		emitting = false
-		glow.light_energy = 0.0
-		glow_volumetrics.visible = false
 		scratch_sound.stop()

@@ -1,0 +1,9 @@
+[gd_resource type="TubeTrailMesh" load_steps=2 format=3 uid="uid://i2nxndo50uq4"]
+
+[ext_resource type="Material" uid="uid://dhrnjkq6055cs" path="res://addons/aacc/materials/particles/hit/grazing_particles_render.tres" id="1_pei8e"]
+
+[resource]
+material = ExtResource("1_pei8e")
+radius = 0.01
+cap_top = false
+cap_bottom = false

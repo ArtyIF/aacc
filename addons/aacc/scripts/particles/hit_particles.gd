@@ -1,13 +1,14 @@
-extends AudioStreamPlayer3D
+extends GPUParticles3D
 
-@export var landing_sound: bool = false
 @onready var car: Car = get_node("..")
 @onready var car_rid: RID = car.get_rid()
+@onready var sound: AudioStreamPlayer3D = get_node("Sound")
 
 func _ready() -> void:
 	get_node("..").body_entered.connect(spawn_particle)
 
 func spawn_particle(_body: Node) -> void:
+	# TODO: this whole system needs to be redone
 	var state: PhysicsDirectBodyState3D = PhysicsServer3D.body_get_direct_state(car_rid)
 
 	var average_contact_point: Vector3 = Vector3.ZERO
@@ -17,7 +18,7 @@ func spawn_particle(_body: Node) -> void:
 
 	if state.get_contact_count() > 0:
 		for i in range(state.get_contact_count()):
-			if (car.global_basis.y.dot(state.get_contact_local_normal(i)) >= 0.9659) if landing_sound else (car.global_basis.y.dot(state.get_contact_local_normal(i)) < 0.9659):
+			if car.global_basis.y.dot(state.get_contact_local_normal(i)) < 0.9659:
 				average_contact_point += state.get_contact_local_position(i)
 				average_contact_normal += state.get_contact_local_normal(i)
 				average_contact_velocity += state.get_contact_local_velocity_at_position(i)
@@ -34,6 +35,12 @@ func spawn_particle(_body: Node) -> void:
 			position = car.to_local(average_contact_point)
 
 			var hit_amount = clamp((average_contact_velocity.length() - 0.1) / 10.0, 0.0, 1.0)
-			if not playing or linear_to_db(hit_amount) >= volume_db:
-				volume_db = linear_to_db(hit_amount)
-				play()
+			amount_ratio = hit_amount
+			if not emitting:
+				emitting = true
+			else:
+				restart()
+
+			if not sound.playing or linear_to_db(hit_amount) >= sound.volume_db:
+				sound.volume_db = linear_to_db(hit_amount)
+				sound.play()

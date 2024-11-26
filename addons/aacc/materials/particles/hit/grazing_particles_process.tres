@@ -1,7 +1,7 @@
-[gd_resource type="ParticleProcessMaterial" load_steps=3 format=3 uid="uid://khid5v6c0yoy"]
+[gd_resource type="ParticleProcessMaterial" load_steps=3 format=3 uid="uid://jng4xpl38yiy"]
 
 [sub_resource type="Curve" id="Curve_avug2"]
-_data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
+_data = [Vector2(0, 1), 0.0, -1.33333, 0, 1, Vector2(0.75, 0), -1.33333, 0.0, 1, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_iglnt"]

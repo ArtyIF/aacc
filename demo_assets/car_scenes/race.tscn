@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=4 uid="uid://bmlsbg56bgev6"]
+[gd_scene load_steps=35 format=4 uid="uid://bmlsbg56bgev6"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_kvx2t"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="2_7b26q"]
@@ -15,8 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://crfcs3rsv2p1k" path="res://addons/aacc/scenes/skid_trail.tscn" id="12_i4s1x"]
 [ext_resource type="PackedScene" uid="uid://bgcsoin0se8xf" path="res://addons/aacc/scenes/burnout_particles.tscn" id="13_mb7np"]
 [ext_resource type="PackedScene" uid="uid://brllbm6wk0371" path="res://addons/aacc/scenes/grazing_particles.tscn" id="14_bl51l"]
-[ext_resource type="PackedScene" uid="uid://cu5rgr0wdwdmv" path="res://addons/aacc/scenes/hit_sound.tscn" id="16_oxk7k"]
-[ext_resource type="PackedScene" uid="uid://ikhso41tkthv" path="res://addons/aacc/scenes/land_sound.tscn" id="17_rrwvu"]
+[ext_resource type="PackedScene" uid="uid://dmiohxwb2w23v" path="res://addons/aacc/scenes/hit_particles.tscn" id="16_oxk7k"]
 
 [sub_resource type="Resource" id="Resource_sei37"]
 resource_local_to_scene = true
@@ -339,6 +338,7 @@ script = ExtResource("10_7ntn4")
 [node name="WheelBL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("11_5tcrt")
+buffer_radius = 0.04
 suspension_spring = 20000.0
 suspension_damper = 2000.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelBL")
@@ -353,6 +353,7 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 [node name="WheelBR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
 script = ExtResource("11_5tcrt")
+buffer_radius = 0.04
 suspension_spring = 20000.0
 suspension_damper = 2000.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelBR")
@@ -366,6 +367,7 @@ burnout_particles = NodePath("BurnoutParticles")
 [node name="WheelFL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
 script = ExtResource("11_5tcrt")
+buffer_radius = 0.04
 suspension_spring = 20000.0
 suspension_damper = 2000.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelFL")
@@ -381,6 +383,7 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 [node name="WheelFR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
 script = ExtResource("11_5tcrt")
+buffer_radius = 0.04
 suspension_spring = 20000.0
 suspension_damper = 2000.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelFR")
@@ -392,8 +395,6 @@ burnout_particles = NodePath("BurnoutParticles")
 
 [node name="BurnoutParticles" parent="WheelFR" instance=ExtResource("13_mb7np")]
 
+[node name="HitParticles" parent="." instance=ExtResource("16_oxk7k")]
+
 [node name="GrazingParticles" parent="." instance=ExtResource("14_bl51l")]
-
-[node name="HitSound" parent="." instance=ExtResource("16_oxk7k")]
-
-[node name="LandSound" parent="." instance=ExtResource("17_rrwvu")]
