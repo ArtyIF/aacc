@@ -59,7 +59,7 @@ input_curve = 0.5
 [node name="CarSetter" type="Node" parent="." node_paths=PackedStringArray("car")]
 process_priority = -1000
 script = ExtResource("1_gsqbk")
-car = NodePath("../Race")
+car = NodePath("../Taxi")
 
 [node name="ShadowColorSetter" type="Node" parent="."]
 script = ExtResource("2_qcqa7")

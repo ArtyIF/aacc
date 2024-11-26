@@ -374,6 +374,7 @@ visual_node = NodePath("../Visuals/180Turnaround/WheelFL")
 steer_multiplier = 1.0
 skid_trail = NodePath("SkidTrail")
 burnout_particles = NodePath("BurnoutParticles")
+freeze_on_handbrake = true
 
 [node name="SkidTrail" parent="WheelFL" instance=ExtResource("12_i4s1x")]
 
@@ -390,6 +391,7 @@ visual_node = NodePath("../Visuals/180Turnaround/WheelFR")
 steer_multiplier = 1.0
 skid_trail = NodePath("SkidTrail")
 burnout_particles = NodePath("BurnoutParticles")
+freeze_on_handbrake = true
 
 [node name="SkidTrail" parent="WheelFR" instance=ExtResource("12_i4s1x")]
 

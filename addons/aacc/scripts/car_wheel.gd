@@ -25,6 +25,7 @@ class_name CarWheel extends Node3D
 ## too springy and out of control.
 @export var suspension_damper: float = 300.0
 
+# TODO: document
 @export_group("Visuals")
 @export var visual_node: Node3D
 @export_range(-1, 1) var steer_multiplier: float = 0.0
@@ -32,6 +33,8 @@ class_name CarWheel extends Node3D
 @export var limit_bottom: bool = false
 @export var skid_trail: TrailRenderer
 @export var burnout_particles: GPUParticles3D
+@export var freeze_on_handbrake: bool = false
+@export var block_wheelspin: bool = false
 
 #== NODES ==#
 var raycast_instance_1: RayCast3D
@@ -118,9 +121,10 @@ func update_visuals(delta: float) -> void:
 
 	var steer_rotation: float = -car.smooth_steer.get_current_value() * car.base_steer_velocity * steer_multiplier
 	
-	current_forward_spin -= car.local_linear_velocity.z * delta / wheel_radius
-	if car.local_linear_velocity.length() < 0.1:
-		current_forward_spin += (car.max_acceleration * delta * (1.0 if car.current_gear > 0 else -1.0) * car.burnout_amount) / (car.mass * wheel_radius)
+	if not (freeze_on_handbrake and car.input_handbrake):
+		current_forward_spin -= car.local_linear_velocity.z * delta / wheel_radius
+		if (not block_wheelspin) and car.local_linear_velocity.length() < 0.1:
+			current_forward_spin += (car.max_acceleration * delta * (1.0 if car.current_gear > 0 else -1.0) * car.burnout_amount) / (car.mass * wheel_radius)
 
 	if current_forward_spin > 2 * PI:
 		current_forward_spin -= 2 * PI
@@ -142,14 +146,17 @@ func update_burnout() -> void:
 		burnout_particles.emitting = false
 		return
 
+	var burnout_amount: float = car.burnout_amount
+	if car.local_linear_velocity.length() < 0.1 and ((freeze_on_handbrake and car.input_handbrake) or block_wheelspin):
+		burnout_amount = 0.0
+
 	if skid_trail:
-		skid_trail.is_emitting = car.burnout_amount > 0.0
-		if skid_trail.is_emitting:
-			skid_trail.global_position = collision_point + (collision_normal * 0.01)
-			skid_trail.global_basis = skid_trail.global_basis.looking_at(-(collision_normal).cross(car.global_basis.z), car.global_basis.z)
+		skid_trail.is_emitting = burnout_amount > 0.0
+		skid_trail.global_position = collision_point + (collision_normal * 0.01)
+		skid_trail.global_basis = skid_trail.global_basis.looking_at(-(collision_normal).cross(car.global_basis.z), car.global_basis.z)
 
 	if burnout_particles:
-		burnout_particles.amount_ratio = car.burnout_amount
+		burnout_particles.amount_ratio = burnout_amount
 		burnout_particles.emitting = burnout_particles.amount_ratio > 0 # to fix the random emissions
 		burnout_particles.global_position = collision_point
 

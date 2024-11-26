@@ -24,3 +24,5 @@ to use them!
 - A/D (keyboard), Left Stick Left/Right (gamepad) - steer
 - Space (keyboard), X (Xbox gamepad), Cross (DualShock), Y (Switch gamepad) -
   handbrake
+- R (keyboard), Back/Squares (Xbox gamepad), Select/Options(?) (DualShock),
+  minus (Switch gamepad) - reset

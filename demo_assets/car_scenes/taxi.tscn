@@ -355,6 +355,8 @@ suspension_damper = 1500.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelBL")
 skid_trail = NodePath("SkidTrail")
 burnout_particles = NodePath("BurnoutParticles")
+freeze_on_handbrake = true
+block_wheelspin = true
 
 [node name="SkidTrail" parent="WheelBL" instance=ExtResource("9_06vfh")]
 
@@ -370,6 +372,8 @@ suspension_damper = 1500.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelBR")
 skid_trail = NodePath("SkidTrail")
 burnout_particles = NodePath("BurnoutParticles")
+freeze_on_handbrake = true
+block_wheelspin = true
 
 [node name="SkidTrail" parent="WheelBR" instance=ExtResource("9_06vfh")]
 
