@@ -1,0 +1,16 @@
+[gd_resource type="ParticleProcessMaterial" load_steps=3 format=3 uid="uid://jng4xpl38yiy"]
+
+[sub_resource type="Curve" id="Curve_avug2"]
+_data = [Vector2(0, 1), 0.0, -1.33333, 0, 1, Vector2(0.75, 0), -1.33333, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_iglnt"]
+curve = SubResource("Curve_avug2")
+
+[resource]
+particle_flag_align_y = true
+direction = Vector3(0, 1, -1)
+spread = 30.0
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+alpha_curve = SubResource("CurveTexture_iglnt")

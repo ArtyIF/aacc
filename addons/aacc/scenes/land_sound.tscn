@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://68owx6receu4"]
+
+[ext_resource type="AudioStream" uid="uid://dfujyp0h8vst1" path="res://addons/aacc/sounds/landing.ogg" id="1_hrrbl"]
+[ext_resource type="Script" uid="uid://csqi5pde5ud5l" path="res://addons/aacc/scripts/audio/hit_sound.gd" id="2_fiyv0"]
+
+[node name="LandSound" type="AudioStreamPlayer3D"]
+stream = ExtResource("1_hrrbl")
+unit_size = 5.0
+autoplay = true
+bus = &"SFX"
+doppler_tracking = 2
+script = ExtResource("2_fiyv0")

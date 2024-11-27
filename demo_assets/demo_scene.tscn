@@ -11,7 +11,7 @@
 [ext_resource type="Script" uid="uid://crrd7ugev6afh" path="res://addons/aacc/scripts/helper_classes/procedural_curve.gd" id="6_g4he2"]
 [ext_resource type="Script" uid="uid://tr0544b3fh36" path="res://addons/aacc/scripts/car_input.gd" id="7_67ns0"]
 [ext_resource type="Script" uid="uid://boouw6vvcjw40" path="res://demo_assets/scripts/car_resetter.gd" id="8_i5b6w"]
-[ext_resource type="LightmapGIData" uid="uid://df0hgkk0j8a1" path="res://demo_assets/demo_scene.lmbake" id="9_lentq"]
+[ext_resource type="LightmapGIData" uid="uid://byfapvcgpdvnb" path="res://demo_assets/demo_scene.lmbake" id="9_37bxw"]
 [ext_resource type="PackedScene" uid="uid://bmlsbg56bgev6" path="res://demo_assets/car_scenes/race.tscn" id="13_4hrqd"]
 [ext_resource type="Script" uid="uid://bc8mdmqla4bv" path="res://demo_assets/scripts/speed_label.gd" id="14_i5r8x"]
 [ext_resource type="PackedScene" uid="uid://ca1oyf482fq72" path="res://demo_assets/subscenes/ramptest.blend" id="15_lentq"]
@@ -59,7 +59,7 @@ input_curve = 0.5
 [node name="CarSetter" type="Node" parent="." node_paths=PackedStringArray("car")]
 process_priority = -1000
 script = ExtResource("1_gsqbk")
-car = NodePath("../Taxi")
+car = NodePath("../Race")
 
 [node name="ShadowColorSetter" type="Node" parent="."]
 script = ExtResource("2_qcqa7")
@@ -69,14 +69,16 @@ shadow_color = Color(0.572549, 0.690196, 0.772549, 1)
 environment = ExtResource("1_8gguu")
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.5, -0.433013, 0.75, 0, 0.866026, 0.5, -0.866026, -0.25, 0.433012, 0, 0, 0)
+transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 0, 0, 0)
 light_energy = 1.2
-light_angular_distance = 5.0
+light_angular_distance = 10.0
 light_bake_mode = 1
 shadow_enabled = true
-directional_shadow_mode = 0
+directional_shadow_split_1 = 0.25
+directional_shadow_split_2 = 0.5
+directional_shadow_split_3 = 0.75
 directional_shadow_fade_start = 1.0
-directional_shadow_max_distance = 20.0
+directional_shadow_max_distance = 50.0
 directional_shadow_pancake_size = 50.0
 sky_mode = 1
 script = ExtResource("2_gvx2t")
@@ -142,9 +144,8 @@ vertical_alignment = 2
 script = ExtResource("14_i5r8x")
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
-quality = 0
 generate_probes_subdiv = 0
-light_data = ExtResource("9_lentq")
+light_data = ExtResource("9_37bxw")
 
 [node name="pathtest" parent="." instance=ExtResource("5_868sg")]
 

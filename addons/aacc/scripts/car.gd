@@ -181,9 +181,9 @@ func process_smooth_values(delta: float):
 
 #region Acceleration
 func is_reversing() -> bool:
-	if local_linear_velocity.z >= 0.1:
+	if local_linear_velocity.z >= 0.25:
 		return true
-	elif local_linear_velocity.z <= -0.1:
+	elif local_linear_velocity.z <= -0.25:
 		return false
 	else:
 		return input_backward > 0.0 and input_forward == 0.0
@@ -203,7 +203,7 @@ func get_slowdown_force() -> float:
 	return clamp(local_linear_velocity.z * 10.0, -1.0, 1.0) * (1.0 - input_accel_adapted) * slowdown_force
 
 func get_takeoff_force() -> float:
-	if old_input_handbrake == true and input_handbrake == false and current_gear == 1 and local_linear_velocity.length() < 0.1:
+	if old_input_handbrake == true and input_handbrake == false and current_gear == 1 and local_linear_velocity.length() < 0.25:
 		return top_speed_forward * mass * revs.get_current_value() * takeoff_force_multiplier / gears_amount
 	return 0.0
 #endregion
@@ -228,14 +228,14 @@ func get_gear_limit(gear: int) -> float:
 	return (1.0 / gears_amount) * gear
 
 func set_current_gear():
-	if (input_handbrake and local_linear_velocity.length() >= 0.1) or is_zero_approx(ground_coefficient):
+	if (input_handbrake and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
 		return
 	
 	if is_reversing():
 		target_gear = -1
 		return
 
-	if abs(local_linear_velocity.z) < 0.1:
+	if abs(local_linear_velocity.z) < 0.25:
 		if input_forward == 0 and input_backward == 0:
 			target_gear = 0
 		elif input_forward > 0:
@@ -260,7 +260,7 @@ func update_accel_amount(delta: float) -> void:
 
 func update_revs(delta: float) -> void:
 	var target_revs: float = 0.0
-	if abs(local_linear_velocity.z) < 0.1 or is_zero_approx(ground_coefficient):
+	if abs(local_linear_velocity.z) < 0.25 or is_zero_approx(ground_coefficient):
 		target_revs = accel_amount.get_current_value()
 	elif not switching_gears:
 		if current_gear > 0:
@@ -274,7 +274,7 @@ func update_revs(delta: float) -> void:
 #region Traction
 func get_brake_force() -> float:
 	var brake_speed = clamp(local_linear_velocity.z, -1.0, 1.0)
-	return brake_speed * brake_force * (1.0 if input_handbrake else (input_forward if is_reversing() else input_backward))
+	return brake_speed * (linear_grip if linear_velocity.length() < 0.25 else brake_force) * (1.0 if input_handbrake else (input_forward if is_reversing() else input_backward))
 
 func get_side_grip_force() -> float:
 	return -local_linear_velocity.x * mass
@@ -283,9 +283,9 @@ func update_burnout_amount():
 	var burnout_colliding: float = 1.0 if ground_coefficient > 0.0 else 0.0
 	var burnout_velocity: float = (abs(local_linear_velocity.x) - 0.5) / 10.0
 	var burnout_revs: float = 0.0
-	if input_handbrake and linear_velocity.length() >= 0.1:
+	if input_handbrake and linear_velocity.length() >= 0.25:
 		burnout_revs = linear_velocity.length() / 10.0
-	if abs(local_linear_velocity.z) < 0.1:
+	if abs(local_linear_velocity.z) < 0.25:
 		burnout_revs = revs.get_current_value()
 	
 	burnout_amount = clamp(burnout_colliding * (burnout_velocity + burnout_revs), 0.0, 1.0)

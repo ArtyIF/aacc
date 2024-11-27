@@ -123,7 +123,7 @@ func update_visuals(delta: float) -> void:
 	
 	if not (freeze_on_handbrake and car.input_handbrake):
 		current_forward_spin -= car.local_linear_velocity.z * delta / wheel_radius
-		if (not block_wheelspin) and car.local_linear_velocity.length() < 0.1:
+		if (not block_wheelspin) and car.local_linear_velocity.length() < 0.25:
 			current_forward_spin += (car.max_acceleration * delta * (1.0 if car.current_gear > 0 else -1.0) * car.burnout_amount) / (car.mass * wheel_radius)
 
 	if current_forward_spin > 2 * PI:
@@ -147,7 +147,7 @@ func update_burnout() -> void:
 		return
 
 	var burnout_amount: float = car.burnout_amount
-	if car.local_linear_velocity.length() < 0.1 and ((freeze_on_handbrake and car.input_handbrake) or block_wheelspin):
+	if car.local_linear_velocity.length() < 0.25 and ((freeze_on_handbrake and car.input_handbrake) or block_wheelspin):
 		burnout_amount = 0.0
 
 	if skid_trail:

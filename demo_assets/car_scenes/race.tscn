@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=4 uid="uid://bmlsbg56bgev6"]
+[gd_scene load_steps=34 format=4 uid="uid://bmlsbg56bgev6"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_kvx2t"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="2_7b26q"]
@@ -14,8 +14,7 @@
 [ext_resource type="Script" uid="uid://cffihwqtqvy4x" path="res://addons/aacc/scripts/car_wheel.gd" id="11_5tcrt"]
 [ext_resource type="PackedScene" uid="uid://crfcs3rsv2p1k" path="res://addons/aacc/scenes/skid_trail.tscn" id="12_i4s1x"]
 [ext_resource type="PackedScene" uid="uid://bgcsoin0se8xf" path="res://addons/aacc/scenes/burnout_particles.tscn" id="13_mb7np"]
-[ext_resource type="PackedScene" uid="uid://brllbm6wk0371" path="res://addons/aacc/scenes/grazing_particles.tscn" id="14_bl51l"]
-[ext_resource type="PackedScene" uid="uid://dmiohxwb2w23v" path="res://addons/aacc/scenes/hit_particles.tscn" id="16_oxk7k"]
+[ext_resource type="PackedScene" uid="uid://d0s7bam4kvl4f" path="res://addons/aacc/scenes/hit_reaction.tscn" id="15_nwlw3"]
 
 [sub_resource type="Resource" id="Resource_sei37"]
 resource_local_to_scene = true
@@ -311,30 +310,6 @@ shape = SubResource("ConvexPolygonShape3D_l8fnf")
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.35, 0.3, -0.639886)
 shape = SubResource("ConvexPolygonShape3D_guhhe")
 
-[node name="Engine" type="AudioStreamPlayer3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.4)
-stream = ExtResource("7_hd8sx")
-max_db = 0.0
-autoplay = true
-bus = &"Engine"
-playback_type = 1
-attenuation_filter_db = -12.0
-doppler_tracking = 2
-script = ExtResource("9_y0173")
-engine_pitch_range = Vector2(0.1, 1.5)
-min_volume = 0.2
-
-[node name="TireScreech" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("9_se4n0")
-volume_db = -80.0
-unit_size = 5.0
-autoplay = true
-bus = &"SFX"
-playback_type = 1
-attenuation_filter_cutoff_hz = 20500.0
-doppler_tracking = 1
-script = ExtResource("10_7ntn4")
-
 [node name="WheelBL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("11_5tcrt")
@@ -397,6 +372,28 @@ freeze_on_handbrake = true
 
 [node name="BurnoutParticles" parent="WheelFR" instance=ExtResource("13_mb7np")]
 
-[node name="HitParticles" parent="." instance=ExtResource("16_oxk7k")]
+[node name="Engine" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.4)
+stream = ExtResource("7_hd8sx")
+max_db = 0.0
+autoplay = true
+bus = &"Engine"
+playback_type = 1
+attenuation_filter_db = -12.0
+doppler_tracking = 2
+script = ExtResource("9_y0173")
+engine_pitch_range = Vector2(0.1, 1.5)
+min_volume = 0.2
 
-[node name="GrazingParticles" parent="." instance=ExtResource("14_bl51l")]
+[node name="TireScreech" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("9_se4n0")
+volume_db = -80.0
+unit_size = 5.0
+autoplay = true
+bus = &"SFX"
+playback_type = 1
+attenuation_filter_cutoff_hz = 20500.0
+doppler_tracking = 1
+script = ExtResource("10_7ntn4")
+
+[node name="HitReaction" parent="." instance=ExtResource("15_nwlw3")]
