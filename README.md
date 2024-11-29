@@ -26,3 +26,4 @@ to use them!
   handbrake
 - R (keyboard), Back/Squares (Xbox gamepad), Select/Options(?) (DualShock),
   minus (Switch gamepad) - reset
+- C (keyboard), Right Stick Click (gamepad) - toggle hood camera
