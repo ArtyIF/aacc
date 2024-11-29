@@ -22,22 +22,6 @@ font_size = 32
 outline_size = 8
 outline_color = Color(0, 0, 0, 1)
 
-[sub_resource type="Resource" id="Resource_vmgi2"]
-resource_local_to_scene = true
-script = ExtResource("6_g4he2")
-left_value = 0.0
-right_value = 2.0
-max_input = 10.0
-input_curve = 0.5
-
-[sub_resource type="Resource" id="Resource_qxfxh"]
-resource_local_to_scene = true
-script = ExtResource("6_g4he2")
-left_value = 1.0
-right_value = 0.2
-max_input = 10.0
-input_curve = 0.5
-
 [sub_resource type="Resource" id="Resource_k47vb"]
 resource_local_to_scene = true
 script = ExtResource("6_g4he2")
@@ -54,6 +38,22 @@ right_value = 0.4
 max_input = 10.0
 input_curve = 0.5
 
+[sub_resource type="Resource" id="Resource_vmgi2"]
+resource_local_to_scene = true
+script = ExtResource("6_g4he2")
+left_value = 0.0
+right_value = 2.0
+max_input = 10.0
+input_curve = 0.5
+
+[sub_resource type="Resource" id="Resource_qxfxh"]
+resource_local_to_scene = true
+script = ExtResource("6_g4he2")
+left_value = 1.0
+right_value = 0.2
+max_input = 10.0
+input_curve = 0.5
+
 [node name="DemoScene" type="Node3D"]
 
 [node name="CarSetter" type="Node" parent="." node_paths=PackedStringArray("car")]
@@ -64,6 +64,9 @@ car = NodePath("../Race")
 [node name="ShadowColorSetter" type="Node" parent="."]
 script = ExtResource("2_qcqa7")
 shadow_color = Color(0.572549, 0.690196, 0.772549, 1)
+
+[node name="CarResetter" type="Node" parent="."]
+script = ExtResource("8_i5b6w")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("1_8gguu")
@@ -152,18 +155,15 @@ light_data = ExtResource("9_37bxw")
 [node name="CarInput" type="Node" parent="."]
 script = ExtResource("7_67ns0")
 
-[node name="CarResetter" type="Node" parent="."]
-script = ExtResource("8_i5b6w")
+[node name="Taxi" parent="." instance=ExtResource("16_37bxw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+steer_tug_curve = SubResource("Resource_k47vb")
+reduced_grip_curve = SubResource("Resource_mruix")
 
 [node name="Race" parent="." instance=ExtResource("13_4hrqd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
 steer_tug_curve = SubResource("Resource_vmgi2")
 reduced_grip_curve = SubResource("Resource_qxfxh")
-
-[node name="Taxi" parent="." instance=ExtResource("16_37bxw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
-steer_tug_curve = SubResource("Resource_k47vb")
-reduced_grip_curve = SubResource("Resource_mruix")
 
 [node name="ramptest" parent="." instance=ExtResource("15_lentq")]
 transform = Transform3D(-0.952601, -0.0225841, -0.304014, -0.0107575, 1.99987, -0.00343316, 0.304033, -9.31321e-09, -0.952662, 145.31, 9.88008, -125.437)

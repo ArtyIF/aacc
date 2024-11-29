@@ -17,16 +17,15 @@ func play_hit_sound(_body: Node) -> void:
 		for i in range(state.get_contact_count()):
 			var projected_velocity: Vector3 = state.get_contact_local_velocity_at_position(i).project(state.get_contact_local_normal(i))
 			if projected_velocity.length() > 0.1:
-				var hit_amount: float = clamp((projected_velocity.length() - 0.1) / 10.0, 0.0, 1.0)
-				
 				# TODO: have a globally-accessible class take care of it
 				var hit_instance: AudioStreamPlayer3D
+				var hit_amount: float = clamp((projected_velocity.length() - 0.1) / 5.0, 0.0, 1.0)
 				if car.global_basis.y.dot(state.get_contact_local_normal(i)) < 0.9659:
 					hit_instance = hit_sound.instantiate()
-					hit_instance.pitch_scale = randf_range(0.9, 1.1)
 				else:
 					hit_instance = land_sound.instantiate()
 				hit_instance.volume_db = linear_to_db(hit_amount)
+				hit_instance.pitch_scale = randf_range(0.9, 1.1)
 				add_child(hit_instance)
 				hit_instance.global_position = state.get_contact_local_position(i)
 
@@ -52,9 +51,12 @@ func _physics_process(delta: float) -> void:
 				sparks_instance.amount_ratio = scratch_amount
 				add_child(sparks_instance)
 				sparks_instance.global_position = state.get_contact_local_position(i)
+				if not Vector3.UP.cross(state.get_contact_local_normal(i)).is_zero_approx():
+					sparks_instance.global_basis = Basis.looking_at(state.get_contact_local_normal(i))
+				else:
+					sparks_instance.global_basis = Basis.IDENTITY
 
 		total_scratch_amount = clamp(total_scratch_amount, 0.0, 1.0)
-
 		if not scratch_sound.playing:
 			scratch_sound.play(randf_range(0.0, scratch_sound.stream.get_length()))
 		scratch_sound.volume_db = linear_to_db(total_scratch_amount)
@@ -64,5 +66,5 @@ func _physics_process(delta: float) -> void:
 		sparks_control = 0
 	
 	sparks_control += 1
-	if sparks_control >= 5:
+	if sparks_control >= 4:
 		sparks_control = 0

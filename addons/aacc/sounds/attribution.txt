@@ -4,3 +4,5 @@ collision_3.ogg: Collision 2 by JustInvoke -- https://freesound.org/s/446125/ --
 collision_3.ogg: Collision 3 by JustInvoke -- https://freesound.org/s/446132/ -- License: Attribution 4.0
 scratch.ogg: metal plate scratch by Ridderick -- https://freesound.org/s/707639/ -- License: Creative Commons 0
 landing.ogg: Car Land/Hit by JustInvoke -- https://freesound.org/s/446135/ -- License: Attribution 4.0
+
+Engine sounds created with https://github.com/DasEtwas/enginesound from on example .esc files
