@@ -236,6 +236,8 @@ top_speed_reverse = 20.0
 max_acceleration = 24000.0
 gears_amount = 10
 gear_switch_time = 0.05
+rev_speed_up_idle = 2.0
+rev_speed_down_idle = 1.0
 max_steer_velocity = 4.71239
 distance_between_wheels = 1.52
 steer_tug_curve = SubResource("Resource_sei37")
@@ -313,7 +315,6 @@ shape = SubResource("ConvexPolygonShape3D_guhhe")
 [node name="WheelBL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("11_5tcrt")
-buffer_radius = 0.04
 suspension_spring = 20000.0
 suspension_damper = 2000.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelBL")
@@ -328,7 +329,6 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 [node name="WheelBR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
 script = ExtResource("11_5tcrt")
-buffer_radius = 0.04
 suspension_spring = 20000.0
 suspension_damper = 2000.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelBR")
@@ -342,7 +342,6 @@ burnout_particles = NodePath("BurnoutParticles")
 [node name="WheelFL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
 script = ExtResource("11_5tcrt")
-buffer_radius = 0.04
 suspension_spring = 20000.0
 suspension_damper = 2000.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelFL")
@@ -359,7 +358,6 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 [node name="WheelFR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
 script = ExtResource("11_5tcrt")
-buffer_radius = 0.04
 suspension_spring = 20000.0
 suspension_damper = 2000.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelFR")
@@ -383,7 +381,6 @@ attenuation_filter_db = -12.0
 doppler_tracking = 2
 script = ExtResource("9_y0173")
 engine_pitch_range = Vector2(0.1, 1.5)
-min_volume = 0.2
 
 [node name="TireScreech" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("9_se4n0")
@@ -393,7 +390,7 @@ autoplay = true
 bus = &"SFX"
 playback_type = 1
 attenuation_filter_cutoff_hz = 20500.0
-doppler_tracking = 1
+doppler_tracking = 2
 script = ExtResource("10_7ntn4")
 
 [node name="HitReaction" parent="." instance=ExtResource("15_nwlw3")]

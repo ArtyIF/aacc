@@ -38,6 +38,13 @@ class_name Car extends RigidBody3D
 ##   switch gets cancelled.
 @export var gear_switch_time: float = 0.1
 
+@export_group("Revs")
+# TODO: document
+@export var rev_speed_up_idle: float = 1.0
+@export var rev_speed_down_idle: float = 0.5
+@export var rev_speed_up_moving: float = 4.0
+@export var rev_speed_down_moving: float = 4.0
+
 @export_group("Steering")
 ## The base steer velocity per second that the car turns at when a speed of
 ## [member distance_between_wheels] m/s is reached.
@@ -140,8 +147,8 @@ var current_gear: int = 0
 var target_gear: int = 0
 var switching_gears: bool = false
 var gear_switch_timer: float = 0.0
-var revs: SmoothedFloat = SmoothedFloat.new(0.0, 1.0)
-var accel_amount: SmoothedFloat = SmoothedFloat.new(0.0, 10.0)
+var revs: SmoothedFloat = SmoothedFloat.new()
+var accel_amount: SmoothedFloat = SmoothedFloat.new(0.0, 60.0)
 
 #== BURNOUT AMOUNT ==#
 var burnout_amount: float = 0.0
@@ -259,12 +266,19 @@ func update_accel_amount(delta: float) -> void:
 		accel_amount.advance_to(input_backward if is_reversing() else input_forward, delta)
 
 func update_revs(delta: float) -> void:
+	if abs(local_linear_velocity.z) < 0.25 or ground_coefficient == 0.0:
+		revs.speed_up = rev_speed_up_idle
+		revs.speed_down = rev_speed_down_idle
+	else:
+		revs.speed_up = rev_speed_up_moving
+		revs.speed_down = rev_speed_down_moving
+
 	var target_revs: float = 0.0
 	if abs(local_linear_velocity.z) < 0.25 or is_zero_approx(ground_coefficient):
 		target_revs = accel_amount.get_current_value()
-	elif not switching_gears:
+	else:
 		if current_gear > 0:
-			target_revs = clamp(inverse_lerp(0.0, top_speed_forward * get_gear_limit(current_gear), abs(local_linear_velocity.z)), 0.0, 1.0)
+			target_revs = clamp(inverse_lerp(0.0, top_speed_forward * get_gear_limit(target_gear), abs(local_linear_velocity.z)), 0.0, 1.0)
 		elif current_gear < 0:
 			target_revs = clamp(inverse_lerp(0.0, top_speed_reverse, abs(local_linear_velocity.z)), 0.0, 1.0)
 
@@ -339,7 +353,8 @@ func convert_angular_force(input: Vector3, delta: float, limit_length: bool = tr
 #endregion
 
 func _physics_process(delta: float) -> void:
-	smooth_steer.speed = smooth_steer_speed
+	smooth_steer.speed_up = smooth_steer_speed
+	smooth_steer.speed_down = smooth_steer_speed
 
 	ground_coefficient = 0.0
 	average_wheel_collision_point = Vector3.ZERO

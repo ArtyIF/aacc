@@ -17,9 +17,8 @@ func _ready() -> void:
 	process_priority = 1000
 
 func _process(delta: float) -> void:
-	if use_hood_camera:
-		global_transform = _hood_follow_node.global_transform
-		return
+	if Input.is_action_just_pressed("aaccdemo_camera"):
+		use_hood_camera = not use_hood_camera
 	
 	if _car.ground_coefficient > 0.0:
 		_up_vector_target = _car.average_wheel_collision_normal
@@ -46,3 +45,9 @@ func _process(delta: float) -> void:
 	global_position = _follow_node.global_position + (_smoothed_direction * lerp(follow_camera_offset.z, follow_camera_offset.z + 2.0, min(velocity.length() / 100.0, 1.0))) + (_smoothed_up_vector * follow_camera_offset.y)
 
 	_last_position = _follow_node.global_position
+	
+	# HACK: yes, all the previous calculations are rendered unnecessary when the
+	# hood camera is on, but that makes the translation less weird
+	if use_hood_camera:
+		global_transform = _hood_follow_node.global_transform
+		return

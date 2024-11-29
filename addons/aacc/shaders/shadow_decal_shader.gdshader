@@ -1,9 +1,6 @@
 // Based on the shader at https://godotshaders.com/shader/decal-example/
 // written by TwistedTwigleg and published under the MIT license
 
-// For some reason, it doesn't work on Mobile renderer, at least when testing
-// on my PC. I haven't tested on phones yet
-
 shader_type spatial;
 render_mode world_vertex_coords, unshaded, cull_front, depth_test_disabled, blend_mul, fog_disabled;
 
@@ -27,9 +24,9 @@ void vertex() {
 }
 
 // Credit: https://stackoverflow.com/questions/32227283/getting-world-position-from-depth-buffer-value
-vec3 world_pos_from_depth(float depth, vec2 screen_uv, mat4 inverse_proj, mat4 inverse_view, bool compatibility) {
+vec3 world_pos_from_depth(float depth, vec2 screen_uv, mat4 inverse_proj, mat4 inverse_view) {
 	float z = depth;
-	if (compatibility) {
+	if (CURRENT_RENDERER == RENDERER_COMPATIBILITY) {
 		z *= 2.0;
 		z -= 1.0;
 	}
@@ -58,7 +55,7 @@ float grayscale(vec3 input) {
 
 void fragment() {
 	float depth = texture(DEPTH_TEXTURE, SCREEN_UV).x;
-	vec3 world_pos = world_pos_from_depth(depth, SCREEN_UV, INV_PROJECTION_MATRIX, INV_VIEW_MATRIX, OUTPUT_IS_SRGB);
+	vec3 world_pos = world_pos_from_depth(depth, SCREEN_UV, INV_PROJECTION_MATRIX, INV_VIEW_MATRIX);
 	vec4 test_pos = (INV_MODEL_MATRIX * vec4(world_pos, 1.0));
 
 	if (abs(test_pos.x) >= (shadow_size / 2.0) || abs(test_pos.y) >= (shadow_size / 2.0) || abs(test_pos.z) >= (shadow_size / 2.0)) {
@@ -87,9 +84,9 @@ void fragment() {
 	shadow = clamp(vec3(1.0) - shadow, 0.0, 1.0);
 
 	ALBEDO = mix(vec3(1.0), shadow, vertical_blend);
-	if (OUTPUT_IS_SRGB) { // Compatibility
-		// Compatibility renderer doesn't use HDR, so I guess it uses some tricks
-		// for multiplication to allow for a higher dynamic range
+	if (CURRENT_RENDERER == RENDERER_COMPATIBILITY || CURRENT_RENDERER == RENDERER_MOBILE) {
+		// Compatibility and Mobile renderers seem to use some tricks for HDR
+		// that break multiplication blend modes right now.
 		//
 		// Not sure where the value below comes from (got it from trial and
 		// error, and may not even be right on other GPUs/platforms), but this

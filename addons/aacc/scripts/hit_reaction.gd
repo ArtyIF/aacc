@@ -54,7 +54,8 @@ func _physics_process(delta: float) -> void:
 				if not Vector3.UP.cross(state.get_contact_local_normal(i)).is_zero_approx():
 					sparks_instance.global_basis = Basis.looking_at(state.get_contact_local_normal(i))
 				else:
-					sparks_instance.global_basis = Basis.IDENTITY
+					# Since the initial velocity direction is (0.0, 1.0, -1.0), this makes the sparks face up
+					sparks_instance.global_basis = Basis.from_euler(Vector3(deg_to_rad(45.0), 0.0, 0.0))
 
 		total_scratch_amount = clamp(total_scratch_amount, 0.0, 1.0)
 		if not scratch_sound.playing:

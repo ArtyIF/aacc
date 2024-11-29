@@ -104,6 +104,11 @@ func set_raycast_values() -> void:
 		collision_point = collision_point_2
 		collision_normal = collision_normal_2
 		distance = distance_2
+	
+	if distance > wheel_radius + suspension_length:
+		var clamped_distance: float = clamp(distance, 0.0, wheel_radius + suspension_length)
+		# TODO: configurable
+		distance = lerp(clamped_distance, distance, car.local_linear_velocity.length() / 20.0)
 
 func update_visuals(delta: float) -> void:
 	if !visual_node: return

@@ -63,7 +63,7 @@ car = NodePath("../Race")
 
 [node name="ShadowColorSetter" type="Node" parent="."]
 script = ExtResource("2_qcqa7")
-shadow_color = Color(0.572549, 0.690196, 0.772549, 1)
+shadow_color = Color(0.564706, 0.682353, 0.764706, 1)
 
 [node name="CarResetter" type="Node" parent="."]
 script = ExtResource("8_i5b6w")
@@ -89,6 +89,7 @@ actual_energy = 3.0
 
 [node name="SunlightSky" type="DirectionalLight3D" parent="Sunlight"]
 light_energy = 3.0
+light_volumetric_fog_energy = 0.0
 light_angular_distance = 1.0
 light_bake_mode = 0
 sky_mode = 2

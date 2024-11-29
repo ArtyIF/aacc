@@ -233,7 +233,7 @@ linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_ik2h1")
 top_speed_reverse = 20.0
-max_acceleration = 10000.0
+max_acceleration = 15000.0
 slowdown_force = 1000.0
 gears_amount = 5
 gear_switch_time = 0.25
@@ -244,7 +244,7 @@ steer_tug_curve = SubResource("Resource_sei37")
 linear_grip = 40000.0
 reduced_grip_curve = SubResource("Resource_qkpdq")
 angular_grip = 40000.0
-brake_force = 20000.0
+brake_force = 30000.0
 air_stabilization_force = 500.0
 
 [node name="Visuals" type="Node3D" parent="."]
@@ -396,7 +396,6 @@ attenuation_filter_db = -12.0
 doppler_tracking = 2
 script = ExtResource("8_os6lh")
 engine_pitch_range = Vector2(0.2, 1)
-min_volume = 0.2
 
 [node name="TireScreech" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("9_8cvhf")
@@ -406,7 +405,7 @@ autoplay = true
 bus = &"SFX"
 playback_type = 1
 attenuation_filter_cutoff_hz = 20500.0
-doppler_tracking = 1
+doppler_tracking = 2
 script = ExtResource("10_nd533")
 
 [node name="HitReaction" parent="." instance=ExtResource("15_0wb0t")]
