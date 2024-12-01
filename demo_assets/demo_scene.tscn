@@ -63,7 +63,7 @@ car = NodePath("../Race")
 
 [node name="ShadowColorSetter" type="Node" parent="."]
 script = ExtResource("2_qcqa7")
-shadow_color = Color(0.564706, 0.682353, 0.764706, 1)
+shadow_color = Color(0.576471, 0.643137, 0.878431, 1)
 
 [node name="CarResetter" type="Node" parent="."]
 script = ExtResource("8_i5b6w")
@@ -72,7 +72,8 @@ script = ExtResource("8_i5b6w")
 environment = ExtResource("1_8gguu")
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 0, 0, 0)
+transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866026, 0.5, -0.707107, -0.353553, 0.612372, 0, 0, 0)
+light_color = Color(1, 0.941176, 0.878431, 1)
 light_energy = 1.2
 light_angular_distance = 10.0
 light_bake_mode = 1
@@ -88,6 +89,7 @@ script = ExtResource("2_gvx2t")
 actual_energy = 3.0
 
 [node name="SunlightSky" type="DirectionalLight3D" parent="Sunlight"]
+light_color = Color(1, 0.941176, 0.878431, 1)
 light_energy = 3.0
 light_volumetric_fog_energy = 0.0
 light_angular_distance = 1.0
@@ -171,3 +173,9 @@ transform = Transform3D(-0.952601, -0.0225841, -0.304014, -0.0107575, 1.99987, -
 
 [node name="ramptest2" parent="." instance=ExtResource("15_lentq")]
 transform = Transform3D(-0.999863, -2.11876e-08, 0.0331244, -0.00285096, 0.985073, -0.344223, -0.016315, -0.172135, -1.96988, 172.325, 8.77901, -0.812098)
+
+[node name="ramptest3" parent="." instance=ExtResource("15_lentq")]
+transform = Transform3D(1.88528, 0, -1.66904, 0, 8.755, 0, 0.667615, 0, 4.71321, -111.871, -0.717397, 331.143)
+
+[node name="ramptest4" parent="." instance=ExtResource("15_lentq")]
+transform = Transform3D(-1.85271, -0.174467, 0.166903, -0.370167, 0.982723, 4.65661e-10, -0.65608, -0.061782, -0.471321, -97.2211, 15.0431, 289.676)

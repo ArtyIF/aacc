@@ -259,30 +259,41 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 
 [node name="Body" type="MeshInstance3D" parent="Visuals/180Turnaround"]
 transform = Transform3D(1, 0, -2.13163e-14, 0, 1, 0, 2.13163e-14, 0, 1, -1.34997e-13, 0.1, -3.60956e-16)
+layers = 2
+gi_mode = 2
 mesh = SubResource("ArrayMesh_2dwli")
 skeleton = NodePath("")
 
 [node name="WheelBL" type="MeshInstance3D" parent="Visuals/180Turnaround"]
 transform = Transform3D(1, 0, -2.13163e-14, 0, 1, 0, 2.13163e-14, 0, 1, 0.35, 0.3, -0.880114)
+layers = 2
+gi_mode = 2
 mesh = SubResource("ArrayMesh_2t230")
 skeleton = NodePath("")
 
 [node name="WheelBR" type="MeshInstance3D" parent="Visuals/180Turnaround"]
 transform = Transform3D(1, 0, -2.13163e-14, 0, 1, 0, 2.13163e-14, 0, 1, -0.35, 0.3, -0.880114)
+layers = 2
+gi_mode = 2
 mesh = SubResource("ArrayMesh_ro6qt")
 skeleton = NodePath("")
 
 [node name="WheelFL" type="MeshInstance3D" parent="Visuals/180Turnaround"]
 transform = Transform3D(1, 0, -2.13163e-14, 0, 1, 0, 2.13163e-14, 0, 1, 0.35, 0.3, 0.639886)
+layers = 2
+gi_mode = 2
 mesh = SubResource("ArrayMesh_wfs00")
 skeleton = NodePath("")
 
 [node name="WheelFR" type="MeshInstance3D" parent="Visuals/180Turnaround"]
 transform = Transform3D(1, 0, -2.13163e-14, 0, 1, 0, 2.13163e-14, 0, 1, -0.35, 0.3, 0.639886)
+layers = 2
+gi_mode = 2
 mesh = SubResource("ArrayMesh_or4d8")
 skeleton = NodePath("")
 
 [node name="Shadow" type="MeshInstance3D" parent="Visuals/180Turnaround"]
+layers = 2
 sorting_offset = -1000.0
 gi_mode = 0
 mesh = SubResource("BoxMesh_sc5a5")

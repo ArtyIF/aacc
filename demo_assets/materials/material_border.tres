@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://dpq2im1nmjhyq" path="res://demo_assets/textures/uneven_texture.tres" id="1_4d18h"]
 
 [resource]
-albedo_color = Color(1, 0.25098, 0.25098, 1)
+albedo_color = Color(1, 0.313726, 0.25098, 1)
 albedo_texture = ExtResource("1_4d18h")
 metallic_specular = 0.0
 uv1_scale = Vector3(0.01, 0.01, 0.01)
