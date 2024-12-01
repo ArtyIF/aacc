@@ -6,7 +6,7 @@ render_mode world_vertex_coords, unshaded, cull_front, depth_test_disabled, blen
 
 uniform sampler2D DEPTH_TEXTURE : hint_depth_texture, filter_linear_mipmap;
 
-uniform sampler2D shadow_texture : source_color, hint_default_black;
+uniform sampler2D shadow_texture : source_color, hint_default_black, repeat_disable;
 uniform int shadow_texture_mipmaps = 9;
 
 uniform float shadow_size = 4.0;

@@ -5,6 +5,8 @@
 ## engine and steering for it.
 class_name Car extends RigidBody3D
 
+# TODO: split into plugins
+
 @export_group("Acceleration")
 ## The top speed in meters per second when going forward.
 @export var top_speed_forward: float = 50.0
@@ -104,13 +106,8 @@ class_name Car extends RigidBody3D
 @export var angular_grip: float = 10000.0
 ## The force applied when you hit brakes.
 @export var brake_force: float = 4000.0
-## The multiplier of the force applied when you take off after a handbrake
-## burnout.
-## [br][br]
-## The force with the multiplier set to [code]1.0[/code] is enough to instantly
-## bring the car to switch to the second gear. It's not recommended to set it
-## to [code]1.0[/code] unless [member gear_switch_time] is [code]0.0[/code].
-@export_range(0.0, 1.0) var takeoff_force_multiplier: float = 0.5
+## The force applied when you take off after a handbrake burnout.
+@export var takeoff_force: float = 2000.0
 
 @export_group("Air Forces")
 ## The force applied to the car when it's mid-air to stabilize it.
@@ -211,7 +208,7 @@ func get_slowdown_force() -> float:
 
 func get_takeoff_force() -> float:
 	if old_input_handbrake == true and input_handbrake == false and current_gear == 1 and local_linear_velocity.length() < 0.25:
-		return top_speed_forward * mass * revs.get_current_value() * takeoff_force_multiplier / gears_amount
+		return takeoff_force * mass * revs.get_current_value()
 	return 0.0
 #endregion
 
@@ -390,7 +387,7 @@ func _physics_process(delta: float) -> void:
 		var sum_of_linear_forces: Vector3 = convert_linear_force(desired_linear_grip_force + desired_engine_force + desired_brake_force + desired_slowdown_force, delta)
 		apply_force(sum_of_linear_forces * ground_coefficient / delta, average_wheel_collision_point - global_position)
 		
-		var desired_takeoff_force: Vector3 = Vector3.FORWARD * get_takeoff_force()
+		var desired_takeoff_force: Vector3 = Vector3.FORWARD * get_takeoff_force() * delta
 		apply_force(Plane(average_wheel_collision_normal).project(global_basis * desired_takeoff_force) * ground_coefficient / delta, average_wheel_collision_point - global_position)
 
 		var desired_steer_force: Vector3 = Vector3.UP * get_steer_force()

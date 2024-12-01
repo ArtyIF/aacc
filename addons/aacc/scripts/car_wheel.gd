@@ -24,6 +24,8 @@ class_name CarWheel extends Node3D
 ## The damper applied to the spring force the suspension applies so it wasn't
 ## too springy and out of control.
 @export var suspension_damper: float = 300.0
+## TODO: document
+@export var max_stick_speed: float = 20.0
 
 # TODO: document
 @export_group("Visuals")
@@ -93,8 +95,8 @@ func set_raycast_values() -> void:
 	var distance_2: float = raycast_instance_2.global_position.distance_to(collision_point_2)
 
 	if raycast_instance_1.is_colliding() and raycast_instance_2.is_colliding():
-		collision_point = collision_point_1.lerp(collision_point_2, 0.5)
-		collision_normal = collision_normal_1.slerp(collision_normal_2, 0.5)
+		collision_point = (collision_point_1 + collision_point_2) / 2.0
+		collision_normal = (collision_normal_1 + collision_normal_2).normalized()
 		distance = lerp(distance_1, distance_2, 0.5)
 	elif raycast_instance_1.is_colliding():
 		collision_point = collision_point_1
@@ -104,11 +106,11 @@ func set_raycast_values() -> void:
 		collision_point = collision_point_2
 		collision_normal = collision_normal_2
 		distance = distance_2
-	
-	if distance > wheel_radius + suspension_length:
-		var clamped_distance: float = clamp(distance, 0.0, wheel_radius + suspension_length)
-		# TODO: configurable
-		distance = lerp(clamped_distance, distance, car.local_linear_velocity.length() / 20.0)
+
+	# TODO: at this point should just redo how sticking to the ground is done,
+	# some reactions on creases send the car flying
+	var flat_velocity_length: float = Plane(collision_normal).project(car.linear_velocity).length()
+	distance = min(distance, wheel_radius + suspension_length + lerp(0.0, buffer_radius, min(flat_velocity_length / max_stick_speed, 1.0)))
 
 func update_visuals(delta: float) -> void:
 	if !visual_node: return
@@ -129,7 +131,9 @@ func update_visuals(delta: float) -> void:
 	if not (freeze_on_handbrake and car.input_handbrake):
 		current_forward_spin -= car.local_linear_velocity.z * delta / wheel_radius
 		if (not block_wheelspin) and car.local_linear_velocity.length() < 0.25:
-			current_forward_spin += (car.max_acceleration * delta * (1.0 if car.current_gear > 0 else -1.0) * car.burnout_amount) / (car.mass * wheel_radius)
+			# BUG: when wheelspinning backwards the wheel spins forward after
+			# letting go of the throttle
+			current_forward_spin += (car.max_acceleration * delta * (1.0 if car.current_gear >= 0 else -1.0) * car.burnout_amount) / (car.mass * wheel_radius)
 
 	if current_forward_spin > 2 * PI:
 		current_forward_spin -= 2 * PI

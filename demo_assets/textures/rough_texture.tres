@@ -8,8 +8,8 @@ noise_type = 3
 frequency = 0.9
 
 [resource]
-width = 128
-height = 128
+width = 256
+height = 256
 seamless = true
 color_ramp = SubResource("Gradient_kyysr")
 noise = SubResource("FastNoiseLite_24n4k")

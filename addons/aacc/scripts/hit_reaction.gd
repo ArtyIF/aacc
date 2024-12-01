@@ -66,6 +66,7 @@ func _physics_process(delta: float) -> void:
 		scratch_sound.stop()
 		sparks_control = 0
 	
+	# TODO: use delta
 	sparks_control += 1
 	if sparks_control >= 4:
 		sparks_control = 0

@@ -9,5 +9,5 @@ func _process(_delta: float) -> void:
 			light_energy = actual_energy / 2.5 # gives good enough results
 	else:
 		light_energy = actual_energy
-		if not Engine.is_editor_hint():
-			light_angular_distance = 0.0
+	if not Engine.is_editor_hint():
+		light_angular_distance = 0.0
