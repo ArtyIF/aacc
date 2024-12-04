@@ -84,9 +84,9 @@ void fragment() {
 	shadow = clamp(vec3(1.0) - shadow, 0.0, 1.0);
 
 	ALBEDO = mix(vec3(1.0), shadow, vertical_blend);
-	if (CURRENT_RENDERER == RENDERER_COMPATIBILITY || CURRENT_RENDERER == RENDERER_MOBILE) {
-		// Compatibility and Mobile renderers seem to use some tricks for HDR
-		// that break multiplication blend modes right now.
+	if (CURRENT_RENDERER == RENDERER_COMPATIBILITY) {
+		// Compatibility renderer seems to use some tricks for HDR that break
+		// multiplication blend modes right now.
 		//
 		// Not sure where the value below comes from (got it from trial and
 		// error, and may not even be right on other GPUs/platforms), but this
@@ -96,5 +96,10 @@ void fragment() {
 		// NOTE: This value is unnecessary when glow is disabled and tonemap's
 		// white value is 1. It might require adjusting with other white values.
 		ALBEDO *= 3.719675661;
+	}
+	if (CURRENT_RENDERER == RENDERER_MOBILE) {
+		// Similar story to Compatibility renderer, except that this value is
+		// fixed and doesn't change depending on environment settings.
+		ALBEDO *= 2.0;
 	}
 }

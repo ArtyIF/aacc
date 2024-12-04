@@ -4,7 +4,7 @@ class_name CarWheel extends Node3D
 @export_group("Shape")
 ## The radius of the wheel. Half of the wheel's size.
 @export var wheel_radius: float = 0.3
-## The extra radius of the wheel to make the car stick to the ground more.
+## The extra radius of the wheel to make the skid trails more consistent.
 @export var buffer_radius: float = 0.1
 ## The width of the wheel.
 ##
@@ -24,15 +24,12 @@ class_name CarWheel extends Node3D
 ## The damper applied to the spring force the suspension applies so it wasn't
 ## too springy and out of control.
 @export var suspension_damper: float = 300.0
-## TODO: document
-@export var max_stick_speed: float = 20.0
 
 # TODO: document
 @export_group("Visuals")
 @export var visual_node: Node3D
 @export_range(-1, 1) var steer_multiplier: float = 0.0
 @export var limit_top: bool = false
-@export var limit_bottom: bool = false
 @export var skid_trail: TrailRenderer
 @export var burnout_particles: GPUParticles3D
 @export var freeze_on_handbrake: bool = false
@@ -59,6 +56,7 @@ var collision_normal: Vector3
 var distance: float
 
 func _ready() -> void:
+	# TODO: use ShapeCast3D instead
 	raycast_instance_1 = RayCast3D.new()
 	add_child(raycast_instance_1)
 	raycast_instance_2 = RayCast3D.new()
@@ -107,11 +105,6 @@ func set_raycast_values() -> void:
 		collision_normal = collision_normal_2
 		distance = distance_2
 
-	# TODO: at this point should just redo how sticking to the ground is done,
-	# some reactions on creases send the car flying
-	var flat_velocity_length: float = Plane(collision_normal).project(car.linear_velocity).length()
-	distance = min(distance, wheel_radius + suspension_length + lerp(0.0, buffer_radius, min(flat_velocity_length / max_stick_speed, 1.0)))
-
 func update_visuals(delta: float) -> void:
 	if !visual_node: return
 
@@ -122,8 +115,6 @@ func update_visuals(delta: float) -> void:
 		var compression_translation = 1.0 - compression
 		if limit_top:
 			compression_translation = max(0.0, compression_translation)
-		if limit_bottom:
-			compression_translation = min(0.0, compression_translation)
 		suspension_translation *= compression_translation
 
 	var steer_rotation: float = -car.smooth_steer.get_current_value() * car.base_steer_velocity * steer_multiplier
@@ -175,6 +166,7 @@ func _physics_process(delta: float) -> void:
 		set_raycast_values()
 
 		compression = 1.0 - ((distance - wheel_radius) / suspension_length)
+		compression = max(0.0, compression)
 		if not last_compression_set:
 			last_compression = compression
 			last_compression_set = true

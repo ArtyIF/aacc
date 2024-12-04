@@ -383,6 +383,7 @@ func _physics_process(delta: float) -> void:
 		var desired_engine_force: Vector3 = Vector3.FORWARD * get_engine_force() * delta
 		var desired_brake_force: Vector3 = Vector3.FORWARD * get_brake_force() * delta
 		var desired_slowdown_force: Vector3 = Vector3.FORWARD * get_slowdown_force() * delta
+		# TODO: downforce
 
 		var sum_of_linear_forces: Vector3 = convert_linear_force(desired_linear_grip_force + desired_engine_force + desired_brake_force + desired_slowdown_force, delta)
 		apply_force(sum_of_linear_forces * ground_coefficient / delta, average_wheel_collision_point - global_position)

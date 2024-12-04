@@ -204,7 +204,7 @@ shadow_mesh = SubResource("ArrayMesh_rwin7")
 
 [sub_resource type="BoxMesh" id="BoxMesh_sc5a5"]
 material = ExtResource("6_6s3l5")
-size = Vector3(4, 2, 4)
+size = Vector3(4, 4, 4)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_6et6s"]
 points = PackedVector3Array(0.6, 0.099934, 0.165368, 0.6, 0, 0.165368, 0.6, 0.099934, -0.434735, 0.549961, 0.388529, 0.165368, 0.449883, 0.149963, 1.27988, 0.6, 0, -0.434735, 0.449883, 0, 1.27988, 0.349922, 0.536015, -1.27989, 0.549961, 0.388529, 0.0653925, 0.0669538, 0.632544, -0.103238, -0.450117, 0.149963, 1.27988, 0.349922, 0, -1.23003, 0.349922, 0.049967, -1.27989, -0.450117, 0, 1.27988, -0.350039, 0.536015, -1.27989, 0.0669538, 0.632544, -0.203213, -0.0670713, 0.632544, -0.103238, -0.550078, 0.388529, 0.165368, -0.6, 0.099934, 0.165368, -0.350039, 0, -1.23003, -0.350039, 0.049967, -1.27989, -0.6, 0, 0.165368, -0.0670713, 0.632544, -0.203213, -0.6, 0.099934, -0.434735, -0.550078, 0.388529, 0.0653925, -0.6, 0, -0.434735)
@@ -326,9 +326,9 @@ shape = SubResource("ConvexPolygonShape3D_guhhe")
 [node name="WheelBL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("11_5tcrt")
+buffer_radius = 0.05
 suspension_spring = 20000.0
 suspension_damper = 2000.0
-max_stick_speed = 100.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelBL")
 skid_trail = NodePath("SkidTrail")
 burnout_particles = NodePath("BurnoutParticles")
@@ -341,9 +341,9 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 [node name="WheelBR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
 script = ExtResource("11_5tcrt")
+buffer_radius = 0.05
 suspension_spring = 20000.0
 suspension_damper = 2000.0
-max_stick_speed = 100.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelBR")
 skid_trail = NodePath("SkidTrail")
 burnout_particles = NodePath("BurnoutParticles")
@@ -355,9 +355,9 @@ burnout_particles = NodePath("BurnoutParticles")
 [node name="WheelFL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
 script = ExtResource("11_5tcrt")
+buffer_radius = 0.05
 suspension_spring = 20000.0
 suspension_damper = 2000.0
-max_stick_speed = 100.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelFL")
 steer_multiplier = 1.0
 skid_trail = NodePath("SkidTrail")
@@ -372,9 +372,9 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 [node name="WheelFR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
 script = ExtResource("11_5tcrt")
+buffer_radius = 0.05
 suspension_spring = 20000.0
 suspension_damper = 2000.0
-max_stick_speed = 100.0
 visual_node = NodePath("../Visuals/180Turnaround/WheelFR")
 steer_multiplier = 1.0
 skid_trail = NodePath("SkidTrail")

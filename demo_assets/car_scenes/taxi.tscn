@@ -204,7 +204,7 @@ shadow_mesh = SubResource("ArrayMesh_4s8o0")
 
 [sub_resource type="BoxMesh" id="BoxMesh_sc5a5"]
 material = ExtResource("6_b84xa")
-size = Vector3(4, 2, 4)
+size = Vector3(4, 4, 4)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_8m1l8"]
 points = PackedVector3Array(0.75, 0.649892, 0.547793, 0.75, 0.54999, 0.547793, 0.75, 0.649892, 0.447656, 0.449883, 1.14993, 0.210772, 0.549873, 0.649892, 1.27486, 0.649863, 0.249887, 1.22479, 0.75, 0.54999, 0.447656, 0.649863, 0.0499511, 1.22479, 0.649863, 0.249887, -1.22506, 0.649863, 0.425641, -1.01079, 0.649863, 0.48775, -0.930036, 0.649863, 0.5266, -0.83609, 0.449883, 1.14993, -0.571212, 0.0499217, 1.35, 0.0748336, -0.55002, 0.649892, 1.27486, 0.124951, 0.174961, 1.37473, 0.549873, 0.249887, 1.32493, 0.620644, 0.249887, 1.29559, 0.649863, 0.0499511, -1.22506, 0.620644, 0.0499511, 1.29559, 0.124951, 0, 1.37473, 0.620644, 0.249887, -1.29586, 0.549873, 0.54999, -1.3252, 0.459867, 1.09998, -0.645238, 0.0499217, 1.35, -0.425044, -0.0500685, 1.35, 0.0748336, -0.65001, 0.249887, 1.22479, -0.620791, 0.249887, 1.29559, -0.55002, 0.249887, 1.32493, -0.125098, 0.174961, 1.37473, -0.450029, 1.14993, 0.210772, -0.75, 0.649892, 0.547793, 0.174873, 0.124878, 1.37473, 0.549873, 0.0499511, 1.32493, 0.124951, 0, -1.375, 0.620644, 0.0499511, -1.29586, 0.174873, 0.0499511, 1.37473, -0.125098, 0, 1.37473, 0.549873, 0.0499511, -1.3252, 0.174873, 0.124878, -1.375, 0.124951, 0.174961, -1.375, -0.55002, 0.54999, -1.3252, -0.0500685, 1.35, -0.425044, -0.65001, 0.0499511, 1.22479, -0.620791, 0.0499511, 1.29559, -0.55002, 0.0499511, 1.32493, -0.17502, 0.124878, 1.37473, -0.450029, 1.14993, -0.571212, -0.75, 0.649892, 0.447656, -0.75, 0.54999, 0.547793, -0.125098, 0, -1.375, 0.174873, 0.0499511, -1.375, -0.17502, 0.0499511, 1.37473, -0.125098, 0.174961, -1.375, -0.17502, 0.124878, -1.375, -0.55002, 0.0499511, -1.3252, -0.620791, 0.249887, -1.29586, -0.65001, 0.249887, -1.22506, -0.65001, 0.425641, -1.01079, -0.65001, 0.48775, -0.930036, -0.460014, 1.09998, -0.645238, -0.65001, 0.0499511, -1.22506, -0.65001, 0.5266, -0.83609, -0.75, 0.54999, 0.447656, -0.620791, 0.0499511, -1.29586, -0.17502, 0.0499511, -1.375)
@@ -325,6 +325,7 @@ shape = SubResource("ConvexPolygonShape3D_s6wnr")
 [node name="WheelBL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
+buffer_radius = 0.05
 wheel_width = 0.2
 suspension_spring = 15000.0
 suspension_damper = 1500.0
@@ -342,6 +343,7 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 [node name="WheelBR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
+buffer_radius = 0.05
 wheel_width = 0.2
 suspension_spring = 15000.0
 suspension_damper = 1500.0
@@ -358,6 +360,7 @@ block_wheelspin = true
 [node name="WheelFL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
+buffer_radius = 0.05
 wheel_width = 0.2
 suspension_spring = 15000.0
 suspension_damper = 1500.0
@@ -374,6 +377,7 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 [node name="WheelFR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
+buffer_radius = 0.05
 wheel_width = 0.2
 suspension_spring = 15000.0
 suspension_damper = 1500.0
