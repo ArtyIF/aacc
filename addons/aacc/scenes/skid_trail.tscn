@@ -10,7 +10,7 @@ point_count = 1
 
 [node name="SkidTrail" type="Node3D"]
 script = ExtResource("1_402nv")
-lifetime = 30.0
+lifetime = 10.0
 is_emitting = false
 curve = SubResource("Curve_mr4if")
 alignment = 2

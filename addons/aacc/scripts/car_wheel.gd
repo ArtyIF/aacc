@@ -4,8 +4,6 @@ class_name CarWheel extends Node3D
 @export_group("Shape")
 ## The radius of the wheel. Half of the wheel's size.
 @export var wheel_radius: float = 0.3
-## The extra radius of the wheel to make the skid trails more consistent.
-@export var buffer_radius: float = 0.1
 ## The width of the wheel.
 ##
 ## AACC's wheels currently use 2 raycasts for the wheels.
@@ -68,7 +66,7 @@ func _ready() -> void:
 		initial_visual_node_transform = visual_node.transform
 
 func configure_raycasts() -> void:
-	raycast_instance_1.target_position = (Vector3.DOWN * (wheel_radius + suspension_length + buffer_radius))
+	raycast_instance_1.target_position = (Vector3.DOWN * (wheel_radius + suspension_length))
 	raycast_instance_1.enabled = true
 	raycast_instance_1.hit_from_inside = false
 	raycast_instance_1.hit_back_faces = false
@@ -76,7 +74,7 @@ func configure_raycasts() -> void:
 	raycast_instance_1.process_physics_priority = -1000
 	raycast_instance_1.position = Vector3.RIGHT * wheel_width
 
-	raycast_instance_2.target_position = (Vector3.DOWN * (wheel_radius + suspension_length + buffer_radius))
+	raycast_instance_2.target_position = (Vector3.DOWN * (wheel_radius + suspension_length))
 	raycast_instance_2.enabled = true
 	raycast_instance_2.hit_from_inside = false
 	raycast_instance_2.hit_back_faces = false
@@ -166,7 +164,7 @@ func _physics_process(delta: float) -> void:
 		set_raycast_values()
 
 		compression = 1.0 - ((distance - wheel_radius) / suspension_length)
-		compression = max(0.0, compression)
+		compression = clamp(compression, 0.0, 1.0)
 		if not last_compression_set:
 			last_compression = compression
 			last_compression_set = true

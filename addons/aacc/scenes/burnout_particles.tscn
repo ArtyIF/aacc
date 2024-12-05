@@ -1,10 +1,10 @@
 [gd_scene load_steps=4 format=3 uid="uid://bgcsoin0se8xf"]
 
 [ext_resource type="Material" uid="uid://0nsued0at226" path="res://addons/aacc/materials/particles/burnout/burnout_process.tres" id="1_urvgu"]
-[ext_resource type="Material" uid="uid://3pj8yaou00og" path="res://addons/aacc/materials/particles/burnout/burnout_render_compatibility.tres" id="2_smf7g"]
+[ext_resource type="Material" uid="uid://cj2mxd27d5rog" path="res://addons/aacc/materials/particles/burnout/burnout_render_forward.tres" id="2_ygvqw"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_si8b4"]
-material = ExtResource("2_smf7g")
+material = ExtResource("2_ygvqw")
 size = Vector2(2, 2)
 
 [node name="BurnoutParticles" type="GPUParticles3D"]
@@ -17,5 +17,6 @@ amount_ratio = 0.0
 lifetime = 2.0
 fixed_fps = 50
 visibility_aabb = AABB(-25, -2, -25, 50, 10, 50)
+draw_order = 3
 process_material = ExtResource("1_urvgu")
 draw_pass_1 = SubResource("QuadMesh_si8b4")
