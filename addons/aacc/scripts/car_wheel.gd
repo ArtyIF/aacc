@@ -64,6 +64,11 @@ func _ready() -> void:
 	car = get_parent() as Car
 	if visual_node:
 		initial_visual_node_transform = visual_node.transform
+	
+	# The wheels don't need much from the car for physics stuff, but the car
+	# does need stuff from the wheels for the physics stuff. It makes sense
+	# to make the wheels execute slightly before the car.
+	process_physics_priority = -1
 
 func configure_raycasts() -> void:
 	raycast_instance_1.target_position = (Vector3.DOWN * (wheel_radius + suspension_length))
@@ -178,7 +183,9 @@ func _physics_process(delta: float) -> void:
 			last_compression = compression
 
 			suspension_magnitude *= collision_normal.dot(global_basis.y)
-			car.apply_force(collision_normal * suspension_magnitude, collision_point - car.global_position)
+			
+			if not car.do_not_apply_forces:
+				car.apply_force(collision_normal * suspension_magnitude, collision_point - car.global_position)
 	else:
 		is_colliding = false
 		last_compression = 0.0

@@ -113,6 +113,9 @@ class_name Car extends RigidBody3D
 ## The force applied to the car when it's mid-air to stabilize it.
 @export var air_stabilization_force: float = 200.0
 
+@export_group("Animation")
+@export var do_not_apply_forces: bool = false
+
 #== NODES ==#
 var wheels: Array[CarWheel]
 
@@ -378,27 +381,28 @@ func _physics_process(delta: float) -> void:
 	update_revs(delta)
 	update_burnout_amount()
 
-	if ground_coefficient > 0.0:
-		var desired_linear_grip_force: Vector3 = Vector3.RIGHT * get_side_grip_force()
-		var desired_engine_force: Vector3 = Vector3.FORWARD * get_engine_force() * delta
-		var desired_brake_force: Vector3 = Vector3.FORWARD * get_brake_force() * delta
-		var desired_slowdown_force: Vector3 = Vector3.FORWARD * get_slowdown_force() * delta
-		# TODO: downforce
+	if not do_not_apply_forces:
+		if ground_coefficient > 0.0:
+			var desired_linear_grip_force: Vector3 = Vector3.RIGHT * get_side_grip_force()
+			var desired_engine_force: Vector3 = Vector3.FORWARD * get_engine_force() * delta
+			var desired_brake_force: Vector3 = Vector3.FORWARD * get_brake_force() * delta
+			var desired_slowdown_force: Vector3 = Vector3.FORWARD * get_slowdown_force() * delta
+			# TODO: downforce
 
-		var sum_of_linear_forces: Vector3 = convert_linear_force(desired_linear_grip_force + desired_engine_force + desired_brake_force + desired_slowdown_force, delta)
-		apply_force(sum_of_linear_forces * ground_coefficient / delta, average_wheel_collision_point - global_position)
-		
-		var desired_takeoff_force: Vector3 = Vector3.FORWARD * get_takeoff_force() * delta
-		apply_force(Plane(average_wheel_collision_normal).project(global_basis * desired_takeoff_force) * ground_coefficient / delta, average_wheel_collision_point - global_position)
+			var sum_of_linear_forces: Vector3 = convert_linear_force(desired_linear_grip_force + desired_engine_force + desired_brake_force + desired_slowdown_force, delta)
+			apply_force(sum_of_linear_forces * ground_coefficient / delta, average_wheel_collision_point - global_position)
+			
+			var desired_takeoff_force: Vector3 = Vector3.FORWARD * get_takeoff_force() * delta
+			apply_force(Plane(average_wheel_collision_normal).project(global_basis * desired_takeoff_force) * ground_coefficient / delta, average_wheel_collision_point - global_position)
 
-		var desired_steer_force: Vector3 = Vector3.UP * get_steer_force()
-		var sum_of_angular_forces: Vector3 = convert_angular_force(desired_steer_force, delta)
-		apply_torque(sum_of_angular_forces * average_wheel_collision_normal * ground_coefficient / delta)
-	else:
-		var desired_air_stabilization_force: Vector3 = get_air_stabilization_force() * delta
+			var desired_steer_force: Vector3 = Vector3.UP * get_steer_force()
+			var sum_of_angular_forces: Vector3 = convert_angular_force(desired_steer_force, delta)
+			apply_torque(sum_of_angular_forces * average_wheel_collision_normal * ground_coefficient / delta)
+		else:
+			var desired_air_stabilization_force: Vector3 = get_air_stabilization_force() * delta
 
-		var sum_of_angular_forces: Vector3 = convert_angular_force(desired_air_stabilization_force, delta, false)
-		apply_torque(sum_of_angular_forces / delta)
+			var sum_of_angular_forces: Vector3 = convert_angular_force(desired_air_stabilization_force, delta, false)
+			apply_torque(sum_of_angular_forces / delta)
 
 	old_linear_velocity = linear_velocity
 	old_angular_velocity = angular_velocity

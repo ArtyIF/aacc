@@ -2,9 +2,11 @@
 ## TODO: docs
 class_name CarInput extends Node
 
+@export var enabled: bool = true
 @onready var _car: Car = AACCGlobal.current_car
 
 func _physics_process(delta: float) -> void:
+	if not enabled: return
 	if not _car: return
 	
 	_car.input_forward = clamp(Input.get_action_strength("aacc_forward"), 0.0, 1.0)
