@@ -9,3 +9,4 @@ func _physics_process(_delta: float) -> void:
 		_car.angular_velocity = Vector3.ZERO
 		_car.force_update_transform()
 		_car.reset_physics_interpolation()
+		_car.reset()

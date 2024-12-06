@@ -158,6 +158,48 @@ func _ready():
 		if wheel is CarWheel:
 			wheels.append(wheel)
 
+## Resets every dynamically-updated value to their initial value. Exported
+## values that are user-editable are not affected.
+func reset() -> void:
+	#== INPUT ==#
+	input_forward = 0.0
+	input_backward = 0.0
+	input_steer = 0.0
+	input_handbrake = false
+	old_input_handbrake = false
+
+	#== VELOCITIES ==#
+	local_linear_velocity = Vector3.ZERO
+	local_angular_velocity = Vector3.ZERO
+	old_linear_velocity = Vector3.ZERO
+	old_angular_velocity = Vector3.ZERO
+
+	#== GROUND ==#
+	ground_coefficient = 1.0
+	average_wheel_collision_point = Vector3.ZERO
+	average_wheel_collision_normal = Vector3.ZERO
+
+	#== SMOOTH VALUES ==#
+	smooth_steer = SmoothedFloat.new()
+	smooth_steer_sign = SmoothedFloat.new()
+	use_smooth_steer_sign_value = false
+
+	#== GEARS ==#
+	current_gear = 0
+	target_gear = 0
+	switching_gears = false
+	gear_switch_timer = 0.0
+	revs = SmoothedFloat.new()
+	accel_amount = SmoothedFloat.new(0.0, 60.0)
+
+	#== BURNOUT AMOUNT ==#
+	burnout_amount = 0.0
+	
+	#== WHEELS ==#
+	for wheel in wheels:
+		wheel.reset()
+
+
 #region Processing
 func get_input_steer_multiplier() -> float:
 	if local_linear_velocity.z > 0.0: return 1.0

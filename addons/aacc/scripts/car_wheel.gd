@@ -49,9 +49,9 @@ var current_forward_spin: float = 0.0
 
 #== EXTERNAL ==#
 var is_colliding: bool = false
-var collision_point: Vector3
-var collision_normal: Vector3
-var distance: float
+var collision_point: Vector3 = Vector3.ZERO
+var collision_normal: Vector3 = Vector3.ZERO
+var distance: float = 0.0
 
 func _ready() -> void:
 	# TODO: use ShapeCast3D instead
@@ -69,6 +69,21 @@ func _ready() -> void:
 	# does need stuff from the wheels for the physics stuff. It makes sense
 	# to make the wheels execute slightly before the car.
 	process_physics_priority = -1
+
+func reset() -> void:
+	#== COMPRESSION ==#
+	compression = 0.0
+	last_compression = 0.0
+	last_compression_set = false
+
+	#== VISUALS ==#
+	current_forward_spin = 0.0
+
+	#== EXTERNAL ==#
+	is_colliding = false
+	collision_point = Vector3.ZERO
+	collision_normal = Vector3.ZERO
+	distance = 0.0
 
 func configure_raycasts() -> void:
 	raycast_instance_1.target_position = (Vector3.DOWN * (wheel_radius + suspension_length))
