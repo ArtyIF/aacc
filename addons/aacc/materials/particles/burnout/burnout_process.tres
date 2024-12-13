@@ -8,7 +8,6 @@ colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
 gradient = SubResource("Gradient_4fd70")
 
 [sub_resource type="Curve" id="Curve_ea1f5"]
-max_value = 2.0
 bake_resolution = 256
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 2), 2.0, 0.0, 0, 0]
 point_count = 2

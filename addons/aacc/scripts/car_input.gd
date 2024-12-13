@@ -5,6 +5,9 @@ class_name CarInput extends Node
 @export var enabled: bool = true
 @onready var _car: Car = AACCGlobal.current_car
 
+func _ready() -> void:
+	AACCGlobal.current_car_input = self
+
 func _physics_process(delta: float) -> void:
 	if not enabled: return
 	if not _car: return

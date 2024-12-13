@@ -4,9 +4,12 @@
 shader_type spatial;
 render_mode world_vertex_coords, unshaded, cull_front, depth_test_disabled, blend_mul, fog_disabled;
 
-uniform sampler2D DEPTH_TEXTURE : hint_depth_texture, filter_linear_mipmap;
+uniform sampler2D DEPTH_TEXTURE : hint_depth_texture, filter_linear;
+#if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
+	uniform sampler2D NORMAL_TEXTURE : hint_normal_roughness_texture, filter_linear;
+#endif
 
-uniform sampler2D shadow_texture : source_color, hint_default_black, repeat_disable;
+uniform sampler2D shadow_texture : source_color, hint_default_black, repeat_disable, filter_linear_mipmap_anisotropic;
 uniform int shadow_texture_mipmaps = 9;
 
 uniform float shadow_size = 4.0;
@@ -26,10 +29,10 @@ void vertex() {
 // Credit: https://stackoverflow.com/questions/32227283/getting-world-position-from-depth-buffer-value
 vec3 world_pos_from_depth(float depth, vec2 screen_uv, mat4 inverse_proj, mat4 inverse_view) {
 	float z = depth;
-	if (CURRENT_RENDERER == RENDERER_COMPATIBILITY) {
+	#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
 		z *= 2.0;
 		z -= 1.0;
-	}
+	#endif
 	vec4 clipSpacePosition = vec4(screen_uv * 2.0 - 1.0, z, 1.0);
 	vec4 viewSpacePosition = inverse_proj * clipSpacePosition;
 	viewSpacePosition /= viewSpacePosition.w;
@@ -83,8 +86,16 @@ void fragment() {
 	shadow *= vec3(1.0) - (shadow_color * shadow_color_amount);
 	shadow = clamp(vec3(1.0) - shadow, 0.0, 1.0);
 
-	ALBEDO = mix(vec3(1.0), shadow, vertical_blend);
-	if (CURRENT_RENDERER == RENDERER_COMPATIBILITY) {
+	float normal_blend = 1.0;
+	#if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
+		vec3 normal = texture(NORMAL_TEXTURE, SCREEN_UV).xyz * 2.0 - 1.0;
+		vec3 world_normals = (INV_VIEW_MATRIX * vec4(normal, 0.0)).xyz;
+		mat3 basis = mat3(MODEL_MATRIX);
+		normal_blend = clamp(dot(basis * vec3(0.0, 1.0, 0.0), world_normals), 0.0, 1.0);
+	#endif
+
+	ALBEDO = mix(vec3(1.0), shadow, vertical_blend * normal_blend);
+	#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
 		// Compatibility renderer seems to use some tricks for HDR that break
 		// multiplication blend modes right now.
 		//
@@ -96,10 +107,10 @@ void fragment() {
 		// NOTE: This value is unnecessary when glow is disabled and tonemap's
 		// white value is 1. It might require adjusting with other white values.
 		ALBEDO *= 3.719675661;
-	}
-	if (CURRENT_RENDERER == RENDERER_MOBILE) {
+	#endif
+	#if CURRENT_RENDERER == RENDERER_MOBILE
 		// Similar story to Compatibility renderer, except that this value is
 		// fixed and doesn't change depending on environment settings.
 		ALBEDO *= 2.0;
-	}
+	#endif
 }

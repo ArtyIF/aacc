@@ -7,11 +7,16 @@ two cars (no way to easily switch between them).
 `addons/aacc` folder! Some files' licenses require attribution if you're going
 to use them!
 
+**NOTE**: the project is semi-abandoned! Changes are still being made, but
+only as necessary for the game I'm currently working on, No Downforce. Once
+I'm done with that, I'm probably going to resume working fully on this project.
+
 ## Dependencies
-- Godot 4.4+ (tested on dev5)
+- Godot 4.4+ (tested on dev6)
 - - For the Godot 4.3 version, see 3e0cc4987715be7c1ad1e39ebd9c060fab6e6751
 - [lawnjelly's smoothing addon](https://github.com/lawnjelly/smoothing-addon/tree/4.x)
-  for physics interpolation (Godot 4.4's interpolation is currently broken?)
+  for physics interpolation (there is built-in one in Godot 4.4, but it needs some
+  extra adjustments to be usable)
 - [Hydraboo's TrailRenderer](https://github.com/Hyrdaboo/TrailRenderer)
   for skid trails
 - Blender 3.5 or later (3.0-3.4 might also work) for the demo scene

@@ -19,11 +19,13 @@ func play_hit_sound(_body: Node) -> void:
 			if projected_velocity.length() > 0.1:
 				# TODO: have a globally-accessible class take care of it
 				var hit_instance: AudioStreamPlayer3D
-				var hit_amount: float = clamp((projected_velocity.length() - 0.1) / 5.0, 0.0, 1.0)
+				var hit_amount: float
 
 				if car.global_basis.y.dot(state.get_contact_local_normal(i)) < 0.9659:
+					hit_amount = clamp((projected_velocity.length() - 0.1) / 5.0, 0.0, 1.0)
 					hit_instance = hit_sound.instantiate()
 				else:
+					hit_amount = clamp((projected_velocity.length() - 0.1) / 2.0, 0.0, 1.0)
 					hit_instance = land_sound.instantiate()
 				hit_instance.volume_db = linear_to_db(hit_amount)
 				hit_instance.pitch_scale = randf_range(0.9, 1.1)

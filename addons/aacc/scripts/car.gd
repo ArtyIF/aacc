@@ -330,7 +330,7 @@ func update_revs(delta: float) -> void:
 #region Traction
 func get_brake_force() -> float:
 	var brake_speed = clamp(local_linear_velocity.z, -1.0, 1.0)
-	return brake_speed * (linear_grip if linear_velocity.length() < 0.25 else brake_force) * (1.0 if input_handbrake else (input_forward if is_reversing() else input_backward))
+	return brake_speed * brake_force * (1.0 if input_handbrake else (input_forward if is_reversing() else input_backward))
 
 func get_side_grip_force() -> float:
 	return -local_linear_velocity.x * mass

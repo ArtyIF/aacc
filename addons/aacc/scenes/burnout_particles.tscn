@@ -8,6 +8,7 @@ material = ExtResource("2_ygvqw")
 size = Vector2(2, 2)
 
 [node name="BurnoutParticles" type="GPUParticles3D"]
+layers = 2
 sorting_offset = 10.0
 cast_shadow = 0
 gi_mode = 0
@@ -15,7 +16,8 @@ emitting = false
 amount = 50
 amount_ratio = 0.0
 lifetime = 2.0
-fixed_fps = 50
+fixed_fps = 0
+collision_base_size = 2.0
 visibility_aabb = AABB(-25, -2, -25, 50, 10, 50)
 draw_order = 3
 process_material = ExtResource("1_urvgu")

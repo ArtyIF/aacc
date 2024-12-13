@@ -102,6 +102,7 @@ func configure_raycasts() -> void:
 	raycast_instance_2.process_physics_priority = -1000
 
 func set_raycast_values() -> void:
+	# TODO: apply forces per raycast
 	var collision_point_1: Vector3 = raycast_instance_1.get_collision_point()
 	var collision_normal_1: Vector3 = raycast_instance_1.get_collision_normal()
 	var distance_1: float = raycast_instance_1.global_position.distance_to(collision_point_1)
@@ -138,11 +139,12 @@ func update_visuals(delta: float) -> void:
 	var steer_rotation: float = -car.smooth_steer.get_current_value() * car.base_steer_velocity * steer_multiplier
 	
 	if not (freeze_on_handbrake and car.input_handbrake):
-		current_forward_spin -= car.local_linear_velocity.z * delta / wheel_radius
-		if (not block_wheelspin) and car.local_linear_velocity.length() < 0.25:
-			# BUG: when wheelspinning backwards the wheel spins forward after
-			# letting go of the throttle
-			current_forward_spin += (car.max_acceleration * delta * (1.0 if car.current_gear >= 0 else -1.0) * car.burnout_amount) / (car.mass * wheel_radius)
+		if is_colliding: # TODO: smooth it out
+			current_forward_spin -= car.local_linear_velocity.z * delta / wheel_radius
+			if (not block_wheelspin) and car.local_linear_velocity.length() < 0.25:
+				# BUG: when wheelspinning backwards the wheel spins forward after
+				# letting go of the throttle
+				current_forward_spin += (car.max_acceleration * delta * (1.0 if car.current_gear >= 0 else -1.0) * car.burnout_amount) / (car.mass * wheel_radius)
 
 	if current_forward_spin > 2 * PI:
 		current_forward_spin -= 2 * PI
