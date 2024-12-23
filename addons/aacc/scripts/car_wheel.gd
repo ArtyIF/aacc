@@ -8,6 +8,8 @@ class_name CarWheel extends Node3D
 ##
 ## AACC's wheels currently use 2 raycasts for the wheels.
 @export var wheel_width: float = 0.3
+# TODO: document
+@export_flags_3d_physics var collision_mask: int = 1
 
 @export_group("Suspension")
 ## The maximum length of the suspension.
@@ -90,7 +92,7 @@ func configure_raycasts() -> void:
 	raycast_instance_1.enabled = true
 	raycast_instance_1.hit_from_inside = false
 	raycast_instance_1.hit_back_faces = false
-	raycast_instance_1.collision_mask = 1
+	raycast_instance_1.collision_mask = collision_mask
 	raycast_instance_1.process_physics_priority = -1000
 	raycast_instance_1.position = Vector3.RIGHT * wheel_width
 
@@ -98,7 +100,7 @@ func configure_raycasts() -> void:
 	raycast_instance_2.enabled = true
 	raycast_instance_2.hit_from_inside = false
 	raycast_instance_2.hit_back_faces = false
-	raycast_instance_2.collision_mask = 1
+	raycast_instance_1.collision_mask = collision_mask
 	raycast_instance_2.process_physics_priority = -1000
 
 func set_raycast_values() -> void:

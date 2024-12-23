@@ -9,6 +9,7 @@ extends Node3D
 @onready var scratch_sound: AudioStreamPlayer3D = get_node("ScratchSound")
 
 var sparks_control: int = 0
+var smooth_scratch_amount: SmoothedFloat = SmoothedFloat.new(0.0, 50.0, 5.0)
 
 func play_hit_sound(_body: Node) -> void:
 	var state: PhysicsDirectBodyState3D = PhysicsServer3D.body_get_direct_state(car_rid)
@@ -68,11 +69,14 @@ func _physics_process(delta: float) -> void:
 		total_scratch_amount = clamp(total_scratch_amount, 0.0, 1.0)
 		if not scratch_sound.playing:
 			scratch_sound.play(randf_range(0.0, scratch_sound.stream.get_length()))
-		scratch_sound.volume_db = linear_to_db(total_scratch_amount)
 		scratch_sound.pitch_scale = lerp(0.5, 1.0, clamp(total_scratch_amount, 0.0, 1.0))
 	else:
-		scratch_sound.stop()
 		sparks_control = 0
+
+	smooth_scratch_amount.advance_to(total_scratch_amount, delta)
+	scratch_sound.volume_db = linear_to_db(smooth_scratch_amount.get_current_value())
+	if scratch_sound.volume_db < -60.0: # TODO: get from project settings
+		scratch_sound.stop()
 	
 	# TODO: use delta
 	sparks_control += 1

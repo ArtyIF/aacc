@@ -343,7 +343,7 @@ func update_burnout_amount():
 		burnout_revs = linear_velocity.length() / 10.0
 	if abs(local_linear_velocity.z) < 0.25:
 		burnout_revs = revs.get_current_value()
-	
+
 	burnout_amount = clamp(burnout_colliding * (burnout_velocity + burnout_revs), 0.0, 1.0)
 #endregion
 
@@ -439,7 +439,7 @@ func _physics_process(delta: float) -> void:
 
 			var desired_steer_force: Vector3 = Vector3.UP * get_steer_force()
 			var sum_of_angular_forces: Vector3 = convert_angular_force(desired_steer_force, delta)
-			apply_torque(sum_of_angular_forces * average_wheel_collision_normal * ground_coefficient / delta)
+			apply_torque(sum_of_angular_forces.project(average_wheel_collision_normal) * ground_coefficient / delta)
 		else:
 			var desired_air_stabilization_force: Vector3 = get_air_stabilization_force() * delta
 

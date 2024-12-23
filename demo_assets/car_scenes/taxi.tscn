@@ -305,27 +305,31 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
 [node name="CollisionBody" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.18557e-09, 0.15, 0.025)
 shape = SubResource("ConvexPolygonShape3D_8m1l8")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
 [node name="CollisionWheelBL" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 shape = SubResource("ConvexPolygonShape3D_l3td7")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
 [node name="CollisionWheelBR" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.3, 0.3, 0.76)
 shape = SubResource("ConvexPolygonShape3D_yb0ap")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
 [node name="CollisionWheelFL" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
 shape = SubResource("ConvexPolygonShape3D_rxdha")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
 [node name="CollisionWheelFR" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.3, 0.3, -0.76)
 shape = SubResource("ConvexPolygonShape3D_s6wnr")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
 [node name="WheelBL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
-buffer_radius = 0.05
 wheel_width = 0.2
 suspension_spring = 15000.0
 suspension_damper = 1500.0
@@ -343,7 +347,6 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 [node name="WheelBR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
-buffer_radius = 0.05
 wheel_width = 0.2
 suspension_spring = 15000.0
 suspension_damper = 1500.0
@@ -360,7 +363,6 @@ block_wheelspin = true
 [node name="WheelFL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
-buffer_radius = 0.05
 wheel_width = 0.2
 suspension_spring = 15000.0
 suspension_damper = 1500.0
@@ -377,7 +379,6 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 [node name="WheelFR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
-buffer_radius = 0.05
 wheel_width = 0.2
 suspension_spring = 15000.0
 suspension_damper = 1500.0

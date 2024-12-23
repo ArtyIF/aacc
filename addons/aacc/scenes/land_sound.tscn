@@ -6,6 +6,7 @@
 [node name="LandSound" type="AudioStreamPlayer3D"]
 stream = ExtResource("1_hrrbl")
 unit_size = 5.0
+max_db = 0.0
 autoplay = true
 bus = &"SFX"
 doppler_tracking = 2

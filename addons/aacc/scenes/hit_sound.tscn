@@ -14,6 +14,7 @@ stream_2/stream = ExtResource("3_0isay")
 [node name="HitSound" type="AudioStreamPlayer3D"]
 stream = SubResource("AudioStreamRandomizer_leb08")
 unit_size = 5.0
+max_db = 0.0
 autoplay = true
 bus = &"SFX"
 doppler_tracking = 2

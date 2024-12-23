@@ -111,6 +111,9 @@ void fragment() {
 	#if CURRENT_RENDERER == RENDERER_MOBILE
 		// Similar story to Compatibility renderer, except that this value is
 		// fixed and doesn't change depending on environment settings.
+		//
+		// Keep in mind that the rendering breaks for some reason when MSAA is
+		// enabled. Try using FXAA instead.
 		ALBEDO *= 2.0;
 	#endif
 }
