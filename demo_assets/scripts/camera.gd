@@ -16,7 +16,7 @@ var _smoothed_up_vector: Vector3 = Vector3.UP
 func _ready() -> void:
 	process_priority = 1000
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("aaccdemo_camera"):
 		use_hood_camera = not use_hood_camera
 	
