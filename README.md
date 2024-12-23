@@ -12,17 +12,13 @@ only as necessary for the game I'm currently working on, No Downforce. Once
 I'm done with that, I'm probably going to resume working fully on this project.
 
 ## Dependencies
-- Godot 4.4+ (tested on dev6)
+- Godot 4.4+ (tested on dev7)
 - - For the Godot 4.3 version, see 3e0cc4987715be7c1ad1e39ebd9c060fab6e6751
-- [lawnjelly's smoothing addon](https://github.com/lawnjelly/smoothing-addon/tree/4.x)
-  for physics interpolation (there is built-in one in Godot 4.4, but it needs some
-  extra adjustments to be usable)
+- - For Godot 4.4.dev6 and earlier, download [Godot Jolt](https://github.com/godot-jolt/godot-jolt)
+    for best results.
 - [Hydraboo's TrailRenderer](https://github.com/Hyrdaboo/TrailRenderer)
   for skid trails
 - Blender 3.5 or later (3.0-3.4 might also work) for the demo scene
-- - **NOTE**: Blender 4.3 currently has an issue with exporting files as GLTF,
-	which is what Godot asks Blender to do when importing a blend file! Use
-	Blender 4.2 LTS in the meantime. The issue will probably get fixed by 4.3.1.
 
 ## Demo Scene controls
 - W/S (keyboard), RT/LT (gamepad) - gas and brake/reverse
