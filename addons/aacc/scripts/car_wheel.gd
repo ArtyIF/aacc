@@ -162,7 +162,7 @@ func update_visuals(delta: float) -> void:
 	visual_node.transform = new_transform
 
 func update_burnout() -> void:
-	if not is_colliding:
+	if not is_colliding or car.freeze:
 		skid_trail.is_emitting = false
 		burnout_particles.amount_ratio = 0.0
 		burnout_particles.emitting = false
@@ -195,18 +195,17 @@ func _physics_process(delta: float) -> void:
 			last_compression = compression
 			last_compression_set = true
 
-		if not car.freeze:
-			var suspension_magnitude: float = 0.0
-			suspension_magnitude += compression * suspension_spring
+		var suspension_magnitude: float = 0.0
+		suspension_magnitude += compression * suspension_spring
 
-			var compression_delta: float = (compression - last_compression) / delta
-			suspension_magnitude += compression_delta * suspension_damper
-			last_compression = compression
+		var compression_delta: float = (compression - last_compression) / delta
+		suspension_magnitude += compression_delta * suspension_damper
+		last_compression = compression
 
-			suspension_magnitude *= collision_normal.dot(global_basis.y)
-			
-			if not car.do_not_apply_forces:
-				car.apply_force(collision_normal * suspension_magnitude, collision_point - car.global_position)
+		suspension_magnitude *= collision_normal.dot(global_basis.y)
+		
+		if not car.do_not_apply_forces and not car.freeze:
+			car.apply_force(collision_normal * suspension_magnitude, collision_point - car.global_position)
 	else:
 		is_colliding = false
 		last_compression = 0.0

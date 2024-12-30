@@ -9,5 +9,5 @@ unit_size = 5.0
 max_db = 0.0
 autoplay = true
 bus = &"SFX"
-doppler_tracking = 2
+doppler_tracking = 1
 script = ExtResource("2_fiyv0")

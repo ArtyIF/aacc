@@ -199,7 +199,6 @@ func reset() -> void:
 	for wheel in wheels:
 		wheel.reset()
 
-
 #region Processing
 func get_input_steer_multiplier() -> float:
 	if local_linear_velocity.z > 0.0: return 1.0
