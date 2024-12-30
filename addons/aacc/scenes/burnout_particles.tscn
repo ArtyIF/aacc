@@ -2,11 +2,11 @@
 
 [ext_resource type="Material" uid="uid://0nsued0at226" path="res://addons/aacc/materials/particles/burnout/burnout_process.tres" id="1_urvgu"]
 [ext_resource type="Script" uid="uid://3nxhrhbqiab" path="res://addons/aacc/scripts/particles/burnout_particles_quality.gd" id="3_2w4mv"]
-[ext_resource type="Material" uid="uid://67bxlf4dvjc" path="res://addons/aacc/materials/particles/burnout/burnout_render_very_low.tres" id="4_a15ek"]
-[ext_resource type="Material" uid="uid://cssl2n4bwup7n" path="res://addons/aacc/materials/particles/burnout/burnout_render_low.tres" id="4_r6cyj"]
-[ext_resource type="Material" uid="uid://3pj8yaou00og" path="res://addons/aacc/materials/particles/burnout/burnout_render_medium.tres" id="5_r6cyj"]
-[ext_resource type="Material" uid="uid://c8e0oe0drsip2" path="res://addons/aacc/materials/particles/burnout/burnout_render_ultra.tres" id="7_a15ek"]
-[ext_resource type="Material" uid="uid://c8e0oe0drsip2" path="res://addons/aacc/materials/particles/burnout/burnout_render_high.tres" id="7_pe51t"]
+[ext_resource type="Material" uid="uid://c4yiil756xm2" path="res://addons/aacc/materials/particles/burnout/burnout_render_very_low.tres" id="4_a15ek"]
+[ext_resource type="Material" uid="uid://cls5iwq8aeypi" path="res://addons/aacc/materials/particles/burnout/burnout_render_low.tres" id="4_r6cyj"]
+[ext_resource type="Material" uid="uid://bs4ebie2fu7s7" path="res://addons/aacc/materials/particles/burnout/burnout_render_medium.tres" id="5_r6cyj"]
+[ext_resource type="Material" uid="uid://sst7u2r5wcnx" path="res://addons/aacc/materials/particles/burnout/burnout_render_ultra.tres" id="7_a15ek"]
+[ext_resource type="Material" uid="uid://bmimet0xo7o75" path="res://addons/aacc/materials/particles/burnout/burnout_render_high.tres" id="7_pe51t"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_si8b4"]
 material = ExtResource("7_a15ek")

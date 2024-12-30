@@ -6,7 +6,6 @@
 gradient = SubResource("Gradient_235fs")
 fill_from = Vector2(0, 1)
 fill_to = Vector2(0, 0)
-repeat = 1
 
 [resource]
 transparency = 1
@@ -17,4 +16,5 @@ disable_fog = true
 vertex_color_use_as_albedo = true
 albedo_color = Color(1, 0.501961, 0, 1)
 albedo_texture = SubResource("GradientTexture2D_a2o35")
+texture_repeat = false
 use_particle_trails = true

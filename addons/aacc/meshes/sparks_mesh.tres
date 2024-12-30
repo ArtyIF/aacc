@@ -5,5 +5,6 @@
 [resource]
 material = ExtResource("1_pei8e")
 radius = 0.01
+section_length = 0.1
 cap_top = false
 cap_bottom = false

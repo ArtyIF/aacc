@@ -6,7 +6,7 @@
 [resource]
 albedo_color = Color(0.376471, 0.376471, 0.376471, 1)
 albedo_texture = ExtResource("1_gt718")
-metallic_specular = 0.0
+roughness = 0.5
 detail_enabled = true
 detail_blend_mode = 3
 detail_uv_layer = 1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=21 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_8gguu"]
 [ext_resource type="Script" uid="uid://be5ommjjotu3v" path="res://demo_assets/scripts/car_setter.gd" id="1_gsqbk"]
@@ -9,7 +9,9 @@
 [ext_resource type="Script" uid="uid://l1fginr1hyby" path="res://demo_assets/scripts/revs_progress.gd" id="4_d88wf"]
 [ext_resource type="PackedScene" uid="uid://cu2i0ah5ud0w1" path="res://demo_assets/subscenes/pathtest.blend" id="5_868sg"]
 [ext_resource type="Script" uid="uid://crrd7ugev6afh" path="res://addons/aacc/scripts/helper_classes/procedural_curve.gd" id="6_g4he2"]
+[ext_resource type="Script" uid="uid://5drqeogbqn55" path="res://demo_assets/scripts/follow_camera_position.gd" id="6_k47vb"]
 [ext_resource type="Script" uid="uid://tr0544b3fh36" path="res://addons/aacc/scripts/car_input.gd" id="7_67ns0"]
+[ext_resource type="Script" uid="uid://bqgtjo7ba5lf3" path="res://demo_assets/scripts/lookat_camera_position.gd" id="7_mruix"]
 [ext_resource type="Script" uid="uid://boouw6vvcjw40" path="res://demo_assets/scripts/car_resetter.gd" id="8_i5b6w"]
 [ext_resource type="LightmapGIData" uid="uid://byfapvcgpdvnb" path="res://demo_assets/demo_scene.lmbake" id="9_37bxw"]
 [ext_resource type="Script" uid="uid://bc8mdmqla4bv" path="res://demo_assets/scripts/speed_label.gd" id="14_i5r8x"]
@@ -75,11 +77,26 @@ light_angular_distance = 1.0
 light_bake_mode = 0
 sky_mode = 2
 
-[node name="Camera" type="Camera3D" parent="."]
+[node name="TempFollowCameraPosition" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 10)
+script = ExtResource("6_k47vb")
+
+[node name="LookatCameraPosition" type="Node3D" parent="." node_paths=PackedStringArray("follow_camera_position")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("7_mruix")
+follow_camera_position = NodePath("../TempFollowCameraPosition")
+
+[node name="SpringArm" type="SpringArm3D" parent="LookatCameraPosition"]
+
+[node name="FollowCameraPosition" type="Node3D" parent="LookatCameraPosition/SpringArm"]
+
+[node name="Camera" type="Camera3D" parent="." node_paths=PackedStringArray("follow_camera_position", "lookat_camera_position")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
 doppler_tracking = 1
 far = 1000.0
 script = ExtResource("2_vy2m6")
+follow_camera_position = NodePath("../LookatCameraPosition/SpringArm/FollowCameraPosition")
+lookat_camera_position = NodePath("../LookatCameraPosition")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -153,3 +170,10 @@ transform = Transform3D(1.88528, 0, -1.66904, 0, 8.755, 0, 0.667615, 0, 4.71321,
 
 [node name="ramptest4" parent="." instance=ExtResource("15_lentq")]
 transform = Transform3D(-1.85271, -0.174467, 0.166903, -0.370167, 0.982723, 4.65661e-10, -0.65608, -0.061782, -0.471321, -97.2211, 15.0431, 289.676)
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="."]
+blend_distance = 0.0
+size = Vector3(1000, 1000, 1000)
+origin_offset = Vector3(-10, 1, 300)
+enable_shadows = true
+cull_mask = 1048573

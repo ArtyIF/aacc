@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=4 uid="uid://crko52geporbo"]
+[gd_scene load_steps=37 format=4 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -14,6 +14,8 @@
 [ext_resource type="Script" uid="uid://c2n5f44kxf8r1" path="res://addons/aacc/scripts/audio/car_tire_screech_sound.gd" id="10_nd533"]
 [ext_resource type="AudioStream" uid="uid://brk1iuh8kkoxx" path="res://addons/aacc/sounds/engine/engine_6.ogg" id="11_0wb0t"]
 [ext_resource type="PackedScene" uid="uid://d0s7bam4kvl4f" path="res://addons/aacc/scenes/hit_reaction.tscn" id="15_0wb0t"]
+[ext_resource type="AudioStream" uid="uid://cun1ch44lb6ma" path="res://addons/aacc/sounds/brake_squeal.ogg" id="15_n1pdp"]
+[ext_resource type="Script" uid="uid://t5im4xcigfjb" path="res://addons/aacc/scripts/audio/car_brake_squeal_sound.gd" id="16_axug4"]
 
 [sub_resource type="Resource" id="Resource_sei37"]
 resource_local_to_scene = true
@@ -243,6 +245,8 @@ max_acceleration = 15000.0
 slowdown_force = 1000.0
 gears_amount = 5
 gear_switch_time = 0.25
+rev_speed_up_moving = 2.0
+rev_speed_down_moving = 2.0
 target_steer_velocity = 0.872665
 distance_between_wheels = 1.52
 smooth_steer_speed = 5.0
@@ -255,9 +259,6 @@ takeoff_force = 2500.0
 air_stabilization_force = 500.0
 
 [node name="Visuals" type="Node3D" parent="."]
-
-[node name="HoodCameraPosition" type="Node3D" parent="Visuals"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.6)
 
 [node name="180Turnaround" type="Node3D" parent="Visuals"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
@@ -304,8 +305,11 @@ mesh = SubResource("BoxMesh_sc5a5")
 skeleton = NodePath("../..")
 script = ExtResource("7_ljguu")
 
-[node name="FollowCameraOffset" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
+[node name="FollowCameraOffsetMin" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 4)
+
+[node name="FollowCameraOffsetMax" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4.5)
 
 [node name="CollisionBody1" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.18557e-09, 0.15, 0.025)
@@ -423,3 +427,12 @@ doppler_tracking = 2
 script = ExtResource("10_nd533")
 
 [node name="HitReaction" parent="." instance=ExtResource("15_0wb0t")]
+
+[node name="BrakeSqueal" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("15_n1pdp")
+volume_db = -80.0
+unit_size = 1.5
+max_db = 0.0
+bus = &"SFX"
+script = ExtResource("16_axug4")
+metadata/_custom_type_script = ExtResource("16_axug4")
