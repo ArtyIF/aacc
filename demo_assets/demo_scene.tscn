@@ -49,6 +49,7 @@ car = NodePath("../Taxi")
 [node name="ShadowColorSetter" type="Node" parent="."]
 script = ExtResource("2_qcqa7")
 shadow_color = Color(0.576471, 0.643137, 0.878431, 1)
+shadow_color_amount = 0.25
 
 [node name="CarResetter" type="Node" parent="."]
 script = ExtResource("8_i5b6w")
