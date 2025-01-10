@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://dcfh0h4h0tw74" path="res://addons/aacc/textures/WispySmoke01_8x8.tga" id="1_wcy51"]
 
 [resource]
-transparency = 4
+transparency = 1
 shading_mode = 2
 diffuse_mode = 2
 specular_mode = 2
@@ -17,4 +17,4 @@ particles_anim_loop = false
 proximity_fade_enabled = true
 distance_fade_mode = 1
 distance_fade_min_distance = 0.5
-distance_fade_max_distance = 2.0
+distance_fade_max_distance = 1.5

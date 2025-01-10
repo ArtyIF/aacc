@@ -2,7 +2,11 @@
 // written by TwistedTwigleg and published under the MIT license
 
 shader_type spatial;
+#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
+render_mode world_vertex_coords, unshaded, cull_front, depth_test_disabled, blend_mix, fog_disabled;
+#else
 render_mode world_vertex_coords, unshaded, cull_front, depth_test_disabled, blend_mul, fog_disabled;
+#endif
 
 uniform sampler2D DEPTH_TEXTURE : hint_depth_texture, filter_linear;
 #if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
@@ -80,40 +84,32 @@ void fragment() {
 
 	vec3 shadow = textureLod(shadow_texture, decal_uv, blur * texture_levels).rgb;
 	shadow = multi_channel_inverse_lerp(vec3(shadow_ramp.x), vec3(shadow_ramp.y), clamp(shadow, vec3(0.0), vec3(1.0)));
-	shadow = mix(shadow, vec3(grayscale(shadow)), shadow_grayscale);
 
-	shadow = vec3(1.0) - shadow;
-	shadow *= vec3(1.0) - (shadow_color * shadow_color_amount);
-	shadow = clamp(vec3(1.0) - shadow, 0.0, 1.0);
+	#if CURRENT_RENDERER != RENDERER_COMPATIBILITY
+		shadow = mix(shadow, vec3(grayscale(shadow)), shadow_grayscale);
 
-	float normal_blend = 1.0;
-	#if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
-		vec3 normal = texture(NORMAL_TEXTURE, SCREEN_UV).xyz * 2.0 - 1.0;
-		vec3 world_normals = (INV_VIEW_MATRIX * vec4(normal, 0.0)).xyz;
-		mat3 basis = mat3(MODEL_MATRIX);
-		normal_blend = clamp(dot(basis * vec3(0.0, 1.0, 0.0), world_normals), 0.0, 1.0);
-	#endif
+		shadow = vec3(1.0) - shadow;
+		shadow *= vec3(1.0) - (shadow_color * shadow_color_amount);
+		shadow = clamp(vec3(1.0) - shadow, 0.0, 1.0);
 
-	ALBEDO = mix(vec3(1.0), shadow, vertical_blend * normal_blend);
-	#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
-		// Compatibility renderer seems to use some tricks for HDR that break
-		// multiplication blend modes right now.
-		//
-		// Not sure where the value below comes from (got it from trial and
-		// error, and may not even be right on other GPUs/platforms), but this
-		// is where the shadow cube completely stops darkening the image (at
-		// least on my PC).
-		//
-		// NOTE: This value is unnecessary when glow is disabled and tonemap's
-		// white value is 1. It might require adjusting with other white values.
-		ALBEDO *= 3.719675661;
-	#endif
-	#if CURRENT_RENDERER == RENDERER_MOBILE
-		// Similar story to Compatibility renderer, except that this value is
-		// fixed and doesn't change depending on environment settings.
-		//
-		// Keep in mind that the rendering breaks for some reason when MSAA is
-		// enabled. Try using FXAA instead.
-		ALBEDO *= 2.0;
+		float normal_blend = 1.0;
+		#if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
+			vec3 normal = texture(NORMAL_TEXTURE, SCREEN_UV).xyz * 2.0 - 1.0;
+			vec3 world_normals = (INV_VIEW_MATRIX * vec4(normal, 0.0)).xyz;
+			mat3 basis = mat3(MODEL_MATRIX);
+			normal_blend = clamp(dot(basis * vec3(0.0, 1.0, 0.0), world_normals), 0.0, 1.0);
+		#endif
+
+		ALBEDO = mix(vec3(1.0), shadow, vertical_blend * normal_blend);
+
+		#if CURRENT_RENDERER == RENDERER_MOBILE
+			// Keep in mind that the rendering breaks for some reason when MSAA is
+			// enabled. Try using FXAA instead.
+			ALBEDO *= 2.0;
+		#endif
+	#else
+		shadow = vec3(grayscale(shadow));
+		ALBEDO = vec3(shadow_color * shadow_color_amount);
+		ALPHA = mix(0.0, 1.0 - shadow.x, vertical_blend);
 	#endif
 }
