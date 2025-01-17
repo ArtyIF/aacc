@@ -12,10 +12,11 @@ only as necessary for the game I'm currently working on, No Downforce. Once
 I'm done with that, I'm probably going to resume working fully on this project.
 
 ## Dependencies
-- Godot 4.4+ (tested on dev7)
+- Godot 4.4+ (tested on beta1, some changes may cause the project to break on
+  earlier versions)
 - - For the Godot 4.3 version, see 3e0cc4987715be7c1ad1e39ebd9c060fab6e6751
 - - For Godot 4.4.dev6 and earlier, download [Godot Jolt](https://github.com/godot-jolt/godot-jolt)
-    for best results.
+	for best results.
 - [Hydraboo's TrailRenderer](https://github.com/Hyrdaboo/TrailRenderer)
   for skid trails
 - Blender 3.5 or later (3.0-3.4 might also work) for the demo scene
