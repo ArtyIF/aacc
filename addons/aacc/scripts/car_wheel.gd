@@ -170,7 +170,6 @@ func update_burnout() -> void:
 
 	var burnout_amount: float = car.burnout_amount
 	if car.local_linear_velocity.length() < 0.25:
-		burnout_amount /= 5.0
 		if (freeze_on_handbrake and car.input_handbrake) or block_wheelspin:
 			burnout_amount = 0.0
 

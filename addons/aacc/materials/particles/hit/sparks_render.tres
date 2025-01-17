@@ -4,7 +4,7 @@
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_a2o35"]
 gradient = SubResource("Gradient_235fs")
-fill_from = Vector2(0, 1)
+fill_from = Vector2(0, 0.5)
 fill_to = Vector2(0, 0)
 
 [resource]

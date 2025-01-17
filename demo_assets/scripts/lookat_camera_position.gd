@@ -42,6 +42,9 @@ func _physics_process(delta: float) -> void:
 	target_forward_offset_amount *= _car.ground_coefficient
 	if _car.input_handbrake:
 		target_forward_offset_amount = 0.0
+	var camera_vector: Vector2 = Input.get_vector("aaccdemo_camera_right", "aaccdemo_camera_left", "aaccdemo_camera_back", "aaccdemo_camera_forward")
+	if not camera_vector.is_zero_approx():
+		target_forward_offset_amount = 0.0
 	_forward_offset_amount = lerp(_forward_offset_amount, target_forward_offset_amount, 1.0 * delta)
 
 	final_position += Plane(up_direction).project(_car.global_basis.z) * 1.5 * _forward_offset_amount

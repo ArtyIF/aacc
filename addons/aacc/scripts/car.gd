@@ -336,12 +336,12 @@ func get_side_grip_force() -> float:
 
 func update_burnout_amount():
 	var burnout_colliding: float = 1.0 if ground_coefficient > 0.0 else 0.0
-	var burnout_velocity: float = (abs(local_linear_velocity.x) - 0.5) / 10.0
+	var burnout_velocity: float = (abs(local_linear_velocity.x) - 0.5) / 100.0
 	var burnout_revs: float = 0.0
 	if input_handbrake and linear_velocity.length() >= 0.25:
-		burnout_revs = linear_velocity.length() / 10.0
+		burnout_revs = linear_velocity.length() / 100.0
 	if abs(local_linear_velocity.z) < 0.25:
-		burnout_revs = revs.get_current_value()
+		burnout_revs = revs.get_current_value() / 10.0
 
 	burnout_amount = clamp(burnout_colliding * (burnout_velocity + burnout_revs), 0.0, 1.0)
 #endregion

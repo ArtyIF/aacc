@@ -40,13 +40,11 @@ func spawn_particle(i: int, state: PhysicsDirectBodyState3D, scratch_amount: flo
 	var sparks_instance: GPUParticles3D = sparks.instantiate()
 	sparks_instance.amount_ratio = scratch_amount
 	add_child(sparks_instance)
-	sparks_instance.global_position = state.get_contact_local_position(i)
+	sparks_instance.global_position = state.get_contact_local_position(i) + (Vector3(randf(), randf(), randf()) * randf_range(-0.25, 0.25))
 	if not Vector3.UP.cross(state.get_contact_local_normal(i)).is_zero_approx():
-		sparks_instance.global_basis = Basis.looking_at(state.get_contact_local_normal(i))
+		sparks_instance.global_basis = Basis.looking_at(state.get_contact_local_normal(i), Vector3.UP.rotated(state.get_contact_local_normal(i), randf_range(0.0, deg_to_rad(360.0))))
 	else:
-		# Since the initial velocity direction is (0.0, 1.0, -1.0), this makes the sparks face up
-		sparks_instance.global_basis = Basis.from_euler(Vector3(deg_to_rad(45.0), 0.0, 0.0))
-	
+		sparks_instance.global_basis = Basis.from_euler(Vector3(0.0, randf_range(0.0, deg_to_rad(360.0)), 0.0))
 
 func _ready() -> void:
 	get_node("..").body_entered.connect(play_hit_sound)

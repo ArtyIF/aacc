@@ -6,9 +6,9 @@ class_name CarTireScreechSound extends AudioStreamPlayer3D
 var smooth_burnout_amount = SmoothedFloat.new(0.0, 4.0, 4.0)
 
 func _physics_process(delta: float) -> void:
-	smooth_burnout_amount.advance_to(car.burnout_amount, delta)
+	smooth_burnout_amount.advance_to(clamp(car.burnout_amount * 10.0, 0.0, 1.0), delta)
 	pitch_scale = lerp(pitch_range.x, pitch_range.y, smooth_burnout_amount.get_current_value())
-	volume_db = linear_to_db(car.burnout_amount)
+	volume_db = linear_to_db(clamp(car.burnout_amount * 10.0, 0.0, 1.0))
 
 	if is_inf(volume_db) or car.freeze:
 		volume_db = -80.0
