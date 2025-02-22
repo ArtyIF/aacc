@@ -13,7 +13,10 @@ func _physics_process(delta: float) -> void:
 	volume_db = linear_to_db(lerp(min_volume, 1.0, car.accel_amount.get_current_value()))
 	pitch_scale = lerp(engine_pitch_range.x, engine_pitch_range.y, car.revs.get_current_value())
 	
-	if car.freeze and playing:
+	if AACCGlobal.can_play("Engine", car):
+		if car.freeze and playing:
+			stop()
+		elif not car.freeze and not playing:
+			play()
+	else:
 		stop()
-	elif not car.freeze and not playing:
-		play()

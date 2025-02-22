@@ -48,8 +48,6 @@ car = NodePath("../Taxi")
 
 [node name="ShadowColorSetter" type="Node" parent="."]
 script = ExtResource("2_qcqa7")
-shadow_color = Color(0.576471, 0.643137, 0.878431, 1)
-shadow_color_amount = 0.25
 
 [node name="CarResetter" type="Node" parent="."]
 script = ExtResource("8_i5b6w")
@@ -62,6 +60,7 @@ transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866026, 0.5, -0.7071
 light_color = Color(1, 0.941176, 0.878431, 1)
 light_energy = 1.2
 shadow_enabled = true
+directional_shadow_mode = 0
 directional_shadow_blend_splits = true
 directional_shadow_fade_start = 0.5
 directional_shadow_max_distance = 25.0
@@ -147,7 +146,7 @@ vertical_alignment = 2
 script = ExtResource("14_i5r8x")
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
-shadowmask_mode = 1
+shadowmask_mode = 2
 generate_probes_subdiv = 0
 light_data = ExtResource("9_37bxw")
 

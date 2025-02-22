@@ -11,9 +11,12 @@ func _physics_process(delta: float) -> void:
 	smoothed_brake_amount.advance_to(target_value, delta)
 	volume_db = linear_to_db(lerp(0.0, 1.0, smoothed_brake_amount.get_current_value()))
 
-	if is_inf(volume_db) or car.freeze:
-		volume_db = -80.0
-	if volume_db >= -60.0 and not playing:
-		play(randf_range(0.0, stream.get_length()))
-	elif volume_db < -60.0 and playing:
+	if AACCGlobal.can_play("BrakeSqueal", car):
+		if is_inf(volume_db) or car.freeze:
+			volume_db = -80.0
+		if volume_db >= -60.0 and not playing:
+			play(randf_range(0.0, stream.get_length()))
+		elif volume_db < -60.0 and playing:
+			stop()
+	else:
 		stop()

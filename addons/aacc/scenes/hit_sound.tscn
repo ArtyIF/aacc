@@ -1,15 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://w2tm5lmehs3t"]
+[gd_scene load_steps=5 format=3 uid="uid://w2tm5lmehs3t"]
 
-[ext_resource type="AudioStream" uid="uid://bjldr0p41wvds" path="res://addons/aacc/sounds/collision_1.ogg" id="1_t54gk"]
-[ext_resource type="AudioStream" uid="uid://deuq7bwx2b6xr" path="res://addons/aacc/sounds/collision_2.ogg" id="2_3thri"]
+[ext_resource type="AudioStream" uid="uid://dxx0tc3aeu2wp" path="res://addons/aacc/sounds/collision_1.wav" id="1_t54gk"]
+[ext_resource type="AudioStream" uid="uid://cla0m011ibjnt" path="res://addons/aacc/sounds/collision_2.wav" id="2_3thri"]
 [ext_resource type="Script" uid="uid://csqi5pde5ud5l" path="res://addons/aacc/scripts/audio/hit_sound.gd" id="2_mgomb"]
-[ext_resource type="AudioStream" uid="uid://uf2bpidpwk8k" path="res://addons/aacc/sounds/collision_3.ogg" id="3_0isay"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_leb08"]
-streams_count = 3
+streams_count = 2
 stream_0/stream = ExtResource("1_t54gk")
 stream_1/stream = ExtResource("2_3thri")
-stream_2/stream = ExtResource("3_0isay")
 
 [node name="HitSound" type="AudioStreamPlayer3D"]
 stream = SubResource("AudioStreamRandomizer_leb08")

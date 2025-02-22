@@ -2,11 +2,7 @@
 // written by TwistedTwigleg and published under the MIT license
 
 shader_type spatial;
-#if CURRENT_RENDERER == RENDERER_COMPATIBILITY
 render_mode world_vertex_coords, unshaded, cull_front, depth_test_disabled, blend_mix, fog_disabled;
-#else
-render_mode world_vertex_coords, unshaded, cull_front, depth_test_disabled, blend_mul, fog_disabled;
-#endif
 
 uniform sampler2D DEPTH_TEXTURE : hint_depth_texture, filter_linear;
 #if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
@@ -19,10 +15,8 @@ uniform int shadow_texture_mipmaps = 9;
 uniform float shadow_size = 4.0;
 uniform float shadow_height_above = 0.25;
 uniform float shadow_height_below = 1.25;
-uniform float shadow_grayscale : hint_range(0.0, 1.0) = 0.0;
-uniform vec3 shadow_color : source_color = vec3(0.0);
-uniform float shadow_color_amount : hint_range(0.0, 1.0) = 0.5;
-uniform vec2 shadow_ramp = vec2(0.1, 1.0);
+uniform float shadow_intensity : hint_range(0.0, 1.0) = 1.0;
+uniform vec2 shadow_range = vec2(0.0, 1.0);
 
 varying mat4 INV_MODEL_MATRIX;
 
@@ -42,22 +36,6 @@ vec3 world_pos_from_depth(float depth, vec2 screen_uv, mat4 inverse_proj, mat4 i
 	viewSpacePosition /= viewSpacePosition.w;
 	vec4 worldSpacePosition = inverse_view * viewSpacePosition;
 	return worldSpacePosition.xyz;
-}
-
-float inverse_lerp(float a, float b, float x) {
-	return (x - a) / (b - a);
-}
-
-vec3 multi_channel_inverse_lerp(vec3 a, vec3 b, vec3 x) {
-	vec3 result = vec3(0.0);
-	result.r = inverse_lerp(a.r, b.r, x.r);
-	result.g = inverse_lerp(a.g, b.g, x.g);
-	result.b = inverse_lerp(a.b, b.b, x.b);
-	return result;
-}
-
-float grayscale(vec3 input) {
-	return dot(input, vec3(0.2126, 0.7152, 0.0722));
 }
 
 void fragment() {
@@ -83,33 +61,15 @@ void fragment() {
 	float texture_levels = max(0.0, float(shadow_texture_mipmaps - 3));
 
 	vec3 shadow = textureLod(shadow_texture, decal_uv, blur * texture_levels).rgb;
-	shadow = multi_channel_inverse_lerp(vec3(shadow_ramp.x), vec3(shadow_ramp.y), clamp(shadow, vec3(0.0), vec3(1.0)));
 
-	#if CURRENT_RENDERER != RENDERER_COMPATIBILITY
-		shadow = mix(shadow, vec3(grayscale(shadow)), shadow_grayscale);
-
-		shadow = vec3(1.0) - shadow;
-		shadow *= vec3(1.0) - (shadow_color * shadow_color_amount);
-		shadow = clamp(vec3(1.0) - shadow, 0.0, 1.0);
-
-		float normal_blend = 1.0;
-		#if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
-			vec3 normal = texture(NORMAL_TEXTURE, SCREEN_UV).xyz * 2.0 - 1.0;
-			vec3 world_normals = (INV_VIEW_MATRIX * vec4(normal, 0.0)).xyz;
-			mat3 basis = mat3(MODEL_MATRIX);
-			normal_blend = clamp(dot(basis * vec3(0.0, 1.0, 0.0), world_normals), 0.0, 1.0);
-		#endif
-
-		ALBEDO = mix(vec3(1.0), shadow, vertical_blend * normal_blend);
-
-		#if CURRENT_RENDERER == RENDERER_MOBILE
-			// Keep in mind that the rendering breaks for some reason when MSAA is
-			// enabled. Try using FXAA instead.
-			ALBEDO *= 2.0;
-		#endif
-	#else
-		shadow = vec3(grayscale(shadow));
-		ALBEDO = vec3(shadow_color * shadow_color_amount);
-		ALPHA = mix(0.0, 1.0 - shadow.x, vertical_blend);
+	float normal_blend = 1.0;
+	#if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
+		vec3 normal = texture(NORMAL_TEXTURE, SCREEN_UV).xyz * 2.0 - 1.0;
+		vec3 world_normals = (INV_VIEW_MATRIX * vec4(normal, 0.0)).xyz;
+		mat3 basis = mat3(MODEL_MATRIX);
+		normal_blend = clamp(dot(basis * vec3(0.0, 1.0, 0.0), world_normals), 0.0, 1.0);
 	#endif
+
+	ALBEDO = vec3(0.0);
+	ALPHA = clamp(mix(shadow_range.x, shadow_range.y, mix(0.0, 1.0 - shadow.x, vertical_blend * normal_blend * shadow_intensity)), 0.0, 1.0);
 }

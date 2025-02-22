@@ -213,11 +213,11 @@ func process_smooth_values(delta: float):
 
 	var target_steer_sign = sign(local_linear_velocity.z)
 
+	if input_handbrake:
+		use_smooth_steer_sign_value = old_input_handbrake
 	if use_smooth_steer_sign_value and smooth_steer_sign.get_current_value() == target_steer_sign:
 		use_smooth_steer_sign_value = false
-	if input_handbrake:
-		use_smooth_steer_sign_value = true
-	if local_linear_velocity.length() <= 1.0:
+	if abs(local_angular_velocity.y) < (0.25 * base_steer_velocity / distance_between_wheels) and local_linear_velocity.length() < 0.25:
 		use_smooth_steer_sign_value = false
 
 	# TODO: option for smooth steer sign, may be unnecessary for some cars

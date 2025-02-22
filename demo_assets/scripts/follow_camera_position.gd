@@ -42,7 +42,10 @@ func _physics_process(delta: float) -> void:
 	var slerp_amount: float = clamp((_car.linear_velocity.length() - 0.25) / 10.0, 0.0, 1.0)
 	if Input.get_action_strength("aaccdemo_camera_recenter") or (_car.input_handbrake and _car.input_forward > 0.0 and _car.linear_velocity.length() <= 0.25):
 		target_direction = _car.global_basis.z
-		slerp_amount = _car.revs.get_current_value()
+		if not Input.get_action_strength("aaccdemo_camera_recenter"):
+			slerp_amount = _car.revs.get_current_value()
+		else:
+			slerp_amount = 1.0
 	var camera_vector: Vector2 = Input.get_vector("aaccdemo_camera_right", "aaccdemo_camera_left", "aaccdemo_camera_back", "aaccdemo_camera_forward")
 	if not camera_vector.is_zero_approx():
 		var angle: float = camera_vector.angle_to(Vector2.DOWN)

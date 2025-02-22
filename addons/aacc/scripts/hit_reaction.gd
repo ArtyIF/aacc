@@ -1,12 +1,11 @@
 extends Node3D
 
 @export var hit_sound: PackedScene
-@export var land_sound: PackedScene
 @export var sparks: PackedScene
 
 @onready var car: Car = get_node("..")
 @onready var car_rid: RID = car.get_rid()
-@onready var scratch_sound: AudioStreamPlayer3D = get_node("ScratchSound")
+@onready var scrape_sound: AudioStreamPlayer3D = get_node("ScrapeSound")
 
 var sparks_control: int = 0
 var smooth_scratch_amount: SmoothedFloat = SmoothedFloat.new(0.0, 50.0, 5.0)
@@ -19,19 +18,14 @@ func play_hit_sound(_body: Node) -> void:
 			var projected_velocity: Vector3 = state.get_contact_local_velocity_at_position(i).project(state.get_contact_local_normal(i))
 			if projected_velocity.length() > 0.1:
 				# TODO: have a globally-accessible class take care of it
-				var hit_instance: AudioStreamPlayer3D
-				var hit_amount: float
+				var hit_amount: float = clamp((projected_velocity.length() - 0.1) / 5.0, 0.0, 1.0)
 
-				if car.global_basis.y.dot(state.get_contact_local_normal(i)) < 0.9659:
-					hit_amount = clamp((projected_velocity.length() - 0.1) / 5.0, 0.0, 1.0)
-					hit_instance = hit_sound.instantiate()
-				else:
-					hit_amount = clamp((projected_velocity.length() - 0.1) / 2.0, 0.0, 1.0)
-					hit_instance = land_sound.instantiate()
-				hit_instance.volume_db = linear_to_db(hit_amount)
-				hit_instance.pitch_scale = randf_range(0.9, 1.1)
-				add_child(hit_instance)
-				hit_instance.global_position = state.get_contact_local_position(i)
+				if AACCGlobal.can_play("Collision", car):
+					var hit_instance: AudioStreamPlayer3D = hit_sound.instantiate()
+					hit_instance.volume_db = linear_to_db(hit_amount)
+					hit_instance.pitch_scale = randf_range(0.9, 1.1)
+					add_child(hit_instance)
+					hit_instance.global_position = state.get_contact_local_position(i)
 
 				spawn_particle(i, state, hit_amount)
 
@@ -52,29 +46,31 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	var state: PhysicsDirectBodyState3D = PhysicsServer3D.body_get_direct_state(car_rid)
 
-	var average_contact_velocity: float = 0.0
 	var total_scratch_amount: float = 0.0
 
 	if state.get_contact_count() > 0:
 		for i in range(state.get_contact_count()):
-			average_contact_velocity += state.get_contact_local_velocity_at_position(i).length()
-			var scratch_amount: float = clamp((state.get_contact_local_velocity_at_position(i).length() - 0.1) / 10.0, 0.0, 1.0)
+			var scratch_amount: float = (state.get_contact_local_velocity_at_position(i).length() - 0.1) / 20.0
 			total_scratch_amount += scratch_amount
 
 			if sparks_control == 0:
 				spawn_particle(i, state, scratch_amount)
 
-		total_scratch_amount = clamp(total_scratch_amount, 0.0, 1.0)
-		if not scratch_sound.playing:
-			scratch_sound.play(randf_range(0.0, scratch_sound.stream.get_length()))
-		scratch_sound.pitch_scale = lerp(0.5, 1.0, clamp(total_scratch_amount, 0.0, 1.0))
+		total_scratch_amount /= state.get_contact_count()
+
+		if AACCGlobal.can_play("Scrape", car):
+			if not scrape_sound.playing:
+				scrape_sound.play(randf_range(0.0, scrape_sound.stream.get_length()))
+			scrape_sound.pitch_scale = clamp(lerp(0.2, 1.0, total_scratch_amount), 0.2, 2.0)
+		else:
+			scrape_sound.stop()
 	else:
 		sparks_control = 0
 
-	smooth_scratch_amount.advance_to(total_scratch_amount, delta)
-	scratch_sound.volume_db = linear_to_db(smooth_scratch_amount.get_current_value())
-	if scratch_sound.volume_db < -60.0: # TODO: get from project settings
-		scratch_sound.stop()
+	smooth_scratch_amount.advance_to(clamp(total_scratch_amount, 0.0, 1.0), delta)
+	scrape_sound.volume_db = linear_to_db(smooth_scratch_amount.get_current_value())
+	if scrape_sound.volume_db < -60.0 or car.freeze: # TODO: get from project settings
+		scrape_sound.stop()
 	
 	# TODO: use delta
 	sparks_control += 1

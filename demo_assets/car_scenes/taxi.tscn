@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=4 uid="uid://crko52geporbo"]
+[gd_scene load_steps=40 format=4 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -9,13 +9,16 @@
 [ext_resource type="Script" uid="uid://bf1xbn8a0sqtj" path="res://addons/aacc/scripts/car_shadow.gd" id="7_ljguu"]
 [ext_resource type="Script" uid="uid://wwwk6psnhcay" path="res://addons/aacc/scripts/audio/car_engine_sound_basic.gd" id="8_os6lh"]
 [ext_resource type="PackedScene" uid="uid://crfcs3rsv2p1k" path="res://addons/aacc/scenes/skid_trail.tscn" id="9_06vfh"]
-[ext_resource type="AudioStream" uid="uid://c23hw5dbnhtdl" path="res://addons/aacc/sounds/tire_screech.ogg" id="9_8cvhf"]
+[ext_resource type="AudioStream" uid="uid://dkstnkcccibpg" path="res://addons/aacc/sounds/tire_screech.wav" id="9_8cvhf"]
 [ext_resource type="PackedScene" uid="uid://bgcsoin0se8xf" path="res://addons/aacc/scenes/burnout_particles.tscn" id="9_tliwu"]
 [ext_resource type="Script" uid="uid://c2n5f44kxf8r1" path="res://addons/aacc/scripts/audio/car_tire_screech_sound.gd" id="10_nd533"]
-[ext_resource type="AudioStream" uid="uid://brk1iuh8kkoxx" path="res://addons/aacc/sounds/engine/engine_6.ogg" id="11_0wb0t"]
+[ext_resource type="AudioStream" uid="uid://ckgmy3qjy53b" path="res://addons/aacc/sounds/engine/engine_6.wav" id="11_0wb0t"]
+[ext_resource type="PackedScene" uid="uid://5a08b8crmdpm" path="res://addons/aacc/scenes/land_sound.tscn" id="14_axug4"]
 [ext_resource type="PackedScene" uid="uid://d0s7bam4kvl4f" path="res://addons/aacc/scenes/hit_reaction.tscn" id="15_0wb0t"]
-[ext_resource type="AudioStream" uid="uid://cun1ch44lb6ma" path="res://addons/aacc/sounds/brake_squeal.ogg" id="15_n1pdp"]
+[ext_resource type="AudioStream" uid="uid://bntdehfctcmq5" path="res://addons/aacc/sounds/brake_squeal.wav" id="15_n1pdp"]
 [ext_resource type="Script" uid="uid://t5im4xcigfjb" path="res://addons/aacc/scripts/audio/car_brake_squeal_sound.gd" id="16_axug4"]
+[ext_resource type="AudioStream" uid="uid://d26n3xs6s7xha" path="res://addons/aacc/sounds/tire_roll.wav" id="17_1amw3"]
+[ext_resource type="Script" uid="uid://clouc4sxsptvp" path="res://addons/aacc/scripts/audio/car_tire_roll_sound.gd" id="18_iv7oc"]
 
 [sub_resource type="Resource" id="Resource_sei37"]
 resource_local_to_scene = true
@@ -425,8 +428,7 @@ playback_type = 1
 attenuation_filter_cutoff_hz = 20500.0
 doppler_tracking = 2
 script = ExtResource("10_nd533")
-
-[node name="HitReaction" parent="." instance=ExtResource("15_0wb0t")]
+land_sound = ExtResource("14_axug4")
 
 [node name="BrakeSqueal" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("15_n1pdp")
@@ -435,4 +437,15 @@ unit_size = 1.5
 max_db = 0.0
 bus = &"SFX"
 script = ExtResource("16_axug4")
-metadata/_custom_type_script = ExtResource("16_axug4")
+metadata/_custom_type_script = "uid://t5im4xcigfjb"
+
+[node name="TireRoll" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("17_1amw3")
+volume_db = -80.0
+unit_size = 1.5
+max_db = 0.0
+bus = &"SFX"
+script = ExtResource("18_iv7oc")
+metadata/_custom_type_script = "uid://t5im4xcigfjb"
+
+[node name="HitReaction" parent="." instance=ExtResource("15_0wb0t")]

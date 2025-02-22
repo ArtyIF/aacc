@@ -7,5 +7,4 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if AACCGlobal:
-		material.set_shader_parameter("shadow_color", AACCGlobal.current_shadow_color)
-		material.set_shader_parameter("shadow_color_amount", AACCGlobal.current_shadow_color_amount)
+		material.set_shader_parameter("shadow_intensity", AACCGlobal.current_shadow_intensity)
