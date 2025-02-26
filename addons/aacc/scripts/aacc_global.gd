@@ -28,6 +28,8 @@ var current_sound_qualities: Dictionary[StringName, SoundQuality] = {
 	"TireRoll" = SoundQuality.ON,
 }
 
+var current_emit_sparks: bool = true
+
 func can_play(sound_type: StringName, car: Car) -> bool:
 	return (
 		current_sound_qualities[sound_type] == SoundQuality.ON or

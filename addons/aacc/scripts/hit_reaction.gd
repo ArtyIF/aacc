@@ -30,6 +30,9 @@ func play_hit_sound(_body: Node) -> void:
 				spawn_particle(i, state, hit_amount)
 
 func spawn_particle(i: int, state: PhysicsDirectBodyState3D, scratch_amount: float) -> void:
+	if not AACCGlobal.current_emit_sparks:
+		return
+	
 	# TODO: have a globally-accessible class take care of it
 	var sparks_instance: GPUParticles3D = sparks.instantiate()
 	sparks_instance.amount_ratio = scratch_amount
