@@ -14,7 +14,7 @@ I'm done with that, I'm probably going to resume working fully on this project.
 ## Dependencies
 - Godot 4.4+ (tested on rc1, some changes may cause the project to break on
   earlier versions)
-- - For the Godot 4.3 version, see 3e0cc4987715be7c1ad1e39ebd9c060fab6e6751
+- - For the Godot 4.3 version, see the godot-4.3 tag
 - - For Godot 4.4.dev6 and earlier, download [Godot Jolt](https://github.com/godot-jolt/godot-jolt)
 	for best results.
 - [Hydraboo's TrailRenderer](https://github.com/Hyrdaboo/TrailRenderer)
