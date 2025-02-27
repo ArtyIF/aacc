@@ -1,4 +1,3 @@
-@icon("res://addons/aacc/icons/car.svg")
 ## Arty's Arcadey Car Controller's main class.
 ##
 ## This is the class that stores parameters for the car and calculates
@@ -106,8 +105,6 @@ class_name Car extends RigidBody3D
 @export var angular_grip: float = 10000.0
 ## The force applied when you hit brakes.
 @export var brake_force: float = 4000.0
-## The force applied when you take off after a handbrake burnout.
-@export var takeoff_force: float = 2000.0
 
 @export_group("Air Forces")
 ## The force applied to the car when it's mid-air to stabilize it.
@@ -249,11 +246,6 @@ func get_slowdown_force() -> float:
 	var is_beyond_limit: bool = -local_linear_velocity.z >= top_speed_forward or -local_linear_velocity.z <= -top_speed_reverse
 	var input_accel_adapted: float = 0.0 if is_beyond_limit else (input_backward if is_reversing() else input_forward)
 	return clamp(local_linear_velocity.z * 10.0, -1.0, 1.0) * (1.0 - input_accel_adapted) * slowdown_force
-
-func get_takeoff_force() -> float:
-	if old_input_handbrake == true and input_handbrake == false and current_gear == 1 and local_linear_velocity.length() < 0.25:
-		return takeoff_force * mass * revs.get_current_value()
-	return 0.0
 #endregion
 
 #region Gearbox
@@ -432,9 +424,6 @@ func _physics_process(delta: float) -> void:
 
 			var sum_of_linear_forces: Vector3 = convert_linear_force(desired_linear_grip_force + desired_engine_force + desired_brake_force + desired_slowdown_force, delta)
 			apply_force(sum_of_linear_forces * ground_coefficient / delta, average_wheel_collision_point - global_position)
-			
-			var desired_takeoff_force: Vector3 = Vector3.FORWARD * get_takeoff_force() * delta
-			apply_force(Plane(average_wheel_collision_normal).project(global_basis * desired_takeoff_force) * ground_coefficient / delta, average_wheel_collision_point - global_position)
 
 			var desired_steer_force: Vector3 = Vector3.UP * get_steer_force()
 			var sum_of_angular_forces: Vector3 = convert_angular_force(desired_steer_force, delta)

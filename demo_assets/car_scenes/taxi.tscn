@@ -1,40 +1,9 @@
-[gd_scene load_steps=40 format=4 uid="uid://crko52geporbo"]
+[gd_scene load_steps=22 format=4 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
 [ext_resource type="Material" uid="uid://iyyp6q7p13dj" path="res://demo_assets/materials/kenney_colormap_adjusted.tres" id="1_ssmxy"]
-[ext_resource type="Script" uid="uid://crrd7ugev6afh" path="res://addons/aacc/scripts/helper_classes/procedural_curve.gd" id="2_q0glx"]
 [ext_resource type="Script" uid="uid://cffihwqtqvy4x" path="res://addons/aacc/scripts/car_wheel.gd" id="3_gy57t"]
-[ext_resource type="Material" uid="uid://cpuf4tdbx4tnp" path="res://demo_assets/materials/taxi_shadow.tres" id="6_b84xa"]
-[ext_resource type="Script" uid="uid://bf1xbn8a0sqtj" path="res://addons/aacc/scripts/car_shadow.gd" id="7_ljguu"]
-[ext_resource type="Script" uid="uid://wwwk6psnhcay" path="res://addons/aacc/scripts/audio/car_engine_sound_basic.gd" id="8_os6lh"]
-[ext_resource type="PackedScene" uid="uid://crfcs3rsv2p1k" path="res://addons/aacc/scenes/skid_trail.tscn" id="9_06vfh"]
-[ext_resource type="AudioStream" uid="uid://dkstnkcccibpg" path="res://addons/aacc/sounds/tire_screech.wav" id="9_8cvhf"]
-[ext_resource type="PackedScene" uid="uid://bgcsoin0se8xf" path="res://addons/aacc/scenes/burnout_particles.tscn" id="9_tliwu"]
-[ext_resource type="Script" uid="uid://c2n5f44kxf8r1" path="res://addons/aacc/scripts/audio/car_tire_screech_sound.gd" id="10_nd533"]
-[ext_resource type="AudioStream" uid="uid://ckgmy3qjy53b" path="res://addons/aacc/sounds/engine/engine_6.wav" id="11_0wb0t"]
-[ext_resource type="PackedScene" uid="uid://5a08b8crmdpm" path="res://addons/aacc/scenes/land_sound.tscn" id="14_axug4"]
-[ext_resource type="PackedScene" uid="uid://d0s7bam4kvl4f" path="res://addons/aacc/scenes/hit_reaction.tscn" id="15_0wb0t"]
-[ext_resource type="AudioStream" uid="uid://bntdehfctcmq5" path="res://addons/aacc/sounds/brake_squeal.wav" id="15_n1pdp"]
-[ext_resource type="Script" uid="uid://t5im4xcigfjb" path="res://addons/aacc/scripts/audio/car_brake_squeal_sound.gd" id="16_axug4"]
-[ext_resource type="AudioStream" uid="uid://d26n3xs6s7xha" path="res://addons/aacc/sounds/tire_roll.wav" id="17_1amw3"]
-[ext_resource type="Script" uid="uid://clouc4sxsptvp" path="res://addons/aacc/scripts/audio/car_tire_roll_sound.gd" id="18_iv7oc"]
-
-[sub_resource type="Resource" id="Resource_sei37"]
-resource_local_to_scene = true
-script = ExtResource("2_q0glx")
-left_value = 0.0
-right_value = 2.0
-max_input = 10.0
-input_curve = 0.5
-
-[sub_resource type="Resource" id="Resource_qkpdq"]
-resource_local_to_scene = true
-script = ExtResource("2_q0glx")
-left_value = 1.0
-right_value = 0.4
-max_input = 10.0
-input_curve = 0.5
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_x7apo"]
 _surfaces = [{
@@ -206,10 +175,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_4s8o0")
 
-[sub_resource type="BoxMesh" id="BoxMesh_sc5a5"]
-material = ExtResource("6_b84xa")
-size = Vector3(4, 4, 4)
-
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_gh3hu"]
 points = PackedVector3Array(-0.386737, 0.05, -0.649657, 0.54101, 0.694947, 0.632256, -0.160595, -0.0218254, 1.39641, -0.771676, 0.676583, 0.43644, 0.668484, 0.414653, -0.741645, -0.538039, 0.709803, -0.71158, 0.610279, 0.05, 1.22483, -0.509089, 0.65, 1.22959, -0.626152, 0.05, 1.18485, 0.610279, 0.05, -0.37053, 0.53333, 0.65, 1.22959, 0.54101, 0.694947, -0.668777, -0.684357, 0.414653, -0.741645, -0.626152, 0.05, -0.37053, 0.755803, 0.676583, 0.43644, 0.624825, 0.28376, 1.35287, -0.684357, 0.28376, 1.26558, 0.370864, 0.05, -0.649657, 0.188381, -0.0218254, 1.39641, -0.522134, 0.698984, 0.635815, 0.755803, 0.545545, 0.567268, -0.771676, 0.545545, 0.43644, 0.668484, 0.28376, 1.30933, -0.640698, 0.28376, 1.30933, -0.160595, -0.0218254, 1.30933, 0.755803, 0.545545, 0.43644, -0.546347, 0.05, 1.26463, 0.188381, -0.0218254, 1.30933, -0.771676, 0.545545, 0.567268, 0.570377, 0.05, 1.26463)
 
@@ -253,12 +218,9 @@ rev_speed_down_moving = 2.0
 target_steer_velocity = 0.872665
 distance_between_wheels = 1.52
 smooth_steer_speed = 5.0
-steer_tug_curve = SubResource("Resource_sei37")
 linear_grip = 40000.0
-reduced_grip_curve = SubResource("Resource_qkpdq")
 angular_grip = 40000.0
 brake_force = 30000.0
-takeoff_force = 2500.0
 air_stabilization_force = 500.0
 
 [node name="Visuals" type="Node3D" parent="."]
@@ -301,18 +263,8 @@ gi_mode = 2
 mesh = SubResource("ArrayMesh_do7n3")
 skeleton = NodePath("")
 
-[node name="Shadow" type="MeshInstance3D" parent="Visuals/180Turnaround"]
-sorting_offset = -1000.0
-gi_mode = 0
-mesh = SubResource("BoxMesh_sc5a5")
-skeleton = NodePath("../..")
-script = ExtResource("7_ljguu")
-
-[node name="FollowCameraOffsetMin" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 4)
-
-[node name="FollowCameraOffsetMax" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4.5)
+[node name="FollowCameraOffset" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
 
 [node name="CollisionBody1" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.18557e-09, 0.15, 0.025)
@@ -342,110 +294,30 @@ shape = SubResource("ConvexPolygonShape3D_rxdha")
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.3, 0.3, -0.76)
 shape = SubResource("ConvexPolygonShape3D_s6wnr")
 
-[node name="WheelBL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
+[node name="WheelBL" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.2
 suspension_spring = 15000.0
 suspension_damper = 1500.0
-visual_node = NodePath("../Visuals/180Turnaround/WheelBL")
-skid_trail = NodePath("SkidTrail")
-burnout_particles = NodePath("BurnoutParticles")
-freeze_on_handbrake = true
-block_wheelspin = true
 
-[node name="SkidTrail" parent="WheelBL" instance=ExtResource("9_06vfh")]
-
-[node name="BurnoutParticles" parent="WheelBL" instance=ExtResource("9_tliwu")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
-
-[node name="WheelBR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
+[node name="WheelBR" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.2
 suspension_spring = 15000.0
 suspension_damper = 1500.0
-visual_node = NodePath("../Visuals/180Turnaround/WheelBR")
-skid_trail = NodePath("SkidTrail")
-burnout_particles = NodePath("BurnoutParticles")
-freeze_on_handbrake = true
-block_wheelspin = true
 
-[node name="SkidTrail" parent="WheelBR" instance=ExtResource("9_06vfh")]
-
-[node name="BurnoutParticles" parent="WheelBR" instance=ExtResource("9_tliwu")]
-
-[node name="WheelFL" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
+[node name="WheelFL" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.2
 suspension_spring = 15000.0
 suspension_damper = 1500.0
-visual_node = NodePath("../Visuals/180Turnaround/WheelFL")
-steer_multiplier = 1.0
-skid_trail = NodePath("SkidTrail")
-burnout_particles = NodePath("BurnoutParticles")
 
-[node name="SkidTrail" parent="WheelFL" instance=ExtResource("9_06vfh")]
-
-[node name="BurnoutParticles" parent="WheelFL" instance=ExtResource("9_tliwu")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
-
-[node name="WheelFR" type="Node3D" parent="." node_paths=PackedStringArray("visual_node", "skid_trail", "burnout_particles")]
+[node name="WheelFR" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.2
 suspension_spring = 15000.0
 suspension_damper = 1500.0
-visual_node = NodePath("../Visuals/180Turnaround/WheelFR")
-steer_multiplier = 1.0
-skid_trail = NodePath("SkidTrail")
-burnout_particles = NodePath("BurnoutParticles")
-
-[node name="SkidTrail" parent="WheelFR" instance=ExtResource("9_06vfh")]
-
-[node name="BurnoutParticles" parent="WheelFR" instance=ExtResource("9_tliwu")]
-
-[node name="Engine" type="AudioStreamPlayer3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, -0.85)
-stream = ExtResource("11_0wb0t")
-max_db = 0.0
-autoplay = true
-bus = &"Engine"
-playback_type = 1
-attenuation_filter_db = -12.0
-doppler_tracking = 2
-script = ExtResource("8_os6lh")
-engine_pitch_range = Vector2(0.2, 1)
-
-[node name="TireScreech" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("9_8cvhf")
-volume_db = -80.0
-unit_size = 5.0
-autoplay = true
-bus = &"SFX"
-playback_type = 1
-attenuation_filter_cutoff_hz = 20500.0
-doppler_tracking = 2
-script = ExtResource("10_nd533")
-land_sound = ExtResource("14_axug4")
-
-[node name="BrakeSqueal" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("15_n1pdp")
-volume_db = -80.0
-unit_size = 1.5
-max_db = 0.0
-bus = &"SFX"
-script = ExtResource("16_axug4")
-metadata/_custom_type_script = "uid://t5im4xcigfjb"
-
-[node name="TireRoll" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("17_1amw3")
-volume_db = -80.0
-unit_size = 1.5
-max_db = 0.0
-bus = &"SFX"
-script = ExtResource("18_iv7oc")
-metadata/_custom_type_script = "uid://t5im4xcigfjb"
-
-[node name="HitReaction" parent="." instance=ExtResource("15_0wb0t")]

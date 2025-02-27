@@ -1,4 +1,3 @@
-@icon("res://addons/aacc/icons/car_wheel.svg")
 class_name CarWheel extends Node3D
 
 @export_group("Shape")
@@ -25,16 +24,6 @@ class_name CarWheel extends Node3D
 ## too springy and out of control.
 @export var suspension_damper: float = 300.0
 
-# TODO: document
-@export_group("Visuals")
-@export var visual_node: Node3D
-@export_range(-1, 1) var steer_multiplier: float = 0.0
-@export var limit_top: bool = false
-@export var skid_trail: TrailRenderer
-@export var burnout_particles: GPUParticles3D
-@export var freeze_on_handbrake: bool = false
-@export var block_wheelspin: bool = false
-
 #== NODES ==#
 var raycast_instance_1: RayCast3D
 var raycast_instance_2: RayCast3D
@@ -44,10 +33,6 @@ var car: Car
 var compression: float = 0.0
 var last_compression: float = 0.0
 var last_compression_set: bool = false
-
-#== VISUALS ==#
-var initial_visual_node_transform: Transform3D
-var current_forward_spin: float = 0.0
 
 #== EXTERNAL ==#
 var is_colliding: bool = false
@@ -64,8 +49,6 @@ func _ready() -> void:
 	configure_raycasts()
 
 	car = get_parent() as Car
-	if visual_node:
-		initial_visual_node_transform = visual_node.transform
 	
 	# The wheels don't need much from the car for physics stuff, but the car
 	# does need stuff from the wheels for the physics stuff. It makes sense
@@ -77,9 +60,6 @@ func reset() -> void:
 	compression = 0.0
 	last_compression = 0.0
 	last_compression_set = false
-
-	#== VISUALS ==#
-	current_forward_spin = 0.0
 
 	#== EXTERNAL ==#
 	is_colliding = false
@@ -126,63 +106,6 @@ func set_raycast_values() -> void:
 		collision_normal = collision_normal_2
 		distance = distance_2
 
-func update_visuals(delta: float) -> void:
-	if !visual_node: return
-
-	var new_transform: Transform3D = initial_visual_node_transform
-
-	var suspension_translation: Vector3 = suspension_length * Vector3.DOWN
-	if is_colliding:
-		var compression_translation = 1.0 - compression
-		if limit_top:
-			compression_translation = max(0.0, compression_translation)
-		suspension_translation *= compression_translation
-
-	var steer_rotation: float = -car.smooth_steer.get_current_value() * car.base_steer_velocity * steer_multiplier
-	
-	if not (freeze_on_handbrake and car.input_handbrake):
-		if is_colliding: # TODO: smooth it out
-			current_forward_spin -= car.local_linear_velocity.z * delta / wheel_radius
-			if (not block_wheelspin) and car.local_linear_velocity.length() < 0.25:
-				# BUG: when wheelspinning backwards the wheel spins forward after
-				# letting go of the throttle
-				current_forward_spin += (car.max_acceleration * delta * (1.0 if car.current_gear >= 0 else -1.0) * car.burnout_amount) / (car.mass * wheel_radius)
-
-	if current_forward_spin > 2 * PI:
-		current_forward_spin -= 2 * PI
-	elif current_forward_spin < 2 * PI:
-		current_forward_spin += 2 * PI
-
-	var forward_spin: float = current_forward_spin
-
-	new_transform = new_transform.translated_local(suspension_translation)
-	new_transform = new_transform.rotated_local(Vector3.UP, steer_rotation)
-	new_transform = new_transform.rotated_local(Vector3.RIGHT, forward_spin)
-
-	visual_node.transform = new_transform
-
-func update_burnout() -> void:
-	if not is_colliding or car.freeze:
-		skid_trail.is_emitting = false
-		burnout_particles.amount_ratio = 0.0
-		burnout_particles.emitting = false
-		return
-
-	var burnout_amount: float = car.burnout_amount
-	if car.local_linear_velocity.length() < 0.25:
-		if (freeze_on_handbrake and car.input_handbrake) or block_wheelspin:
-			burnout_amount = 0.0
-
-	if skid_trail:
-		skid_trail.is_emitting = burnout_amount > 0.0
-		skid_trail.global_position = collision_point + (collision_normal * 0.01)
-		skid_trail.global_basis = skid_trail.global_basis.looking_at(-(collision_normal).cross(car.global_basis.z), car.global_basis.z)
-
-	if burnout_particles:
-		burnout_particles.amount_ratio = burnout_amount
-		burnout_particles.emitting = burnout_particles.amount_ratio > 0 # to fix the random emissions
-		burnout_particles.global_position = collision_point
-
 func _physics_process(delta: float) -> void:
 	if raycast_instance_1.is_colliding() or raycast_instance_2.is_colliding():
 		is_colliding = true
@@ -208,6 +131,3 @@ func _physics_process(delta: float) -> void:
 	else:
 		is_colliding = false
 		last_compression = 0.0
-
-	update_visuals(delta)
-	update_burnout()
