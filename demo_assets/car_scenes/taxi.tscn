@@ -1,9 +1,11 @@
-[gd_scene load_steps=22 format=4 uid="uid://crko52geporbo"]
+[gd_scene load_steps=24 format=4 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
 [ext_resource type="Material" uid="uid://iyyp6q7p13dj" path="res://demo_assets/materials/kenney_colormap_adjusted.tres" id="1_ssmxy"]
-[ext_resource type="Script" uid="uid://cffihwqtqvy4x" path="res://addons/aacc/scripts/plugins/car_wheel.gd" id="3_gy57t"]
+[ext_resource type="Script" uid="uid://cffihwqtqvy4x" path="res://addons/aacc/scripts/plugins/wheels/car_wheel.gd" id="3_gy57t"]
+[ext_resource type="Script" uid="uid://branpjvwdtvgm" path="res://addons/aacc/scripts/plugins/processors/car_wheels_processor.gd" id="4_leshp"]
+[ext_resource type="Script" uid="uid://bvfqai7uunpc3" path="res://addons/aacc/scripts/plugins/engines/car_engine_basic.gd" id="4_pq6ol"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_x7apo"]
 _surfaces = [{
@@ -209,6 +211,42 @@ linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_ik2h1")
 
+[node name="CarWheelBL" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
+script = ExtResource("3_gy57t")
+wheel_width = 0.2
+suspension_spring = 15000.0
+suspension_damper = 1500.0
+
+[node name="CarWheelBR" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
+script = ExtResource("3_gy57t")
+wheel_width = 0.2
+suspension_spring = 15000.0
+suspension_damper = 1500.0
+
+[node name="CarWheelFL" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
+script = ExtResource("3_gy57t")
+wheel_width = 0.2
+suspension_spring = 15000.0
+suspension_damper = 1500.0
+
+[node name="CarWheelFR" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
+script = ExtResource("3_gy57t")
+wheel_width = 0.2
+suspension_spring = 15000.0
+suspension_damper = 1500.0
+
+[node name="CarWheelsProcessor" type="Node3D" parent="."]
+script = ExtResource("4_leshp")
+metadata/_custom_type_script = "uid://branpjvwdtvgm"
+
+[node name="CarEngineBasic" type="Node3D" parent="."]
+script = ExtResource("4_pq6ol")
+metadata/_custom_type_script = "uid://d006h8ty2ddnr"
+
 [node name="Visuals" type="Node3D" parent="."]
 
 [node name="180Turnaround" type="Node3D" parent="Visuals"]
@@ -279,31 +317,3 @@ shape = SubResource("ConvexPolygonShape3D_rxdha")
 [node name="CollisionWheelFR" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.3, 0.3, -0.76)
 shape = SubResource("ConvexPolygonShape3D_s6wnr")
-
-[node name="WheelBL" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
-script = ExtResource("3_gy57t")
-wheel_width = 0.2
-suspension_spring = 15000.0
-suspension_damper = 1500.0
-
-[node name="WheelBR" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
-script = ExtResource("3_gy57t")
-wheel_width = 0.2
-suspension_spring = 15000.0
-suspension_damper = 1500.0
-
-[node name="WheelFL" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
-script = ExtResource("3_gy57t")
-wheel_width = 0.2
-suspension_spring = 15000.0
-suspension_damper = 1500.0
-
-[node name="WheelFR" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
-script = ExtResource("3_gy57t")
-wheel_width = 0.2
-suspension_spring = 15000.0
-suspension_damper = 1500.0

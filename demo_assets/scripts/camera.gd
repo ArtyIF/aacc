@@ -16,12 +16,12 @@ func _physics_process(delta: float) -> void:
 	var velocity: Vector3 = (_last_position - _follow_node.global_position) / delta
 	velocity = project_plane.project(velocity)
 	var smooth_amount: float = clamp(remap(velocity.length(), 0.0, 10.0, 0.0, 10.0), 0.0, 10.0)
-
 	_direction_target = velocity.normalized()
 
-	_smoothed_direction = _smoothed_direction.slerp(_direction_target, delta * smooth_amount)
-	_smoothed_direction = project_plane.project(_smoothed_direction).normalized()
-	global_basis = Basis.looking_at(-_smoothed_direction, Vector3.UP)
+	if _direction_target.distance_to(_smoothed_direction) > 0.001:
+		_smoothed_direction = _smoothed_direction.slerp(_direction_target, delta * smooth_amount)
+		_smoothed_direction = project_plane.project(_smoothed_direction).normalized()
+	global_basis = Basis.looking_at(-_smoothed_direction)
 	
 	var follow_camera_offset: Vector3 = _car.get_node("FollowCameraOffset").position
 	global_position = _follow_node.global_position + (_smoothed_direction * follow_camera_offset.z) + (Vector3.UP * follow_camera_offset.y)

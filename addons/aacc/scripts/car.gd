@@ -1,36 +1,36 @@
 class_name Car extends RigidBody3D
 
 #region Inputs
-var inputs: Dictionary[StringName, float] = {}
+var inputs: Dictionary[String, float] = {}
 
-func add_input(input_name: StringName, start_value: float = 0.0) -> bool:
+func add_input(input_name: String, start_value: float = 0.0) -> bool:
 	if inputs.has(input_name):
 		return false
 
 	inputs[input_name] = start_value
 	return true
 
-func get_input(input_name: StringName, default_value: float = 0.0) -> float:
+func get_input(input_name: String, default_value: float = 0.0) -> float:
 	if inputs.has(input_name):
 		return inputs[input_name]
 	return default_value
 
-func set_input(input_name: StringName, new_value: float) -> bool:
+func set_input(input_name: String, new_value: float) -> bool:
 	if not inputs.has(input_name):
 		return false
 	inputs[input_name] = new_value
 	return true
 
-func add_or_get_input(input_name: StringName, start_value: float = 0.0) -> float:
+func add_or_get_input(input_name: String, start_value: float = 0.0) -> float:
 	if not add_input(input_name, start_value):
 		return get_input(input_name, start_value)
 	return start_value
 
-func add_or_set_input(input_name: StringName, new_value: float):
+func add_or_set_input(input_name: String, new_value: float):
 	if not set_input(input_name, new_value):
 		add_input(input_name, new_value)
 
-func remove_input(input_name: StringName) -> bool:
+func remove_input(input_name: String) -> bool:
 	if inputs.has(input_name):
 		inputs.erase(input_name)
 		return true
@@ -48,9 +48,9 @@ class Force:
 		force.success = false
 		return force
 
-var forces: Dictionary[StringName, Force] = {}
+var forces: Dictionary[String, Force] = {}
 
-func add_force(force_name: StringName, force: Vector3, position: Vector3 = Vector3.ZERO) -> bool:
+func add_force(force_name: String, force: Vector3, position: Vector3 = Vector3.ZERO) -> bool:
 	if forces.has(force_name):
 		return false
 
@@ -61,17 +61,17 @@ func add_force(force_name: StringName, force: Vector3, position: Vector3 = Vecto
 
 	return true
 
-func get_force(force_name: StringName) -> Force:
+func get_force(force_name: String) -> Force:
 	if not forces.has(force_name):
 		return Force.get_fail()
 	return forces[force_name]
 
-func add_or_get_force(force_name: StringName, force: Vector3, position: Vector3 = Vector3.ZERO) -> Force:
+func add_or_get_force(force_name: String, force: Vector3, position: Vector3 = Vector3.ZERO) -> Force:
 	if not add_force(force_name, force, position):
 		return get_force(force_name)
 	return get_force(force_name)
 
-func pop_force(force_name: StringName) -> Force:
+func pop_force(force_name: String) -> Force:
 	var force: Force = get_force(force_name)
 	if forces.has(force_name):
 		forces.erase(force_name)
@@ -88,9 +88,9 @@ class Torque:
 		torque.success = false
 		return torque
 
-var torques: Dictionary[StringName, Torque] = {}
+var torques: Dictionary[String, Torque] = {}
 
-func add_torque(torque_name: StringName, torque: Vector3) -> bool:
+func add_torque(torque_name: String, torque: Vector3) -> bool:
 	if torques.has(torque_name):
 		return false
 
@@ -100,17 +100,17 @@ func add_torque(torque_name: StringName, torque: Vector3) -> bool:
 
 	return true
 
-func get_torque(torque_name: StringName) -> Torque:
+func get_torque(torque_name: String) -> Torque:
 	if not torques.has(torque_name):
 		return Torque.get_fail()
 	return torques[torque_name]
 
-func add_or_get_torque(torque_name: StringName, torque: Vector3) -> Torque:
+func add_or_get_torque(torque_name: String, torque: Vector3) -> Torque:
 	if not add_torque(torque_name, torque):
 		return get_torque(torque_name)
 	return get_torque(torque_name)
 
-func pop_torque(torque_name: StringName) -> Torque:
+func pop_torque(torque_name: String) -> Torque:
 	var torque: Torque = get_torque(torque_name)
 	if torques.has(torque_name):
 		torques.erase(torque_name)
@@ -128,63 +128,65 @@ class Param:
 		param.success = false
 		return param
 
-var params: Dictionary[StringName, Param] = {}
+var params: Dictionary[String, Param] = {}
 
-func add_param(param_name: StringName, start_value: Variant = null) -> bool:
+func add_param(param_name: String, start_value: Variant = null, start_value_is_reset_value: bool = false) -> bool:
 	if params.has(param_name):
 		return false
 
 	var new_param: Param = Param.new()
 	new_param.value = start_value
+	if start_value_is_reset_value:
+		new_param.reset_value = start_value
 	params[param_name] = new_param
 	return true
 
-func get_param(param_name: StringName, default_value: Variant = null) -> Variant:
+func get_param(param_name: String, default_value: Variant = null) -> Variant:
 	if params.has(param_name):
 		return params[param_name].value
 	return default_value
 
-func set_param(param_name: StringName, new_value: Variant) -> bool:
+func set_param(param_name: String, new_value: Variant) -> bool:
 	if not params.has(param_name):
 		return false
 	params[param_name].value = new_value
 	return true
 
-func add_or_get_param(param_name: StringName, start_value: Variant = null) -> Variant:
-	if not add_param(param_name, start_value):
+func add_or_get_param(param_name: String, start_value: Variant = null, start_value_is_reset_value: bool = false) -> Variant:
+	if not add_param(param_name, start_value, start_value_is_reset_value):
 		return get_param(param_name, start_value)
 	return start_value
 
-func add_or_set_param(param_name: StringName, new_value: Variant):
+func add_or_set_param(param_name: String, new_value: Variant, start_value_is_reset_value: bool = false):
 	if not set_param(param_name, new_value):
-		add_param(param_name, new_value)
+		add_param(param_name, new_value, start_value_is_reset_value)
 
-func remove_param(param_name: StringName) -> bool:
+func pop_param(param_name: String) -> Variant:
+	var value: Variant = get_param(param_name)
 	if params.has(param_name):
 		params.erase(param_name)
-		return true
-	return false
+	return value
 
-func set_param_reset_value(param_name: StringName, reset_value: Variant):
+func set_param_reset_value(param_name: String, reset_value: Variant):
 	params[param_name].reset_value = reset_value
 
-# TODO: methods for appending/removing?
+# TODO: methods for adding/subtracting/appending/removing?
 #endregion Params
 
 func _physics_process(delta: float) -> void:
-	# TODO: cache
-	for child in get_children():
-		if child is AACCPluginBase:
-			child.process_plugin(delta)
-
-	for force in forces.values():
-		apply_force(force.force, force.position)
 	forces.clear()
-
-	for torque in torques.values():
-		apply_torque(torque.torque)
 	torques.clear()
-	
-	for param_name in params.keys():
+	for param_name: String in params.keys():
 		if params[param_name].reset_value != null:
 			params[param_name].value = params[param_name].reset_value
+
+	# TODO: cache
+	for child: Node3D in get_children():
+		if child is CarPluginBase:
+			child.process_plugin(delta)
+
+	for force: Force in forces.values():
+		apply_force(force.force, force.position)
+
+	for torque: Torque in torques.values():
+		apply_torque(torque.torque)

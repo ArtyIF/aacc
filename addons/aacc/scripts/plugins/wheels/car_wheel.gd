@@ -1,4 +1,4 @@
-class_name CarWheel extends AACCPluginBase
+class_name CarWheel extends CarPluginBase
 
 @export_group("Shape")
 @export var wheel_radius: float = 0.3
@@ -10,16 +10,13 @@ class_name CarWheel extends AACCPluginBase
 @export var suspension_spring: float = 3000.0
 @export var suspension_damper: float = 300.0
 
-#== NODES ==#
 var raycast_instance_1: RayCast3D
 var raycast_instance_2: RayCast3D
 
-#== COMPRESSION ==#
 var compression: float = 0.0
 var last_compression: float = 0.0
 var last_compression_set: bool = false
 
-#== EXTERNAL ==#
 var is_colliding: bool = false
 var collision_point: Vector3 = Vector3.ZERO
 var collision_normal: Vector3 = Vector3.ZERO
@@ -32,8 +29,9 @@ func _ready() -> void:
 	add_child(raycast_instance_2)
 	configure_raycasts()
 
-	car.add_param("TotalWheels", 0)
-	car.add_param("LandedWheels", 0)
+	car.add_param("WheelLanded_" + name, false, true)
+	car.add_param("WheelPoint_" + name, Vector3.ZERO)
+	car.add_param("WheelNormal_" + name, Vector3.ZERO)
 
 func configure_raycasts() -> void:
 	raycast_instance_1.target_position = (Vector3.DOWN * (wheel_radius + suspension_length))
@@ -74,14 +72,13 @@ func set_raycast_values() -> void:
 		collision_normal = collision_normal_2
 		distance = distance_2
 
+	car.set_param("WheelPoint_" + name, collision_point)
+	car.set_param("WheelNormal_" + name, collision_normal)
+
 func process_plugin(delta: float) -> void:
-	car.set_param("TotalWheels", car.get_param("TotalWheels") + 1)
-	car.set_param_reset_value("TotalWheels", 0)
-	
 	if raycast_instance_1.is_colliding() or raycast_instance_2.is_colliding():
 		is_colliding = true
-		car.set_param("LandedWheels", car.get_param("LandedWheels") + 1)
-		car.set_param_reset_value("LandedWheels", 0)
+		car.set_param("WheelLanded_" + name, true)
 
 		set_raycast_values()
 
