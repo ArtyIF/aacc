@@ -181,7 +181,7 @@ func _physics_process(delta: float) -> void:
 			params[param_name].value = params[param_name].reset_value
 
 	# TODO: cache
-	for child: Node3D in get_children():
+	for child: Node3D in $"Plugins".get_children():
 		if child is CarPluginBase:
 			child.process_plugin(delta)
 

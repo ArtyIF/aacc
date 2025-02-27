@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=10 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_8gguu"]
 [ext_resource type="Script" uid="uid://be5ommjjotu3v" path="res://demo_assets/scripts/car_setter.gd" id="1_gsqbk"]
@@ -9,12 +9,6 @@
 [ext_resource type="Script" uid="uid://bqibtmc8iwudy" path="res://addons/aacc/scripts/car_debug_label.gd" id="9_spbku"]
 [ext_resource type="PackedScene" uid="uid://ca1oyf482fq72" path="res://demo_assets/subscenes/ramptest.blend" id="15_lentq"]
 [ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="16_37bxw"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_spbku"]
-line_spacing = 0.0
-font_size = 12
-outline_size = 4
-outline_color = Color(0, 0, 0, 1)
 
 [node name="DemoScene" type="Node3D"]
 
@@ -75,9 +69,17 @@ origin_offset = Vector3(-10, 1, 300)
 enable_shadows = true
 cull_mask = 1048573
 
-[node name="Label" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="Label" type="RichTextLabel" parent="."]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_vertical = 2
+theme_override_colors/table_border = Color(0, 0, 0, 1)
+theme_override_colors/table_even_row_bg = Color(1, 1, 1, 1)
+theme_override_colors/table_odd_row_bg = Color(0.878431, 0.878431, 0.878431, 1)
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_constants/table_v_separation = 0
+theme_override_constants/table_h_separation = 5
+theme_override_constants/line_separation = 16
 text = "Debug label"
-label_settings = SubResource("LabelSettings_spbku")
 script = ExtResource("9_spbku")

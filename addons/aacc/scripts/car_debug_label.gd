@@ -1,27 +1,81 @@
-extends Label
+extends RichTextLabel
 
-func _physics_process(_delta: float) -> void:
-	var result_text: String = ""
-	result_text += "Current car: " + AACCGlobal.car.name + "\n"
-	result_text += "\n"
+func _process(_delta: float) -> void:
+	text = ""
 
-	result_text += "Inputs:\n"
+	push_table(2)
+	push_cell()
+	append_text("Current Car")
+	pop()
+	push_cell()
+	append_text(AACCGlobal.car.name)
+	pop()
+	pop()
+	append_text("\n")
+
+	push_table(2)
+	push_cell()
+	append_text("Inputs")
+	pop()
+	push_cell()
+	append_text("Values")
+	pop()
 	for input: String in AACCGlobal.car.inputs.keys():
-		result_text += input + " = " + str(AACCGlobal.car.get_input(input)) + "\n"
-	result_text += "\n"
+		push_cell()
+		append_text(input)
+		pop()
+		push_cell()
+		append_text(str(AACCGlobal.car.get_input(input)))
+		pop()
+	pop()
+	append_text("\n")
 
-	result_text += "Forces:\n"
+	push_table(2)
+	push_cell()
+	append_text("Forces")
+	pop()
+	push_cell()
+	append_text("Values")
+	pop()
 	for force: String in AACCGlobal.car.forces.keys():
-		result_text += force + " = " + str(AACCGlobal.car.get_force(force).force) + "\n"
-	result_text += "\n"
+		push_cell()
+		append_text(force)
+		pop()
+		push_cell()
+		append_text(str(AACCGlobal.car.get_force(force).force))
+		pop()
+	pop()
+	append_text("\n")
 
-	result_text += "Torques:\n"
+	push_table(2)
+	push_cell()
+	append_text("Torques")
+	pop()
+	push_cell()
+	append_text("Values")
+	pop()
 	for torque: String in AACCGlobal.car.torques.keys():
-		result_text += torque + " = " + str(AACCGlobal.car.get_torque(torque).torque) + "\n"
-	result_text += "\n"
+		push_cell()
+		append_text(torque)
+		pop()
+		push_cell()
+		append_text(str(AACCGlobal.car.get_torque(torque).torque))
+		pop()
+	pop()
+	append_text("\n")
 
-	result_text += "Params:\n"
+	push_table(2)
+	push_cell()
+	append_text("Params")
+	pop()
+	push_cell()
+	append_text("Values")
+	pop()
 	for param: String in AACCGlobal.car.params.keys():
-		result_text += param + " = " + str(AACCGlobal.car.get_param(param)) + "\n"
-
-	text = result_text
+		push_cell()
+		append_text(param)
+		pop()
+		push_cell()
+		append_text(str(AACCGlobal.car.get_param(param)))
+		pop()
+	pop()
