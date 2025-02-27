@@ -9,5 +9,5 @@ func process_plugin(delta: float) -> void:
 
 	var force: Vector3 = Vector3.ZERO
 	if car.get_param("LocalLinearVelocity").z > -top_speed_forward and car.get_param("LocalLinearVelocity").z < top_speed_backward:
-		force = Vector3.FORWARD * input_accelerate * force_amount * car.get_param("GroundCoefficient", 1.0)
+		force = Vector3.FORWARD * input_accelerate * force_amount
 	car.add_force("Engine", force)
