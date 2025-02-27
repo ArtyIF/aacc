@@ -1,11 +1,13 @@
-[gd_scene load_steps=24 format=4 uid="uid://crko52geporbo"]
+[gd_scene load_steps=26 format=4 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
 [ext_resource type="Material" uid="uid://iyyp6q7p13dj" path="res://demo_assets/materials/kenney_colormap_adjusted.tres" id="1_ssmxy"]
 [ext_resource type="Script" uid="uid://cffihwqtqvy4x" path="res://addons/aacc/scripts/plugins/wheels/car_wheel.gd" id="3_gy57t"]
+[ext_resource type="Script" uid="uid://cudk564mgmydg" path="res://addons/aacc/scripts/plugins/processors/car_local_velocity_processor.gd" id="3_tcv0s"]
 [ext_resource type="Script" uid="uid://branpjvwdtvgm" path="res://addons/aacc/scripts/plugins/processors/car_wheels_processor.gd" id="4_leshp"]
 [ext_resource type="Script" uid="uid://bvfqai7uunpc3" path="res://addons/aacc/scripts/plugins/engines/car_engine_basic.gd" id="4_pq6ol"]
+[ext_resource type="Script" uid="uid://v0cpq7q6mjou" path="res://addons/aacc/scripts/plugins/brakes/car_brake_basic.gd" id="7_dm0ij"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_x7apo"]
 _surfaces = [{
@@ -213,6 +215,10 @@ script = ExtResource("1_ik2h1")
 
 [node name="Plugins" type="Node3D" parent="."]
 
+[node name="CarLocalVelocityProcessor" type="Node3D" parent="Plugins"]
+script = ExtResource("3_tcv0s")
+metadata/_custom_type_script = "uid://cudk564mgmydg"
+
 [node name="CarWheelBL" type="Node3D" parent="Plugins"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
@@ -247,7 +253,12 @@ metadata/_custom_type_script = "uid://branpjvwdtvgm"
 
 [node name="CarEngineBasic" type="Node3D" parent="Plugins"]
 script = ExtResource("4_pq6ol")
+top_speed_forward = 10.0
 metadata/_custom_type_script = "uid://d006h8ty2ddnr"
+
+[node name="CarBrakeBasic" type="Node3D" parent="Plugins"]
+script = ExtResource("7_dm0ij")
+metadata/_custom_type_script = "uid://v0cpq7q6mjou"
 
 [node name="Visuals" type="Node3D" parent="."]
 
