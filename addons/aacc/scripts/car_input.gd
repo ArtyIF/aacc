@@ -2,16 +2,15 @@
 class_name CarInput extends Node
 
 @export var enabled: bool = true
-@onready var _car: Car = AACCGlobal.car
 
 func _ready() -> void:
 	AACCGlobal.car_input = self
 
 func _physics_process(delta: float) -> void:
 	if not enabled: return
-	if not _car: return
-	
-	_car.input_forward = clamp(Input.get_action_strength("aacc_forward"), 0.0, 1.0)
-	_car.input_backward = clamp(Input.get_action_strength("aacc_backward"), 0.0, 1.0)
-	_car.input_steer = clamp(Input.get_action_strength("aacc_steer_right") - Input.get_action_strength("aacc_steer_left"), -1.0, 1.0)
-	_car.input_handbrake = Input.is_action_pressed("aacc_handbrake")
+	if not AACCGlobal.car: return
+
+	AACCGlobal.car.set_input("Forward", clamp(Input.get_action_strength("aacc_forward"), 0.0, 1.0))
+	AACCGlobal.car.set_input("Backward", clamp(Input.get_action_strength("aacc_backward"), 0.0, 1.0))
+	AACCGlobal.car.set_input("Steer", clamp(Input.get_action_strength("aacc_steer_right") - Input.get_action_strength("aacc_steer_left"), -1.0, 1.0))
+	AACCGlobal.car.set_input("Handbrake", 1.0 if Input.is_action_pressed("aacc_handbrake") else 0.0)

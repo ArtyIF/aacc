@@ -3,7 +3,7 @@
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
 [ext_resource type="Material" uid="uid://iyyp6q7p13dj" path="res://demo_assets/materials/kenney_colormap_adjusted.tres" id="1_ssmxy"]
-[ext_resource type="Script" uid="uid://cffihwqtqvy4x" path="res://addons/aacc/scripts/car_wheel.gd" id="3_gy57t"]
+[ext_resource type="Script" uid="uid://cffihwqtqvy4x" path="res://addons/aacc/scripts/plugins/car_wheel.gd" id="3_gy57t"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_x7apo"]
 _surfaces = [{
@@ -208,13 +208,6 @@ max_contacts_reported = 1
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_ik2h1")
-top_speed_reverse = 20.0
-max_acceleration = 15000.0
-target_steer_velocity = 0.872665
-distance_between_wheels = 1.52
-linear_grip = 40000.0
-angular_grip = 40000.0
-brake_force = 30000.0
 
 [node name="Visuals" type="Node3D" parent="."]
 

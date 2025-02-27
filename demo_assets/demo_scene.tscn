@@ -11,13 +11,13 @@
 
 [node name="DemoScene" type="Node3D"]
 
+[node name="CarInput" type="Node" parent="."]
+script = ExtResource("7_67ns0")
+
 [node name="CarSetter" type="Node" parent="." node_paths=PackedStringArray("car")]
 process_priority = -1000
 script = ExtResource("1_gsqbk")
 car = NodePath("../Taxi")
-
-[node name="CarInput" type="Node" parent="."]
-script = ExtResource("7_67ns0")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("1_8gguu")
@@ -47,7 +47,7 @@ light_data = ExtResource("9_37bxw")
 [node name="pathtest" parent="." instance=ExtResource("5_868sg")]
 
 [node name="Taxi" parent="." instance=ExtResource("16_37bxw")]
-smooth_steer_speed = 10.0
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
 
 [node name="ramptest" parent="." instance=ExtResource("15_lentq")]
 transform = Transform3D(-0.952601, -0.0225841, -0.304014, -0.0107575, 1.99987, -0.00343316, 0.304033, -9.31321e-09, -0.952662, 145.31, 9.88008, -125.437)

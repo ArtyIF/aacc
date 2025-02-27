@@ -1,4 +1,4 @@
-class_name CarWheel extends Node3D
+class_name CarWheel extends AACCPluginBase
 
 @export_group("Shape")
 @export var wheel_radius: float = 0.3
@@ -13,7 +13,6 @@ class_name CarWheel extends Node3D
 #== NODES ==#
 var raycast_instance_1: RayCast3D
 var raycast_instance_2: RayCast3D
-var car: Car
 
 #== COMPRESSION ==#
 var compression: float = 0.0
@@ -33,24 +32,10 @@ func _ready() -> void:
 	add_child(raycast_instance_2)
 	configure_raycasts()
 
-	car = get_parent() as Car
-	
 	# The wheels don't need much from the car for physics stuff, but the car
 	# does need stuff from the wheels for the physics stuff. It makes sense
 	# to make the wheels execute slightly before the car.
 	process_physics_priority = -1
-
-func reset() -> void:
-	#== COMPRESSION ==#
-	compression = 0.0
-	last_compression = 0.0
-	last_compression_set = false
-
-	#== EXTERNAL ==#
-	is_colliding = false
-	collision_point = Vector3.ZERO
-	collision_normal = Vector3.ZERO
-	distance = 0.0
 
 func configure_raycasts() -> void:
 	raycast_instance_1.target_position = (Vector3.DOWN * (wheel_radius + suspension_length))
@@ -91,7 +76,7 @@ func set_raycast_values() -> void:
 		collision_normal = collision_normal_2
 		distance = distance_2
 
-func _physics_process(delta: float) -> void:
+func process_plugin(delta: float) -> void:
 	if raycast_instance_1.is_colliding() or raycast_instance_2.is_colliding():
 		is_colliding = true
 		set_raycast_values()
@@ -110,9 +95,9 @@ func _physics_process(delta: float) -> void:
 		last_compression = compression
 
 		suspension_magnitude *= collision_normal.dot(global_basis.y)
-		
+
 		if not car.freeze:
-			car.apply_force(collision_normal * suspension_magnitude, collision_point - car.global_position)
+			car.add_force(name, collision_normal * suspension_magnitude, collision_point - car.global_position)
 	else:
 		is_colliding = false
 		last_compression = 0.0
