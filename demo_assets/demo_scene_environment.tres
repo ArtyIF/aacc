@@ -16,7 +16,6 @@ background_mode = 2
 sky = SubResource("Sky_7bk1c")
 tonemap_mode = 4
 tonemap_white = 16.0
-ssao_enabled = true
 glow_enabled = true
 glow_normalized = true
 glow_intensity = 1.0

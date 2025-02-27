@@ -1,27 +1,13 @@
 class_name CarWheel extends Node3D
 
 @export_group("Shape")
-## The radius of the wheel. Half of the wheel's size.
 @export var wheel_radius: float = 0.3
-## The width of the wheel.
-##
-## AACC's wheels currently use 2 raycasts for the wheels.
 @export var wheel_width: float = 0.3
-# TODO: document
 @export_flags_3d_physics var collision_mask: int = 1
 
 @export_group("Suspension")
-## The maximum length of the suspension.
-##
-## If the suspension length gets exceeded (because of the
-## [member buffer_radius]), the suspension starts working in reverse, pulling
-## the car to the ground instead of pushing it away from it. This can be useful
-## to make the car stick to the ground better.
 @export var suspension_length: float = 0.1
-## The spring force the suspension applies.
 @export var suspension_spring: float = 3000.0
-## The damper applied to the spring force the suspension applies so it wasn't
-## too springy and out of control.
 @export var suspension_damper: float = 300.0
 
 #== NODES ==#
@@ -41,7 +27,6 @@ var collision_normal: Vector3 = Vector3.ZERO
 var distance: float = 0.0
 
 func _ready() -> void:
-	# TODO: use ShapeCast3D instead
 	raycast_instance_1 = RayCast3D.new()
 	add_child(raycast_instance_1)
 	raycast_instance_2 = RayCast3D.new()
@@ -126,7 +111,7 @@ func _physics_process(delta: float) -> void:
 
 		suspension_magnitude *= collision_normal.dot(global_basis.y)
 		
-		if not car.do_not_apply_forces and not car.freeze:
+		if not car.freeze:
 			car.apply_force(collision_normal * suspension_magnitude, collision_point - car.global_position)
 	else:
 		is_colliding = false

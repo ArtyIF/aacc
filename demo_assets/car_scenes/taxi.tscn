@@ -210,18 +210,11 @@ angular_damp_mode = 1
 script = ExtResource("1_ik2h1")
 top_speed_reverse = 20.0
 max_acceleration = 15000.0
-slowdown_force = 1000.0
-gears_amount = 5
-gear_switch_time = 0.25
-rev_speed_up_moving = 2.0
-rev_speed_down_moving = 2.0
 target_steer_velocity = 0.872665
 distance_between_wheels = 1.52
-smooth_steer_speed = 5.0
 linear_grip = 40000.0
 angular_grip = 40000.0
 brake_force = 30000.0
-air_stabilization_force = 500.0
 
 [node name="Visuals" type="Node3D" parent="."]
 
