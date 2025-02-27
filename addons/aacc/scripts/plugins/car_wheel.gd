@@ -32,10 +32,8 @@ func _ready() -> void:
 	add_child(raycast_instance_2)
 	configure_raycasts()
 
-	# The wheels don't need much from the car for physics stuff, but the car
-	# does need stuff from the wheels for the physics stuff. It makes sense
-	# to make the wheels execute slightly before the car.
-	process_physics_priority = -1
+	car.add_param("TotalWheels", 0)
+	car.add_param("LandedWheels", 0)
 
 func configure_raycasts() -> void:
 	raycast_instance_1.target_position = (Vector3.DOWN * (wheel_radius + suspension_length))
@@ -77,8 +75,14 @@ func set_raycast_values() -> void:
 		distance = distance_2
 
 func process_plugin(delta: float) -> void:
+	car.set_param("TotalWheels", car.get_param("TotalWheels") + 1)
+	car.set_param_reset_value("TotalWheels", 0)
+	
 	if raycast_instance_1.is_colliding() or raycast_instance_2.is_colliding():
 		is_colliding = true
+		car.set_param("LandedWheels", car.get_param("LandedWheels") + 1)
+		car.set_param_reset_value("LandedWheels", 0)
+
 		set_raycast_values()
 
 		compression = 1.0 - ((distance - wheel_radius) / suspension_length)
