@@ -1,4 +1,4 @@
-class_name CarWheel extends CarPluginBase
+class_name CarWheelSuspension extends CarPluginBase
 
 @export_group("Shape")
 @export var wheel_radius: float = 0.3
@@ -17,7 +17,6 @@ var compression: float = 0.0
 var last_compression: float = 0.0
 var last_compression_set: bool = false
 
-var is_colliding: bool = false
 var collision_point: Vector3 = Vector3.ZERO
 var collision_normal: Vector3 = Vector3.ZERO
 var distance: float = 0.0
@@ -77,7 +76,6 @@ func set_raycast_values() -> void:
 
 func process_plugin(delta: float) -> void:
 	if raycast_instance_1.is_colliding() or raycast_instance_2.is_colliding():
-		is_colliding = true
 		car.set_param("WheelLanded_" + name, true)
 
 		set_raycast_values()
@@ -100,5 +98,4 @@ func process_plugin(delta: float) -> void:
 		if not car.freeze:
 			car.add_force(name, collision_normal * suspension_magnitude, false, collision_point - car.global_position)
 	else:
-		is_colliding = false
 		last_compression = 0.0

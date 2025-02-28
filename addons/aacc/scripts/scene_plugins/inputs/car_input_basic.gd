@@ -1,13 +1,6 @@
-## TODO: docs
-class_name CarInput extends Node
-
-@export var enabled: bool = true
-
-func _ready() -> void:
-	AACCGlobal.car_input = self
+class_name CarInputBasic extends Node
 
 func _physics_process(delta: float) -> void:
-	if not enabled: return
 	if not AACCGlobal.car: return
 
 	AACCGlobal.car.add_or_set_input("Accelerate", clamp(Input.get_action_strength("aacc_forward"), 0.0, 1.0))
