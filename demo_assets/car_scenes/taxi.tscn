@@ -267,6 +267,8 @@ metadata/_custom_type_script = "uid://cil4ufto2v87g"
 
 [node name="CarSteer" type="Node3D" parent="Plugins"]
 script = ExtResource("9_r3t53")
+target_steer_velocity = 1.5708
+distance_between_wheels = 1.52
 metadata/_custom_type_script = "uid://61535ki5mr14"
 
 [node name="CarAngularGrip" type="Node3D" parent="Plugins"]

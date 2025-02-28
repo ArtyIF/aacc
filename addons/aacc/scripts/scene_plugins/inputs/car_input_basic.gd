@@ -14,10 +14,13 @@ func _physics_process(delta: float) -> void:
 		elif input_backward > 0.0 and is_zero_approx(input_forward):
 			velocity_z_sign = 1.0
 
-	if velocity_z_sign < 0.0:
+	if velocity_z_sign <= 0.0:
 		AACCGlobal.car.set_input("Accelerate", input_forward)
+		AACCGlobal.car.set_input("Reverse", 0.0)
 		AACCGlobal.car.set_input("Brake", input_backward)
 	elif velocity_z_sign > 0.0:
+		AACCGlobal.car.set_input("Accelerate", 0.0)
 		AACCGlobal.car.set_input("Reverse", input_backward)
 		AACCGlobal.car.set_input("Brake", input_forward)
+
 	AACCGlobal.car.set_input("Steer", input_steer)
