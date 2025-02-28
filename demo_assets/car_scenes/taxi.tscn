@@ -255,7 +255,6 @@ metadata/_custom_type_script = "uid://branpjvwdtvgm"
 
 [node name="CarEngine" type="Node3D" parent="Plugins"]
 script = ExtResource("4_pq6ol")
-force_amount = 20000.0
 metadata/_custom_type_script = "uid://d006h8ty2ddnr"
 
 [node name="CarBrake" type="Node3D" parent="Plugins"]
@@ -268,7 +267,6 @@ metadata/_custom_type_script = "uid://cil4ufto2v87g"
 
 [node name="CarSteer" type="Node3D" parent="Plugins"]
 script = ExtResource("9_r3t53")
-distance_between_wheels = 1.52
 metadata/_custom_type_script = "uid://61535ki5mr14"
 
 [node name="CarAngularGrip" type="Node3D" parent="Plugins"]

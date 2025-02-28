@@ -125,7 +125,6 @@ func pop_torque(torque_name: String) -> Torque:
 class Param:
 	var success: bool = true
 	var value: Variant
-	var reset_value: Variant
 
 	static func get_fail() -> Param:
 		var param: Param = Param.new()
@@ -134,14 +133,12 @@ class Param:
 
 var params: Dictionary[String, Param] = {}
 
-func add_param(param_name: String, start_value: Variant = null, start_value_is_reset_value: bool = false) -> bool:
+func add_param(param_name: String, start_value: Variant = null) -> bool:
 	if params.has(param_name):
 		return false
 
 	var new_param: Param = Param.new()
 	new_param.value = start_value
-	if start_value_is_reset_value:
-		new_param.reset_value = start_value
 	params[param_name] = new_param
 	return true
 
@@ -156,14 +153,14 @@ func set_param(param_name: String, new_value: Variant) -> bool:
 	params[param_name].value = new_value
 	return true
 
-func add_or_get_param(param_name: String, start_value: Variant = null, start_value_is_reset_value: bool = false) -> Variant:
-	if not add_param(param_name, start_value, start_value_is_reset_value):
+func add_or_get_param(param_name: String, start_value: Variant = null) -> Variant:
+	if not add_param(param_name, start_value):
 		return get_param(param_name, start_value)
 	return start_value
 
-func add_or_set_param(param_name: String, new_value: Variant, start_value_is_reset_value: bool = false):
+func add_or_set_param(param_name: String, new_value: Variant):
 	if not set_param(param_name, new_value):
-		add_param(param_name, new_value, start_value_is_reset_value)
+		add_param(param_name, new_value)
 
 func pop_param(param_name: String) -> Variant:
 	var value: Variant = get_param(param_name)
@@ -191,9 +188,6 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	forces.clear()
 	torques.clear()
-	for param_name in params.keys():
-		if params[param_name].reset_value != null:
-			params[param_name].value = params[param_name].reset_value
 
 	for plugin in plugins_list:
 		plugin.process_plugin(delta)

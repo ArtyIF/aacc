@@ -28,7 +28,7 @@ func _ready() -> void:
 	add_child(raycast_instance_2)
 	configure_raycasts()
 
-	car.add_param("WheelLanded_" + name, false, true)
+	car.add_param("WheelLanded_" + name, false)
 	car.add_param("WheelPoint_" + name, Vector3.ZERO)
 	car.add_param("WheelNormal_" + name, Vector3.ZERO)
 
@@ -98,4 +98,5 @@ func process_plugin(delta: float) -> void:
 		if not car.freeze:
 			car.add_force(name, collision_normal * suspension_magnitude, false, collision_point - car.global_position)
 	else:
+		car.set_param("WheelLanded_" + name, false)
 		last_compression = 0.0
