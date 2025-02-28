@@ -224,28 +224,28 @@ metadata/_custom_type_script = "uid://cudk564mgmydg"
 [node name="CarWheelBL" type="Node3D" parent="Plugins"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
-wheel_width = 0.2
+wheel_width = 0.25
 suspension_spring = 15000.0
 suspension_damper = 1500.0
 
 [node name="CarWheelBR" type="Node3D" parent="Plugins"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
-wheel_width = 0.2
+wheel_width = 0.25
 suspension_spring = 15000.0
 suspension_damper = 1500.0
 
 [node name="CarWheelFL" type="Node3D" parent="Plugins"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
-wheel_width = 0.2
+wheel_width = 0.25
 suspension_spring = 15000.0
 suspension_damper = 1500.0
 
 [node name="CarWheelFR" type="Node3D" parent="Plugins"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
-wheel_width = 0.2
+wheel_width = 0.25
 suspension_spring = 15000.0
 suspension_damper = 1500.0
 

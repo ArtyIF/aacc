@@ -2,9 +2,9 @@
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_8gguu"]
 [ext_resource type="Script" uid="uid://be5ommjjotu3v" path="res://demo_assets/scripts/car_setter.gd" id="1_gsqbk"]
+[ext_resource type="Script" uid="uid://bwjnqe5mvkcbx" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input.gd" id="1_spbku"]
 [ext_resource type="Script" uid="uid://dncrn8e6ld0ld" path="res://demo_assets/scripts/camera.gd" id="2_vy2m6"]
 [ext_resource type="PackedScene" uid="uid://cu2i0ah5ud0w1" path="res://demo_assets/subscenes/pathtest.blend" id="5_868sg"]
-[ext_resource type="Script" uid="uid://tr0544b3fh36" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input_basic.gd" id="7_67ns0"]
 [ext_resource type="LightmapGIData" uid="uid://byfapvcgpdvnb" path="res://demo_assets/demo_scene.lmbake" id="9_37bxw"]
 [ext_resource type="Script" uid="uid://bqibtmc8iwudy" path="res://addons/aacc/scripts/car_debug_label.gd" id="9_spbku"]
 [ext_resource type="PackedScene" uid="uid://ca1oyf482fq72" path="res://demo_assets/subscenes/ramptest.blend" id="15_lentq"]
@@ -13,7 +13,7 @@
 [node name="DemoScene" type="Node3D"]
 
 [node name="CarInput" type="Node" parent="."]
-script = ExtResource("7_67ns0")
+script = ExtResource("1_spbku")
 
 [node name="CarSetter" type="Node" parent="." node_paths=PackedStringArray("car")]
 process_priority = -1000

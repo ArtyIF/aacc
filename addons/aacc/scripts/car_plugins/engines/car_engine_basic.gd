@@ -3,6 +3,9 @@ class_name CarEngineBasic extends CarPluginBase
 @export var top_speed_forward: float = 50.0
 @export var force_amount: float = 10000.0
 
+func _ready() -> void:
+	car.add_input("Accelerate")
+
 func process_plugin(delta: float) -> void:
 	if is_zero_approx(car.get_param("GroundCoefficient")):
 		return
