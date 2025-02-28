@@ -63,11 +63,11 @@ func set_raycast_values() -> void:
 		collision_normal = (collision_normal_1 + collision_normal_2).normalized()
 		distance = lerp(distance_1, distance_2, 0.5)
 	elif raycast_instance_1.is_colliding():
-		collision_point = collision_point_1
+		collision_point = collision_point_1 + (global_basis.x * wheel_width / 2.0)
 		collision_normal = collision_normal_1
 		distance = distance_1
 	elif raycast_instance_2.is_colliding():
-		collision_point = collision_point_2
+		collision_point = collision_point_2 - (global_basis.x * wheel_width / 2.0)
 		collision_normal = collision_normal_2
 		distance = distance_2
 

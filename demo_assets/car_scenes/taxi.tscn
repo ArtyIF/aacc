@@ -6,12 +6,12 @@
 [ext_resource type="Script" uid="uid://cffihwqtqvy4x" path="res://addons/aacc/scripts/car_plugins/wheels/car_wheel_suspension.gd" id="3_gy57t"]
 [ext_resource type="Script" uid="uid://cudk564mgmydg" path="res://addons/aacc/scripts/car_plugins/processors/car_local_velocity_processor.gd" id="3_tcv0s"]
 [ext_resource type="Script" uid="uid://branpjvwdtvgm" path="res://addons/aacc/scripts/car_plugins/processors/car_wheels_processor.gd" id="4_leshp"]
-[ext_resource type="Script" uid="uid://bvfqai7uunpc3" path="res://addons/aacc/scripts/car_plugins/engines/car_engine_basic.gd" id="4_pq6ol"]
-[ext_resource type="Script" uid="uid://v0cpq7q6mjou" path="res://addons/aacc/scripts/car_plugins/brakes/car_brake_basic.gd" id="7_dm0ij"]
-[ext_resource type="Script" uid="uid://cil4ufto2v87g" path="res://addons/aacc/scripts/car_plugins/grips/car_side_grip_basic.gd" id="8_dm0ij"]
+[ext_resource type="Script" uid="uid://bvfqai7uunpc3" path="res://addons/aacc/scripts/car_plugins/engines/car_engine.gd" id="4_pq6ol"]
+[ext_resource type="Script" uid="uid://v0cpq7q6mjou" path="res://addons/aacc/scripts/car_plugins/brakes/car_brake.gd" id="7_dm0ij"]
+[ext_resource type="Script" uid="uid://cil4ufto2v87g" path="res://addons/aacc/scripts/car_plugins/grips/car_side_grip.gd" id="8_dm0ij"]
 [ext_resource type="Script" uid="uid://b1lao6jpcowsa" path="res://addons/aacc/scripts/car_plugins/processors/car_force_converter_processor.gd" id="9_bknco"]
 [ext_resource type="Script" uid="uid://br0vp35kb6pyw" path="res://addons/aacc/scripts/car_plugins/steers/car_steer.gd" id="9_r3t53"]
-[ext_resource type="Script" uid="uid://dbisg1nrvftc4" path="res://addons/aacc/scripts/car_plugins/grips/car_angular_grip_basic.gd" id="10_r3t53"]
+[ext_resource type="Script" uid="uid://dbisg1nrvftc4" path="res://addons/aacc/scripts/car_plugins/grips/car_angular_grip.gd" id="10_r3t53"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_x7apo"]
 _surfaces = [{
@@ -321,6 +321,9 @@ skeleton = NodePath("")
 
 [node name="FollowCameraOffset" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
+
+[node name="HoodCamera" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, -0.75)
 
 [node name="CollisionBody1" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.18557e-09, 0.15, 0.025)

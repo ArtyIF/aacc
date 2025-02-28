@@ -1,4 +1,4 @@
-class_name CarSideGripBasic extends CarPluginBase
+class_name CarSideGrip extends CarPluginBase
 
 func process_plugin(delta: float) -> void:
 	if is_zero_approx(car.get_param("GroundCoefficient")):

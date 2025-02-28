@@ -6,12 +6,13 @@ class_name CarForceConverterProcessor extends CarPluginBase
 @export var forces_to_convert: Array[String] = [
 	"Engine",
 	"Brake",
-	"SideGrip",
 	"CoastResistance",
+	"SideGrip",
 ]
 
 @export var torques_to_convert: Array[String] = [
 	"Steer",
+	"SteerTug",
 	"AngularGrip",
 ]
 
@@ -29,7 +30,7 @@ func process_plugin(delta: float) -> void:
 
 	var converted_force: Vector3 = sum_of_forces
 	converted_force = car.global_basis * converted_force
-	converted_force = Plane(car.get_param("GroundAverageNormal")).project(converted_force)
+	converted_force = converted_force.slide(car.get_param("GroundAverageNormal"))
 	converted_force = converted_force.limit_length(linear_grip * car.get_param("GroundCoefficient"))
 	#converted_force *= car.get_param("GroundCoefficient")
 
