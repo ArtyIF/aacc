@@ -267,7 +267,6 @@ metadata/_custom_type_script = "uid://cil4ufto2v87g"
 
 [node name="CarSteerBasic" type="Node3D" parent="Plugins"]
 script = ExtResource("9_tgbup")
-distance_between_wheels = 1.52
 metadata/_custom_type_script = "uid://61535ki5mr14"
 
 [node name="CarAngularGripBasic" type="Node3D" parent="Plugins"]
