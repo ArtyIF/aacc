@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=4 uid="uid://crko52geporbo"]
+[gd_scene load_steps=30 format=4 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://cil4ufto2v87g" path="res://addons/aacc/scripts/plugins/grips/car_side_grip_basic.gd" id="8_dm0ij"]
 [ext_resource type="Script" uid="uid://b1lao6jpcowsa" path="res://addons/aacc/scripts/plugins/processors/car_force_converter_processor.gd" id="9_bknco"]
 [ext_resource type="Script" uid="uid://61535ki5mr14" path="res://addons/aacc/scripts/plugins/steers/car_steer_basic.gd" id="9_tgbup"]
+[ext_resource type="Script" uid="uid://dbisg1nrvftc4" path="res://addons/aacc/scripts/plugins/grips/car_angular_grip_basic.gd" id="10_r3t53"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_x7apo"]
 _surfaces = [{
@@ -268,6 +269,10 @@ metadata/_custom_type_script = "uid://cil4ufto2v87g"
 script = ExtResource("9_tgbup")
 distance_between_wheels = 1.52
 metadata/_custom_type_script = "uid://61535ki5mr14"
+
+[node name="CarAngularGripBasic" type="Node3D" parent="Plugins"]
+script = ExtResource("10_r3t53")
+metadata/_custom_type_script = "uid://dbisg1nrvftc4"
 
 [node name="CarForceConverterProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("9_bknco")

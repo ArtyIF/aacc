@@ -98,7 +98,7 @@ func process_plugin(delta: float) -> void:
 		suspension_magnitude *= collision_normal.dot(global_basis.y)
 
 		if not car.freeze:
-			car.add_force(name, collision_normal * suspension_magnitude, collision_point - car.global_position)
+			car.add_force(name, collision_normal * suspension_magnitude, false, collision_point - car.global_position)
 	else:
 		is_colliding = false
 		last_compression = 0.0

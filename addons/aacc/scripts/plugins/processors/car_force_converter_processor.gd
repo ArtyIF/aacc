@@ -11,8 +11,8 @@ class_name CarForceConverterProcessor extends CarPluginBase
 ]
 
 @export var torques_to_convert: Array[String] = [
-	"TorqueGrip",
 	"Steer",
+	"AngularGrip",
 ]
 
 func _ready() -> void:
@@ -22,7 +22,7 @@ func process_plugin(delta: float) -> void:
 	var sum_of_forces: Vector3 = Vector3.ZERO
 	for force in car.forces.keys():
 		if forces_to_convert.has(force):
-			sum_of_forces += car.pop_force(force).force
+			sum_of_forces += car.get_force(force).force
 
 	if car.get_param("GroundCoefficient") > 0.0:
 		var converted_force: Vector3 = sum_of_forces
@@ -31,16 +31,17 @@ func process_plugin(delta: float) -> void:
 		converted_force = converted_force.limit_length(linear_grip * car.get_param("GroundCoefficient"))
 		#converted_force *= car.get_param("GroundCoefficient")
 
-		car.add_force("ConvertedForce", converted_force, car.get_param("GroundAveragePoint") - car.global_position)
+		car.add_force("ConvertedForce", converted_force, false, car.get_param("GroundAveragePoint") - car.global_position)
 
 	var sum_of_torques: Vector3 = Vector3.ZERO
 	for torque in car.torques.keys():
 		if torques_to_convert.has(torque):
-			sum_of_torques += car.pop_torque(torque).torque
+			sum_of_torques += car.get_torque(torque).torque
 
 	if car.get_param("GroundCoefficient") > 0.0:
 		var converted_torque: Vector3 = sum_of_torques
 		converted_torque = car.global_basis * converted_torque
+		converted_torque = converted_torque.project(car.get_param("GroundAverageNormal"))
 		converted_torque = converted_torque.limit_length(angular_grip * car.get_param("GroundCoefficient"))
 		#converted_torque *= car.get_param("GroundCoefficient")
 

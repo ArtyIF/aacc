@@ -42,6 +42,7 @@ class Force:
 	var success: bool = true
 	var force: Vector3 = Vector3.ZERO
 	var position: Vector3 = Vector3.ZERO
+	var do_not_apply: bool = false
 
 	static func get_fail() -> Force:
 		var force: Force = Force.new()
@@ -50,13 +51,14 @@ class Force:
 
 var forces: Dictionary[String, Force] = {}
 
-func add_force(force_name: String, force: Vector3, position: Vector3 = Vector3.ZERO) -> bool:
+func add_force(force_name: String, force: Vector3, do_not_apply: bool = false, position: Vector3 = Vector3.ZERO) -> bool:
 	if forces.has(force_name):
 		return false
 
 	var new_force: Force = Force.new()
 	new_force.force = force
 	new_force.position = position
+	new_force.do_not_apply = do_not_apply
 	forces[force_name] = new_force
 
 	return true
@@ -66,8 +68,8 @@ func get_force(force_name: String) -> Force:
 		return Force.get_fail()
 	return forces[force_name]
 
-func add_or_get_force(force_name: String, force: Vector3, position: Vector3 = Vector3.ZERO) -> Force:
-	if not add_force(force_name, force, position):
+func add_or_get_force(force_name: String, force: Vector3, position: Vector3 = Vector3.ZERO, do_not_apply: bool = false) -> Force:
+	if not add_force(force_name, force, do_not_apply, position):
 		return get_force(force_name)
 	return get_force(force_name)
 
@@ -82,6 +84,7 @@ func pop_force(force_name: String) -> Force:
 class Torque:
 	var success: bool = true
 	var torque: Vector3 = Vector3.ZERO
+	var do_not_apply: bool = false
 
 	static func get_fail() -> Torque:
 		var torque: Torque = Torque.new()
@@ -90,12 +93,13 @@ class Torque:
 
 var torques: Dictionary[String, Torque] = {}
 
-func add_torque(torque_name: String, torque: Vector3) -> bool:
+func add_torque(torque_name: String, torque: Vector3, do_not_apply: bool = false) -> bool:
 	if torques.has(torque_name):
 		return false
 
 	var new_torque: Torque = Torque.new()
 	new_torque.torque = torque
+	new_torque.do_not_apply = do_not_apply
 	torques[torque_name] = new_torque
 
 	return true
@@ -105,8 +109,8 @@ func get_torque(torque_name: String) -> Torque:
 		return Torque.get_fail()
 	return torques[torque_name]
 
-func add_or_get_torque(torque_name: String, torque: Vector3) -> Torque:
-	if not add_torque(torque_name, torque):
+func add_or_get_torque(torque_name: String, torque: Vector3, do_not_apply: bool = false) -> Torque:
+	if not add_torque(torque_name, torque, do_not_apply):
 		return get_torque(torque_name)
 	return get_torque(torque_name)
 
@@ -169,24 +173,35 @@ func pop_param(param_name: String) -> Variant:
 
 func set_param_reset_value(param_name: String, reset_value: Variant):
 	params[param_name].reset_value = reset_value
-
-# TODO: methods for adding/subtracting/appending/removing?
 #endregion Params
+
+#region Plugins
+var plugins_list: Array[CarPluginBase] = []
+
+func update_plugins():
+	plugins_list.clear()
+	for child in $"Plugins".get_children():
+		if child is CarPluginBase:
+			plugins_list.append(child)
+#endregion Plugins
+
+func _ready() -> void:
+	update_plugins()
 
 func _physics_process(delta: float) -> void:
 	forces.clear()
 	torques.clear()
-	for param_name: String in params.keys():
+	for param_name in params.keys():
 		if params[param_name].reset_value != null:
 			params[param_name].value = params[param_name].reset_value
 
-	# TODO: cache
-	for child: Node3D in $"Plugins".get_children():
-		if child is CarPluginBase:
-			child.process_plugin(delta)
+	for plugin in plugins_list:
+		plugin.process_plugin(delta)
 
 	for force: Force in forces.values():
-		apply_force(force.force, force.position)
+		if not force.do_not_apply:
+			apply_force(force.force, force.position)
 
 	for torque: Torque in torques.values():
-		apply_torque(torque.torque)
+		if not torque.do_not_apply:
+			apply_torque(torque.torque)

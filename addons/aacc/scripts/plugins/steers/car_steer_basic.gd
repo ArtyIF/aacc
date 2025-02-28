@@ -5,5 +5,5 @@ class_name CarSteerBasic extends CarPluginBase
 
 func process_plugin(delta: float) -> void:
 	var steer_amount: float = -car.get_input("Steer") * abs(car.get_param("LocalLinearVelocity").z) / distance_between_wheels
-	var steer_force: Vector3 = Vector3.UP * (steer_amount * steer_velocity - car.get_param("LocalAngularVelocity").y)
-	car.add_torque("Steer", steer_force * car.mass / delta)
+	var steer_force: Vector3 = Vector3.UP * steer_amount * steer_velocity
+	car.add_torque("Steer", steer_force * car.mass / delta, true)
