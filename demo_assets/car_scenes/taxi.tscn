@@ -217,67 +217,60 @@ script = ExtResource("1_ik2h1")
 
 [node name="Plugins" type="Node3D" parent="."]
 
-[node name="CarLocalVelocityProcessor" type="Node3D" parent="Plugins"]
+[node name="LocalVelocityProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("3_tcv0s")
-metadata/_custom_type_script = "uid://cudk564mgmydg"
 
-[node name="CarWheelBL" type="Node3D" parent="Plugins"]
+[node name="WheelBL" type="Node3D" parent="Plugins"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.25
 suspension_spring = 15000.0
 suspension_damper = 1500.0
 
-[node name="CarWheelBR" type="Node3D" parent="Plugins"]
+[node name="WheelBR" type="Node3D" parent="Plugins"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.25
 suspension_spring = 15000.0
 suspension_damper = 1500.0
 
-[node name="CarWheelFL" type="Node3D" parent="Plugins"]
+[node name="WheelFL" type="Node3D" parent="Plugins"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.25
 suspension_spring = 15000.0
 suspension_damper = 1500.0
 
-[node name="CarWheelFR" type="Node3D" parent="Plugins"]
+[node name="WheelFR" type="Node3D" parent="Plugins"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.25
 suspension_spring = 15000.0
 suspension_damper = 1500.0
 
-[node name="CarWheelsProcessor" type="Node3D" parent="Plugins"]
+[node name="WheelsProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("4_leshp")
-metadata/_custom_type_script = "uid://branpjvwdtvgm"
 
-[node name="CarEngine" type="Node3D" parent="Plugins"]
+[node name="Engine" type="Node3D" parent="Plugins"]
 script = ExtResource("4_pq6ol")
-metadata/_custom_type_script = "uid://d006h8ty2ddnr"
 
-[node name="CarBrake" type="Node3D" parent="Plugins"]
+[node name="Brake" type="Node3D" parent="Plugins"]
 script = ExtResource("7_dm0ij")
-metadata/_custom_type_script = "uid://v0cpq7q6mjou"
 
-[node name="CarSideGrip" type="Node3D" parent="Plugins"]
+[node name="SideGrip" type="Node3D" parent="Plugins"]
 script = ExtResource("8_dm0ij")
-metadata/_custom_type_script = "uid://cil4ufto2v87g"
 
-[node name="CarSteer" type="Node3D" parent="Plugins"]
+[node name="Steer" type="Node3D" parent="Plugins"]
 script = ExtResource("9_r3t53")
 target_steer_velocity = 1.5708
 distance_between_wheels = 1.52
-metadata/_custom_type_script = "uid://61535ki5mr14"
+max_smooth_steer_speed = 4.0
 
-[node name="CarAngularGrip" type="Node3D" parent="Plugins"]
+[node name="AngularGrip" type="Node3D" parent="Plugins"]
 script = ExtResource("10_r3t53")
-metadata/_custom_type_script = "uid://dbisg1nrvftc4"
 
-[node name="CarForceConverterProcessor" type="Node3D" parent="Plugins"]
+[node name="ForceConverterProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("9_bknco")
-metadata/_custom_type_script = "uid://b1lao6jpcowsa"
 
 [node name="Visuals" type="Node3D" parent="."]
 

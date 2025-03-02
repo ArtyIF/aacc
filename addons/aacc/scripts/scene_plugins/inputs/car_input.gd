@@ -2,6 +2,9 @@ class_name CarInput extends Node
 
 @export var always_full_steer: bool = false
 @export var full_steer_on_handbrake: bool = true
+@export var desired_smooth_steer_speed: float = 10.0
+
+var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
 func _physics_process(delta: float) -> void:
 	if not AACCGlobal.car: return
@@ -42,4 +45,8 @@ func _physics_process(delta: float) -> void:
 		input_steer_multiplier = lerp(input_steer_multiplier, 1.0, input_full_steer)
 	var input_steer_converted: float = input_steer * input_steer_multiplier
 
-	AACCGlobal.car.set_input("Steer", input_steer_converted)
+	smooth_steer.speed_up = min(desired_smooth_steer_speed, AACCGlobal.car.get_param("MaxSmoothSteerSpeed", desired_smooth_steer_speed))
+	smooth_steer.speed_down = min(desired_smooth_steer_speed, AACCGlobal.car.get_param("MaxSmoothSteerSpeed", desired_smooth_steer_speed))
+	smooth_steer.advance_to(input_steer_converted, delta)
+
+	AACCGlobal.car.set_input("Steer", smooth_steer.get_value())
