@@ -1,11 +1,38 @@
-class_name NoDownforceCamera extends Camera3D
+extends Camera3D
 
-@export var follow_camera_position: Node3D
-@export var lookat_camera_position: Node3D
+@onready var _car: Car = AACCGlobal.car
+@onready var _follow_node: Node3D = _car.get_node("Visuals")
+@onready var _follow_offset_node: Node3D = _car.get_node("FollowCameraOffset")
+@onready var _hood_camera_node: Node3D = _car.get_node("HoodCamera")
+@onready var _last_position: Vector3 = _follow_node.global_position
 
-func reset() -> void:
-	lookat_camera_position.reset()
-	reset_physics_interpolation()
+@onready var _direction_target: Vector3 = global_basis.z
+@onready var _smoothed_direction: Vector3 = global_basis.z
 
-func _physics_process(_delta: float) -> void:
-	global_transform = Transform3D(Basis.IDENTITY, follow_camera_position.global_position).looking_at(lookat_camera_position.global_position, lookat_camera_position.up_direction)
+var use_hood_camera: bool = false
+
+func _ready() -> void:
+	process_priority = 1000
+
+func _physics_process(delta: float) -> void:
+	if Input.is_action_just_pressed("aaccdemo_camera"):
+		use_hood_camera = not use_hood_camera
+
+	if use_hood_camera:
+		global_transform = _hood_camera_node.global_transform
+		return
+
+	var velocity: Vector3 = (_last_position - _follow_node.global_position) / delta
+	velocity = velocity.slide(Vector3.UP)
+	var smooth_amount: float = clamp(remap(velocity.length(), 0.0, 10.0, 0.0, 10.0), 0.0, 10.0)
+	_direction_target = velocity.normalized()
+
+	if _direction_target.distance_to(_smoothed_direction) > 0.001:
+		_smoothed_direction = _smoothed_direction.slerp(_direction_target, delta * smooth_amount)
+		_smoothed_direction = _smoothed_direction.slide(Vector3.UP).normalized()
+	global_basis = Basis.looking_at(-_smoothed_direction)
+
+	var follow_camera_offset: Vector3 = _follow_offset_node.position
+	global_position = _follow_node.global_position + (_smoothed_direction * follow_camera_offset.z) + (Vector3.UP * follow_camera_offset.y)
+
+	_last_position = _follow_node.global_position
