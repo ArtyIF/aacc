@@ -37,7 +37,7 @@ func calculate_steer(input_steer: float, delta: float) -> float:
 
 	return smooth_steer.get_value()
 
-func get_gear_limit(gear: int, gears_count: int) -> float:
+func calculate_gear_limit(gear: int, gears_count: int) -> float:
 	return (1.0 / gears_count) * gear
 
 func calculate_target_gear_auto(input_handbrake: float) -> int:
@@ -63,9 +63,9 @@ func calculate_target_gear_auto(input_handbrake: float) -> int:
 	var lower_gear_limit_offset: float = (5.0 / 3.6) / top_speed # TODO: configure 5.0
 
 	# TODO: make this part more clear
-	if current_target_gear > 0 and forward_speed_ratio < get_gear_limit(current_target_gear - 1, gears_count) - lower_gear_limit_offset:
+	if current_target_gear > 0 and forward_speed_ratio < calculate_gear_limit(current_target_gear - 1, gears_count) - lower_gear_limit_offset:
 		return current_gear - 1
-	if forward_speed_ratio > get_gear_limit(current_target_gear, gears_count) and current_target_gear < gears_count:
+	if forward_speed_ratio > calculate_gear_limit(current_target_gear, gears_count) and current_target_gear < gears_count:
 		return current_gear + 1
 	return current_target_gear
 
