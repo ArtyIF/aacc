@@ -251,11 +251,12 @@ suspension_damper = 1500.0
 [node name="WheelsProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("4_leshp")
 
-[node name="Engine" type="Node3D" parent="Plugins"]
-script = ExtResource("4_pq6ol")
-
 [node name="Brake" type="Node3D" parent="Plugins"]
 script = ExtResource("7_dm0ij")
+
+[node name="Engine" type="Node3D" parent="Plugins"]
+script = ExtResource("4_pq6ol")
+gear_switch_time = 0.5
 
 [node name="SideGrip" type="Node3D" parent="Plugins"]
 script = ExtResource("8_dm0ij")

@@ -121,6 +121,7 @@ func pop_torque(torque_name: String) -> Torque:
 	return torque
 #endregion Torques
 
+# TODO: make params be per-plugin. maybe forces and torques too?
 #region Params
 class Param:
 	var success: bool = true
