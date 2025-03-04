@@ -27,6 +27,7 @@ AACCGlobal="*res://addons/aacc/scripts/aacc_global.gd"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+window/vsync/vsync_mode=0
 
 [editor_plugins]
 
@@ -79,13 +80,14 @@ aaccdemo_camera={
 
 [physics]
 
-common/physics_ticks_per_second=240
-common/max_physics_steps_per_frame=24
+common/physics_ticks_per_second=120
+common/max_physics_steps_per_frame=12
 common/physics_jitter_fix=0.0
 3d/physics_engine="Jolt Physics"
 common/physics_interpolation=true
 
 [rendering]
 
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+anti_aliasing/quality/msaa_3d=1
+environment/volumetric_fog/volume_size=128
+occlusion_culling/use_occlusion_culling=true

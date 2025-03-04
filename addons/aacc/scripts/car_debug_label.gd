@@ -1,6 +1,8 @@
 extends RichTextLabel
 
 func _process(_delta: float) -> void:
+	if not visible: return
+
 	text = ""
 
 	push_table(2)
@@ -20,7 +22,7 @@ func _process(_delta: float) -> void:
 	push_cell()
 	append_text("Values")
 	pop()
-	for input: String in AACCGlobal.car.inputs.keys():
+	for input: StringName in AACCGlobal.car.inputs.keys():
 		push_cell()
 		append_text(input)
 		pop()
@@ -40,7 +42,7 @@ func _process(_delta: float) -> void:
 	push_cell()
 	append_text("Offsets")
 	pop()
-	for force: String in AACCGlobal.car.forces.keys():
+	for force: StringName in AACCGlobal.car.forces.keys():
 		push_cell()
 		if AACCGlobal.car.get_force(force).do_not_apply:
 			push_color(Color(Color.BLACK, 0.5))
@@ -72,7 +74,7 @@ func _process(_delta: float) -> void:
 	push_cell()
 	append_text("Values")
 	pop()
-	for torque: String in AACCGlobal.car.torques.keys():
+	for torque: StringName in AACCGlobal.car.torques.keys():
 		push_cell()
 		if AACCGlobal.car.get_torque(torque).do_not_apply:
 			push_color(Color(Color.BLACK, 0.5))
@@ -90,19 +92,25 @@ func _process(_delta: float) -> void:
 	pop()
 	append_text("\n")
 
-	push_table(2)
+	push_table(3)
 	push_cell()
 	append_text("Params")
 	pop()
 	push_cell()
+	append_text("Groups")
+	pop()
+	push_cell()
 	append_text("Values")
 	pop()
-	for param: String in AACCGlobal.car.params.keys():
+	for param: Array[StringName] in AACCGlobal.car.params.keys():
 		push_cell()
-		append_text(param)
+		append_text(param[0])
 		pop()
 		push_cell()
-		append_text(str(AACCGlobal.car.get_param(param)))
+		append_text(param[1])
+		pop()
+		push_cell()
+		append_text(str(AACCGlobal.car.get_param(param[0], null, param[1])))
 		pop()
 	pop()
 	append_text("\n")

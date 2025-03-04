@@ -1,36 +1,38 @@
 class_name Car extends RigidBody3D
 
-#region Inputs
-var inputs: Dictionary[String, float] = {}
+# TODO: add an editor tool to compile plugins into one script for optimization
 
-func add_input(input_name: String, start_value: float = 0.0) -> bool:
+#region Inputs
+var inputs: Dictionary[StringName, float] = {}
+
+func add_input(input_name: StringName, start_value: float = 0.0) -> bool:
 	if inputs.has(input_name):
 		return false
 
 	inputs[input_name] = start_value
 	return true
 
-func get_input(input_name: String, default_value: float = 0.0) -> float:
+func get_input(input_name: StringName, default_value: float = 0.0) -> float:
 	if inputs.has(input_name):
 		return inputs[input_name]
 	return default_value
 
-func set_input(input_name: String, new_value: float) -> bool:
+func set_input(input_name: StringName, new_value: float) -> bool:
 	if not inputs.has(input_name):
 		return false
 	inputs[input_name] = new_value
 	return true
 
-func add_or_get_input(input_name: String, start_value: float = 0.0) -> float:
+func add_or_get_input(input_name: StringName, start_value: float = 0.0) -> float:
 	if not add_input(input_name, start_value):
 		return get_input(input_name, start_value)
 	return start_value
 
-func add_or_set_input(input_name: String, new_value: float):
+func add_or_set_input(input_name: StringName, new_value: float):
 	if not set_input(input_name, new_value):
 		add_input(input_name, new_value)
 
-func remove_input(input_name: String) -> bool:
+func remove_input(input_name: StringName) -> bool:
 	if inputs.has(input_name):
 		inputs.erase(input_name)
 		return true
@@ -49,9 +51,9 @@ class Force:
 		force.success = false
 		return force
 
-var forces: Dictionary[String, Force] = {}
+var forces: Dictionary[StringName, Force] = {}
 
-func add_force(force_name: String, force: Vector3, do_not_apply: bool = false, position: Vector3 = Vector3.ZERO) -> bool:
+func add_force(force_name: StringName, force: Vector3, do_not_apply: bool = false, position: Vector3 = Vector3.ZERO) -> bool:
 	if forces.has(force_name):
 		return false
 
@@ -63,17 +65,17 @@ func add_force(force_name: String, force: Vector3, do_not_apply: bool = false, p
 
 	return true
 
-func get_force(force_name: String) -> Force:
+func get_force(force_name: StringName) -> Force:
 	if not forces.has(force_name):
 		return Force.get_fail()
 	return forces[force_name]
 
-func add_or_get_force(force_name: String, force: Vector3, position: Vector3 = Vector3.ZERO, do_not_apply: bool = false) -> Force:
+func add_or_get_force(force_name: StringName, force: Vector3, position: Vector3 = Vector3.ZERO, do_not_apply: bool = false) -> Force:
 	if not add_force(force_name, force, do_not_apply, position):
 		return get_force(force_name)
 	return get_force(force_name)
 
-func pop_force(force_name: String) -> Force:
+func pop_force(force_name: StringName) -> Force:
 	var force: Force = get_force(force_name)
 	if forces.has(force_name):
 		forces.erase(force_name)
@@ -91,9 +93,9 @@ class Torque:
 		torque.success = false
 		return torque
 
-var torques: Dictionary[String, Torque] = {}
+var torques: Dictionary[StringName, Torque] = {}
 
-func add_torque(torque_name: String, torque: Vector3, do_not_apply: bool = false) -> bool:
+func add_torque(torque_name: StringName, torque: Vector3, do_not_apply: bool = false) -> bool:
 	if torques.has(torque_name):
 		return false
 
@@ -104,73 +106,64 @@ func add_torque(torque_name: String, torque: Vector3, do_not_apply: bool = false
 
 	return true
 
-func get_torque(torque_name: String) -> Torque:
+func get_torque(torque_name: StringName) -> Torque:
 	if not torques.has(torque_name):
 		return Torque.get_fail()
 	return torques[torque_name]
 
-func add_or_get_torque(torque_name: String, torque: Vector3, do_not_apply: bool = false) -> Torque:
+func add_or_get_torque(torque_name: StringName, torque: Vector3, do_not_apply: bool = false) -> Torque:
 	if not add_torque(torque_name, torque, do_not_apply):
 		return get_torque(torque_name)
 	return get_torque(torque_name)
 
-func pop_torque(torque_name: String) -> Torque:
+func pop_torque(torque_name: StringName) -> Torque:
 	var torque: Torque = get_torque(torque_name)
 	if torques.has(torque_name):
 		torques.erase(torque_name)
 	return torque
 #endregion Torques
 
-# TODO: make params be per-plugin. maybe forces and torques too?
 #region Params
-class Param:
-	var success: bool = true
-	var value: Variant
+# array is [name, group]
+var params: Dictionary[Array, Variant] = {}
 
-	static func get_fail() -> Param:
-		var param: Param = Param.new()
-		param.success = false
-		return param
-
-var params: Dictionary[String, Param] = {}
-
-func add_param(param_name: String, start_value: Variant = null) -> bool:
-	if params.has(param_name):
+func add_param(param_name: StringName, start_value: Variant = null, param_group: StringName = "") -> bool:
+	var param_key: Array[StringName] = [param_name, param_group]
+	if params.has(param_key):
 		return false
-
-	var new_param: Param = Param.new()
-	new_param.value = start_value
-	params[param_name] = new_param
+	params[param_key] = start_value
 	return true
 
-func get_param(param_name: String, default_value: Variant = null) -> Variant:
-	if params.has(param_name):
-		return params[param_name].value
+func get_param(param_name: StringName, default_value: Variant = null, param_group: StringName = "") -> Variant:
+	var param_key: Array[StringName] = [param_name, param_group]
+	if params.has(param_key):
+		return params[param_key]
+	print(param_name + " in group " + param_group + " not found")
 	return default_value
 
-func set_param(param_name: String, new_value: Variant) -> bool:
-	if not params.has(param_name):
+func set_param(param_name: StringName, new_value: Variant, param_group: StringName = "") -> bool:
+	var param_key: Array[StringName] = [param_name, param_group]
+	if not params.has(param_key):
+		print(param_name + " in group " + param_group + " not found")
 		return false
-	params[param_name].value = new_value
+	params[param_key] = new_value
 	return true
 
-func add_or_get_param(param_name: String, start_value: Variant = null) -> Variant:
-	if not add_param(param_name, start_value):
-		return get_param(param_name, start_value)
+func add_or_get_param(param_name: StringName, start_value: Variant = null, param_group: StringName = "") -> Variant:
+	if not add_param(param_name, start_value, param_group):
+		return get_param(param_name, start_value, param_group)
 	return start_value
 
-func add_or_set_param(param_name: String, new_value: Variant):
-	if not set_param(param_name, new_value):
-		add_param(param_name, new_value)
+func add_or_set_param(param_name: StringName, new_value: Variant, param_group: StringName = ""):
+	if not set_param(param_name, new_value, param_group):
+		add_param(param_name, new_value, param_group)
 
-func pop_param(param_name: String) -> Variant:
-	var value: Variant = get_param(param_name)
-	if params.has(param_name):
-		params.erase(param_name)
+func pop_param(param_name: StringName, param_group: StringName = "") -> Variant:
+	var value: Variant = get_param(param_name, param_group)
+	var param_key: Array[StringName] = [param_name, param_group]
+	if params.has(param_key):
+		params.erase(param_key)
 	return value
-
-func set_param_reset_value(param_name: String, reset_value: Variant):
-	params[param_name].reset_value = reset_value
 #endregion Params
 
 #region Plugins
@@ -187,8 +180,13 @@ func _ready() -> void:
 	update_plugins()
 
 func _physics_process(delta: float) -> void:
-	forces.clear()
-	torques.clear()
+	if freeze:
+		return
+
+	if not forces.is_empty():
+		forces.clear()
+	if not torques.is_empty():
+		torques.clear()
 
 	for plugin in plugins_list:
 		plugin.process_plugin(delta)

@@ -46,7 +46,7 @@ func calculate_gear_limit(gear: int) -> float:
 # this is very barebones and unsmoothed
 func update_rpm_ratio(input_accelerate: float, input_reverse: float) -> void:
 	var target_rpm_ratio: float = 0.0
-	var local_linear_velocity: Vector3 = car.get_param("LocalLinearVelocity", Vector3.ZERO)
+	var local_linear_velocity: Vector3 = car.get_param("LocalLinearVelocity")
 	var ground_coefficient: float = car.get_param("GroundCoefficient", 1.0)
 
 	if abs(local_linear_velocity.z) < 0.25 or is_zero_approx(ground_coefficient):
@@ -96,7 +96,7 @@ func process_plugin(delta: float) -> void:
 
 	var force: Vector3 = Vector3.ZERO
 	# TODO: smooth this out
-	if car.get_param("LocalLinearVelocity").z > -top_speed:
+	if car.get_param("LocalLinearVelocity").z > -top_speed * max(calculate_gear_limit(current_gear), 1.0 / gears_count):
 		force += Vector3.FORWARD * input_accelerate * max_engine_force * calculate_acceleration_multiplier()
 	if car.get_param("LocalLinearVelocity").z < top_speed / gears_count:
 		force -= Vector3.FORWARD * input_reverse * max_engine_force
