@@ -9,14 +9,20 @@ class_name CarInput extends Node
 
 @export_group("Steering")
 @export var always_full_steer: bool = false
+@export var full_steer_on_reverse: bool = true
 @export var full_steer_on_handbrake: bool = true
 @export var desired_smooth_steer_speed: float = 10.0
 
+@export_group("Gearbox")
+@export var auto_trans_downshift_offset: float = 2.0
+
 var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
-func calculate_steer(input_steer: float, delta: float) -> float:
-	var input_full_steer: float = Input.is_action_pressed("aacc_handbrake") if full_steer_on_handbrake else 0.0
+func calculate_steer(input_steer: float, input_handbrake: float, velocity_z_sign: float, delta: float) -> float:
+	var input_full_steer: float = input_handbrake if full_steer_on_handbrake else 0.0
 	if is_zero_approx(AACCGlobal.car.get_param("GroundCoefficient", 1.0)):
+		input_full_steer = 1.0
+	if full_steer_on_reverse and velocity_z_sign > 0:
 		input_full_steer = 1.0
 
 	# TODO: add an ability to have the car send the info somehow, otherwise this is delayed by a frame
@@ -60,9 +66,8 @@ func calculate_target_gear_auto(input_handbrake: float) -> int:
 		return -velocity_z_sign
 
 	var forward_speed_ratio: float = abs(local_linear_velocity.z / top_speed)
-	var lower_gear_limit_offset: float = (5.0 / 3.6) / top_speed # TODO: configure 5.0
+	var lower_gear_limit_offset: float = auto_trans_downshift_offset / top_speed
 
-	# TODO: make this part more clear
 	if current_target_gear > 0 and forward_speed_ratio < calculate_gear_limit(current_target_gear - 1, gears_count) - lower_gear_limit_offset:
 		return current_gear - 1
 	if forward_speed_ratio > calculate_gear_limit(current_target_gear, gears_count) and current_target_gear < gears_count:
@@ -77,7 +82,7 @@ func _physics_process(delta: float) -> void:
 	var input_handbrake: float = 1.0 if Input.is_action_pressed(action_handbrake) else 0.0
 	var input_steer: float = clamp(Input.get_action_strength(action_steer_right) - Input.get_action_strength(action_steer_left), -1.0, 1.0)
 
-	var velocity_z_sign: float = AACCGlobal.car.get_param("VelocityZSign")
+	var velocity_z_sign: float = AACCGlobal.car.get_param("VelocityZSign", 0.0)
 	if is_zero_approx(velocity_z_sign):
 		if input_forward > 0.0 and is_zero_approx(input_backward):
 			velocity_z_sign = -1.0
@@ -93,6 +98,6 @@ func _physics_process(delta: float) -> void:
 		AACCGlobal.car.set_input("Reverse", input_backward)
 		AACCGlobal.car.set_input("Brake", input_forward)
 	AACCGlobal.car.set_input("Handbrake", input_handbrake)
-	AACCGlobal.car.set_input("Steer", calculate_steer(input_steer, delta))
+	AACCGlobal.car.set_input("Steer", calculate_steer(input_steer, input_handbrake, velocity_z_sign, delta))
 
 	AACCGlobal.car.set_input("TargetGear", calculate_target_gear_auto(input_handbrake))
