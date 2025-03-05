@@ -259,6 +259,7 @@ script = ExtResource("7_dm0ij")
 
 [node name="Engine" type="Node3D" parent="Plugins"]
 script = ExtResource("4_pq6ol")
+max_engine_force = 15000.0
 
 [node name="SideGrip" type="Node3D" parent="Plugins"]
 script = ExtResource("8_dm0ij")

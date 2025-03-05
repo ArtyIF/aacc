@@ -1,9 +1,14 @@
 class_name CarEngine extends CarPluginBase
 
+# TODO: more detailed?
+
 @export var top_speed: float = 50.0
 @export var max_engine_force: float = 10000.0
 @export var gears_count: int = 5
 @export var gear_switch_time: float = 0.1
+# this applies a smooth drop-off to the engine force when the speed is over the
+# current gear's top speed
+@export var gear_upper_limit_offset: float = 3.0
 
 var current_gear: int = 0
 var target_gear: int = 0
@@ -39,11 +44,6 @@ func update_gear(delta: float):
 func calculate_gear_limit(gear: int) -> float:
 	return gear / float(gears_count)
 
-# TODO: make rpm affect acceleration
-# TODO: change rpm from ratio to actual rpm
-# TODO: currently manual transmision is not supported. make it supported
-
-# this is very barebones and unsmoothed
 func update_rpm_ratio(input_accelerate: float, input_reverse: float) -> void:
 	var target_rpm_ratio: float = 0.0
 	var local_linear_velocity: Vector3 = car.get_param("LocalLinearVelocity")
@@ -55,16 +55,26 @@ func update_rpm_ratio(input_accelerate: float, input_reverse: float) -> void:
 		else:
 			target_rpm_ratio = input_accelerate
 	else:
-		if current_gear > 0:
-			target_rpm_ratio = clamp(inverse_lerp(0.0, top_speed * calculate_gear_limit(target_gear), abs(local_linear_velocity.z)), 0.0, 1.0)
+		var upper_limit: float = 0.0
+		if current_gear > 0 and current_gear < gears_count:
+			upper_limit = top_speed * calculate_gear_limit(target_gear) + gear_upper_limit_offset
+		elif current_gear == gears_count:
+			upper_limit = top_speed
 		elif current_gear < 0:
-			target_rpm_ratio = clamp(inverse_lerp(0.0, top_speed / gears_count, abs(local_linear_velocity.z)), 0.0, 1.0)
+			upper_limit = top_speed / gears_count
+		target_rpm_ratio = clamp(inverse_lerp(0.0, upper_limit, abs(local_linear_velocity.z)), 0.0, 1.0)
 
+	# TODO: smoothing
 	rpm_ratio = target_rpm_ratio
 
-func calculate_acceleration_multiplier() -> float:
+func calculate_acceleration_multiplier(speed: float) -> float:
 	var multiplier: float = 1.0
-	multiplier *= 1.0 - calculate_gear_limit(current_gear - 1)
+	multiplier *= 1.0 - min(speed / top_speed, 1.0)
+
+	var max_speed: float = top_speed * max(calculate_gear_limit(current_gear), 1.0 / gears_count)
+	if speed >= max_speed:
+		multiplier *= min(inverse_lerp(max_speed + gear_upper_limit_offset, max_speed, speed), 1.0)
+
 	return multiplier
 
 func process_plugin(delta: float) -> void:
@@ -96,8 +106,8 @@ func process_plugin(delta: float) -> void:
 
 	var force: Vector3 = Vector3.ZERO
 	# TODO: smooth this out
-	if car.get_param("LocalLinearVelocity").z > -top_speed * max(calculate_gear_limit(current_gear), 1.0 / gears_count):
-		force += Vector3.FORWARD * input_accelerate * max_engine_force * calculate_acceleration_multiplier()
+	if car.get_param("LocalLinearVelocity").z + gear_upper_limit_offset > -min(top_speed * calculate_gear_limit(current_gear), top_speed):
+		force += Vector3.FORWARD * input_accelerate * max_engine_force * calculate_acceleration_multiplier(abs(car.get_param("LocalLinearVelocity").z))
 	if car.get_param("LocalLinearVelocity").z < top_speed / gears_count:
 		force -= Vector3.FORWARD * input_reverse * max_engine_force
 	car.set_force("Engine", force, true)

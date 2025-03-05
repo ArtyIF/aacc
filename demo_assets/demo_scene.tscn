@@ -22,7 +22,6 @@ auto_exposure_max_sensitivity = 1600.0
 [node name="DemoScene" type="Node3D"]
 
 [node name="DebugLabel" type="RichTextLabel" parent="."]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
