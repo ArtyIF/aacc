@@ -12,16 +12,16 @@ var gear_switch_timer: float = 0.0
 var rpm_ratio: float = 0.0
 
 func _ready() -> void:
-	car.add_input("Accelerate")
-	car.add_input("Reverse")
-	car.add_input("TargetGear")
+	car.set_input("Accelerate", 0.0)
+	car.set_input("Reverse", 0.0)
+	car.set_input("TargetGear", 0.0)
 
-	car.add_param("TopSpeed", top_speed)
-	car.add_param("GearsCount", gears_count)
-	car.add_param("CurrentGear", current_gear)
-	car.add_param("SwitchingGears", switching_gears)
-	car.add_param("GearSwitchTimer", gear_switch_timer)
-	car.add_param("RPMRatio", rpm_ratio)
+	car.set_param("TopSpeed", top_speed)
+	car.set_param("GearsCount", gears_count)
+	car.set_param("CurrentGear", current_gear)
+	car.set_param("SwitchingGears", switching_gears)
+	car.set_param("GearSwitchTimer", gear_switch_timer)
+	car.set_param("RPMRatio", rpm_ratio)
 
 func update_gear(delta: float):
 	# TODO: think out the behavior for current and target gear comparison
@@ -100,4 +100,4 @@ func process_plugin(delta: float) -> void:
 		force += Vector3.FORWARD * input_accelerate * max_engine_force * calculate_acceleration_multiplier()
 	if car.get_param("LocalLinearVelocity").z < top_speed / gears_count:
 		force -= Vector3.FORWARD * input_reverse * max_engine_force
-	car.add_force("Engine", force, true)
+	car.set_force("Engine", force, true)

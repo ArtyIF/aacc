@@ -16,19 +16,20 @@ var use_hood_camera: bool = false
 func _ready() -> void:
 	process_priority = 1000
 
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("aaccdemo_camera"):
 		use_hood_camera = not use_hood_camera
 
 	var smooth_amount: float = 10.0
+	var node_transform: Transform3D = _hood_camera_node.get_global_transform_interpolated() if use_hood_camera else _follow_node.get_global_transform_interpolated()
 
 	if use_hood_camera:
-		global_position = _hood_camera_node.global_position
-		_direction_target = _hood_camera_node.global_basis.z
-		_up_vector_target = _hood_camera_node.global_basis.y
+		global_position = node_transform.origin
+		_direction_target = node_transform.basis.z
+		_up_vector_target = node_transform.basis.y
 	else:
 		_up_vector_target = Vector3.UP
-		var velocity: Vector3 = (_last_position - _follow_node.global_position) / delta
+		var velocity: Vector3 = (_last_position - node_transform.origin) / delta
 		velocity = velocity.slide(_up_vector_target)
 		smooth_amount = clamp(remap(velocity.length(), 0.0, 10.0, 0.0, 10.0), 0.0, 10.0)
 		_direction_target = velocity.normalized()
@@ -43,6 +44,6 @@ func _physics_process(delta: float) -> void:
 
 	if not use_hood_camera:
 		var follow_camera_offset: Vector3 = _follow_offset_node.position
-		global_position = _follow_node.global_position + (_smoothed_direction * follow_camera_offset.z) + (_smoothed_up_vector * follow_camera_offset.y)
+		global_position = node_transform.origin + (_smoothed_direction * follow_camera_offset.z) + (_smoothed_up_vector * follow_camera_offset.y)
 
-	_last_position = _follow_node.global_position
+	_last_position = node_transform.origin

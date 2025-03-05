@@ -212,6 +212,7 @@ physics_material_override = ExtResource("1_av0nu")
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, 0.1, 0)
 freeze_mode = 1
+continuous_cd = true
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_ik2h1")
@@ -251,7 +252,7 @@ suspension_damper = 1500.0
 
 [node name="WheelsProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("4_leshp")
-wheel_names = Array[String](["WheelBL", "WheelBR", "WheelFL", "WheelFR"])
+wheel_names = Array[StringName]([&"WheelBL", &"WheelBR", &"WheelFL", &"WheelFR"])
 
 [node name="Brake" type="Node3D" parent="Plugins"]
 script = ExtResource("7_dm0ij")

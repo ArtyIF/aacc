@@ -1,9 +1,20 @@
-[gd_resource type="Environment" load_steps=3 format=3 uid="uid://ysvc1jqnkuid"]
+[gd_resource type="Environment" load_steps=6 format=3 uid="uid://ysvc1jqnkuid"]
+
+[sub_resource type="Gradient" id="Gradient_eg6n8"]
+offsets = PackedFloat32Array(0.25, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_va6cp"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_bbur6"]
+seamless = true
+color_ramp = SubResource("Gradient_eg6n8")
+noise = SubResource("FastNoiseLite_va6cp")
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_lg8b7"]
 sky_top_color = Color(0.25, 0.3125, 0.5, 1)
 sky_horizon_color = Color(0.501961, 0.627451, 1, 1)
 sky_curve = 0.5
+sky_cover = SubResource("NoiseTexture2D_bbur6")
 ground_bottom_color = Color(0.25098, 0.313726, 0.501961, 1)
 ground_horizon_color = Color(0.501961, 0.627451, 1, 1)
 ground_curve = 0.5
@@ -23,6 +34,7 @@ ssil_enabled = true
 glow_enabled = true
 glow_normalized = true
 glow_intensity = 1.0
+glow_bloom = 0.05
 glow_hdr_threshold = 2.0
 glow_hdr_scale = 1.0
 fog_enabled = true

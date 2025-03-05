@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=12 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_8gguu"]
 [ext_resource type="Script" uid="uid://be5ommjjotu3v" path="res://demo_assets/scripts/car_setter.gd" id="1_gsqbk"]
@@ -11,9 +11,18 @@
 [ext_resource type="PackedScene" uid="uid://ca1oyf482fq72" path="res://demo_assets/subscenes/ramptest.blend" id="15_lentq"]
 [ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="16_37bxw"]
 
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ny1lv"]
+auto_exposure_enabled = true
+auto_exposure_scale = 0.5
+dof_blur_far_enabled = true
+dof_blur_far_distance = 250.0
+dof_blur_far_transition = 250.0
+auto_exposure_max_sensitivity = 1600.0
+
 [node name="DemoScene" type="Node3D"]
 
 [node name="DebugLabel" type="RichTextLabel" parent="."]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -38,6 +47,7 @@ car = NodePath("../Taxi")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("1_8gguu")
+camera_attributes = SubResource("CameraAttributesPractical_ny1lv")
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.707107, -0.241845, 0.664463, 0, 0.939693, 0.34202, -0.707107, -0.241845, 0.664463, 0, 0, 0)
@@ -62,6 +72,7 @@ directional_shadow_pancake_size = 50.0
 sky_mode = 1
 
 [node name="Camera" type="Camera3D" parent="."]
+physics_interpolation_mode = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
 doppler_tracking = 1
 far = 1000.0

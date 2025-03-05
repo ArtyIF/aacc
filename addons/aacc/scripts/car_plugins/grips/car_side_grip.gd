@@ -5,4 +5,4 @@ func process_plugin(delta: float) -> void:
 		return
 
 	var force: float = -car.get_param("LocalLinearVelocity").x * car.mass
-	car.add_force("SideGrip", Vector3.RIGHT * force / delta, true)
+	car.set_force("SideGrip", Vector3.RIGHT * force / delta, true)

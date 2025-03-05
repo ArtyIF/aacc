@@ -5,4 +5,4 @@ func process_plugin(delta: float) -> void:
 		return
 
 	var torque: float = -car.get_param("LocalAngularVelocity").y * car.mass
-	car.add_torque("AngularGrip", Vector3.UP * torque / delta, true)
+	car.set_torque("AngularGrip", Vector3.UP * torque / delta, true)

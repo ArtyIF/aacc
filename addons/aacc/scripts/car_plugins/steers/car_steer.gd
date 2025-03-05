@@ -7,11 +7,11 @@ class_name CarSteer extends CarPluginBase
 @export var max_smooth_steer_speed: float = 10.0
 
 func _ready() -> void:
-	car.add_input("Steer")
-	car.add_param("DistanceBetweenWheels", distance_between_wheels)
-	car.add_param("BaseSteerVelocity", base_steer_velocity)
-	car.add_param("TargetSteerVelocity", target_steer_velocity)
-	car.add_param("MaxSmoothSteerSpeed", max_smooth_steer_speed)
+	car.set_input("Steer", 0.0)
+	car.set_param("DistanceBetweenWheels", distance_between_wheels)
+	car.set_param("BaseSteerVelocity", base_steer_velocity)
+	car.set_param("TargetSteerVelocity", target_steer_velocity)
+	car.set_param("MaxSmoothSteerSpeed", max_smooth_steer_speed)
 
 func process_plugin(delta: float) -> void:
 	if is_zero_approx(car.get_param("GroundCoefficient")):
@@ -29,4 +29,4 @@ func process_plugin(delta: float) -> void:
 	
 	var steer_velocity: float = clamp(steer_amount * base_steer_velocity, -max_steer_velocity, max_steer_velocity)
 	var steer_force: Vector3 = Vector3.UP * steer_velocity
-	car.add_torque("Steer", steer_force * car.mass / delta, true)
+	car.set_torque("Steer", steer_force * car.mass / delta, true)

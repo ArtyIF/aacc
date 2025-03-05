@@ -80,7 +80,6 @@ aaccdemo_camera={
 
 [physics]
 
-common/physics_ticks_per_second=120
 common/max_physics_steps_per_frame=12
 common/physics_jitter_fix=0.0
 3d/physics_engine="Jolt Physics"
