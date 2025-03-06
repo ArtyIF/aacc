@@ -1,0 +1,116 @@
+[gd_scene load_steps=12 format=3 uid="uid://b8dibdn7lv1o0"]
+
+[ext_resource type="Script" uid="uid://bqibtmc8iwudy" path="res://addons/aacc/scripts/car_debug_label.gd" id="1_qnhho"]
+[ext_resource type="Script" uid="uid://bwjnqe5mvkcbx" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input.gd" id="2_1kif7"]
+[ext_resource type="Script" uid="uid://be5ommjjotu3v" path="res://demo_assets/scripts/car_setter.gd" id="3_vx7r4"]
+[ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="4_46dqb"]
+[ext_resource type="Script" uid="uid://dncrn8e6ld0ld" path="res://demo_assets/scripts/camera.gd" id="5_46lkv"]
+[ext_resource type="LightmapGIData" uid="uid://byfapvcgpdvnb" path="res://demo_assets/lightmaps/demo_scene.lmbake" id="6_s4qbg"]
+[ext_resource type="PackedScene" uid="uid://cu2i0ah5ud0w1" path="res://demo_assets/subscenes/pathtest.blend" id="7_c6qrw"]
+[ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="8_2t12c"]
+[ext_resource type="PackedScene" uid="uid://ca1oyf482fq72" path="res://demo_assets/subscenes/ramptest.blend" id="9_l5mqg"]
+[ext_resource type="ArrayOccluder3D" uid="uid://bc4g7cdctsbd0" path="res://demo_assets/demo_scene.occ" id="10_lmxsi"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ny1lv"]
+auto_exposure_enabled = true
+auto_exposure_scale = 0.5
+dof_blur_far_enabled = true
+dof_blur_far_distance = 250.0
+dof_blur_far_transition = 500.0
+dof_blur_near_enabled = true
+dof_blur_near_distance = 1.0
+auto_exposure_min_sensitivity = 400.0
+auto_exposure_max_sensitivity = 3200.0
+
+[node name="DemoScene" type="Node3D"]
+
+[node name="DebugLabel" type="RichTextLabel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_vertical = 2
+theme_override_colors/table_border = Color(0, 0, 0, 0.501961)
+theme_override_colors/table_even_row_bg = Color(1, 1, 1, 0.501961)
+theme_override_colors/table_odd_row_bg = Color(0.878431, 0.878431, 0.878431, 0.501961)
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_constants/table_v_separation = 0
+theme_override_constants/table_h_separation = 5
+theme_override_constants/line_separation = 5
+text = "Debug label"
+script = ExtResource("1_qnhho")
+
+[node name="CarInput" type="Node" parent="."]
+script = ExtResource("2_1kif7")
+
+[node name="CarSetter" type="Node" parent="." node_paths=PackedStringArray("car")]
+process_priority = -1000
+script = ExtResource("3_vx7r4")
+car = NodePath("../Taxi")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("4_46dqb")
+camera_attributes = SubResource("CameraAttributesPractical_ny1lv")
+
+[node name="Sunlight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.819152, 0.391178, -0.419487, 0, 0.731354, 0.681999, 0.573577, -0.558661, 0.59909, 0, 0, 0)
+light_color = Color(1, 0.941176, 0.878431, 1)
+light_energy = 4.0
+light_volumetric_fog_energy = 0.0
+light_cull_mask = 4294967293
+shadow_enabled = true
+shadow_caster_mask = 4294967294
+directional_shadow_blend_splits = true
+directional_shadow_pancake_size = 50.0
+
+[node name="SunlightCar" type="DirectionalLight3D" parent="Sunlight"]
+light_color = Color(1, 0.941176, 0.878431, 1)
+light_energy = 4.0
+light_bake_mode = 0
+light_cull_mask = 4294967294
+shadow_enabled = true
+directional_shadow_blend_splits = true
+directional_shadow_pancake_size = 50.0
+sky_mode = 1
+
+[node name="Camera" type="Camera3D" parent="."]
+physics_interpolation_mode = 2
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
+doppler_tracking = 1
+far = 1000.0
+script = ExtResource("5_46lkv")
+
+[node name="LightmapGI" type="LightmapGI" parent="."]
+bounces = 2
+shadowmask_mode = 2
+texel_scale = 5.0
+generate_probes_subdiv = 0
+light_data = ExtResource("6_s4qbg")
+
+[node name="pathtest" parent="." instance=ExtResource("7_c6qrw")]
+
+[node name="Taxi" parent="." instance=ExtResource("8_2t12c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="ramptest" parent="." instance=ExtResource("9_l5mqg")]
+transform = Transform3D(-0.952601, -0.0225841, -0.304014, -0.0107575, 1.99987, -0.00343316, 0.304033, -9.31321e-09, -0.952662, 145.31, 9.88008, -125.437)
+
+[node name="ramptest2" parent="." instance=ExtResource("9_l5mqg")]
+transform = Transform3D(-0.999863, -2.11876e-08, 0.0331244, -0.00285096, 0.985073, -0.344223, -0.016315, -0.172135, -1.96988, 172.325, 8.77901, -0.812098)
+
+[node name="ramptest3" parent="." instance=ExtResource("9_l5mqg")]
+transform = Transform3D(1.88528, 0, -1.66904, 0, 8.755, 0, 0.667615, 0, 4.71321, -111.871, -0.717397, 331.143)
+
+[node name="ramptest4" parent="." instance=ExtResource("9_l5mqg")]
+transform = Transform3D(-1.85271, -0.174467, 0.166903, -0.370167, 0.982723, 4.65661e-10, -0.65608, -0.061782, -0.471321, -97.2211, 15.0431, 289.676)
+
+[node name="OccluderInstance3D" type="OccluderInstance3D" parent="."]
+occluder = ExtResource("10_lmxsi")
+bake_mask = 4294967293
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="."]
+update_mode = 1
+blend_distance = 0.0
+size = Vector3(1000, 1000, 1000)
+origin_offset = Vector3(118, 1, -158)
+enable_shadows = true
+cull_mask = 1048573

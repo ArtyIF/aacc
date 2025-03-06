@@ -18,7 +18,6 @@ var rpm_ratio: float = 0.0
 
 func _ready() -> void:
 	car.set_input("Accelerate", 0.0)
-	car.set_input("Reverse", 0.0)
 	car.set_input("TargetGear", 0.0)
 
 	car.set_param("TopSpeed", top_speed)
@@ -44,16 +43,13 @@ func update_gear(delta: float):
 func calculate_gear_limit(gear: int) -> float:
 	return gear / float(gears_count)
 
-func update_rpm_ratio(input_accelerate: float, input_reverse: float) -> void:
+func update_rpm_ratio(input_accelerate: float) -> void:
 	var target_rpm_ratio: float = 0.0
 	var local_linear_velocity: Vector3 = car.get_param("LocalLinearVelocity")
 	var ground_coefficient: float = car.get_param("GroundCoefficient", 1.0)
 
 	if abs(local_linear_velocity.z) < 0.25 or is_zero_approx(ground_coefficient):
-		if current_gear == 0:
-			target_rpm_ratio = max(input_accelerate, input_reverse)
-		else:
-			target_rpm_ratio = input_accelerate
+		target_rpm_ratio = input_accelerate
 	else:
 		var upper_limit: float = 0.0
 		if current_gear > 0 and current_gear < gears_count:
@@ -70,6 +66,7 @@ func update_rpm_ratio(input_accelerate: float, input_reverse: float) -> void:
 func calculate_acceleration_multiplier(speed: float) -> float:
 	var multiplier: float = 1.0
 	multiplier *= 1.0 - min(speed / top_speed, 1.0)
+	multiplier = min(multiplier, 1.0 - calculate_gear_limit(max(0.0, current_gear - 1)))
 
 	var max_speed: float = top_speed * max(calculate_gear_limit(current_gear), 1.0 / gears_count)
 	if speed >= max_speed:
@@ -82,17 +79,15 @@ func process_plugin(delta: float) -> void:
 		return
 
 	var input_accelerate: float = car.get_input("Accelerate")
-	var input_reverse: float = car.get_input("Reverse")
 
 	var input_brake: float = car.get_input("Brake")
 	var input_handbrake: float = car.get_input("Handbrake")
 	var brake_value: float = max(input_brake, input_handbrake)
 	input_accelerate *= 1.0 - brake_value
-	input_reverse *= 1.0 - brake_value
 
 	target_gear = roundi(car.get_input("TargetGear"))
 	update_gear(delta)
-	update_rpm_ratio(input_accelerate, input_reverse)
+	update_rpm_ratio(input_accelerate)
 
 	car.set_param("TopSpeed", top_speed)
 	car.set_param("GearsCount", gears_count)
@@ -105,9 +100,8 @@ func process_plugin(delta: float) -> void:
 		return
 
 	var force: Vector3 = Vector3.ZERO
-	# TODO: smooth this out
-	if car.get_param("LocalLinearVelocity").z + gear_upper_limit_offset > -min(top_speed * calculate_gear_limit(current_gear), top_speed):
+	if current_gear > 0 and car.get_param("LocalLinearVelocity").z + gear_upper_limit_offset > -min(top_speed * calculate_gear_limit(current_gear), top_speed):
 		force += Vector3.FORWARD * input_accelerate * max_engine_force * calculate_acceleration_multiplier(abs(car.get_param("LocalLinearVelocity").z))
-	if car.get_param("LocalLinearVelocity").z < top_speed / gears_count:
-		force -= Vector3.FORWARD * input_reverse * max_engine_force
+	elif current_gear < 0 and car.get_param("LocalLinearVelocity").z < top_speed / gears_count:
+		force -= Vector3.FORWARD * input_accelerate * max_engine_force
 	car.set_force("Engine", force, true)

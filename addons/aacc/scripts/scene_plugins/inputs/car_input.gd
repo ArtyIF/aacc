@@ -46,10 +46,9 @@ func calculate_steer(input_steer: float, input_handbrake: float, velocity_z_sign
 func calculate_gear_limit(gear: int, gears_count: int) -> float:
 	return (1.0 / gears_count) * gear
 
-func calculate_target_gear_auto(input_handbrake: float) -> int:
+func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) -> int:
 	var local_linear_velocity: Vector3 = AACCGlobal.car.get_param("LocalLinearVelocity", Vector3.ZERO)
 	var ground_coefficient: float = AACCGlobal.car.get_param("GroundCoefficient", 1.0)
-	var velocity_z_sign: float = AACCGlobal.car.get_param("VelocityZSign", 0.0)
 
 	var current_gear: int = AACCGlobal.car.get_param("CurrentGear", 0)
 	var top_speed: float = AACCGlobal.car.get_param("TopSpeed")
@@ -89,15 +88,14 @@ func _physics_process(delta: float) -> void:
 		elif input_backward > 0.0 and is_zero_approx(input_forward):
 			velocity_z_sign = 1.0
 
-	if velocity_z_sign <= 0.0:
+	var target_gear: int = calculate_target_gear_auto(input_handbrake, velocity_z_sign)
+	if target_gear > 0:
 		AACCGlobal.car.set_input("Accelerate", input_forward)
-		AACCGlobal.car.set_input("Reverse", 0.0)
 		AACCGlobal.car.set_input("Brake", input_backward)
-	elif velocity_z_sign > 0.0:
-		AACCGlobal.car.set_input("Accelerate", 0.0)
-		AACCGlobal.car.set_input("Reverse", input_backward)
+	elif target_gear < 0:
+		AACCGlobal.car.set_input("Accelerate", input_backward)
 		AACCGlobal.car.set_input("Brake", input_forward)
+	AACCGlobal.car.set_input("TargetGear", target_gear)
+
 	AACCGlobal.car.set_input("Handbrake", input_handbrake)
 	AACCGlobal.car.set_input("Steer", calculate_steer(input_steer, input_handbrake, velocity_z_sign, delta))
-
-	AACCGlobal.car.set_input("TargetGear", calculate_target_gear_auto(input_handbrake))

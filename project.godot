@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Arty's Arcadey Car Controller"
-run/main_scene="res://demo_assets/demo_scene.tscn"
+run/main_scene="res://demo_assets/scenes/demo_scene.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
