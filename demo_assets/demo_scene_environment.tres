@@ -1,9 +1,10 @@
 [gd_resource type="Environment" load_steps=4 format=3 uid="uid://ysvc1jqnkuid"]
 
-[ext_resource type="Texture2D" uid="uid://dq7m50vv3fbow" path="res://demo_assets/textures/kloofendal_43d_clear_puresky_2k.exr" id="1_va6cp"]
+[ext_resource type="Texture2D" uid="uid://btcf2nli4k7yc" path="res://demo_assets/textures/table_mountain_1_2k.hdr" id="1_va6cp"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_bbur6"]
 panorama = ExtResource("1_va6cp")
+energy_multiplier = 2.0
 
 [sub_resource type="Sky" id="Sky_7bk1c"]
 sky_material = SubResource("PanoramaSkyMaterial_bbur6")
@@ -20,15 +21,16 @@ glow_enabled = true
 glow_normalized = true
 glow_intensity = 1.0
 glow_bloom = 0.1
+glow_hdr_threshold = 2.0
 fog_enabled = true
-fog_light_color = Color(0.384314, 0.466667, 0.603922, 1)
+fog_light_color = Color(0.309804, 0.396078, 0.533333, 1)
 fog_density = 0.005
 fog_sky_affect = 0.0
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.01
-volumetric_fog_emission = Color(0.384314, 0.466667, 0.603922, 1)
+volumetric_fog_density = 0.005
+volumetric_fog_emission = Color(0.309804, 0.396078, 0.533333, 1)
 volumetric_fog_gi_inject = 0.0
-volumetric_fog_sky_affect = 0.0
+volumetric_fog_anisotropy = 0.5
 volumetric_fog_temporal_reprojection_enabled = false
 adjustment_enabled = true
 adjustment_contrast = 1.2

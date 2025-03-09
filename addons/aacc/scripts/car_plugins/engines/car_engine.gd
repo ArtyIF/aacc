@@ -75,9 +75,6 @@ func calculate_acceleration_multiplier(speed: float) -> float:
 	return multiplier
 
 func process_plugin(delta: float) -> void:
-	if is_zero_approx(car.get_param("GroundCoefficient")):
-		return
-
 	var input_accelerate: float = car.get_input("Accelerate")
 
 	var input_brake: float = car.get_input("Brake")
@@ -97,6 +94,8 @@ func process_plugin(delta: float) -> void:
 	car.set_param("RPMRatio", rpm_ratio)
 
 	if switching_gears:
+		return
+	if is_zero_approx(car.get_param("GroundCoefficient")):
 		return
 
 	var force: Vector3 = Vector3.ZERO

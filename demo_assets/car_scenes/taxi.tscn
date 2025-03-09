@@ -107,28 +107,26 @@ script = ExtResource("10_r3t53")
 [node name="ForceConverterProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("9_bknco")
 
-[node name="Visuals" type="Node3D" parent="."]
-
-[node name="taxi" parent="Visuals" instance=ExtResource("12_r3t53")]
+[node name="Visuals" parent="." instance=ExtResource("12_r3t53")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
-[node name="wheel-front-right" parent="Visuals/taxi" index="0"]
+[node name="wheel-front-right" parent="Visuals" index="0"]
 layers = 2
 gi_mode = 2
 
-[node name="wheel-front-left" parent="Visuals/taxi" index="1"]
+[node name="wheel-front-left" parent="Visuals" index="1"]
 layers = 2
 gi_mode = 2
 
-[node name="wheel-back-right" parent="Visuals/taxi" index="2"]
+[node name="wheel-back-right" parent="Visuals" index="2"]
 layers = 2
 gi_mode = 2
 
-[node name="wheel-back-left" parent="Visuals/taxi" index="3"]
+[node name="wheel-back-left" parent="Visuals" index="3"]
 layers = 2
 gi_mode = 2
 
-[node name="body" parent="Visuals/taxi" index="4"]
+[node name="body" parent="Visuals" index="4"]
 layers = 2
 gi_mode = 2
 surface_material_override/0 = ExtResource("13_eq170")
@@ -167,4 +165,4 @@ shape = SubResource("ConvexPolygonShape3D_rxdha")
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.3, 0.3, -0.76)
 shape = SubResource("ConvexPolygonShape3D_s6wnr")
 
-[editable path="Visuals/taxi"]
+[editable path="Visuals"]

@@ -28,6 +28,8 @@ func process_plugin(delta: float) -> void:
 		ground_coefficient = float(total_landed) / len(wheel_names)
 		average_point /= total_landed
 		average_normal = average_normal.normalized()
+	else:
+		average_normal = Vector3.UP
 
 	car.set_param("GroundAveragePoint", average_point)
 	car.set_param("GroundAverageNormal", average_normal)

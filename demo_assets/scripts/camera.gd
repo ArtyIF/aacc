@@ -46,4 +46,4 @@ func _process(delta: float) -> void:
 		var follow_camera_offset: Vector3 = _follow_offset_node.position
 		global_position = node_transform.origin + (_smoothed_direction * follow_camera_offset.z) + (_smoothed_up_vector * follow_camera_offset.y)
 
-	_last_position = node_transform.origin
+	_last_position = _follow_node.get_global_transform_interpolated().origin

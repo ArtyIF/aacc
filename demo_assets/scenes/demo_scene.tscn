@@ -1,7 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=21 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Script" uid="uid://bqibtmc8iwudy" path="res://addons/aacc/scripts/car_debug_label.gd" id="1_qnhho"]
 [ext_resource type="Script" uid="uid://bwjnqe5mvkcbx" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input.gd" id="2_1kif7"]
+[ext_resource type="Shader" uid="uid://dcrk75c13vhp4" path="res://demo_assets/shaders/lens_flare_shader.gdshader" id="2_vx7r4"]
+[ext_resource type="Script" uid="uid://cjsul5ik02rhk" path="res://demo_assets/shaders/lens_flare.gd" id="3_46dqb"]
 [ext_resource type="Script" uid="uid://be5ommjjotu3v" path="res://demo_assets/scripts/car_setter.gd" id="3_vx7r4"]
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="4_46dqb"]
 [ext_resource type="Script" uid="uid://dncrn8e6ld0ld" path="res://demo_assets/scripts/camera.gd" id="5_46lkv"]
@@ -10,21 +12,46 @@
 [ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="8_2t12c"]
 [ext_resource type="PackedScene" uid="uid://ca1oyf482fq72" path="res://demo_assets/subscenes/ramptest.blend" id="9_l5mqg"]
 [ext_resource type="ArrayOccluder3D" uid="uid://bc4g7cdctsbd0" path="res://demo_assets/demo_scene.occ" id="10_lmxsi"]
+[ext_resource type="Script" uid="uid://cuuhxxyfgeugo" path="res://demo_assets/scripts/transmission_label.gd" id="13_46dqb"]
+[ext_resource type="Script" uid="uid://dkjm5vktnco0f" path="res://demo_assets/scripts/rpm_bar.gd" id="14_46lkv"]
+[ext_resource type="Script" uid="uid://cam0f0nudmuj2" path="res://demo_assets/scripts/speed_label.gd" id="15_s4qbg"]
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ny1lv"]
 auto_exposure_enabled = true
 auto_exposure_scale = 0.5
-dof_blur_far_enabled = true
-dof_blur_far_distance = 250.0
-dof_blur_far_transition = 500.0
-dof_blur_near_enabled = true
-dof_blur_near_distance = 1.0
-auto_exposure_min_sensitivity = 400.0
-auto_exposure_max_sensitivity = 3200.0
+auto_exposure_min_sensitivity = 600.0
+auto_exposure_max_sensitivity = 2400.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1kif7"]
+render_priority = 0
+shader = ExtResource("2_vx7r4")
+shader_parameter/sun_position = Vector2(1.01789, 0.0151009)
+shader_parameter/sun_in_bounds = false
+shader_parameter/tint = Vector3(16, 14.5569, 9.22354)
+shader_parameter/tint_multiplier = 0.0108987
+
+[sub_resource type="QuadMesh" id="QuadMesh_vx7r4"]
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qnhho"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0.501961)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="LabelSettings" id="LabelSettings_qnhho"]
+font_size = 24
 
 [node name="DemoScene" type="Node3D"]
 
 [node name="DebugLabel" type="RichTextLabel" parent="."]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -52,9 +79,9 @@ environment = ExtResource("4_46dqb")
 camera_attributes = SubResource("CameraAttributesPractical_ny1lv")
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.819152, 0.391178, -0.419487, 0, 0.731354, 0.681999, 0.573577, -0.558661, 0.59909, 0, 0, 0)
-light_color = Color(1, 0.941176, 0.878431, 1)
-light_energy = 4.0
+transform = Transform3D(0.649448, 0.164582, -0.742382, 0, 0.976297, 0.21644, 0.760406, -0.140566, 0.634054, 0, 0, 0)
+light_color = Color(1, 0.909804, 0.576471, 1)
+light_energy = 16.0
 light_volumetric_fog_energy = 0.0
 light_cull_mask = 4294967293
 shadow_enabled = true
@@ -63,8 +90,9 @@ directional_shadow_blend_splits = true
 directional_shadow_pancake_size = 50.0
 
 [node name="SunlightCar" type="DirectionalLight3D" parent="Sunlight"]
-light_color = Color(1, 0.941176, 0.878431, 1)
-light_energy = 4.0
+light_color = Color(1, 0.909804, 0.576471, 1)
+light_energy = 16.0
+light_volumetric_fog_energy = 0.5
 light_bake_mode = 0
 light_cull_mask = 4294967294
 shadow_enabled = true
@@ -79,8 +107,21 @@ doppler_tracking = 1
 far = 1000.0
 script = ExtResource("5_46lkv")
 
+[node name="LensMesh" type="MeshInstance3D" parent="Camera" node_paths=PackedStringArray("sun")]
+visible = false
+layers = 2
+material_override = SubResource("ShaderMaterial_1kif7")
+cast_shadow = 0
+extra_cull_margin = 16384.0
+ignore_occlusion_culling = true
+gi_mode = 0
+mesh = SubResource("QuadMesh_vx7r4")
+skeleton = NodePath("../..")
+script = ExtResource("3_46dqb")
+sun = NodePath("../../Sunlight")
+flare_intensity = 0.25
+
 [node name="LightmapGI" type="LightmapGI" parent="."]
-bounces = 2
 shadowmask_mode = 2
 texel_scale = 5.0
 generate_probes_subdiv = 0
@@ -111,6 +152,58 @@ bake_mask = 4294967293
 update_mode = 1
 blend_distance = 0.0
 size = Vector3(1000, 1000, 1000)
-origin_offset = Vector3(118, 1, -158)
+origin_offset = Vector3(19, 1, 241)
 enable_shadows = true
 cull_mask = 1048573
+
+[node name="HUDMargin" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HUD" type="Control" parent="HUDMargin"]
+layout_mode = 2
+
+[node name="SpeedPanel" type="PanelContainer" parent="HUDMargin/HUD"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qnhho")
+
+[node name="VBox" type="VBoxContainer" parent="HUDMargin/HUD/SpeedPanel"]
+layout_mode = 2
+
+[node name="EngineHBox" type="HBoxContainer" parent="HUDMargin/HUD/SpeedPanel/VBox"]
+layout_mode = 2
+alignment = 2
+
+[node name="Transmission" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/EngineHBox"]
+layout_mode = 2
+text = "AT 1"
+script = ExtResource("13_46dqb")
+
+[node name="RPMBar" type="ProgressBar" parent="HUDMargin/HUD/SpeedPanel/VBox/EngineHBox"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+max_value = 1.0
+step = 0.0
+script = ExtResource("14_46lkv")
+
+[node name="Speed" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox"]
+layout_mode = 2
+text = "0 km/h"
+label_settings = SubResource("LabelSettings_qnhho")
+horizontal_alignment = 2
+vertical_alignment = 2
+script = ExtResource("15_s4qbg")

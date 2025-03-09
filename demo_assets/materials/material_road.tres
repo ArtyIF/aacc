@@ -1,17 +1,17 @@
 [gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://bt21rtci3ho8p"]
 
-[ext_resource type="Texture2D" uid="uid://dpq2im1nmjhyq" path="res://demo_assets/textures/uneven_texture.tres" id="1_gt718"]
 [ext_resource type="Texture2D" uid="uid://4qpswjsdvx57" path="res://demo_assets/textures/rough_texture.tres" id="1_s003w"]
+[ext_resource type="Texture2D" uid="uid://1ojsw3m48ase" path="res://demo_assets/textures/rough_texture_n.tres" id="3_ouqpo"]
 
 [resource]
 albedo_color = Color(0.376471, 0.376471, 0.376471, 1)
-albedo_texture = ExtResource("1_gt718")
-metallic = 0.1
-roughness = 0.67
+metallic = 0.5
+roughness = 0.7
 detail_enabled = true
 detail_blend_mode = 3
 detail_uv_layer = 1
 detail_albedo = ExtResource("1_s003w")
+detail_normal = ExtResource("3_ouqpo")
 uv1_scale = Vector3(0.01, 0.01, 0.01)
 uv1_triplanar = true
 uv1_world_triplanar = true
