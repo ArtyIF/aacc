@@ -1,5 +1,6 @@
-[gd_scene load_steps=21 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=26 format=3 uid="uid://b8dibdn7lv1o0"]
 
+[ext_resource type="FontFile" uid="uid://det3spjbidf7d" path="res://addons/aacc/fonts/CascadiaMono-Regular.ttf" id="1_c6qrw"]
 [ext_resource type="Script" uid="uid://bqibtmc8iwudy" path="res://addons/aacc/scripts/car_debug_label.gd" id="1_qnhho"]
 [ext_resource type="Script" uid="uid://bwjnqe5mvkcbx" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input.gd" id="2_1kif7"]
 [ext_resource type="Shader" uid="uid://dcrk75c13vhp4" path="res://demo_assets/shaders/lens_flare_shader.gdshader" id="2_vx7r4"]
@@ -7,13 +8,15 @@
 [ext_resource type="Script" uid="uid://be5ommjjotu3v" path="res://demo_assets/scripts/car_setter.gd" id="3_vx7r4"]
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="4_46dqb"]
 [ext_resource type="Script" uid="uid://dncrn8e6ld0ld" path="res://demo_assets/scripts/camera.gd" id="5_46lkv"]
+[ext_resource type="Script" uid="uid://byfss6xpmml06" path="res://demo_assets/scripts/bug_103595_workaround.gd" id="6_2t12c"]
+[ext_resource type="Script" uid="uid://bvecrtvsy80la" path="res://demo_assets/scenes/opengl_sun.gd" id="6_l5mqg"]
 [ext_resource type="LightmapGIData" uid="uid://byfapvcgpdvnb" path="res://demo_assets/lightmaps/demo_scene.lmbake" id="6_s4qbg"]
 [ext_resource type="PackedScene" uid="uid://cu2i0ah5ud0w1" path="res://demo_assets/subscenes/pathtest.blend" id="7_c6qrw"]
 [ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="8_2t12c"]
 [ext_resource type="PackedScene" uid="uid://ca1oyf482fq72" path="res://demo_assets/subscenes/ramptest.blend" id="9_l5mqg"]
 [ext_resource type="ArrayOccluder3D" uid="uid://bc4g7cdctsbd0" path="res://demo_assets/demo_scene.occ" id="10_lmxsi"]
-[ext_resource type="Script" uid="uid://cuuhxxyfgeugo" path="res://demo_assets/scripts/transmission_label.gd" id="13_46dqb"]
 [ext_resource type="Script" uid="uid://dkjm5vktnco0f" path="res://demo_assets/scripts/rpm_bar.gd" id="14_46lkv"]
+[ext_resource type="Script" uid="uid://bkmhpdy41fs8f" path="res://demo_assets/scripts/rpm_limiter.gd" id="14_s4qbg"]
 [ext_resource type="Script" uid="uid://cam0f0nudmuj2" path="res://demo_assets/scripts/speed_label.gd" id="15_s4qbg"]
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ny1lv"]
@@ -41,13 +44,14 @@ content_margin_top = 5.0
 content_margin_right = 5.0
 content_margin_bottom = 5.0
 bg_color = Color(0, 0, 0, 0.501961)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
-[sub_resource type="LabelSettings" id="LabelSettings_qnhho"]
-font_size = 24
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_46lkv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s4qbg"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_46lkv"]
+bg_color = Color(1, 0, 0, 1)
 
 [node name="DemoScene" type="Node3D"]
 
@@ -64,6 +68,7 @@ theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_constants/table_v_separation = 0
 theme_override_constants/table_h_separation = 5
 theme_override_constants/line_separation = 5
+theme_override_fonts/normal_font = ExtResource("1_c6qrw")
 text = "Debug label"
 script = ExtResource("1_qnhho")
 
@@ -80,7 +85,7 @@ environment = ExtResource("4_46dqb")
 camera_attributes = SubResource("CameraAttributesPractical_ny1lv")
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.649448, 0.164582, -0.742382, 0, 0.976297, 0.21644, 0.760406, -0.140566, 0.634054, 0, 0, 0)
+transform = Transform3D(0.942641, 0.0722491, -0.325895, 0, 0.976297, 0.21644, 0.333807, -0.204025, 0.920298, 0, 0, 0)
 light_color = Color(1, 0.909804, 0.576471, 1)
 light_energy = 16.0
 light_volumetric_fog_energy = 0.0
@@ -89,6 +94,7 @@ shadow_enabled = true
 shadow_caster_mask = 4294967294
 directional_shadow_blend_splits = true
 directional_shadow_pancake_size = 50.0
+script = ExtResource("6_l5mqg")
 
 [node name="SunlightCar" type="DirectionalLight3D" parent="Sunlight"]
 light_color = Color(1, 0.909804, 0.576471, 1)
@@ -100,6 +106,7 @@ shadow_enabled = true
 directional_shadow_blend_splits = true
 directional_shadow_pancake_size = 50.0
 sky_mode = 1
+script = ExtResource("6_2t12c")
 
 [node name="Camera" type="Camera3D" parent="."]
 physics_interpolation_mode = 2
@@ -150,7 +157,6 @@ occluder = ExtResource("10_lmxsi")
 bake_mask = 4294967293
 
 [node name="ReflectionProbe" type="ReflectionProbe" parent="."]
-update_mode = 1
 blend_distance = 0.0
 size = Vector3(1000, 1000, 1000)
 origin_offset = Vector3(19, 1, 241)
@@ -185,26 +191,109 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_qnhho")
 [node name="VBox" type="VBoxContainer" parent="HUDMargin/HUD/SpeedPanel"]
 layout_mode = 2
 
-[node name="EngineHBox" type="HBoxContainer" parent="HUDMargin/HUD/SpeedPanel/VBox"]
+[node name="RPMBar" type="ProgressBar" parent="HUDMargin/HUD/SpeedPanel/VBox"]
+custom_minimum_size = Vector2(150, 10)
 layout_mode = 2
-alignment = 2
-
-[node name="Transmission" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/EngineHBox"]
-layout_mode = 2
-text = "AT 1"
-script = ExtResource("13_46dqb")
-
-[node name="RPMBar" type="ProgressBar" parent="HUDMargin/HUD/SpeedPanel/VBox/EngineHBox"]
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxEmpty_46lkv")
+theme_override_styles/fill = SubResource("StyleBoxFlat_s4qbg")
 max_value = 1.0
 step = 0.0
+value = 0.5
+show_percentage = false
 script = ExtResource("14_46lkv")
 
-[node name="Speed" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox"]
+[node name="RPMBarLimit" type="ProgressBar" parent="HUDMargin/HUD/SpeedPanel/VBox/RPMBar"]
+show_behind_parent = true
+custom_minimum_size = Vector2(150, 10)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxEmpty_46lkv")
+theme_override_styles/fill = SubResource("StyleBoxFlat_46lkv")
+max_value = 1.0
+step = 0.0
+value = 0.1
+fill_mode = 1
+show_percentage = false
+script = ExtResource("14_s4qbg")
+
+[node name="SpeedContainer" type="GridContainer" parent="HUDMargin/HUD/SpeedPanel/VBox"]
 layout_mode = 2
-text = "0 km/h"
-label_settings = SubResource("LabelSettings_qnhho")
-horizontal_alignment = 2
-vertical_alignment = 2
+size_flags_horizontal = 8
+columns = 3
 script = ExtResource("15_s4qbg")
+
+[node name="GearBadge" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "Gear"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Gear" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "1"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="GearTransmission" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "AUTO"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TotalBadge" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "Total"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TotalSpeed" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TotalUnit" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "km/h"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ForwardBadge" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "Forward"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ForwardSpeed" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ForwardUnit" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "km/h"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SideBadge" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "Side"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SideSpeed" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SideUnit" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "km/h"
+horizontal_alignment = 2
+vertical_alignment = 1

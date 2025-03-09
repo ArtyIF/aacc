@@ -57,6 +57,8 @@ func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) 
 	
 	if (input_handbrake > 0.0 and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
 		return current_gear
+	if input_handbrake > 0.0 and local_linear_velocity.length() < 0.25:
+		return 0
 	
 	if velocity_z_sign > 0:
 		return -1
@@ -95,6 +97,9 @@ func _physics_process(delta: float) -> void:
 	elif target_gear < 0:
 		AACCGlobal.car.set_input("Accelerate", input_backward)
 		AACCGlobal.car.set_input("Brake", input_forward)
+	else:
+		AACCGlobal.car.set_input("Accelerate", max(input_forward, input_backward))
+		AACCGlobal.car.set_input("Brake", 0.0)
 	AACCGlobal.car.set_input("TargetGear", target_gear)
 
 	AACCGlobal.car.set_input("Handbrake", input_handbrake)

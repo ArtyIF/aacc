@@ -26,6 +26,7 @@ func _ready() -> void:
 	car.set_param("SwitchingGears", switching_gears)
 	car.set_param("GearSwitchTimer", gear_switch_timer)
 	car.set_param("RPMRatio", rpm_ratio)
+	car.set_param("RPMLimiter", 1.0 - gear_upper_limit_offset_percent)
 
 func update_gear(delta: float):
 	# TODO: think out the behavior for current and target gear comparison
@@ -48,14 +49,16 @@ func update_rpm_ratio(input_accelerate: float) -> void:
 	var local_linear_velocity: Vector3 = car.get_param("LocalLinearVelocity")
 	var ground_coefficient: float = car.get_param("GroundCoefficient", 1.0)
 
-	if abs(local_linear_velocity.z) < 0.25 or is_zero_approx(ground_coefficient):
+	if current_gear == 0 or is_zero_approx(ground_coefficient):
 		target_rpm_ratio = input_accelerate
+	elif switching_gears:
+		target_rpm_ratio = 0.0
 	else:
 		var upper_limit: float = 0.0
 		if current_gear > 0 and current_gear < gears_count:
 			var max_speed: float = min(top_speed * calculate_gear_limit(current_gear), top_speed)
 			var gear_upper_limit_offset: float = gear_upper_limit_offset_percent * max_speed
-			upper_limit = top_speed * calculate_gear_limit(target_gear) + gear_upper_limit_offset
+			upper_limit = top_speed * calculate_gear_limit(current_gear) + gear_upper_limit_offset
 		elif current_gear == gears_count:
 			upper_limit = top_speed
 		elif current_gear < 0:
@@ -78,11 +81,12 @@ func calculate_acceleration_multiplier(speed: float) -> float:
 
 func process_plugin(delta: float) -> void:
 	var input_accelerate: float = car.get_input("Accelerate")
-
 	var input_brake: float = car.get_input("Brake")
 	var input_handbrake: float = car.get_input("Handbrake")
+
 	var brake_value: float = max(input_brake, input_handbrake)
-	input_accelerate *= 1.0 - brake_value
+	if current_gear != 0:
+		input_accelerate *= 1.0 - brake_value
 
 	target_gear = roundi(car.get_input("TargetGear"))
 	update_gear(delta)

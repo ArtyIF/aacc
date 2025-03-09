@@ -1,6 +1,9 @@
 extends RichTextLabel
 
 func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("aacc_debug_toggle"):
+		visible = not visible
+
 	if not visible: return
 
 	text = ""
