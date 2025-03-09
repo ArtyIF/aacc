@@ -1,5 +1,7 @@
 @tool
 extends GeometryInstance3D
+
+@export var run_in_editor: bool = false
 @export var sun: DirectionalLight3D
 @export_range(0.0, 5.0) var flare_intensity: float = 1.0
 
@@ -8,6 +10,9 @@ var visibility_smooth: SmoothedFloat
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():
+		if not run_in_editor:
+			visible = false
+			return
 		viewport = EditorInterface.get_editor_viewport_3d(0)
 	else:
 		viewport = get_viewport()

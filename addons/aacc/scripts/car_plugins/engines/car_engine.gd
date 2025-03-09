@@ -8,7 +8,7 @@ class_name CarEngine extends CarPluginBase
 @export var gear_switch_time: float = 0.1
 # this applies a smooth drop-off to the engine force when the speed is over the
 # current gear's top speed
-@export var gear_upper_limit_offset: float = 3.0
+@export var gear_upper_limit_offset_percent: float = 0.1
 
 var current_gear: int = 0
 var target_gear: int = 0
@@ -53,6 +53,8 @@ func update_rpm_ratio(input_accelerate: float) -> void:
 	else:
 		var upper_limit: float = 0.0
 		if current_gear > 0 and current_gear < gears_count:
+			var max_speed: float = min(top_speed * calculate_gear_limit(current_gear), top_speed)
+			var gear_upper_limit_offset: float = gear_upper_limit_offset_percent * max_speed
 			upper_limit = top_speed * calculate_gear_limit(target_gear) + gear_upper_limit_offset
 		elif current_gear == gears_count:
 			upper_limit = top_speed
@@ -68,9 +70,9 @@ func calculate_acceleration_multiplier(speed: float) -> float:
 	multiplier *= 1.0 - min(speed / top_speed, 1.0)
 	multiplier = min(multiplier, 1.0 - calculate_gear_limit(max(0.0, current_gear - 1)))
 
-	var max_speed: float = top_speed * max(calculate_gear_limit(current_gear), 1.0 / gears_count)
+	var max_speed: float = min(top_speed * calculate_gear_limit(current_gear), top_speed)
 	if speed >= max_speed:
-		multiplier *= min(inverse_lerp(max_speed + gear_upper_limit_offset, max_speed, speed), 1.0)
+		multiplier *= min(inverse_lerp(max_speed + (gear_upper_limit_offset_percent * max_speed), max_speed, speed), 1.0)
 
 	return multiplier
 
@@ -99,7 +101,9 @@ func process_plugin(delta: float) -> void:
 		return
 
 	var force: Vector3 = Vector3.ZERO
-	if current_gear > 0 and car.get_param("LocalLinearVelocity").z + gear_upper_limit_offset > -min(top_speed * calculate_gear_limit(current_gear), top_speed):
+	var max_speed: float = min(top_speed * calculate_gear_limit(current_gear), top_speed)
+	var gear_upper_limit_offset: float = gear_upper_limit_offset_percent * max_speed
+	if current_gear > 0 and car.get_param("LocalLinearVelocity").z + gear_upper_limit_offset > -max_speed:
 		force += Vector3.FORWARD * input_accelerate * max_engine_force * calculate_acceleration_multiplier(abs(car.get_param("LocalLinearVelocity").z))
 	elif current_gear < 0 and car.get_param("LocalLinearVelocity").z < top_speed / gears_count:
 		force -= Vector3.FORWARD * input_accelerate * max_engine_force

@@ -19,16 +19,17 @@
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ny1lv"]
 auto_exposure_enabled = true
 auto_exposure_scale = 0.5
-auto_exposure_min_sensitivity = 600.0
-auto_exposure_max_sensitivity = 2400.0
+auto_exposure_speed = 1.0
+auto_exposure_min_sensitivity = 800.0
+auto_exposure_max_sensitivity = 2800.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1kif7"]
 render_priority = 0
 shader = ExtResource("2_vx7r4")
-shader_parameter/sun_position = Vector2(1.01789, 0.0151009)
-shader_parameter/sun_in_bounds = false
-shader_parameter/tint = Vector3(16, 14.5569, 9.22354)
-shader_parameter/tint_multiplier = 0.0108987
+shader_parameter/sun_position = Vector2(0, 0)
+shader_parameter/sun_in_bounds = true
+shader_parameter/tint = Vector3(1, 1, 1)
+shader_parameter/tint_multiplier = 1.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_vx7r4"]
 flip_faces = true
