@@ -8,6 +8,7 @@ class_name CarSteer extends CarPluginBase
 @export var enable_smooth_steer_sign: bool = true
 
 var smooth_steer_sign: SmoothedFloat = SmoothedFloat.new()
+var old_use_smooth_steer_sign: bool = false
 var use_smooth_steer_sign: bool = false
 var old_input_handbrake: bool = false
 
@@ -43,19 +44,22 @@ func process_plugin(delta: float) -> void:
 	var velocity_speed: float
 	var velocity_sign: float
 	if use_smooth_steer_sign:
+		if not old_use_smooth_steer_sign:
+			smooth_steer_sign.force_current_value(sign(local_linear_velocity.z))
 		smooth_steer_sign.advance_to(sign(local_linear_velocity.z), delta) # TODO: configurable speed
 		velocity_sign = smooth_steer_sign.get_value()
 		velocity_speed = local_linear_velocity.length()
 	else:
 		velocity_speed = abs(local_linear_velocity.z)
 		velocity_sign = sign(local_linear_velocity.z)
-		smooth_steer_sign.force_current_value(velocity_sign)
+		smooth_steer_sign.force_current_value(0.0)
 
 	var steer_coefficient: float = velocity_sign * velocity_speed / distance_between_wheels
 	var steer_amount: float = (input_steer * steer_coefficient) + car.get_param("SteerOffset", 0.0)
-	
+
 	var steer_velocity: float = clamp(steer_amount * base_steer_velocity, -max_steer_velocity, max_steer_velocity)
 	var steer_force: Vector3 = Vector3.UP * steer_velocity
 	car.set_torque("Steer", steer_force * car.mass / delta, true)
 
 	old_input_handbrake = input_handbrake
+	old_use_smooth_steer_sign = use_smooth_steer_sign
