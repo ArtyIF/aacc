@@ -6,6 +6,9 @@ class_name CarInput extends Node
 @export var action_handbrake: StringName = &"aacc_handbrake"
 @export var action_steer_left: StringName = &"aacc_steer_left"
 @export var action_steer_right: StringName = &"aacc_steer_right"
+@export var action_trans_toggle: StringName = &"aacc_trans_toggle"
+@export var action_gear_up: StringName = &"aacc_gear_up"
+@export var action_gear_down: StringName = &"aacc_gear_down"
 
 @export_group("Steering")
 @export var always_full_steer: bool = false
@@ -16,6 +19,8 @@ class_name CarInput extends Node
 @export_group("Gearbox")
 @export var auto_trans_downshift_offset: float = 2.0
 
+var manual_transmission: bool = false
+var target_gear: int = 0
 var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
 func calculate_steer(input_steer: float, input_handbrake: float, velocity_z_sign: float, delta: float) -> float:
@@ -83,6 +88,9 @@ func _physics_process(delta: float) -> void:
 	var input_handbrake: float = 1.0 if Input.is_action_pressed(action_handbrake) else 0.0
 	var input_steer: float = clamp(Input.get_action_strength(action_steer_right) - Input.get_action_strength(action_steer_left), -1.0, 1.0)
 
+	if Input.is_action_just_pressed(action_trans_toggle):
+		manual_transmission = not manual_transmission
+
 	var velocity_z_sign: float = AACCGlobal.car.get_param("VelocityZSign", 0.0)
 	if is_zero_approx(velocity_z_sign):
 		if input_forward > 0.0 and is_zero_approx(input_backward):
@@ -90,16 +98,26 @@ func _physics_process(delta: float) -> void:
 		elif input_backward > 0.0 and is_zero_approx(input_forward):
 			velocity_z_sign = 1.0
 
-	var target_gear: int = calculate_target_gear_auto(input_handbrake, velocity_z_sign)
-	if target_gear > 0:
+	if manual_transmission:
+		if Input.is_action_just_pressed(action_gear_up):
+			target_gear += 1
+		if Input.is_action_just_pressed(action_gear_down):
+			target_gear -= 1
+		target_gear = clampi(target_gear, -1, AACCGlobal.car.get_param("GearsCount", 0))
 		AACCGlobal.car.set_input("Accelerate", input_forward)
 		AACCGlobal.car.set_input("Brake", input_backward)
-	elif target_gear < 0:
-		AACCGlobal.car.set_input("Accelerate", input_backward)
-		AACCGlobal.car.set_input("Brake", input_forward)
 	else:
-		AACCGlobal.car.set_input("Accelerate", max(input_forward, input_backward))
-		AACCGlobal.car.set_input("Brake", 0.0)
+		target_gear = calculate_target_gear_auto(input_handbrake, velocity_z_sign)
+		if target_gear > 0:
+			AACCGlobal.car.set_input("Accelerate", input_forward)
+			AACCGlobal.car.set_input("Brake", input_backward)
+		elif target_gear < 0:
+			AACCGlobal.car.set_input("Accelerate", input_backward)
+			AACCGlobal.car.set_input("Brake", input_forward)
+		else:
+			AACCGlobal.car.set_input("Accelerate", max(input_forward, input_backward))
+			AACCGlobal.car.set_input("Brake", 0.0)
+
 	AACCGlobal.car.set_input("TargetGear", target_gear)
 
 	AACCGlobal.car.set_input("Handbrake", input_handbrake)

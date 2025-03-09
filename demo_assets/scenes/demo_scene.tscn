@@ -131,7 +131,7 @@ flare_intensity = 0.25
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
 shadowmask_mode = 2
-texel_scale = 5.0
+texel_scale = 4.0
 generate_probes_subdiv = 0
 light_data = ExtResource("6_s4qbg")
 

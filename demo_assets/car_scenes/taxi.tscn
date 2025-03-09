@@ -65,11 +65,13 @@ continuous_cd = true
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_ik2h1")
+metadata/_custom_type_script = "uid://wiw33iaw2pjg"
 
 [node name="Plugins" type="Node3D" parent="."]
 
 [node name="LocalVelocityProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("3_tcv0s")
+metadata/_custom_type_script = "uid://cudk564mgmydg"
 
 [node name="WheelBL" type="Node3D" parent="Plugins"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
@@ -77,6 +79,7 @@ script = ExtResource("3_gy57t")
 wheel_width = 0.25
 suspension_spring = 15000.0
 suspension_damper = 1500.0
+metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
 [node name="WheelBR" type="Node3D" parent="Plugins"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
@@ -84,6 +87,7 @@ script = ExtResource("3_gy57t")
 wheel_width = 0.25
 suspension_spring = 15000.0
 suspension_damper = 1500.0
+metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
 [node name="WheelFL" type="Node3D" parent="Plugins"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
@@ -91,6 +95,7 @@ script = ExtResource("3_gy57t")
 wheel_width = 0.25
 suspension_spring = 15000.0
 suspension_damper = 1500.0
+metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
 [node name="WheelFR" type="Node3D" parent="Plugins"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
@@ -98,20 +103,25 @@ script = ExtResource("3_gy57t")
 wheel_width = 0.25
 suspension_spring = 15000.0
 suspension_damper = 1500.0
+metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
 [node name="WheelsProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("4_leshp")
 wheel_names = Array[StringName]([&"WheelBL", &"WheelBR", &"WheelFL", &"WheelFR"])
+metadata/_custom_type_script = "uid://branpjvwdtvgm"
 
 [node name="Brake" type="Node3D" parent="Plugins"]
 script = ExtResource("7_dm0ij")
+metadata/_custom_type_script = "uid://v0cpq7q6mjou"
 
 [node name="Engine" type="Node3D" parent="Plugins"]
 script = ExtResource("4_pq6ol")
 max_engine_force = 15000.0
+metadata/_custom_type_script = "uid://bvfqai7uunpc3"
 
 [node name="SideGrip" type="Node3D" parent="Plugins"]
 script = ExtResource("8_dm0ij")
+metadata/_custom_type_script = "uid://cil4ufto2v87g"
 
 [node name="SteerOffsetProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("10_gh3hu")
@@ -123,14 +133,17 @@ script = ExtResource("9_r3t53")
 target_steer_velocity = 0.785398
 distance_between_wheels = 1.52
 max_smooth_steer_speed = 5.0
+metadata/_custom_type_script = "uid://br0vp35kb6pyw"
 
 [node name="AngularGrip" type="Node3D" parent="Plugins"]
 script = ExtResource("10_r3t53")
+metadata/_custom_type_script = "uid://dbisg1nrvftc4"
 
 [node name="ForceConverterProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("9_bknco")
 reduced_grip_curve = SubResource("Resource_0wb0t")
 apply_reduced_grip_to_torques = true
+metadata/_custom_type_script = "uid://b1lao6jpcowsa"
 
 [node name="Visuals" parent="." instance=ExtResource("12_r3t53")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
