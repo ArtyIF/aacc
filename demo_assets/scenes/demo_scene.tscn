@@ -68,7 +68,7 @@ environment = ExtResource("4_46dqb")
 camera_attributes = SubResource("CameraAttributesPractical_ny1lv")
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.942641, 0.072249, -0.325895, 0, 0.976296, 0.216439, 0.333807, -0.204025, 0.920297, 1.83822, -2.19432, -3.66999)
+transform = Transform3D(0.942641, 0.072249, -0.325895, 0, 0.976296, 0.216439, 0.333807, -0.204025, 0.920297, 0, 0, 0)
 light_color = Color(1, 0.909804, 0.576471, 1)
 light_energy = 16.0
 light_volumetric_fog_energy = 0.0

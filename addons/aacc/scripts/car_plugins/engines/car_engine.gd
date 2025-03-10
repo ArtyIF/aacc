@@ -81,7 +81,7 @@ func calculate_acceleration_multiplier(speed: float) -> float:
 	#multiplier *= 1.0 - calculate_gear_limit(max(0.0, current_gear - 1))
 	#return multiplier
 
-	if current_gear > 0:
+	if current_gear >= 0:
 		multiplier = 1.0 - min(speed / top_speed, 1.0)
 		multiplier = min(multiplier, 1.0 - calculate_gear_limit(max(0.0, current_gear - 1)))
 
