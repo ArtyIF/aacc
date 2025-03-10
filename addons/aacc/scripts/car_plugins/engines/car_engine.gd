@@ -8,13 +8,15 @@ class_name CarEngine extends CarPluginBase
 @export var gear_switch_time: float = 0.1
 # this applies a smooth drop-off to the engine force when the speed is over the
 # current gear's top speed
-@export var gear_upper_limit_offset_percent: float = 0.1
+@export var gear_upper_limit_offset_ratio: float = 0.1
+@export var rpm_ratio_speed_up: float = 2.0
+@export var rpm_ratio_speed_down: float = 1.0
 
 var current_gear: int = 0
 var target_gear: int = 0
 var switching_gears: bool = false
 var gear_switch_timer: float = 0.0
-var rpm_ratio: float = 0.0
+var rpm_ratio: SmoothedFloat = SmoothedFloat.new()
 
 func _ready() -> void:
 	car.set_input("Accelerate", 0.0)
@@ -26,7 +28,7 @@ func _ready() -> void:
 	car.set_param("SwitchingGears", switching_gears)
 	car.set_param("GearSwitchTimer", gear_switch_timer)
 	car.set_param("RPMRatio", rpm_ratio)
-	car.set_param("RPMLimiter", 1.0 - gear_upper_limit_offset_percent)
+	car.set_param("RPMLimiter", 1.0 - gear_upper_limit_offset_ratio)
 
 func update_gear(delta: float):
 	# TODO: think out the behavior for current and target gear comparison
@@ -42,9 +44,12 @@ func update_gear(delta: float):
 		gear_switch_timer -= delta
 
 func calculate_gear_limit(gear: int) -> float:
-	return gear / float(gears_count)
+	return abs(gear) / float(gears_count)
 
-func update_rpm_ratio(input_accelerate: float) -> void:
+func update_rpm_ratio(input_accelerate: float, delta: float) -> void:
+	rpm_ratio.speed_up = rpm_ratio_speed_up
+	rpm_ratio.speed_down = rpm_ratio_speed_down
+
 	var target_rpm_ratio: float = 0.0
 	var local_linear_velocity: Vector3 = car.get_param("LocalLinearVelocity")
 	var ground_coefficient: float = car.get_param("GroundCoefficient", 1.0)
@@ -57,25 +62,35 @@ func update_rpm_ratio(input_accelerate: float) -> void:
 		var upper_limit: float = 0.0
 		if current_gear > 0 and current_gear < gears_count:
 			var max_speed: float = min(top_speed * calculate_gear_limit(current_gear), top_speed)
-			var gear_upper_limit_offset: float = gear_upper_limit_offset_percent * max_speed
+			var gear_upper_limit_offset: float = gear_upper_limit_offset_ratio * max_speed
 			upper_limit = top_speed * calculate_gear_limit(current_gear) + gear_upper_limit_offset
 		elif current_gear == gears_count:
 			upper_limit = top_speed
 		elif current_gear < 0:
 			upper_limit = top_speed / gears_count
 		target_rpm_ratio = clamp(inverse_lerp(0.0, upper_limit, abs(local_linear_velocity.z)), 0.0, 1.0)
+	# TODO: add a minimum RPM sort of thing
+	# TODO: RPM limiter
 
-	# TODO: smoothing
-	rpm_ratio = target_rpm_ratio
+	rpm_ratio.advance_to(target_rpm_ratio, delta)
 
 func calculate_acceleration_multiplier(speed: float) -> float:
 	var multiplier: float = 1.0
-	multiplier *= 1.0 - min(speed / top_speed, 1.0)
-	multiplier = min(multiplier, 1.0 - calculate_gear_limit(max(0.0, current_gear - 1)))
+	# TODO: use that but with an RPM-to-power/torque curve
+	#multiplier *= 1.0 - rpm_ratio.get_value()
+	#multiplier *= 1.0 - calculate_gear_limit(max(0.0, current_gear - 1))
+	#return multiplier
 
-	var max_speed: float = min(top_speed * calculate_gear_limit(current_gear), top_speed)
-	if speed >= max_speed:
-		multiplier *= min(inverse_lerp(max_speed + (gear_upper_limit_offset_percent * max_speed), max_speed, speed), 1.0)
+	if current_gear > 0:
+		multiplier = 1.0 - min(speed / top_speed, 1.0)
+		multiplier = min(multiplier, 1.0 - calculate_gear_limit(max(0.0, current_gear - 1)))
+
+		var max_speed: float = min(top_speed * calculate_gear_limit(current_gear), top_speed)
+		if speed >= max_speed:
+			multiplier *= min(inverse_lerp(max_speed + (gear_upper_limit_offset_ratio * max_speed), max_speed, speed), 1.0)
+	else:
+		multiplier = 1.0 - min(speed * gears_count / top_speed, 1.0)
+		multiplier *= -1.0
 
 	return multiplier
 
@@ -90,14 +105,15 @@ func process_plugin(delta: float) -> void:
 
 	target_gear = roundi(car.get_input("TargetGear"))
 	update_gear(delta)
-	update_rpm_ratio(input_accelerate)
+	update_rpm_ratio(input_accelerate, delta)
 
 	car.set_param("TopSpeed", top_speed)
 	car.set_param("GearsCount", gears_count)
 	car.set_param("CurrentGear", current_gear)
 	car.set_param("SwitchingGears", switching_gears)
 	car.set_param("GearSwitchTimer", gear_switch_timer)
-	car.set_param("RPMRatio", rpm_ratio)
+	car.set_param("RPMRatio", rpm_ratio.get_value())
+	car.set_param("RPMLimiter", 1.0 - gear_upper_limit_offset_ratio)
 
 	if switching_gears:
 		return
@@ -106,9 +122,7 @@ func process_plugin(delta: float) -> void:
 
 	var force: Vector3 = Vector3.ZERO
 	var max_speed: float = min(top_speed * calculate_gear_limit(current_gear), top_speed)
-	var gear_upper_limit_offset: float = gear_upper_limit_offset_percent * max_speed
-	if current_gear > 0 and car.get_param("LocalLinearVelocity").z + gear_upper_limit_offset > -max_speed:
+	var gear_upper_limit_offset: float = gear_upper_limit_offset_ratio * max_speed
+	if car.get_param("LocalLinearVelocity").z + gear_upper_limit_offset > -max_speed and car.get_param("LocalLinearVelocity").z < top_speed / gears_count:
 		force += Vector3.FORWARD * input_accelerate * max_engine_force * calculate_acceleration_multiplier(abs(car.get_param("LocalLinearVelocity").z))
-	elif current_gear < 0 and car.get_param("LocalLinearVelocity").z < top_speed / gears_count:
-		force -= Vector3.FORWARD * input_accelerate * max_engine_force
 	car.set_force("Engine", force, true)

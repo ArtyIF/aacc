@@ -55,23 +55,6 @@ bg_color = Color(1, 0, 0, 1)
 
 [node name="DemoScene" type="Node3D"]
 
-[node name="DebugLabel" type="RichTextLabel" parent="."]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_vertical = 2
-theme_override_colors/table_border = Color(0, 0, 0, 0.501961)
-theme_override_colors/table_even_row_bg = Color(1, 1, 1, 0.501961)
-theme_override_colors/table_odd_row_bg = Color(0.878431, 0.878431, 0.878431, 0.501961)
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_constants/table_v_separation = 0
-theme_override_constants/table_h_separation = 5
-theme_override_constants/line_separation = 5
-theme_override_fonts/normal_font = ExtResource("1_c6qrw")
-text = "Debug label"
-script = ExtResource("1_qnhho")
-
 [node name="CarInput" type="Node" parent="."]
 script = ExtResource("2_1kif7")
 
@@ -85,12 +68,14 @@ environment = ExtResource("4_46dqb")
 camera_attributes = SubResource("CameraAttributesPractical_ny1lv")
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.942641, 0.0722491, -0.325895, 0, 0.976297, 0.21644, 0.333807, -0.204025, 0.920298, 0, 0, 0)
+transform = Transform3D(0.942641, 0.072249, -0.325895, 0, 0.976296, 0.216439, 0.333807, -0.204025, 0.920297, 1.83822, -2.19432, -3.66999)
 light_color = Color(1, 0.909804, 0.576471, 1)
 light_energy = 16.0
 light_volumetric_fog_energy = 0.0
 light_cull_mask = 4294967293
 shadow_enabled = true
+shadow_bias = 0.0
+shadow_normal_bias = 0.0
 shadow_caster_mask = 4294967294
 directional_shadow_blend_splits = true
 directional_shadow_pancake_size = 50.0
@@ -297,3 +282,20 @@ layout_mode = 2
 text = "km/h"
 horizontal_alignment = 2
 vertical_alignment = 1
+
+[node name="DebugLabel" type="RichTextLabel" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_vertical = 2
+theme_override_colors/table_border = Color(0, 0, 0, 0.501961)
+theme_override_colors/table_even_row_bg = Color(1, 1, 1, 0.501961)
+theme_override_colors/table_odd_row_bg = Color(0.878431, 0.878431, 0.878431, 0.501961)
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_constants/table_v_separation = 0
+theme_override_constants/table_h_separation = 5
+theme_override_constants/line_separation = 5
+theme_override_fonts/normal_font = ExtResource("1_c6qrw")
+text = "Debug label"
+script = ExtResource("1_qnhho")
