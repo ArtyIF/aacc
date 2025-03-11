@@ -27,6 +27,7 @@ var compression: float = 0.0
 var last_compression: float = 0.0
 var last_compression_set: bool = false
 
+var is_landed: bool = false
 var collision_point: Vector3 = Vector3.ZERO
 var collision_normal: Vector3 = Vector3.ZERO
 var distance: float = 0.0
@@ -41,6 +42,7 @@ func _ready() -> void:
 	car.set_param("WheelLanded", false, name)
 	car.set_param("WheelPoint", Vector3.ZERO, name)
 	car.set_param("WheelNormal", Vector3.ZERO, name)
+	car.set_param("WheelCompression", 0.0, name)
 
 func configure_raycasts() -> void:
 	raycast_instance_1.target_position = (Vector3.DOWN * (wheel_radius + suspension_length + buffer_length))
@@ -87,6 +89,7 @@ func set_raycast_values() -> void:
 func process_plugin(delta: float) -> void:
 	if raycast_instance_1.is_colliding() or raycast_instance_2.is_colliding():
 		car.set_param("WheelLanded", true, name)
+		is_landed = true
 
 		set_raycast_values()
 
@@ -97,6 +100,7 @@ func process_plugin(delta: float) -> void:
 		if not last_compression_set:
 			last_compression = compression
 			last_compression_set = true
+		car.set_param("WheelCompression", compression, name)
 
 		var suspension_magnitude: float = 0.0
 		suspension_magnitude += compression * suspension_spring
@@ -113,4 +117,5 @@ func process_plugin(delta: float) -> void:
 			car.set_force(name, collision_normal * suspension_magnitude, false, collision_point - car.global_position)
 	else:
 		car.set_param("WheelLanded", false, name)
+		is_landed = false
 		last_compression = 0.0
