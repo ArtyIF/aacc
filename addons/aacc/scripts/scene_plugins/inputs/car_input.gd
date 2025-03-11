@@ -1,4 +1,4 @@
-class_name CarInput extends Node
+class_name CarInput extends ScenePluginBase
 
 @export_group("Input Map")
 @export var action_forward: StringName = &"aacc_forward"
@@ -25,16 +25,16 @@ var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
 func calculate_steer(input_steer: float, input_handbrake: float, velocity_z_sign: float, delta: float) -> float:
 	var input_full_steer: float = input_handbrake if full_steer_on_handbrake else 0.0
-	if is_zero_approx(AACCGlobal.car.get_param("GroundCoefficient", 1.0)):
+	if is_zero_approx(car.get_param("GroundCoefficient", 1.0)):
 		input_full_steer = 1.0
 	if full_steer_on_reverse and velocity_z_sign > 0:
 		input_full_steer = 1.0
 
 	# TODO: add an ability to have the car send the info somehow, otherwise this is delayed by a frame
-	var distance_between_wheels: float = AACCGlobal.car.get_param("DistanceBetweenWheels", 1.0)
-	var base_steer_velocity: float = AACCGlobal.car.get_param("BaseSteerVelocity", 1.0)
-	var target_steer_velocity: float = AACCGlobal.car.get_param("TargetSteerVelocity", 1.0)
-	var velocity_z: float = abs(AACCGlobal.car.get_param("LocalLinearVelocity", Vector3.ZERO).z)
+	var distance_between_wheels: float = car.get_param("DistanceBetweenWheels", 1.0)
+	var base_steer_velocity: float = car.get_param("BaseSteerVelocity", 1.0)
+	var target_steer_velocity: float = car.get_param("TargetSteerVelocity", 1.0)
+	var velocity_z: float = abs(car.get_param("LocalLinearVelocity", Vector3.ZERO).z)
 
 	var input_steer_multiplier: float = 1.0
 	if not always_full_steer:
@@ -42,8 +42,8 @@ func calculate_steer(input_steer: float, input_handbrake: float, velocity_z_sign
 		input_steer_multiplier = lerp(input_steer_multiplier, 1.0, input_full_steer)
 	var input_steer_converted: float = input_steer * input_steer_multiplier
 
-	smooth_steer.speed_up = min(desired_smooth_steer_speed, AACCGlobal.car.get_param("MaxSmoothSteerSpeed", desired_smooth_steer_speed))
-	smooth_steer.speed_down = min(desired_smooth_steer_speed, AACCGlobal.car.get_param("MaxSmoothSteerSpeed", desired_smooth_steer_speed))
+	smooth_steer.speed_up = min(desired_smooth_steer_speed, car.get_param("MaxSmoothSteerSpeed", desired_smooth_steer_speed))
+	smooth_steer.speed_down = min(desired_smooth_steer_speed, car.get_param("MaxSmoothSteerSpeed", desired_smooth_steer_speed))
 	smooth_steer.advance_to(input_steer_converted, delta)
 
 	return smooth_steer.get_value()
@@ -52,13 +52,13 @@ func calculate_gear_limit(gear: int, gears_count: int) -> float:
 	return (1.0 / gears_count) * gear
 
 func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) -> int:
-	var local_linear_velocity: Vector3 = AACCGlobal.car.get_param("LocalLinearVelocity", Vector3.ZERO)
-	var ground_coefficient: float = AACCGlobal.car.get_param("GroundCoefficient", 1.0)
+	var local_linear_velocity: Vector3 = car.get_param("LocalLinearVelocity", Vector3.ZERO)
+	var ground_coefficient: float = car.get_param("GroundCoefficient", 1.0)
 
-	var current_gear: int = AACCGlobal.car.get_param("CurrentGear", 0)
-	var top_speed: float = AACCGlobal.car.get_param("TopSpeed")
-	var gears_count: int = AACCGlobal.car.get_param("GearsCount")
-	var current_target_gear: int = roundi(AACCGlobal.car.get_input("TargetGear"))
+	var current_gear: int = car.get_param("CurrentGear", 0)
+	var top_speed: float = car.get_param("TopSpeed")
+	var gears_count: int = car.get_param("GearsCount")
+	var current_target_gear: int = roundi(car.get_input("TargetGear"))
 	
 	if (input_handbrake > 0.0 and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
 		return current_gear
@@ -81,7 +81,8 @@ func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) 
 	return current_target_gear
 
 func _physics_process(delta: float) -> void:
-	if not AACCGlobal.car: return
+	update_car()
+	if not car: return
 
 	var input_forward: float = clamp(Input.get_action_strength(action_forward), 0.0, 1.0)
 	var input_backward: float = clamp(Input.get_action_strength(action_backward), 0.0, 1.0)
@@ -91,7 +92,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed(action_trans_toggle):
 		manual_transmission = not manual_transmission
 
-	var velocity_z_sign: float = AACCGlobal.car.get_param("VelocityZSign", 0.0)
+	var velocity_z_sign: float = car.get_param("VelocityZSign", 0.0)
 	if is_zero_approx(velocity_z_sign):
 		if input_forward > 0.0 and is_zero_approx(input_backward):
 			velocity_z_sign = -1.0
@@ -103,22 +104,22 @@ func _physics_process(delta: float) -> void:
 			target_gear += 1
 		if Input.is_action_just_pressed(action_gear_down):
 			target_gear -= 1
-		target_gear = clampi(target_gear, -1, AACCGlobal.car.get_param("GearsCount", 0))
-		AACCGlobal.car.set_input("Accelerate", input_forward)
-		AACCGlobal.car.set_input("Brake", input_backward)
+		target_gear = clampi(target_gear, -1, car.get_param("GearsCount", 0))
+		car.set_input("Accelerate", input_forward)
+		car.set_input("Brake", input_backward)
 	else:
 		target_gear = calculate_target_gear_auto(input_handbrake, velocity_z_sign)
 		if target_gear > 0:
-			AACCGlobal.car.set_input("Accelerate", input_forward)
-			AACCGlobal.car.set_input("Brake", input_backward)
+			car.set_input("Accelerate", input_forward)
+			car.set_input("Brake", input_backward)
 		elif target_gear < 0:
-			AACCGlobal.car.set_input("Accelerate", input_backward)
-			AACCGlobal.car.set_input("Brake", input_forward)
+			car.set_input("Accelerate", input_backward)
+			car.set_input("Brake", input_forward)
 		else:
-			AACCGlobal.car.set_input("Accelerate", max(input_forward, input_backward))
-			AACCGlobal.car.set_input("Brake", 0.0)
+			car.set_input("Accelerate", max(input_forward, input_backward))
+			car.set_input("Brake", 0.0)
 
-	AACCGlobal.car.set_input("TargetGear", target_gear)
+	car.set_input("TargetGear", target_gear)
 
-	AACCGlobal.car.set_input("Handbrake", input_handbrake)
-	AACCGlobal.car.set_input("Steer", calculate_steer(input_steer, input_handbrake, velocity_z_sign, delta))
+	car.set_input("Handbrake", input_handbrake)
+	car.set_input("Steer", calculate_steer(input_steer, input_handbrake, velocity_z_sign, delta))

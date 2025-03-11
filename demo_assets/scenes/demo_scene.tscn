@@ -1,11 +1,11 @@
 [gd_scene load_steps=26 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="FontFile" uid="uid://det3spjbidf7d" path="res://addons/aacc/fonts/CascadiaMono-Regular.ttf" id="1_c6qrw"]
-[ext_resource type="Script" uid="uid://bqibtmc8iwudy" path="res://addons/aacc/scripts/car_debug_label.gd" id="1_qnhho"]
+[ext_resource type="Script" uid="uid://bqibtmc8iwudy" path="res://addons/aacc/scripts/extras/car_debug_label.gd" id="1_qnhho"]
 [ext_resource type="Script" uid="uid://bwjnqe5mvkcbx" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input.gd" id="2_1kif7"]
 [ext_resource type="Shader" uid="uid://dcrk75c13vhp4" path="res://demo_assets/shaders/lens_flare_shader.gdshader" id="2_vx7r4"]
 [ext_resource type="Script" uid="uid://cjsul5ik02rhk" path="res://demo_assets/shaders/lens_flare.gd" id="3_46dqb"]
-[ext_resource type="Script" uid="uid://be5ommjjotu3v" path="res://demo_assets/scripts/car_setter.gd" id="3_vx7r4"]
+[ext_resource type="Script" uid="uid://be5ommjjotu3v" path="res://addons/aacc/scripts/scene_plugins/setters/car_setter_basic.gd" id="3_vx7r4"]
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="4_46dqb"]
 [ext_resource type="Script" uid="uid://dncrn8e6ld0ld" path="res://demo_assets/scripts/camera.gd" id="5_46lkv"]
 [ext_resource type="Script" uid="uid://byfss6xpmml06" path="res://demo_assets/scripts/bug_103595_workaround.gd" id="6_2t12c"]
@@ -19,13 +19,6 @@
 [ext_resource type="Script" uid="uid://bkmhpdy41fs8f" path="res://demo_assets/scripts/rpm_limiter.gd" id="14_s4qbg"]
 [ext_resource type="Script" uid="uid://cam0f0nudmuj2" path="res://demo_assets/scripts/speed_label.gd" id="15_s4qbg"]
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ny1lv"]
-auto_exposure_enabled = true
-auto_exposure_scale = 0.5
-auto_exposure_speed = 1.0
-auto_exposure_min_sensitivity = 800.0
-auto_exposure_max_sensitivity = 2800.0
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1kif7"]
 render_priority = 0
 shader = ExtResource("2_vx7r4")
@@ -37,6 +30,13 @@ shader_parameter/tint_multiplier = 1.0
 [sub_resource type="QuadMesh" id="QuadMesh_vx7r4"]
 flip_faces = true
 size = Vector2(2, 2)
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ny1lv"]
+auto_exposure_enabled = true
+auto_exposure_scale = 0.5
+auto_exposure_speed = 1.0
+auto_exposure_min_sensitivity = 800.0
+auto_exposure_max_sensitivity = 2800.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qnhho"]
 content_margin_left = 5.0
@@ -55,13 +55,35 @@ bg_color = Color(1, 0, 0, 1)
 
 [node name="DemoScene" type="Node3D"]
 
+[node name="CarSetter" type="Node" parent="." node_paths=PackedStringArray("car_to_set")]
+process_priority = -1000
+script = ExtResource("3_vx7r4")
+car_to_set = NodePath("../Taxi")
+
 [node name="CarInput" type="Node" parent="."]
 script = ExtResource("2_1kif7")
 
-[node name="CarSetter" type="Node" parent="." node_paths=PackedStringArray("car")]
-process_priority = -1000
-script = ExtResource("3_vx7r4")
-car = NodePath("../Taxi")
+[node name="Camera" type="Node" parent="."]
+script = ExtResource("5_46lkv")
+
+[node name="Camera" type="Camera3D" parent="Camera"]
+physics_interpolation_mode = 2
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
+doppler_tracking = 1
+far = 1000.0
+
+[node name="LensMesh" type="MeshInstance3D" parent="Camera/Camera" node_paths=PackedStringArray("sun")]
+visible = false
+layers = 2
+material_override = SubResource("ShaderMaterial_1kif7")
+cast_shadow = 0
+extra_cull_margin = 16384.0
+ignore_occlusion_culling = true
+gi_mode = 0
+mesh = SubResource("QuadMesh_vx7r4")
+script = ExtResource("3_46dqb")
+sun = NodePath("../../../Sunlight")
+flare_intensity = 0.25
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("4_46dqb")
@@ -92,27 +114,6 @@ directional_shadow_blend_splits = true
 directional_shadow_pancake_size = 50.0
 sky_mode = 1
 script = ExtResource("6_2t12c")
-
-[node name="Camera" type="Camera3D" parent="."]
-physics_interpolation_mode = 2
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
-doppler_tracking = 1
-far = 1000.0
-script = ExtResource("5_46lkv")
-
-[node name="LensMesh" type="MeshInstance3D" parent="Camera" node_paths=PackedStringArray("sun")]
-visible = false
-layers = 2
-material_override = SubResource("ShaderMaterial_1kif7")
-cast_shadow = 0
-extra_cull_margin = 16384.0
-ignore_occlusion_culling = true
-gi_mode = 0
-mesh = SubResource("QuadMesh_vx7r4")
-skeleton = NodePath("../..")
-script = ExtResource("3_46dqb")
-sun = NodePath("../../Sunlight")
-flare_intensity = 0.25
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
 shadowmask_mode = 2
@@ -154,6 +155,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -161,6 +163,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="HUD" type="Control" parent="HUDMargin"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="SpeedPanel" type="PanelContainer" parent="HUDMargin/HUD"]
 layout_mode = 1
@@ -283,7 +286,10 @@ text = "km/h"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="DebugLabel" type="RichTextLabel" parent="."]
+[node name="DebugLabel" type="Node" parent="."]
+script = ExtResource("1_qnhho")
+
+[node name="DebugLabelText" type="RichTextLabel" parent="DebugLabel"]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -298,4 +304,3 @@ theme_override_constants/table_h_separation = 5
 theme_override_constants/line_separation = 5
 theme_override_fonts/normal_font = ExtResource("1_c6qrw")
 text = "Debug label"
-script = ExtResource("1_qnhho")
