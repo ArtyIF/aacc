@@ -35,5 +35,3 @@ volumetric_fog_emission_energy = 2.0
 volumetric_fog_gi_inject = 0.0
 volumetric_fog_anisotropy = 0.5
 volumetric_fog_temporal_reprojection_enabled = false
-adjustment_enabled = true
-adjustment_saturation = 1.2

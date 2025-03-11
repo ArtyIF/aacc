@@ -17,12 +17,12 @@ func _process(_delta: float) -> void:
 	label.push_cell()
 	label.append_text("Types")
 	label.pop()
-	for plugin in AACCGlobal.scene_plugins:
+	for plugin in AACCGlobal.scene_plugins.keys():
 		label.push_cell()
-		label.append_text(plugin.name)
+		label.append_text(plugin)
 		label.pop()
 		label.push_cell()
-		label.append_text(plugin.get_script().get_global_name())
+		label.append_text(AACCGlobal.get_plugin(plugin).get_script().get_global_name())
 		label.pop()
 	label.pop()
 	label.append_text("\n")

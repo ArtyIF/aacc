@@ -7,8 +7,18 @@ class_name CarWheelSuspension extends CarPluginBase
 
 @export_group("Suspension")
 @export var suspension_length: float = 0.1
-@export var suspension_spring: float = 3000.0
-@export var suspension_damper: float = 300.0
+@export var suspension_spring: float = 10000.0
+@export var suspension_damper: float = 1000.0
+
+@export_group("Buffer")
+@export var buffer_length: float = 0.1
+@export var allow_sticking: bool = true
+# default:
+# left value: 0.0
+# right value: 2.0
+# max input: 10.0
+# input curve: 1.000
+@export var sticking_force_curve: ProceduralCurve
 
 var raycast_instance_1: RayCast3D
 var raycast_instance_2: RayCast3D
@@ -33,7 +43,7 @@ func _ready() -> void:
 	car.set_param("WheelNormal", Vector3.ZERO, name)
 
 func configure_raycasts() -> void:
-	raycast_instance_1.target_position = (Vector3.DOWN * (wheel_radius + suspension_length))
+	raycast_instance_1.target_position = (Vector3.DOWN * (wheel_radius + suspension_length + buffer_length))
 	raycast_instance_1.enabled = true
 	raycast_instance_1.hit_from_inside = false
 	raycast_instance_1.hit_back_faces = false
@@ -41,7 +51,7 @@ func configure_raycasts() -> void:
 	raycast_instance_1.process_physics_priority = -1000
 	raycast_instance_1.position = Vector3.RIGHT * wheel_width
 
-	raycast_instance_2.target_position = (Vector3.DOWN * (wheel_radius + suspension_length))
+	raycast_instance_2.target_position = (Vector3.DOWN * (wheel_radius + suspension_length + buffer_length))
 	raycast_instance_2.enabled = true
 	raycast_instance_2.hit_from_inside = false
 	raycast_instance_2.hit_back_faces = false
@@ -61,7 +71,7 @@ func set_raycast_values() -> void:
 	if raycast_instance_1.is_colliding() and raycast_instance_2.is_colliding():
 		collision_point = (collision_point_1 + collision_point_2) / 2.0
 		collision_normal = (collision_normal_1 + collision_normal_2).normalized()
-		distance = lerp(distance_1, distance_2, 0.5)
+		distance = (distance_1 + distance_2) / 2.0
 	elif raycast_instance_1.is_colliding():
 		collision_point = collision_point_1 + (global_basis.x * wheel_width / 2.0).slide(collision_normal_1)
 		collision_normal = collision_normal_1
@@ -81,7 +91,9 @@ func process_plugin(delta: float) -> void:
 		set_raycast_values()
 
 		compression = 1.0 - ((distance - wheel_radius) / suspension_length)
-		compression = clamp(compression, 0.0, 1.0)
+		compression = min(compression, 1.0)
+		if not allow_sticking:
+			compression = max(0.0, compression)
 		if not last_compression_set:
 			last_compression = compression
 			last_compression_set = true
@@ -94,6 +106,8 @@ func process_plugin(delta: float) -> void:
 		last_compression = compression
 
 		suspension_magnitude *= collision_normal.dot(global_basis.y)
+		if allow_sticking and compression < 0.0:
+			suspension_magnitude *= sticking_force_curve.sample(car.linear_velocity.length())
 
 		if not car.freeze:
 			car.set_force(name, collision_normal * suspension_magnitude, false, collision_point - car.global_position)

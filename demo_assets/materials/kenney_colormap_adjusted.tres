@@ -5,7 +5,5 @@
 [resource]
 resource_name = "colormap"
 albedo_texture = ExtResource("1_17oxx")
-metallic = 0.5
 metallic_specular = 1.0
-roughness = 0.0
-clearcoat_enabled = true
+roughness = 0.5

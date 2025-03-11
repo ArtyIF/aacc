@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://crko52geporbo"]
+[gd_scene load_steps=26 format=3 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/default_car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -15,6 +15,14 @@
 [ext_resource type="Script" uid="uid://crrd7ugev6afh" path="res://addons/aacc/scripts/helper_classes/procedural_curve.gd" id="11_0wb0t"]
 [ext_resource type="PackedScene" uid="uid://dutpfjvhdc2p1" path="res://demo_assets/kenney_car_kit/taxi.glb" id="12_r3t53"]
 [ext_resource type="Material" uid="uid://brsv8h2fccu15" path="res://demo_assets/materials/taxi_body.tres" id="13_eq170"]
+
+[sub_resource type="Resource" id="Resource_axug4"]
+script = ExtResource("11_0wb0t")
+left_value = 0.0
+right_value = 2.0
+max_input = 10.0
+input_curve = 1.0
+metadata/_custom_type_script = "uid://crrd7ugev6afh"
 
 [sub_resource type="Resource" id="Resource_n1pdp"]
 script = ExtResource("11_0wb0t")
@@ -79,6 +87,7 @@ script = ExtResource("3_gy57t")
 wheel_width = 0.25
 suspension_spring = 15000.0
 suspension_damper = 1500.0
+sticking_force_curve = SubResource("Resource_axug4")
 metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
 [node name="WheelBR" type="Node3D" parent="Plugins"]
@@ -87,6 +96,7 @@ script = ExtResource("3_gy57t")
 wheel_width = 0.25
 suspension_spring = 15000.0
 suspension_damper = 1500.0
+sticking_force_curve = SubResource("Resource_axug4")
 metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
 [node name="WheelFL" type="Node3D" parent="Plugins"]
@@ -95,6 +105,7 @@ script = ExtResource("3_gy57t")
 wheel_width = 0.25
 suspension_spring = 15000.0
 suspension_damper = 1500.0
+sticking_force_curve = SubResource("Resource_axug4")
 metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
 [node name="WheelFR" type="Node3D" parent="Plugins"]
@@ -103,6 +114,7 @@ script = ExtResource("3_gy57t")
 wheel_width = 0.25
 suspension_spring = 15000.0
 suspension_damper = 1500.0
+sticking_force_curve = SubResource("Resource_axug4")
 metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
 [node name="WheelsProcessor" type="Node3D" parent="Plugins"]
