@@ -12,13 +12,6 @@ class_name CarWheelSuspension extends CarPluginBase
 
 @export_group("Buffer")
 @export var buffer_length: float = 0.1
-@export var allow_sticking: bool = true
-# default:
-# left value: 0.0
-# right value: 2.0
-# max input: 10.0
-# input curve: 1.000
-@export var sticking_force_curve: ProceduralCurve
 
 var raycast_instance_1: RayCast3D
 var raycast_instance_2: RayCast3D
@@ -38,11 +31,6 @@ func _ready() -> void:
 	raycast_instance_2 = RayCast3D.new()
 	add_child(raycast_instance_2)
 	configure_raycasts()
-
-	car.set_param("WheelLanded", false, name)
-	car.set_param("WheelPoint", Vector3.ZERO, name)
-	car.set_param("WheelNormal", Vector3.ZERO, name)
-	car.set_param("WheelCompression", 0.0, name)
 
 func configure_raycasts() -> void:
 	raycast_instance_1.target_position = (Vector3.DOWN * (wheel_radius + suspension_length + buffer_length))
@@ -83,24 +71,17 @@ func set_raycast_values() -> void:
 		collision_normal = collision_normal_2
 		distance = distance_2
 
-	car.set_param("WheelPoint", collision_point, name)
-	car.set_param("WheelNormal", collision_normal, name)
-
 func process_plugin(delta: float) -> void:
 	if raycast_instance_1.is_colliding() or raycast_instance_2.is_colliding():
-		car.set_param("WheelLanded", true, name)
 		is_landed = true
 
 		set_raycast_values()
 
 		compression = 1.0 - ((distance - wheel_radius) / suspension_length)
-		compression = min(compression, 1.0)
-		if not allow_sticking:
-			compression = max(0.0, compression)
+		compression = clamp(compression, 0.0, 1.0)
 		if not last_compression_set:
 			last_compression = compression
 			last_compression_set = true
-		car.set_param("WheelCompression", compression, name)
 
 		var suspension_magnitude: float = 0.0
 		suspension_magnitude += compression * suspension_spring
@@ -110,12 +91,8 @@ func process_plugin(delta: float) -> void:
 		last_compression = compression
 
 		suspension_magnitude *= collision_normal.dot(global_basis.y)
-		if allow_sticking and compression < 0.0:
-			suspension_magnitude *= sticking_force_curve.sample(car.linear_velocity.length())
 
-		if not car.freeze:
-			car.set_force(name, collision_normal * suspension_magnitude, false, collision_point - car.global_position)
+		car.set_force(name, collision_normal * suspension_magnitude, false, collision_point - car.global_position)
 	else:
-		car.set_param("WheelLanded", false, name)
 		is_landed = false
 		last_compression = 0.0

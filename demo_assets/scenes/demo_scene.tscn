@@ -44,7 +44,6 @@ bg_color = Color(1, 0, 0, 1)
 render_priority = 0
 shader = ExtResource("2_vx7r4")
 shader_parameter/sun_position = Vector2(0, 0)
-shader_parameter/sun_in_bounds = true
 shader_parameter/tint = Vector3(1, 1, 1)
 shader_parameter/tint_multiplier = 1.0
 
@@ -287,4 +286,11 @@ script = ExtResource("3_46dqb")
 sun = NodePath("../../../../Sunlight")
 flare_intensity = 0.25
 
+[node name="OcclusionCast" type="RayCast3D" parent="Plugins/Camera/Camera/LensMesh"]
+enabled = false
+target_position = Vector3(0, 0, -1000)
+
 [node name="DebugLabel" parent="Plugins" instance=ExtResource("17_2t12c")]
+
+[node name="ramptest5" parent="." instance=ExtResource("9_l5mqg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -15, 0)

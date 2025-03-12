@@ -74,9 +74,9 @@ func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) 
 	var forward_speed_ratio: float = abs(local_linear_velocity.z / top_speed)
 	var lower_gear_limit_offset: float = auto_trans_downshift_offset / top_speed
 
-	if current_target_gear > 0 and forward_speed_ratio < calculate_gear_limit(current_target_gear - 1, gears_count) - lower_gear_limit_offset:
+	if current_target_gear > 0 and forward_speed_ratio < calculate_gear_limit(current_gear - 1, gears_count) - lower_gear_limit_offset:
 		return current_gear - 1
-	if forward_speed_ratio > calculate_gear_limit(current_target_gear, gears_count) and current_target_gear < gears_count:
+	if forward_speed_ratio > calculate_gear_limit(current_gear, gears_count) and current_target_gear < gears_count:
 		return current_gear + 1
 	return current_target_gear
 

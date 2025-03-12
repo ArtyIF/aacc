@@ -1,11 +1,6 @@
 class_name CarWheelsProcessor extends CarPluginBase
 
-@export var wheel_names: Array[StringName] = []
-
-class WheelInfo:
-	var landed: bool
-	var point: Vector3
-	var normal: Vector3
+@export var wheels: Array[CarWheelSuspension] = []
 
 func _ready() -> void:
 	car.set_param("GroundAveragePoint", Vector3.ZERO)
@@ -18,14 +13,14 @@ func process_plugin(delta: float) -> void:
 	var average_normal: Vector3 = Vector3.ZERO
 	var ground_coefficient: float = 0.0
 
-	for wheel_name: StringName in wheel_names:
-		if car.get_param("WheelLanded", false, wheel_name):
+	for wheel: CarWheelSuspension in wheels:
+		if wheel.is_landed:
 			total_landed += 1
-			average_point += car.get_param("WheelPoint", Vector3.ZERO, wheel_name)
-			average_normal += car.get_param("WheelNormal", Vector3.ZERO, wheel_name)
+			average_point += wheel.collision_point
+			average_normal += wheel.collision_normal
 
 	if total_landed > 0:
-		ground_coefficient = float(total_landed) / len(wheel_names)
+		ground_coefficient = float(total_landed) / len(wheels)
 		average_point /= total_landed
 		average_normal = average_normal.normalized()
 	else:

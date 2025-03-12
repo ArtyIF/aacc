@@ -7,10 +7,8 @@ shader_type spatial;
 render_mode blend_add, unshaded, depth_test_disabled, depth_draw_never, fog_disabled;
 
 uniform vec2 sun_position = vec2(0.0);
-uniform bool sun_in_bounds = true;
 uniform vec3 tint = vec3(1.0);
 uniform float tint_multiplier = 1.0;
-uniform sampler2D DEPTH_TEXTURE : hint_depth_texture, filter_linear_mipmap;
 
 vec3 lensflare(vec2 uv,vec2 pos)
 {
@@ -61,11 +59,5 @@ void fragment()
 	vec2 sun = sun_position - vec2(0.5);
 	sun.x *= aspect_ratio;
 
-	float depth_test = 1.0;
-	if (sun_in_bounds) {
-		// TODO: smooth this out somehow
-		depth_test = textureLod(DEPTH_TEXTURE, sun_position, 0.0).r < 0.0001 ? 1.0 : 0.0;
-	}
-	ALBEDO = tint * tint_multiplier * depth_test * lensflare(uv, sun.xy);
-	//ALBEDO = textureLod(DEPTH_TEXTURE, sun_position, 0.0).rrr;
+	ALBEDO = tint * tint_multiplier * lensflare(uv, sun.xy);
 }

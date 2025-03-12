@@ -60,14 +60,14 @@ func remove_torque(torque_name: String):
 #region Params
 var params: Dictionary[String, Variant] = {}
 
-func set_param(param_name: String, new_value: Variant, param_group: String = ""):
-	params.set(param_name + param_group, new_value)
+func set_param(param_name: String, new_value: Variant):
+	params.set(param_name, new_value)
 
-func get_param(param_name: String, default_value: Variant = null, param_group: String = "") -> Variant:
-	return params.get(param_name + param_group, default_value)
+func get_param(param_name: String, default_value: Variant = null) -> Variant:
+	return params.get(param_name, default_value)
 
-func remove_param(param_name: String, param_group: String = ""):
-	params.erase(param_name + param_group)
+func remove_param(param_name: String):
+	params.erase(param_name)
 #endregion Params
 
 #region Plugins

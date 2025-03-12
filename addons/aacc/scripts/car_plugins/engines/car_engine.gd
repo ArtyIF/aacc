@@ -113,7 +113,7 @@ func process_plugin(delta: float) -> void:
 	car.set_param("SwitchingGears", switching_gears)
 	car.set_param("GearSwitchTimer", gear_switch_timer)
 	car.set_param("RPMRatio", rpm_ratio.get_value())
-	car.set_param("RPMLimiter", 1.0 - gear_upper_limit_offset_ratio)
+	car.set_param("RPMLimiter", 1.0 / (1.0 + gear_upper_limit_offset_ratio))
 
 	if switching_gears:
 		return
