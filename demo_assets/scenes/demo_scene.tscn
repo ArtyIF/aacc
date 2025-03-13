@@ -58,7 +58,7 @@ environment = ExtResource("4_46dqb")
 camera_attributes = SubResource("CameraAttributesPractical_ny1lv")
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.942641, 0.072249, -0.325895, 0, 0.976296, 0.216439, 0.333807, -0.204025, 0.920297, 0, 0, 0)
+transform = Transform3D(0.942641, 0.0722491, -0.325895, 0, 0.976296, 0.21644, 0.333807, -0.204025, 0.920297, 0, 0, 0)
 light_color = Color(1, 0.909804, 0.576471, 1)
 light_energy = 16.0
 light_volumetric_fog_energy = 0.0
@@ -71,7 +71,7 @@ directional_shadow_blend_splits = true
 directional_shadow_pancake_size = 50.0
 script = ExtResource("6_l5mqg")
 
-[node name="SunlightCar" type="DirectionalLight3D" parent="Sunlight"]
+[node name="SunlightDynamic" type="DirectionalLight3D" parent="Sunlight"]
 light_color = Color(1, 0.909804, 0.576471, 1)
 light_energy = 16.0
 light_volumetric_fog_energy = 0.5
@@ -99,12 +99,6 @@ transform = Transform3D(-0.952601, -0.0225841, -0.304014, -0.0107575, 1.99987, -
 
 [node name="ramptest2" parent="." instance=ExtResource("9_l5mqg")]
 transform = Transform3D(-0.999863, -2.11876e-08, 0.0331244, -0.00285096, 0.985073, -0.344223, -0.016315, -0.172135, -1.96988, 172.325, 8.77901, -0.812098)
-
-[node name="ramptest3" parent="." instance=ExtResource("9_l5mqg")]
-transform = Transform3D(1.88528, 0, -1.66904, 0, 8.755, 0, 0.667615, 0, 4.71321, -111.871, -0.717397, 331.143)
-
-[node name="ramptest4" parent="." instance=ExtResource("9_l5mqg")]
-transform = Transform3D(-1.85271, -0.174467, 0.166903, -0.370167, 0.982723, 4.65661e-10, -0.65608, -0.061782, -0.471321, -97.2211, 15.0431, 289.676)
 
 [node name="OccluderInstance3D" type="OccluderInstance3D" parent="."]
 occluder = ExtResource("10_lmxsi")

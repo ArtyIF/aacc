@@ -1,17 +1,14 @@
 class_name CarWheelSuspension extends CarPluginBase
 
-@export_group("Shape")
+@export_group("Shape", "wheel_")
 @export var wheel_radius: float = 0.3
 @export var wheel_width: float = 0.3
-@export_flags_3d_physics var collision_mask: int = 1
+@export_flags_3d_physics var wheel_collision_mask: int = 1
 
-@export_group("Suspension")
+@export_group("Suspension", "suspension_")
 @export var suspension_length: float = 0.1
 @export var suspension_spring: float = 10000.0
 @export var suspension_damper: float = 1000.0
-
-@export_group("Buffer")
-@export var buffer_length: float = 0.1
 
 var raycast_instance_1: RayCast3D
 var raycast_instance_2: RayCast3D
@@ -33,19 +30,19 @@ func _ready() -> void:
 	configure_raycasts()
 
 func configure_raycasts() -> void:
-	raycast_instance_1.target_position = (Vector3.DOWN * (wheel_radius + suspension_length + buffer_length))
+	raycast_instance_1.target_position = (Vector3.DOWN * (wheel_radius + suspension_length))
 	raycast_instance_1.enabled = true
 	raycast_instance_1.hit_from_inside = false
 	raycast_instance_1.hit_back_faces = false
-	raycast_instance_1.collision_mask = collision_mask
+	raycast_instance_1.collision_mask = wheel_collision_mask
 	raycast_instance_1.process_physics_priority = -1000
 	raycast_instance_1.position = Vector3.RIGHT * wheel_width
 
-	raycast_instance_2.target_position = (Vector3.DOWN * (wheel_radius + suspension_length + buffer_length))
+	raycast_instance_2.target_position = (Vector3.DOWN * (wheel_radius + suspension_length))
 	raycast_instance_2.enabled = true
 	raycast_instance_2.hit_from_inside = false
 	raycast_instance_2.hit_back_faces = false
-	raycast_instance_1.collision_mask = collision_mask
+	raycast_instance_1.collision_mask = wheel_collision_mask
 	raycast_instance_2.process_physics_priority = -1000
 
 func set_raycast_values() -> void:

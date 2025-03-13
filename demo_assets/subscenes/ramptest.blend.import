@@ -40,7 +40,7 @@ _subresources={
 }
 },
 "nodes": {
-"PATH:Plane": {
+"PATH:Ramp": {
 "generate/physics": true
 }
 }
