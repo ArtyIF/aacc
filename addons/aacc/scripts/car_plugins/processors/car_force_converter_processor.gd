@@ -17,6 +17,7 @@ class_name CarForceConverterProcessor extends CarPluginBase
 	"Brake",
 	"CoastResistance",
 	"SideGrip",
+	"Boost",
 ]
 
 @export var torques_to_convert: Array[String] = [

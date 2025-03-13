@@ -1,0 +1,10 @@
+class_name CarHoldBoost extends CarPluginBase
+
+@export var boost_force: float = 10000.0
+
+func _ready() -> void:
+	car.set_input("Boost", 0.0)
+
+func process_plugin(delta: float) -> void:
+	if car.get_input("Boost") > 0.0 and car.get_param("GroundCoefficient", 0.0) > 0.0:
+		car.set_force("Boost", Vector3.FORWARD * boost_force, true)

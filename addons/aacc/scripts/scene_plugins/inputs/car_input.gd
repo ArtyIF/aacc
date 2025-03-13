@@ -3,9 +3,10 @@ class_name CarInput extends ScenePluginBase
 @export_group("Input Map")
 @export var action_forward: StringName = &"aacc_forward"
 @export var action_backward: StringName = &"aacc_backward"
-@export var action_handbrake: StringName = &"aacc_handbrake"
 @export var action_steer_left: StringName = &"aacc_steer_left"
 @export var action_steer_right: StringName = &"aacc_steer_right"
+@export var action_handbrake: StringName = &"aacc_handbrake"
+@export var action_boost: StringName = &"aacc_boost"
 @export var action_trans_toggle: StringName = &"aacc_trans_toggle"
 @export var action_gear_up: StringName = &"aacc_gear_up"
 @export var action_gear_down: StringName = &"aacc_gear_down"
@@ -86,8 +87,9 @@ func _physics_process(delta: float) -> void:
 
 	var input_forward: float = clamp(Input.get_action_strength(action_forward), 0.0, 1.0)
 	var input_backward: float = clamp(Input.get_action_strength(action_backward), 0.0, 1.0)
-	var input_handbrake: float = 1.0 if Input.is_action_pressed(action_handbrake) else 0.0
 	var input_steer: float = clamp(Input.get_action_strength(action_steer_right) - Input.get_action_strength(action_steer_left), -1.0, 1.0)
+	var input_handbrake: float = 1.0 if Input.is_action_pressed(action_handbrake) else 0.0
+	var input_boost: float = 1.0 if Input.is_action_pressed(action_boost) else 0.0
 
 	if Input.is_action_just_pressed(action_trans_toggle):
 		manual_transmission = not manual_transmission
@@ -120,6 +122,6 @@ func _physics_process(delta: float) -> void:
 			car.set_input("Brake", 0.0)
 
 	car.set_input("TargetGear", target_gear)
-
-	car.set_input("Handbrake", input_handbrake)
 	car.set_input("Steer", calculate_steer(input_steer, input_handbrake, velocity_z_sign, delta))
+	car.set_input("Handbrake", input_handbrake)
+	car.set_input("Boost", input_boost)

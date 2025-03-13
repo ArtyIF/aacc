@@ -291,6 +291,3 @@ enabled = false
 target_position = Vector3(0, 0, -1000)
 
 [node name="DebugLabel" parent="Plugins" instance=ExtResource("17_2t12c")]
-
-[node name="ramptest5" parent="." instance=ExtResource("9_l5mqg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -15, 0)
