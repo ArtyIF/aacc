@@ -138,7 +138,7 @@ func _process(_delta: float) -> void:
 	label.push_cell()
 	label.append_text("Values")
 	label.pop()
-	for param: String in AACCGlobal.car.params.keys():
+	for param: StringName in AACCGlobal.car.get_meta_list():
 		label.push_cell()
 		label.append_text(param)
 		label.pop()
