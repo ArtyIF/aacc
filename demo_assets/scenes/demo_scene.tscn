@@ -1,10 +1,10 @@
 [gd_scene load_steps=25 format=3 uid="uid://b8dibdn7lv1o0"]
 
+[ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_2t12c"]
 [ext_resource type="Script" uid="uid://bwjnqe5mvkcbx" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input.gd" id="2_1kif7"]
 [ext_resource type="Shader" uid="uid://dcrk75c13vhp4" path="res://demo_assets/shaders/lens_flare_shader.gdshader" id="2_vx7r4"]
 [ext_resource type="Script" uid="uid://cjsul5ik02rhk" path="res://demo_assets/shaders/lens_flare.gd" id="3_46dqb"]
 [ext_resource type="Script" uid="uid://be5ommjjotu3v" path="res://addons/aacc/scripts/scene_plugins/setters/car_setter_basic.gd" id="3_vx7r4"]
-[ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="4_46dqb"]
 [ext_resource type="Script" uid="uid://dncrn8e6ld0ld" path="res://demo_assets/scripts/scene_plugins/camera.gd" id="5_46lkv"]
 [ext_resource type="Script" uid="uid://byfss6xpmml06" path="res://demo_assets/scripts/bug_103595_workaround.gd" id="6_2t12c"]
 [ext_resource type="Script" uid="uid://bvecrtvsy80la" path="res://demo_assets/scripts/opengl_sun.gd" id="6_l5mqg"]
@@ -20,7 +20,7 @@
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ny1lv"]
 auto_exposure_enabled = true
-auto_exposure_scale = 0.5
+auto_exposure_scale = 1.0
 auto_exposure_speed = 1.0
 auto_exposure_min_sensitivity = 800.0
 auto_exposure_max_sensitivity = 2800.0
@@ -54,7 +54,7 @@ size = Vector2(2, 2)
 [node name="DemoScene" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource("4_46dqb")
+environment = ExtResource("1_2t12c")
 camera_attributes = SubResource("CameraAttributesPractical_ny1lv")
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
@@ -62,7 +62,7 @@ transform = Transform3D(0.942641, 0.0722491, -0.325895, 0, 0.976296, 0.21644, 0.
 light_color = Color(1, 0.909804, 0.576471, 1)
 light_energy = 16.0
 light_volumetric_fog_energy = 0.0
-light_cull_mask = 4294967293
+light_cull_mask = 4293918721
 shadow_enabled = true
 shadow_bias = 0.0
 shadow_normal_bias = 0.0
@@ -74,7 +74,6 @@ script = ExtResource("6_l5mqg")
 [node name="SunlightDynamic" type="DirectionalLight3D" parent="Sunlight"]
 light_color = Color(1, 0.909804, 0.576471, 1)
 light_energy = 16.0
-light_volumetric_fog_energy = 0.5
 light_bake_mode = 0
 light_cull_mask = 4294967294
 shadow_enabled = true
@@ -109,7 +108,7 @@ blend_distance = 0.0
 size = Vector3(1000, 1000, 1000)
 origin_offset = Vector3(19, 1, 241)
 enable_shadows = true
-cull_mask = 1048573
+cull_mask = 1048571
 
 [node name="HUDMargin" type="MarginContainer" parent="."]
 anchors_preset = 15
@@ -254,12 +253,15 @@ vertical_alignment = 1
 process_priority = -1000
 script = ExtResource("3_vx7r4")
 car_to_set = NodePath("../../Taxi")
+metadata/_custom_type_script = "uid://be5ommjjotu3v"
 
 [node name="CarInput" type="Node" parent="Plugins"]
 script = ExtResource("2_1kif7")
+metadata/_custom_type_script = "uid://bwjnqe5mvkcbx"
 
 [node name="Camera" type="Node" parent="Plugins"]
 script = ExtResource("5_46lkv")
+metadata/_custom_type_script = "uid://dncrn8e6ld0ld"
 
 [node name="Camera" type="Camera3D" parent="Plugins/Camera"]
 physics_interpolation_mode = 2

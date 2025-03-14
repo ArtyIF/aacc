@@ -107,7 +107,9 @@ aaccdemo_camera={
 
 [layer_names]
 
-3d_render/layer_2="Car"
+3d_render/layer_1="Static"
+3d_render/layer_2="Dynamic"
+3d_render/layer_3="Car"
 3d_physics/layer_1="Level"
 3d_physics/layer_2="Car"
 

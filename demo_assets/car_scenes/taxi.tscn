@@ -185,23 +185,23 @@ metadata/_custom_type_script = "uid://bejoolwrgdt81"
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="wheel-front-right" parent="Visuals" index="0"]
-layers = 2
+layers = 4
 gi_mode = 2
 
 [node name="wheel-front-left" parent="Visuals" index="1"]
-layers = 2
+layers = 4
 gi_mode = 2
 
 [node name="wheel-back-right" parent="Visuals" index="2"]
-layers = 2
+layers = 4
 gi_mode = 2
 
 [node name="wheel-back-left" parent="Visuals" index="3"]
-layers = 2
+layers = 4
 gi_mode = 2
 
 [node name="body" parent="Visuals" index="4"]
-layers = 2
+layers = 4
 gi_mode = 2
 surface_material_override/0 = ExtResource("13_eq170")
 

@@ -5,6 +5,7 @@
 
 [node name="DebugLabel" type="Node"]
 script = ExtResource("1_ii5vf")
+metadata/_custom_type_script = "uid://bqibtmc8iwudy"
 
 [node name="DebugLabelText" type="RichTextLabel" parent="."]
 visible = false
