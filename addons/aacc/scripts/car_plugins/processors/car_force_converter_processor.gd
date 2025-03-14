@@ -29,7 +29,7 @@ func _ready() -> void:
 	pass
 
 func process_plugin(delta: float) -> void:
-	if is_zero_approx(car.get_param("GroundCoefficient")):
+	if is_zero_approx(car.get_param("ground_coefficient")):
 		return
 
 	var sum_of_forces: Vector3 = Vector3.ZERO
@@ -39,20 +39,20 @@ func process_plugin(delta: float) -> void:
 
 	var reduced_grip: float = 1.0
 	if reduced_grip_curve:
-		reduced_grip = reduced_grip_curve.sample(abs(car.get_param("LocalLinearVelocity").x))
+		reduced_grip = reduced_grip_curve.sample(abs(car.get_param("local_linear_velocity").x))
 
 	var converted_force: Vector3 = sum_of_forces
 	if limit_x_force:
 		converted_force.x = clamp(converted_force.x, -linear_grip * reduced_grip, linear_grip * reduced_grip)
 	converted_force = car.global_basis * converted_force
-	converted_force = converted_force.slide(car.get_param("GroundAverageNormal"))
+	converted_force = converted_force.slide(car.get_param("ground_average_normal"))
 
-	var force_length_limit: float = linear_grip * car.get_param("GroundCoefficient")
+	var force_length_limit: float = linear_grip * car.get_param("ground_coefficient")
 	if apply_reduced_grip_to_all_forces:
 		force_length_limit *= reduced_grip
 	converted_force = converted_force.limit_length(force_length_limit)
 
-	car.set_force("ConvertedForce", converted_force, false, car.get_param("GroundAveragePoint") - car.global_position)
+	car.set_force("ConvertedForce", converted_force, false, car.get_param("ground_average_point") - car.global_position)
 
 	var sum_of_torques: Vector3 = Vector3.ZERO
 	for torque in car.torques.keys():
@@ -61,9 +61,9 @@ func process_plugin(delta: float) -> void:
 
 	var converted_torque: Vector3 = sum_of_torques
 	converted_torque = car.global_basis * converted_torque
-	converted_torque = converted_torque.project(car.get_param("GroundAverageNormal"))
+	converted_torque = converted_torque.project(car.get_param("ground_average_normal"))
 
-	var torque_length_limit: float = angular_grip * car.get_param("GroundCoefficient")
+	var torque_length_limit: float = angular_grip * car.get_param("ground_coefficient")
 	if apply_reduced_grip_to_torques:
 		torque_length_limit *= reduced_grip
 	converted_torque = converted_torque.limit_length(torque_length_limit)

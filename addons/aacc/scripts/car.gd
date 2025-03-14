@@ -58,6 +58,7 @@ func remove_torque(torque_name: String):
 #endregion Torques
 
 #region Params
+# TODO: use metadata for inputs, forces and torques as well
 func set_param(param_name: StringName, new_value: Variant):
 	set_meta(param_name, new_value)
 
