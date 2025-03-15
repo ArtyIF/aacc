@@ -33,7 +33,7 @@ func process_plugin(delta: float) -> void:
 		return
 
 	var sum_of_forces: Vector3 = Vector3.ZERO
-	for force in car.forces.keys():
+	for force in car.get_force_list():
 		if forces_to_convert.has(force):
 			sum_of_forces += car.get_force(force).force
 
@@ -56,7 +56,7 @@ func process_plugin(delta: float) -> void:
 	car.set_force("converted_force", converted_force, false, car.get_param("ground_average_point") - car.global_position)
 
 	var sum_of_torques: Vector3 = Vector3.ZERO
-	for torque in car.torques.keys():
+	for torque in car.get_torque_list():
 		if torques_to_convert.has(torque):
 			sum_of_torques += car.get_torque(torque).torque
 
