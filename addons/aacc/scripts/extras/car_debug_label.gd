@@ -61,12 +61,29 @@ func _process(_delta: float) -> void:
 	label.push_cell()
 	label.append_text("Values")
 	label.pop()
-	for input: String in AACCGlobal.car.inputs.keys():
+	for input: String in AACCGlobal.car.get_input_list():
 		label.push_cell()
 		label.append_text(input)
 		label.pop()
 		label.push_cell()
 		label.append_text(str(AACCGlobal.car.get_input(input)))
+		label.pop()
+	label.pop()
+	label.append_text("\n")
+
+	label.push_table(2)
+	label.push_cell()
+	label.append_text("Params")
+	label.pop()
+	label.push_cell()
+	label.append_text("Values")
+	label.pop()
+	for param: StringName in AACCGlobal.car.get_param_list():
+		label.push_cell()
+		label.append_text(param)
+		label.pop()
+		label.push_cell()
+		label.append_text(str(AACCGlobal.car.get_param(param, null)))
 		label.pop()
 	label.pop()
 	label.append_text("\n")
@@ -81,7 +98,7 @@ func _process(_delta: float) -> void:
 	label.push_cell()
 	label.append_text("Offsets")
 	label.pop()
-	for force: String in AACCGlobal.car.forces.keys():
+	for force: String in AACCGlobal.car.get_force_list():
 		label.push_cell()
 		if AACCGlobal.car.get_force(force).do_not_apply:
 			label.push_color(Color(Color.BLACK, 0.5))
@@ -113,7 +130,7 @@ func _process(_delta: float) -> void:
 	label.push_cell()
 	label.append_text("Values")
 	label.pop()
-	for torque: String in AACCGlobal.car.torques.keys():
+	for torque: String in AACCGlobal.car.get_torque_list():
 		label.push_cell()
 		if AACCGlobal.car.get_torque(torque).do_not_apply:
 			label.push_color(Color(Color.BLACK, 0.5))
@@ -127,23 +144,6 @@ func _process(_delta: float) -> void:
 		label.append_text(str(AACCGlobal.car.get_torque(torque).torque))
 		if AACCGlobal.car.get_torque(torque).do_not_apply:
 			label.pop()
-		label.pop()
-	label.pop()
-	label.append_text("\n")
-
-	label.push_table(2)
-	label.push_cell()
-	label.append_text("Params")
-	label.pop()
-	label.push_cell()
-	label.append_text("Values")
-	label.pop()
-	for param: StringName in AACCGlobal.car.get_meta_list():
-		label.push_cell()
-		label.append_text(param)
-		label.pop()
-		label.push_cell()
-		label.append_text(str(AACCGlobal.car.get_param(param, null)))
 		label.pop()
 	label.pop()
 	label.append_text("\n")

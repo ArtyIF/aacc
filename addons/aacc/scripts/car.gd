@@ -2,18 +2,42 @@ class_name Car extends RigidBody3D
 
 # TODO: add an editor tool to compile plugins into one script for optimization
 
-#region Inputs
-var inputs: Dictionary[String, float] = {}
+func meta_filter(value: String, prefix: String) -> bool:
+	return value.begins_with(prefix)
 
+#region Inputs
 func set_input(input_name: String, new_value: float):
-	inputs.set(input_name, new_value)
+	set_meta("input_" + input_name, new_value)
 
 func get_input(input_name: String, default_value: float = 0.0) -> float:
-	return inputs.get(input_name, default_value)
+	return get_meta("input_" + input_name, default_value)
 
 func remove_input(input_name: String):
-	inputs.erase(input_name)
+	remove_meta("input_" + input_name)
+
+func get_input_list() -> Array[String]:
+	var list: Array[String] = []
+	for meta in get_meta_list().filter(meta_filter.bind("input_")):
+		list.append(meta.trim_prefix("input_"))
+	return list
 #endregion Inputs
+
+#region Params
+func set_param(param_name: String, new_value: Variant):
+	set_meta("param_" + param_name, new_value)
+
+func get_param(param_name: String, default_value: Variant = null) -> Variant:
+	return get_meta("param_" + param_name, default_value)
+
+func remove_param(param_name: String):
+	remove_meta("param_" + param_name)
+
+func get_param_list() -> Array[String]:
+	var list: Array[String] = []
+	for meta in get_meta_list().filter(meta_filter.bind("param_")):
+		list.append(meta.trim_prefix("param_"))
+	return list
+#endregion Params
 
 #region Forces
 class Force:
@@ -35,6 +59,9 @@ func get_force(force_name: String) -> Force:
 
 func remove_force(force_name: String):
 	forces.erase(force_name)
+
+func get_force_list() -> Array[String]:
+	return forces.keys()
 #endregion Forces
 
 #region Torques
@@ -55,19 +82,10 @@ func get_torque(torque_name: String) -> Torque:
 
 func remove_torque(torque_name: String):
 	torques.erase(torque_name)
+
+func get_torque_list() -> Array[String]:
+	return torques.keys()
 #endregion Torques
-
-#region Params
-# TODO: use metadata for inputs, forces and torques as well
-func set_param(param_name: StringName, new_value: Variant):
-	set_meta(param_name, new_value)
-
-func get_param(param_name: StringName, default_value: Variant = null) -> Variant:
-	return get_meta(param_name, default_value)
-
-func remove_param(param_name: StringName):
-	remove_meta(param_name)
-#endregion Params
 
 #region Plugins
 var plugins_list: Array[CarPluginBase] = []
