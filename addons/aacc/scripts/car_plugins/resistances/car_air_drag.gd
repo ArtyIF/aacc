@@ -7,5 +7,6 @@ func process_plugin(delta: float) -> void:
 	if car.get_param("ground_coefficient", 0.0) > 0.0: return
 
 	# TODO: make it move towards a certain up vector, maybe just up or cast a ray down and use the normal
+	# TODO: apply some kind of remap closer to max_target_velocity otherwise it looks weird
 	if car.angular_velocity.length() > max_target_velocity:
-		car.set_torque("AirDrag", (-car.angular_velocity / delta).limit_length(max_drag_amount) * car.mass)
+		car.set_torque("air_drag", (-car.angular_velocity / delta).limit_length(max_drag_amount) * car.mass)

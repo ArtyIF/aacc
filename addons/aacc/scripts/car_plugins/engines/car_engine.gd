@@ -19,8 +19,8 @@ var gear_switch_timer: float = 0.0
 var rpm_ratio: SmoothedFloat = SmoothedFloat.new()
 
 func _ready() -> void:
-	car.set_input("Accelerate", 0.0)
-	car.set_input("TargetGear", 0.0)
+	car.set_input("accelerate", 0.0)
+	car.set_input("target_gear", 0.0)
 
 	car.set_param("top_speed", top_speed)
 	car.set_param("gears_count", gears_count)
@@ -95,15 +95,15 @@ func calculate_acceleration_multiplier(speed: float) -> float:
 	return multiplier
 
 func process_plugin(delta: float) -> void:
-	var input_accelerate: float = car.get_input("Accelerate")
-	var input_brake: float = car.get_input("Brake")
-	var input_handbrake: float = car.get_input("Handbrake")
+	var input_accelerate: float = car.get_input("accelerate")
+	var input_brake: float = car.get_input("brake")
+	var input_handbrake: float = car.get_input("handbrake")
 
 	var brake_value: float = max(input_brake, input_handbrake)
 	if current_gear != 0:
 		input_accelerate *= 1.0 - brake_value
 
-	target_gear = roundi(car.get_input("TargetGear"))
+	target_gear = roundi(car.get_input("target_gear"))
 	update_gear(delta)
 	update_rpm_ratio(input_accelerate, delta)
 
@@ -125,4 +125,4 @@ func process_plugin(delta: float) -> void:
 	var gear_upper_limit_offset: float = gear_upper_limit_offset_ratio * max_speed
 	if car.get_param("local_linear_velocity").z + gear_upper_limit_offset > -max_speed and car.get_param("local_linear_velocity").z < top_speed / gears_count:
 		force += Vector3.FORWARD * input_accelerate * max_engine_force * calculate_acceleration_multiplier(abs(car.get_param("local_linear_velocity").z))
-	car.set_force("Engine", force, true)
+	car.set_force("engine", force, true)

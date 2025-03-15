@@ -13,4 +13,4 @@ func process_plugin(delta: float) -> void:
 	if car.get_param("ground_coefficient", 0.0) < min_ground_coefficient: return
 
 	var downforce_amount: float = downforce * downforce_speed_curve.sample(car.linear_velocity.length())
-	car.set_force("Downforce", -car.get_param("ground_average_normal", Vector3.UP) * downforce_amount, false, to_global(car.center_of_mass) - car.global_position)
+	car.set_force("downforce", -car.get_param("ground_average_normal", Vector3.UP) * downforce_amount, false, to_global(car.center_of_mass) - car.global_position)
