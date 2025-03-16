@@ -10,6 +10,6 @@ class_name CarSteerOffsetProcessor extends CarPluginBase
 func process_plugin(delta: float) -> void:
 	if not steer_offset_curve: return
 
-	var local_linear_velocity: Vector3 = car.get_param("local_linear_velocity", Vector3.ZERO)
+	var local_linear_velocity: Vector3 = car.get_param(&"local_linear_velocity", Vector3.ZERO)
 	var offset: float = steer_offset_curve.sample(abs(local_linear_velocity.x)) * sign(local_linear_velocity.x)
-	car.set_param("steer_offset", offset)
+	car.set_param(&"steer_offset", offset)

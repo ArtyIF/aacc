@@ -12,23 +12,23 @@ var use_smooth_steer_sign: bool = false
 var old_input_handbrake: bool = false
 
 func _ready() -> void:
-	car.set_param("input_steer", 0.0)
-	car.set_param("distance_between_wheels", distance_between_wheels)
-	car.set_param("base_steer_velocity", base_steer_velocity)
-	car.set_param("target_steer_velocity", target_steer_velocity)
-	car.set_param("max_smooth_steer_speed", max_smooth_steer_speed)
+	car.set_param(&"input_steer", 0.0)
+	car.set_param(&"distance_between_wheels", distance_between_wheels)
+	car.set_param(&"base_steer_velocity", base_steer_velocity)
+	car.set_param(&"target_steer_velocity", target_steer_velocity)
+	car.set_param(&"max_smooth_steer_speed", max_smooth_steer_speed)
 
 func process_plugin(delta: float) -> void:
-	if is_zero_approx(car.get_param("ground_coefficient")):
+	if is_zero_approx(car.get_param(&"ground_coefficient", 0.0)):
 		return
 
-	car.set_param("max_smooth_steer_speed", max_smooth_steer_speed)
+	car.set_param(&"max_smooth_steer_speed", max_smooth_steer_speed)
 
-	var local_linear_velocity: Vector3 = car.get_param("local_linear_velocity", Vector3.ZERO)
-	var local_angular_velocity: Vector3 = car.get_param("local_angular_velocity", Vector3.ZERO)
+	var local_linear_velocity: Vector3 = car.get_param(&"local_linear_velocity", Vector3.ZERO)
+	var local_angular_velocity: Vector3 = car.get_param(&"local_angular_velocity", Vector3.ZERO)
 
-	var input_steer: float = car.get_param("input_steer", 0.0)
-	var input_handbrake = car.get_param("input_handbrake") > 0.0
+	var input_steer: float = car.get_param(&"input_steer", 0.0)
+	var input_handbrake: float = car.get_param(&"input_handbrake", 0.0) > 0.0
 
 	if enable_smooth_steer_sign:
 		if input_handbrake:
@@ -53,10 +53,10 @@ func process_plugin(delta: float) -> void:
 		smooth_steer_sign.force_current_value(sign(local_linear_velocity.z))
 
 	var steer_coefficient: float = velocity_sign * velocity_speed / distance_between_wheels
-	var steer_amount: float = (input_steer * steer_coefficient) + car.get_param("steer_offset", 0.0)
+	var steer_amount: float = (input_steer * steer_coefficient) + car.get_param(&"steer_offset", 0.0)
 
 	var steer_velocity: float = clamp(steer_amount * base_steer_velocity, -max_steer_velocity, max_steer_velocity)
 	var steer_force: Vector3 = Vector3.UP * steer_velocity
-	car.set_torque("steer", steer_force * car.mass / delta, true)
+	car.set_torque(&"steer", steer_force * car.mass / delta, true)
 
 	old_input_handbrake = input_handbrake

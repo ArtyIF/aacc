@@ -66,7 +66,7 @@ func _process(_delta: float) -> void:
 		label.append_text(param)
 		label.pop()
 		label.push_cell()
-		label.append_text(str(AACCGlobal.car.get_param(param, null)))
+		label.append_text(str(AACCGlobal.car.get_param(param)))
 		label.pop()
 	label.pop()
 	label.append_text("\n")

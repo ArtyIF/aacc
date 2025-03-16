@@ -19,16 +19,16 @@ var gear_switch_timer: float = 0.0
 var rpm_ratio: SmoothedFloat = SmoothedFloat.new()
 
 func _ready() -> void:
-	car.set_param("input_accelerate", 0.0)
-	car.set_param("input_target_gear", 0)
+	car.set_param(&"input_accelerate", 0.0)
+	car.set_param(&"input_target_gear", 0)
 
-	car.set_param("top_speed", top_speed)
-	car.set_param("gears_count", gears_count)
-	car.set_param("current_gear", current_gear)
-	car.set_param("switching_gears", switching_gears)
-	car.set_param("gear_switch_timer", gear_switch_timer)
-	car.set_param("rpm_ratio", rpm_ratio)
-	car.set_param("rpm_limiter", 1.0 - gear_upper_limit_offset_ratio)
+	car.set_param(&"top_speed", top_speed)
+	car.set_param(&"gears_count", gears_count)
+	car.set_param(&"current_gear", current_gear)
+	car.set_param(&"switching_gears", switching_gears)
+	car.set_param(&"gear_switch_timer", gear_switch_timer)
+	car.set_param(&"rpm_ratio", rpm_ratio)
+	car.set_param(&"rpm_limiter", 1.0 - gear_upper_limit_offset_ratio)
 
 func update_gear(delta: float):
 	# TODO: think out the behavior for current and target gear comparison
@@ -51,8 +51,8 @@ func update_rpm_ratio(input_accelerate: float, delta: float) -> void:
 	rpm_ratio.speed_down = rpm_ratio_speed_down
 
 	var target_rpm_ratio: float = 0.0
-	var local_linear_velocity: Vector3 = car.get_param("local_linear_velocity")
-	var ground_coefficient: float = car.get_param("ground_coefficient", 1.0)
+	var local_linear_velocity: Vector3 = car.get_param(&"local_linear_velocity", Vector3.ZERO)
+	var ground_coefficient: float = car.get_param(&"ground_coefficient", 0.0)
 
 	if current_gear == 0 or is_zero_approx(ground_coefficient):
 		target_rpm_ratio = input_accelerate
@@ -95,34 +95,34 @@ func calculate_acceleration_multiplier(speed: float) -> float:
 	return multiplier
 
 func process_plugin(delta: float) -> void:
-	var input_accelerate: float = car.get_param("input_accelerate", 0.0)
-	var input_brake: float = car.get_param("input_brake", 0.0)
-	var input_handbrake: float = car.get_param("input_handbrake", 0.0)
+	var input_accelerate: float = car.get_param(&"input_accelerate", 0.0)
+	var input_brake: float = car.get_param(&"input_brake", 0.0)
+	var input_handbrake: float = car.get_param(&"input_handbrake", 0.0)
 
 	var brake_value: float = max(input_brake, input_handbrake)
 	if current_gear != 0:
 		input_accelerate *= 1.0 - brake_value
 
-	target_gear = car.get_param("input_target_gear", 0)
+	target_gear = car.get_param(&"input_target_gear", 0)
 	update_gear(delta)
 	update_rpm_ratio(input_accelerate, delta)
 
-	car.set_param("top_speed", top_speed)
-	car.set_param("gears_count", gears_count)
-	car.set_param("current_gear", current_gear)
-	car.set_param("switching_gears", switching_gears)
-	car.set_param("gear_switch_timer", gear_switch_timer)
-	car.set_param("rpm_ratio", rpm_ratio.get_value())
-	car.set_param("rpm_limiter", 1.0 / (1.0 + gear_upper_limit_offset_ratio))
+	car.set_param(&"top_speed", top_speed)
+	car.set_param(&"gears_count", gears_count)
+	car.set_param(&"current_gear", current_gear)
+	car.set_param(&"switching_gears", switching_gears)
+	car.set_param(&"gear_switch_timer", gear_switch_timer)
+	car.set_param(&"rpm_ratio", rpm_ratio.get_value())
+	car.set_param(&"rpm_limiter", 1.0 / (1.0 + gear_upper_limit_offset_ratio))
 
 	if switching_gears:
 		return
-	if is_zero_approx(car.get_param("ground_coefficient")):
+	if is_zero_approx(car.get_param(&"ground_coefficient", 0.0)):
 		return
 
 	var force: Vector3 = Vector3.ZERO
 	var max_speed: float = min(top_speed * calculate_gear_limit(current_gear), top_speed)
 	var gear_upper_limit_offset: float = gear_upper_limit_offset_ratio * max_speed
-	if car.get_param("local_linear_velocity").z + gear_upper_limit_offset > -max_speed and car.get_param("local_linear_velocity").z < top_speed / gears_count:
-		force += Vector3.FORWARD * input_accelerate * max_engine_force * calculate_acceleration_multiplier(abs(car.get_param("local_linear_velocity").z))
-	car.set_force("engine", force, true)
+	if car.get_param(&"local_linear_velocity", Vector3.ZERO).z + gear_upper_limit_offset > -max_speed and car.get_param(&"local_linear_velocity", Vector3.ZERO).z < top_speed / gears_count:
+		force += Vector3.FORWARD * input_accelerate * max_engine_force * calculate_acceleration_multiplier(abs(car.get_param(&"local_linear_velocity", Vector3.ZERO).z))
+	car.set_force(&"engine", force, true)

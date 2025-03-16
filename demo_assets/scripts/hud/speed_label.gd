@@ -6,7 +6,7 @@ func _process(_delta: float) -> void:
 		current_gear = "N"
 	elif current_gear == "-1":
 		current_gear = "R"
-	if AACCGlobal.car.get_param("switching_gears"):
+	if AACCGlobal.car.get_param("switching_gears", false):
 		current_gear = "-"
 
 	$"Gear".text = current_gear.lpad(4, " ")

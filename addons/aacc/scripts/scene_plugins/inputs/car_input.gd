@@ -57,8 +57,8 @@ func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) 
 	var ground_coefficient: float = car.get_param("ground_coefficient", 1.0)
 
 	var current_gear: int = car.get_param("current_gear", 0)
-	var top_speed: float = car.get_param("top_speed")
-	var gears_count: int = car.get_param("gears_count")
+	var top_speed: float = car.get_param("top_speed", 0.0)
+	var gears_count: int = car.get_param("gears_count", 0)
 	var current_target_gear: int = car.get_param("input_target_gear", 0)
 
 	if (input_handbrake > 0.0 and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):

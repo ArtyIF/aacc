@@ -12,24 +12,24 @@ class_name CarForceConverterProcessor extends CarPluginBase
 @export var apply_reduced_grip_to_all_forces: bool = false
 @export var apply_reduced_grip_to_torques: bool = false
 
-@export var forces_to_convert: Array[String] = [
-	"engine",
-	"brake",
-	"coast_resistance",
-	"side_grip",
-	"boost",
+@export var forces_to_convert: Array[StringName] = [
+	&"engine",
+	&"brake",
+	&"coast_resistance",
+	&"side_grip",
+	&"boost",
 ]
 
-@export var torques_to_convert: Array[String] = [
-	"steer",
-	"angular_grip",
+@export var torques_to_convert: Array[StringName] = [
+	&"steer",
+	&"angular_grip",
 ]
 
 func _ready() -> void:
 	pass
 
 func process_plugin(delta: float) -> void:
-	if is_zero_approx(car.get_param("ground_coefficient")):
+	if is_zero_approx(car.get_param(&"ground_coefficient", 0.0)):
 		return
 
 	var sum_of_forces: Vector3 = Vector3.ZERO
@@ -40,20 +40,20 @@ func process_plugin(delta: float) -> void:
 	# TODO: add ability to only apply some of those conversions
 	var reduced_grip: float = 1.0
 	if reduced_grip_curve:
-		reduced_grip = reduced_grip_curve.sample(abs(car.get_param("local_linear_velocity").x))
+		reduced_grip = reduced_grip_curve.sample(abs(car.get_param(&"local_linear_velocity", Vector3.ZERO).x))
 
 	var converted_force: Vector3 = sum_of_forces
 	if limit_x_force:
 		converted_force.x = clamp(converted_force.x, -linear_grip * reduced_grip, linear_grip * reduced_grip)
 	converted_force = car.global_basis * converted_force
-	converted_force = converted_force.slide(car.get_param("ground_average_normal"))
+	converted_force = converted_force.slide(car.get_param(&"ground_average_normal", Vector3.ZERO))
 
-	var force_length_limit: float = linear_grip * car.get_param("ground_coefficient")
+	var force_length_limit: float = linear_grip * car.get_param(&"ground_coefficient", 0.0)
 	if apply_reduced_grip_to_all_forces:
 		force_length_limit *= reduced_grip
 	converted_force = converted_force.limit_length(force_length_limit)
 
-	car.set_force("converted_force", converted_force, false, car.get_param("ground_average_point") - car.global_position)
+	car.set_force(&"converted_force", converted_force, false, car.get_param(&"ground_average_point", Vector3.ZERO) - car.global_position)
 
 	var sum_of_torques: Vector3 = Vector3.ZERO
 	for torque in car.get_torque_list():
@@ -62,11 +62,11 @@ func process_plugin(delta: float) -> void:
 
 	var converted_torque: Vector3 = sum_of_torques
 	converted_torque = car.global_basis * converted_torque
-	converted_torque = converted_torque.project(car.get_param("ground_average_normal"))
+	converted_torque = converted_torque.project(car.get_param(&"ground_average_normal", Vector3.ZERO))
 
-	var torque_length_limit: float = angular_grip * car.get_param("ground_coefficient")
+	var torque_length_limit: float = angular_grip * car.get_param(&"ground_coefficient", 0.0)
 	if apply_reduced_grip_to_torques:
 		torque_length_limit *= reduced_grip
 	converted_torque = converted_torque.limit_length(torque_length_limit)
 
-	car.set_torque("converted_torque", converted_torque)
+	car.set_torque(&"converted_torque", converted_torque)
