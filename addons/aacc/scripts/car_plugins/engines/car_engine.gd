@@ -19,8 +19,8 @@ var gear_switch_timer: float = 0.0
 var rpm_ratio: SmoothedFloat = SmoothedFloat.new()
 
 func _ready() -> void:
-	car.set_input("accelerate", 0.0)
-	car.set_input("target_gear", 0.0)
+	car.set_param("input_accelerate", 0.0)
+	car.set_param("input_target_gear", 0)
 
 	car.set_param("top_speed", top_speed)
 	car.set_param("gears_count", gears_count)
@@ -95,15 +95,15 @@ func calculate_acceleration_multiplier(speed: float) -> float:
 	return multiplier
 
 func process_plugin(delta: float) -> void:
-	var input_accelerate: float = car.get_input("accelerate")
-	var input_brake: float = car.get_input("brake")
-	var input_handbrake: float = car.get_input("handbrake")
+	var input_accelerate: float = car.get_param("input_accelerate", 0.0)
+	var input_brake: float = car.get_param("input_brake", 0.0)
+	var input_handbrake: float = car.get_param("input_handbrake", 0.0)
 
 	var brake_value: float = max(input_brake, input_handbrake)
 	if current_gear != 0:
 		input_accelerate *= 1.0 - brake_value
 
-	target_gear = roundi(car.get_input("target_gear"))
+	target_gear = car.get_param("input_target_gear", 0)
 	update_gear(delta)
 	update_rpm_ratio(input_accelerate, delta)
 

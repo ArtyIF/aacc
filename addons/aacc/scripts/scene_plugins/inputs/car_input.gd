@@ -59,7 +59,7 @@ func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) 
 	var current_gear: int = car.get_param("current_gear", 0)
 	var top_speed: float = car.get_param("top_speed")
 	var gears_count: int = car.get_param("gears_count")
-	var current_target_gear: int = roundi(car.get_input("target_gear"))
+	var current_target_gear: int = car.get_param("input_target_gear", 0)
 
 	if (input_handbrake > 0.0 and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
 		return current_gear
@@ -107,21 +107,21 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed(action_gear_down):
 			target_gear -= 1
 		target_gear = clampi(target_gear, -1, car.get_param("gears_count", 0))
-		car.set_input("accelerate", input_forward)
-		car.set_input("brake", input_backward)
+		car.set_param("input_accelerate", input_forward)
+		car.set_param("input_brake", input_backward)
 	else:
 		target_gear = calculate_target_gear_auto(input_handbrake, velocity_z_sign)
 		if target_gear > 0:
-			car.set_input("accelerate", input_forward)
-			car.set_input("brake", input_backward)
+			car.set_param("input_accelerate", input_forward)
+			car.set_param("input_brake", input_backward)
 		elif target_gear < 0:
-			car.set_input("accelerate", input_backward)
-			car.set_input("brake", input_forward)
+			car.set_param("input_accelerate", input_backward)
+			car.set_param("input_brake", input_forward)
 		else:
-			car.set_input("accelerate", max(input_forward, input_backward))
-			car.set_input("brake", 0.0)
+			car.set_param("input_accelerate", max(input_forward, input_backward))
+			car.set_param("input_brake", 0.0)
 
-	car.set_input("target_gear", target_gear)
-	car.set_input("steer", calculate_steer(input_steer, input_handbrake, velocity_z_sign, delta))
-	car.set_input("handbrake", input_handbrake)
-	car.set_input("boost", input_boost)
+	car.set_param("input_target_gear", target_gear)
+	car.set_param("input_steer", calculate_steer(input_steer, input_handbrake, velocity_z_sign, delta))
+	car.set_param("input_handbrake", input_handbrake)
+	car.set_param("input_boost", input_boost)

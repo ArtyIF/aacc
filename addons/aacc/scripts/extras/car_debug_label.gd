@@ -56,29 +56,12 @@ func _process(_delta: float) -> void:
 
 	label.push_table(2)
 	label.push_cell()
-	label.append_text("Inputs")
-	label.pop()
-	label.push_cell()
-	label.append_text("Values")
-	label.pop()
-	for input: String in AACCGlobal.car.get_input_list():
-		label.push_cell()
-		label.append_text(input)
-		label.pop()
-		label.push_cell()
-		label.append_text(str(AACCGlobal.car.get_input(input)))
-		label.pop()
-	label.pop()
-	label.append_text("\n")
-
-	label.push_table(2)
-	label.push_cell()
 	label.append_text("Params")
 	label.pop()
 	label.push_cell()
 	label.append_text("Values")
 	label.pop()
-	for param: StringName in AACCGlobal.car.get_param_list():
+	for param: StringName in AACCGlobal.car.get_meta_list():
 		label.push_cell()
 		label.append_text(param)
 		label.pop()

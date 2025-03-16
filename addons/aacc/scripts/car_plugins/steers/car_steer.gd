@@ -12,7 +12,7 @@ var use_smooth_steer_sign: bool = false
 var old_input_handbrake: bool = false
 
 func _ready() -> void:
-	car.set_input("steer", 0.0)
+	car.set_param("input_steer", 0.0)
 	car.set_param("distance_between_wheels", distance_between_wheels)
 	car.set_param("base_steer_velocity", base_steer_velocity)
 	car.set_param("target_steer_velocity", target_steer_velocity)
@@ -27,8 +27,8 @@ func process_plugin(delta: float) -> void:
 	var local_linear_velocity: Vector3 = car.get_param("local_linear_velocity", Vector3.ZERO)
 	var local_angular_velocity: Vector3 = car.get_param("local_angular_velocity", Vector3.ZERO)
 
-	var input_steer: float = car.get_input("steer")
-	var input_handbrake = car.get_input("handbrake") > 0.0
+	var input_steer: float = car.get_param("input_steer", 0.0)
+	var input_handbrake = car.get_param("input_handbrake") > 0.0
 
 	if enable_smooth_steer_sign:
 		if input_handbrake:

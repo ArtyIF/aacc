@@ -2,41 +2,15 @@ class_name Car extends RigidBody3D
 
 # TODO: add an editor tool to compile plugins into one script for optimization
 
-func meta_filter(value: String, prefix: String) -> bool:
-	return value.begins_with(prefix)
-
-#region Inputs
-func set_input(input_name: String, new_value: float):
-	set_meta("input_" + input_name, new_value)
-
-func get_input(input_name: String, default_value: float = 0.0) -> float:
-	return get_meta("input_" + input_name, default_value)
-
-func remove_input(input_name: String):
-	remove_meta("input_" + input_name)
-
-func get_input_list() -> Array[String]:
-	var list: Array[String] = []
-	for meta in get_meta_list().filter(meta_filter.bind("input_")):
-		list.append(meta.trim_prefix("input_"))
-	return list
-#endregion Inputs
-
 #region Params
-func set_param(param_name: String, new_value: Variant):
-	set_meta("param_" + param_name, new_value)
+func set_param(param_name: StringName, new_value: Variant):
+	set_meta(param_name, new_value)
 
-func get_param(param_name: String, default_value: Variant = null) -> Variant:
-	return get_meta("param_" + param_name, default_value)
+func get_param(param_name: StringName, default_value: Variant = null) -> Variant:
+	return get_meta(param_name, default_value)
 
-func remove_param(param_name: String):
-	remove_meta("param_" + param_name)
-
-func get_param_list() -> Array[String]:
-	var list: Array[String] = []
-	for meta in get_meta_list().filter(meta_filter.bind("param_")):
-		list.append(meta.trim_prefix("param_"))
-	return list
+func remove_param(param_name: StringName):
+	remove_meta(param_name)
 #endregion Params
 
 #region Forces
