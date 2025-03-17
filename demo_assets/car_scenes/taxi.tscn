@@ -163,9 +163,9 @@ metadata/_custom_type_script = "uid://bieogbd1wisbk"
 
 [node name="Steer" type="Node3D" parent="Plugins"]
 script = ExtResource("9_r3t53")
-target_steer_velocity = 0.785398
 distance_between_wheels = 1.52
-max_smooth_steer_speed = 5.0
+steer_velocity_target = 0.785398
+smooth_steer_max_speed = 5.0
 metadata/_custom_type_script = "uid://br0vp35kb6pyw"
 
 [node name="AngularGrip" type="Node3D" parent="Plugins"]

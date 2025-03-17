@@ -33,18 +33,18 @@ func calculate_steer(input_steer: float, input_handbrake: float, velocity_z_sign
 
 	# TODO: add an ability to have the car send the info somehow, otherwise this is delayed by a frame
 	var distance_between_wheels: float = car.get_param(&"distance_between_wheels", 1.0)
-	var base_steer_velocity: float = car.get_param(&"base_steer_velocity", 1.0)
-	var target_steer_velocity: float = car.get_param(&"target_steer_velocity", 1.0)
+	var steer_velocity_base: float = car.get_param(&"steer_velocity_base", 1.0)
+	var steer_velocity_target: float = car.get_param(&"steer_velocity_target", 1.0)
 	var velocity_z: float = abs(car.get_param(&"local_linear_velocity", Vector3.ZERO).z)
 
 	var input_steer_multiplier: float = 1.0
 	if not always_full_steer:
-		input_steer_multiplier = min(distance_between_wheels * (target_steer_velocity / base_steer_velocity) / velocity_z, 1.0)
+		input_steer_multiplier = min(distance_between_wheels * (steer_velocity_target / steer_velocity_base) / velocity_z, 1.0)
 		input_steer_multiplier = lerp(input_steer_multiplier, 1.0, input_full_steer)
 	var input_steer_converted: float = input_steer * input_steer_multiplier
 
-	smooth_steer.speed_up = min(desired_smooth_steer_speed, car.get_param(&"max_smooth_steer_speed", desired_smooth_steer_speed))
-	smooth_steer.speed_down = min(desired_smooth_steer_speed, car.get_param(&"max_smooth_steer_speed", desired_smooth_steer_speed))
+	smooth_steer.speed_up = min(desired_smooth_steer_speed, car.get_param(&"smooth_steer_max_speed", desired_smooth_steer_speed))
+	smooth_steer.speed_down = min(desired_smooth_steer_speed, car.get_param(&"smooth_steer_max_speed", desired_smooth_steer_speed))
 	smooth_steer.advance_to(input_steer_converted, delta)
 
 	return smooth_steer.get_value()
