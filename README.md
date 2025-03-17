@@ -7,14 +7,16 @@ two cars (no way to easily switch between them).
 `addons/aacc` folder! Some files' licenses require attribution if you're going
 to use them!
 
-**NOTE**: the project is semi-abandoned! Changes are still being made, but
-only as necessary for the game I'm currently working on, No Downforce. Once
-I'm done with that, I'm probably going to resume working fully on this project.
+**NOTE**: most of the work is currently being done in the
+[`rewrite`](https://github.com/ArtyIF/aacc/tree/rewrite) branch! That branch
+rewrites AACC from scratch with a plugin-based system. It's not complete yet,
+but once it's ready, it'll be merged into this branch. `rewrite` is not compatible
+with this branch, and there won't be an easy way to port cars from the old version!
 
 ## Dependencies
 - Godot 4.4+ (tested on rc1, some changes may cause the project to break on
   earlier versions)
-- - For the Godot 4.3 version, see the godot-4.3 tag
+- - For the Godot 4.3 version, see the `godot-4.3` tag
 - - For Godot 4.4.dev6 and earlier, download [Godot Jolt](https://github.com/godot-jolt/godot-jolt)
 	for best results.
 - [Hydraboo's TrailRenderer](https://github.com/Hyrdaboo/TrailRenderer)
