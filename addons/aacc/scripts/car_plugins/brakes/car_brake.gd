@@ -15,6 +15,9 @@ func process_plugin(delta: float) -> void:
 	var input_handbrake: float = car.get_param(&"input_handbrake", 0.0)
 	var brake_value: float = max(input_brake, input_handbrake)
 
+	if is_zero_approx(brake_value):
+		return
+
 	var brake_speed: float = clamp(car.get_param(&"local_linear_velocity", Vector3.ZERO).z, -max_brake_velocity, max_brake_velocity) / max_brake_velocity
 	var force: Vector3 = Vector3.FORWARD * brake_value * brake_speed * brake_force
 	car.set_force(&"brake", force, true)

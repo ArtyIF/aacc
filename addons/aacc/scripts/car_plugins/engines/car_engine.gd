@@ -54,8 +54,9 @@ func update_rpm_ratio(input_accelerate: float, delta: float) -> void:
 	var local_linear_velocity: Vector3 = car.get_param(&"local_linear_velocity", Vector3.ZERO)
 	var ground_coefficient: float = car.get_param(&"ground_coefficient", 0.0)
 
+	# TODO: add a minimum RPM sort of thing
 	if current_gear == 0 or is_zero_approx(ground_coefficient):
-		target_rpm_ratio = input_accelerate
+		target_rpm_ratio = lerp(0.0, 1.0, input_accelerate)
 	elif switching_gears:
 		target_rpm_ratio = 0.0
 	else:
@@ -69,7 +70,6 @@ func update_rpm_ratio(input_accelerate: float, delta: float) -> void:
 		elif current_gear < 0:
 			upper_limit = top_speed / gears_count
 		target_rpm_ratio = clamp(inverse_lerp(0.0, upper_limit, abs(local_linear_velocity.z)), 0.0, 1.0)
-	# TODO: add a minimum RPM sort of thing
 	# TODO: RPM limiter
 
 	rpm_ratio.advance_to(target_rpm_ratio, delta)
@@ -118,6 +118,8 @@ func process_plugin(delta: float) -> void:
 	if switching_gears:
 		return
 	if is_zero_approx(car.get_param(&"ground_coefficient", 0.0)):
+		return
+	if is_zero_approx(input_accelerate):
 		return
 
 	var force: Vector3 = Vector3.ZERO

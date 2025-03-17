@@ -55,6 +55,9 @@ func process_plugin(delta: float) -> void:
 	var steer_coefficient: float = velocity_sign * velocity_speed / distance_between_wheels
 	var steer_amount: float = (input_steer * steer_coefficient) + car.get_param(&"steer_offset", 0.0)
 
+	if is_zero_approx(steer_amount):
+		return
+
 	var steer_velocity: float = clamp(steer_amount * base_steer_velocity, -max_steer_velocity, max_steer_velocity)
 	var steer_force: Vector3 = Vector3.UP * steer_velocity
 	car.set_torque(&"steer", steer_force * car.mass / delta, true)
