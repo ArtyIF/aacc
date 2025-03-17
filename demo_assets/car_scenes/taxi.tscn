@@ -145,7 +145,7 @@ metadata/_custom_type_script = "uid://v0cpq7q6mjou"
 
 [node name="Engine" type="Node3D" parent="Plugins"]
 script = ExtResource("4_pq6ol")
-max_engine_force = 15000.0
+engine_force = 15000.0
 metadata/_custom_type_script = "uid://bvfqai7uunpc3"
 
 [node name="SideGrip" type="Node3D" parent="Plugins"]

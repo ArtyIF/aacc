@@ -49,8 +49,8 @@ func calculate_steer(input_steer: float, input_handbrake: float, velocity_z_sign
 
 	return smooth_steer.get_value()
 
-func calculate_gear_limit(gear: int, gears_count: int) -> float:
-	return (1.0 / gears_count) * gear
+func calculate_gear_limit(gear: int, gear_count: int) -> float:
+	return (1.0 / gear_count) * gear
 
 func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) -> int:
 	var local_linear_velocity: Vector3 = car.get_param(&"local_linear_velocity", Vector3.ZERO)
@@ -58,7 +58,7 @@ func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) 
 
 	var current_gear: int = car.get_param(&"current_gear", 0)
 	var top_speed: float = car.get_param(&"top_speed", 0.0)
-	var gears_count: int = car.get_param(&"gears_count", 0)
+	var gear_count: int = car.get_param(&"gear_count", 0)
 	var current_target_gear: int = car.get_param(&"input_target_gear", 0)
 
 	if (input_handbrake > 0.0 and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
@@ -75,9 +75,9 @@ func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) 
 	var forward_speed_ratio: float = abs(local_linear_velocity.z / top_speed)
 	var lower_gear_limit_offset: float = auto_trans_downshift_offset / top_speed
 
-	if current_target_gear > 0 and forward_speed_ratio < calculate_gear_limit(current_gear - 1, gears_count) - lower_gear_limit_offset:
+	if current_target_gear > 0 and forward_speed_ratio < calculate_gear_limit(current_gear - 1, gear_count) - lower_gear_limit_offset:
 		return current_gear - 1
-	if forward_speed_ratio > calculate_gear_limit(current_gear, gears_count) and current_target_gear < gears_count:
+	if forward_speed_ratio > calculate_gear_limit(current_gear, gear_count) and current_target_gear < gear_count:
 		return current_gear + 1
 	return current_target_gear
 
@@ -106,7 +106,7 @@ func _physics_process(delta: float) -> void:
 			target_gear += 1
 		if Input.is_action_just_pressed(action_gear_down):
 			target_gear -= 1
-		target_gear = clampi(target_gear, -1, car.get_param(&"gears_count", 0))
+		target_gear = clampi(target_gear, -1, car.get_param(&"gear_count", 0))
 		car.set_param(&"input_accelerate", input_forward)
 		car.set_param(&"input_brake", input_backward)
 	else:
