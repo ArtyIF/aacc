@@ -12,10 +12,10 @@ class_name CarEngine extends CarPluginBase
 @export var rpm_curve: Curve
 @export var rpm_min: float = 0.1
 @export var rpm_max: float = 0.9
-@export var rpm_speed_up: float = 2.0
-@export var rpm_speed_down: float = 1.0
-# TODO: RPM to torque curve
+@export var rpm_speed_up: float = 1.0
+@export var rpm_speed_down: float = 0.5
 
+var rpm_curve_peak: float = 1.0
 var current_gear: int = 0
 var target_gear: int = 0
 var switching_gears: bool = false
@@ -37,7 +37,7 @@ func _ready() -> void:
 	car.set_param(&"rpm_min", rpm_min)
 	car.set_param(&"rpm_max", rpm_max)
 
-	var rpm_curve_peak: float = rpm_curve.min_domain
+	rpm_curve_peak = rpm_curve.min_domain
 	var rpm_curve_peak_value: float = rpm_curve.min_value
 	for i in range(0, rpm_curve.bake_resolution + 1):
 		var point: float = float(i) / rpm_curve.bake_resolution

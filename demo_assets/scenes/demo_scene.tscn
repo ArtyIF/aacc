@@ -124,13 +124,8 @@ grow_vertical = 0
 [node name="VBox" type="VBoxContainer" parent="HUDMargin/HUD/SpeedPanel"]
 layout_mode = 2
 
-[node name="RPMCurve" type="Control" parent="HUDMargin/HUD/SpeedPanel/VBox"]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-script = ExtResource("10_lmxsi")
-
 [node name="RPMBar" type="ProgressBar" parent="HUDMargin/HUD/SpeedPanel/VBox"]
-custom_minimum_size = Vector2(150, 10)
+custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 max_value = 1.0
 step = 0.0
@@ -154,6 +149,16 @@ value = 0.1
 fill_mode = 1
 show_percentage = false
 script = ExtResource("14_s4qbg")
+
+[node name="RPMCurve" type="Control" parent="HUDMargin/HUD/SpeedPanel/VBox/RPMBar"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("10_lmxsi")
 
 [node name="SpeedContainer" type="GridContainer" parent="HUDMargin/HUD/SpeedPanel/VBox"]
 layout_mode = 2

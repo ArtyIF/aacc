@@ -7,13 +7,11 @@ func _draw() -> void:
 		return
 
 	var points: PackedVector2Array = []
-	var colors: PackedColorArray = []
-	var rpm_max: float = AACCGlobal.car.get_param(&"rpm_max", 1.0)
 	for i in range(0, curve.bake_resolution + 1):
 		var point_x: float = float(i) / curve.bake_resolution
 		points.append(Vector2(point_x * size.x, (1.0 - curve.sample_baked(point_x)) * size.y))
-		colors.append(Color.WHITE if point_x < rpm_max else Color.RED)
-	draw_polyline_colors(points, colors, 0.5, true)
+	draw_polyline(points, Color.BLACK, 2.0, true)
+	draw_polyline(points, Color.WHITE, 1.0, true)
 
 	var rpm_curve_peak: float = AACCGlobal.car.get_param(&"rpm_curve_peak", 1.0)
-	draw_polyline([Vector2(rpm_curve_peak * size.x, 0.0), Vector2(rpm_curve_peak * size.x, size.y)], Color.GREEN)
+	draw_line(Vector2(rpm_curve_peak * size.x, 0.0), Vector2(rpm_curve_peak * size.x, size.y), Color(Color.GREEN, 0.5), 2.0)

@@ -1,5 +1,6 @@
 class_name CarInput extends ScenePluginBase
 
+# TODO: sort some of this?
 @export_group("Input Map")
 @export var action_forward: StringName = &"aacc_forward"
 @export var action_backward: StringName = &"aacc_backward"
@@ -7,6 +8,7 @@ class_name CarInput extends ScenePluginBase
 @export var action_steer_right: StringName = &"aacc_steer_right"
 @export var action_handbrake: StringName = &"aacc_handbrake"
 @export var action_boost: StringName = &"aacc_boost"
+@export var action_launch_toggle: StringName = &"aacc_launch_toggle"
 @export var action_trans_toggle: StringName = &"aacc_trans_toggle"
 @export var action_gear_up: StringName = &"aacc_gear_up"
 @export var action_gear_down: StringName = &"aacc_gear_down"
@@ -21,6 +23,7 @@ class_name CarInput extends ScenePluginBase
 @export var auto_trans_downshift_offset: float = 2.0
 
 var manual_transmission: bool = false
+var launch_control_engaged: bool = false
 var target_gear: int = 0
 var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
@@ -53,7 +56,6 @@ func calculate_gear_limit(gear: int, gear_count: int) -> float:
 	return float(gear) / gear_count
 
 func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) -> int:
-
 	var local_linear_velocity: Vector3 = car.get_param(&"local_linear_velocity", Vector3.ZERO)
 	var ground_coefficient: float = car.get_param(&"ground_coefficient", 1.0)
 
@@ -103,6 +105,8 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_just_pressed(action_trans_toggle):
 		manual_transmission = not manual_transmission
+	if Input.is_action_just_pressed(action_launch_toggle):
+		launch_control_engaged = not launch_control_engaged
 
 	var velocity_z_sign: float = car.get_param(&"velocity_z_sign", 0.0)
 	if is_zero_approx(velocity_z_sign):
@@ -122,13 +126,19 @@ func _physics_process(delta: float) -> void:
 	else:
 		target_gear = calculate_target_gear_auto(input_handbrake, velocity_z_sign)
 		if target_gear > 0:
+			launch_control_engaged = false
 			car.set_param(&"input_accelerate", input_forward)
 			car.set_param(&"input_brake", input_backward)
 		elif target_gear < 0:
+			launch_control_engaged = false
 			car.set_param(&"input_accelerate", input_backward)
 			car.set_param(&"input_brake", input_forward)
 		else:
-			car.set_param(&"input_accelerate", max(input_forward, input_backward))
+			var launch_control_multiplier: float = 1.0
+			if launch_control_engaged:
+				var rpm_curve_peak: float = car.get_param(&"rpm_curve_peak", 1.0)
+				launch_control_multiplier = inverse_lerp(car.get_param(&"rpm_min"), car.get_param(&"rpm_max"), rpm_curve_peak)
+			car.set_param(&"input_accelerate", max(input_forward, input_backward) * launch_control_multiplier)
 			car.set_param(&"input_brake", 0.0)
 
 	car.set_param(&"input_target_gear", target_gear)

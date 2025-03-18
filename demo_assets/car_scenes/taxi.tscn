@@ -29,7 +29,7 @@ input_curve = 1.0
 metadata/_custom_type_script = "uid://crrd7ugev6afh"
 
 [sub_resource type="Curve" id="Curve_1amw3"]
-_data = [Vector2(0, 0.25), 0.0, 2.0, 0, 0, Vector2(0.85, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -8.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 4.0, 0, 0, Vector2(0.75, 1), 0.0, -8.0, 0, 0, Vector2(0.9, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="Resource" id="Resource_n1pdp"]
@@ -151,6 +151,8 @@ metadata/_custom_type_script = "uid://v0cpq7q6mjou"
 script = ExtResource("4_pq6ol")
 engine_force = 15000.0
 rpm_curve = SubResource("Curve_1amw3")
+rpm_speed_up = 1.5
+rpm_speed_down = 0.25
 metadata/_custom_type_script = "uid://bvfqai7uunpc3"
 
 [node name="SideGrip" type="Node3D" parent="Plugins"]

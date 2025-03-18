@@ -11,6 +11,8 @@ func _process(_delta: float) -> void:
 
 	$"Gear".text = current_gear.lpad(4, " ")
 	$"GearTransmission".text = "MANL" if AACCGlobal.get_plugin(&"CarInput").manual_transmission else "AUTO"
+	if AACCGlobal.get_plugin(&"CarInput").launch_control_engaged:
+		$"GearTransmission".text = "LNCH"
 	$"TotalSpeed".text = str(roundi(AACCGlobal.car.linear_velocity.length() * 3.6))
 	$"ForwardSpeed".text = str(roundi(-AACCGlobal.car.get_param(&"local_linear_velocity", Vector3.ZERO).z * 3.6))
 	$"SideSpeed".text = str(roundi(AACCGlobal.car.get_param(&"local_linear_velocity", Vector3.ZERO).x * 3.6))
