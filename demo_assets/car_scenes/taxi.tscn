@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://crko52geporbo"]
+[gd_scene load_steps=32 format=3 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/default_car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -14,9 +14,10 @@
 [ext_resource type="Script" uid="uid://bieogbd1wisbk" path="res://addons/aacc/scripts/car_plugins/processors/car_steer_offset_processor.gd" id="10_gh3hu"]
 [ext_resource type="Script" uid="uid://dbisg1nrvftc4" path="res://addons/aacc/scripts/car_plugins/grips/car_angular_grip.gd" id="10_r3t53"]
 [ext_resource type="Script" uid="uid://crrd7ugev6afh" path="res://addons/aacc/scripts/helper_classes/procedural_curve.gd" id="11_0wb0t"]
-[ext_resource type="Script" uid="uid://un1kd6buaufw" path="res://addons/aacc/scripts/car_plugins/boosts/car_hold_boost.gd" id="12_4f48m"]
+[ext_resource type="Script" uid="uid://un1kd6buaufw" path="res://addons/aacc/scripts/car_plugins/extras/boosts/car_hold_boost.gd" id="12_4f48m"]
 [ext_resource type="PackedScene" uid="uid://dutpfjvhdc2p1" path="res://demo_assets/kenney_car_kit/taxi.glb" id="12_r3t53"]
 [ext_resource type="Material" uid="uid://brsv8h2fccu15" path="res://demo_assets/materials/taxi_body.tres" id="13_eq170"]
+[ext_resource type="Script" uid="uid://put3fygiiqh8" path="res://addons/aacc/scripts/car_plugins/resistances/car_coast_resistance.gd" id="13_iv7oc"]
 [ext_resource type="Script" uid="uid://cgyn0v8p7gfu6" path="res://addons/aacc/scripts/car_plugins/visuals/car_wheel_visuals.gd" id="14_n1pdp"]
 [ext_resource type="Script" uid="uid://bejoolwrgdt81" path="res://addons/aacc/scripts/car_plugins/resistances/car_air_drag.gd" id="17_1amw3"]
 
@@ -29,7 +30,7 @@ input_curve = 1.0
 metadata/_custom_type_script = "uid://crrd7ugev6afh"
 
 [sub_resource type="Curve" id="Curve_1amw3"]
-_data = [Vector2(0, 0), 0.0, 4.0, 0, 0, Vector2(0.75, 1), 0.0, -8.0, 0, 0, Vector2(0.9, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 3.0, 0, 0, Vector2(0.75, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="Resource" id="Resource_n1pdp"]
@@ -89,22 +90,6 @@ metadata/_custom_type_script = "uid://wiw33iaw2pjg"
 script = ExtResource("3_tcv0s")
 metadata/_custom_type_script = "uid://cudk564mgmydg"
 
-[node name="WheelBL" type="Node3D" parent="Plugins"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
-script = ExtResource("3_gy57t")
-wheel_width = 0.25
-suspension_spring = 15000.0
-suspension_damper = 1500.0
-metadata/_custom_type_script = "uid://cffihwqtqvy4x"
-
-[node name="WheelBR" type="Node3D" parent="Plugins"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
-script = ExtResource("3_gy57t")
-wheel_width = 0.25
-suspension_spring = 15000.0
-suspension_damper = 1500.0
-metadata/_custom_type_script = "uid://cffihwqtqvy4x"
-
 [node name="WheelFL" type="Node3D" parent="Plugins"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
@@ -115,6 +100,22 @@ metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
 [node name="WheelFR" type="Node3D" parent="Plugins"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
+script = ExtResource("3_gy57t")
+wheel_width = 0.25
+suspension_spring = 15000.0
+suspension_damper = 1500.0
+metadata/_custom_type_script = "uid://cffihwqtqvy4x"
+
+[node name="WheelBL" type="Node3D" parent="Plugins"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
+script = ExtResource("3_gy57t")
+wheel_width = 0.25
+suspension_spring = 15000.0
+suspension_damper = 1500.0
+metadata/_custom_type_script = "uid://cffihwqtqvy4x"
+
+[node name="WheelBR" type="Node3D" parent="Plugins"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.25
 suspension_spring = 15000.0
@@ -156,6 +157,7 @@ metadata/_custom_type_script = "uid://v0cpq7q6mjou"
 script = ExtResource("4_pq6ol")
 engine_force = 15000.0
 rpm_curve = SubResource("Curve_1amw3")
+rpm_speed_up = 0.5
 rpm_speed_down = 0.25
 metadata/_custom_type_script = "uid://bvfqai7uunpc3"
 
@@ -166,6 +168,11 @@ metadata/_custom_type_script = "uid://cil4ufto2v87g"
 [node name="HoldBoost" type="Node3D" parent="Plugins"]
 script = ExtResource("12_4f48m")
 metadata/_custom_type_script = "uid://un1kd6buaufw"
+
+[node name="CoastResistance" type="Node3D" parent="Plugins"]
+script = ExtResource("13_iv7oc")
+resistance_force = 5000.0
+metadata/_custom_type_script = "uid://put3fygiiqh8"
 
 [node name="SteerOffsetProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("10_gh3hu")

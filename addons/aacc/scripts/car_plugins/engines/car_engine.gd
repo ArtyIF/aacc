@@ -25,8 +25,10 @@ var rpm_ratio: SmoothedFloat = SmoothedFloat.new()
 func _ready() -> void:
 	car.set_param(&"input_accelerate", 0.0)
 	car.set_param(&"input_target_gear", 0)
+	update_params()
+	update_rpm_curve_peak()
 
-	# TODO: DRY
+func update_params():
 	car.set_param(&"top_speed", engine_top_speed)
 	car.set_param(&"gear_count", gearbox_gear_count)
 	car.set_param(&"current_gear", current_gear)
@@ -37,6 +39,7 @@ func _ready() -> void:
 	car.set_param(&"rpm_min", rpm_min)
 	car.set_param(&"rpm_max", rpm_max)
 
+func update_rpm_curve_peak():
 	rpm_curve_peak = rpm_curve.min_domain
 	var rpm_curve_peak_value: float = rpm_curve.min_value
 	for i in range(0, rpm_curve.bake_resolution + 1):
@@ -117,16 +120,7 @@ func process_plugin(delta: float) -> void:
 	update_gear(delta)
 	update_rpm_ratio(input_accelerate, delta)
 
-	# TODO: DRY
-	car.set_param(&"top_speed", engine_top_speed)
-	car.set_param(&"gear_count", gearbox_gear_count)
-	car.set_param(&"current_gear", current_gear)
-	car.set_param(&"switching_gears", switching_gears)
-	car.set_param(&"gear_switch_timer", gear_switch_timer)
-	car.set_param(&"rpm_ratio", rpm_ratio.get_value())
-	car.set_param(&"rpm_curve", rpm_curve)
-	car.set_param(&"rpm_min", rpm_min)
-	car.set_param(&"rpm_max", rpm_max)
+	update_params()
 
 	if switching_gears:
 		return
@@ -138,5 +132,8 @@ func process_plugin(delta: float) -> void:
 		return
 
 	var acceleration_multiplier: float = calculate_acceleration_multiplier(abs(car.get_param(&"local_linear_velocity", Vector3.ZERO).z) / engine_top_speed)
-	var force: Vector3 = Vector3.FORWARD * input_accelerate * engine_force * acceleration_multiplier
-	car.set_force(&"engine", force, true)
+	var force: float = input_accelerate * engine_force * acceleration_multiplier
+	if is_zero_approx(force):
+		return
+
+	car.set_force(&"engine", Vector3.FORWARD * force, true)
