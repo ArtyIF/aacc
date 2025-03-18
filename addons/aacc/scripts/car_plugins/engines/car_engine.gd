@@ -46,6 +46,11 @@ func _ready() -> void:
 			rpm_curve_peak_value = rpm_curve.sample_baked(point)
 	car.set_param(&"rpm_curve_peak", rpm_curve_peak)
 
+	# TODO: calculate best gear switch time based on:
+	# https://www.yourdatadriven.com/the-best-rpm-to-shift-gears-in-a-racing-car/
+	# pretty simple, stretch the curves and find intersections (max value
+	# changes to a different curve's value)
+
 func update_gear(delta: float):
 	# TODO: think out the behavior for current and target gear comparison
 	if target_gear != current_gear and not switching_gears and sign(current_gear) == sign(target_gear):

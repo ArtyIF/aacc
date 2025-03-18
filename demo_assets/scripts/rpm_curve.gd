@@ -15,3 +15,9 @@ func _draw() -> void:
 
 	var rpm_curve_peak: float = AACCGlobal.car.get_param(&"rpm_curve_peak", 1.0)
 	draw_line(Vector2(rpm_curve_peak * size.x, 0.0), Vector2(rpm_curve_peak * size.x, size.y), Color(Color.GREEN, 0.5), 2.0)
+
+	var rpm_max: float = AACCGlobal.car.get_param(&"rpm_max", 1.0)
+	draw_rect(Rect2(rpm_max * size.x, 0.0, (1.0 - rpm_max) * size.x, size.y), Color(Color.RED, 0.5))
+
+func _process(_delta: float) -> void:
+	queue_redraw()

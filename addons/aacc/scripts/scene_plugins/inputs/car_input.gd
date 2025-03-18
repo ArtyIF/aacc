@@ -121,7 +121,14 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed(action_gear_down):
 			target_gear -= 1
 		target_gear = clampi(target_gear, -1, car.get_param(&"gear_count", 0))
-		car.set_param(&"input_accelerate", input_forward)
+		var launch_control_multiplier: float = 1.0
+		if target_gear == 0:
+			if launch_control_engaged:
+				var rpm_curve_peak: float = car.get_param(&"rpm_curve_peak", 1.0)
+				launch_control_multiplier = inverse_lerp(car.get_param(&"rpm_min"), car.get_param(&"rpm_max"), rpm_curve_peak)
+		else:
+			launch_control_engaged = false
+		car.set_param(&"input_accelerate", input_forward * launch_control_multiplier)
 		car.set_param(&"input_brake", input_backward)
 	else:
 		target_gear = calculate_target_gear_auto(input_handbrake, velocity_z_sign)

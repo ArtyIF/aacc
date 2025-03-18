@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=22 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_2t12c"]
 [ext_resource type="Script" uid="uid://bwjnqe5mvkcbx" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input.gd" id="2_1kif7"]
@@ -16,7 +16,6 @@
 [ext_resource type="PackedScene" uid="uid://ca1oyf482fq72" path="res://demo_assets/subscenes/ramptest.blend" id="9_l5mqg"]
 [ext_resource type="Script" uid="uid://c1spgv68sfhct" path="res://demo_assets/scripts/rpm_curve.gd" id="10_lmxsi"]
 [ext_resource type="Script" uid="uid://dkjm5vktnco0f" path="res://demo_assets/scripts/hud/rpm_bar.gd" id="14_46lkv"]
-[ext_resource type="Script" uid="uid://bkmhpdy41fs8f" path="res://demo_assets/scripts/hud/rpm_limiter_bar.gd" id="14_s4qbg"]
 [ext_resource type="Script" uid="uid://cam0f0nudmuj2" path="res://demo_assets/scripts/hud/speed_label.gd" id="15_s4qbg"]
 [ext_resource type="PackedScene" uid="uid://cs38a62litxur" path="res://addons/aacc/scenes/debug_label.tscn" id="17_2t12c"]
 
@@ -132,23 +131,6 @@ step = 0.0
 value = 0.5
 show_percentage = false
 script = ExtResource("14_46lkv")
-
-[node name="RPMLimiter" type="ProgressBar" parent="HUDMargin/HUD/SpeedPanel/VBox/RPMBar"]
-show_behind_parent = true
-custom_minimum_size = Vector2(150, 10)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_type_variation = &"RPMLimiter"
-max_value = 1.0
-step = 0.0
-value = 0.1
-fill_mode = 1
-show_percentage = false
-script = ExtResource("14_s4qbg")
 
 [node name="RPMCurve" type="Control" parent="HUDMargin/HUD/SpeedPanel/VBox/RPMBar"]
 custom_minimum_size = Vector2(0, 50)
