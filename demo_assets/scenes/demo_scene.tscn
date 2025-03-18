@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=23 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_2t12c"]
 [ext_resource type="Script" uid="uid://bwjnqe5mvkcbx" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input.gd" id="2_1kif7"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://cu2i0ah5ud0w1" path="res://demo_assets/subscenes/pathtest.blend" id="7_c6qrw"]
 [ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="8_2t12c"]
 [ext_resource type="PackedScene" uid="uid://ca1oyf482fq72" path="res://demo_assets/subscenes/ramptest.blend" id="9_l5mqg"]
+[ext_resource type="Script" uid="uid://c1spgv68sfhct" path="res://demo_assets/scripts/rpm_curve.gd" id="10_lmxsi"]
 [ext_resource type="Script" uid="uid://dkjm5vktnco0f" path="res://demo_assets/scripts/hud/rpm_bar.gd" id="14_46lkv"]
 [ext_resource type="Script" uid="uid://bkmhpdy41fs8f" path="res://demo_assets/scripts/hud/rpm_limiter_bar.gd" id="14_s4qbg"]
 [ext_resource type="Script" uid="uid://cam0f0nudmuj2" path="res://demo_assets/scripts/hud/speed_label.gd" id="15_s4qbg"]
@@ -122,6 +123,11 @@ grow_vertical = 0
 
 [node name="VBox" type="VBoxContainer" parent="HUDMargin/HUD/SpeedPanel"]
 layout_mode = 2
+
+[node name="RPMCurve" type="Control" parent="HUDMargin/HUD/SpeedPanel/VBox"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+script = ExtResource("10_lmxsi")
 
 [node name="RPMBar" type="ProgressBar" parent="HUDMargin/HUD/SpeedPanel/VBox"]
 custom_minimum_size = Vector2(150, 10)

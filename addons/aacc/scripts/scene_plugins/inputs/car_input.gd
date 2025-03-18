@@ -50,9 +50,10 @@ func calculate_steer(input_steer: float, input_handbrake: float, velocity_z_sign
 	return smooth_steer.get_value()
 
 func calculate_gear_limit(gear: int, gear_count: int) -> float:
-	return (1.0 / gear_count) * gear
+	return float(gear) / gear_count
 
 func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) -> int:
+
 	var local_linear_velocity: Vector3 = car.get_param(&"local_linear_velocity", Vector3.ZERO)
 	var ground_coefficient: float = car.get_param(&"ground_coefficient", 1.0)
 
@@ -60,6 +61,9 @@ func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) 
 	var top_speed: float = car.get_param(&"top_speed", 0.0)
 	var gear_count: int = car.get_param(&"gear_count", 0)
 	var current_target_gear: int = car.get_param(&"input_target_gear", 0)
+
+	if car.get_param(&"switching_gears", false):
+		return current_target_gear
 
 	if (input_handbrake > 0.0 and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
 		return current_gear
@@ -73,13 +77,18 @@ func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) 
 		return -velocity_z_sign
 
 	var forward_speed_ratio: float = abs(local_linear_velocity.z / top_speed)
-	var lower_gear_limit_offset: float = auto_trans_downshift_offset / top_speed
+	var rpm_curve_peak: float = car.get_param(&"rpm_curve_peak", 1.0)
+	var rpm_curve_peak_adjusted: float = inverse_lerp(car.get_param(&"rpm_min"), car.get_param(&"rpm_max"), rpm_curve_peak)
 
-	# TODO: remap the curve peak to previous gear and compare against that
-	if current_target_gear > 0 and forward_speed_ratio < calculate_gear_limit(current_gear - 1, gear_count) - lower_gear_limit_offset:
+	var gear_limit: float = calculate_gear_limit(current_gear, gear_count)
+	var gear_limit_lower_offset: float = auto_trans_downshift_offset / top_speed
+	var gear_limit_lower: float = calculate_gear_limit(current_gear - 1, gear_count) - gear_limit_lower_offset
+
+	if forward_speed_ratio < gear_limit_lower * rpm_curve_peak_adjusted and current_target_gear > 0:
 		return current_gear - 1
-	if car.get_param(&"rpm_ratio", 0.0) > car.get_param(&"rpm_curve_peak", 1.0) and current_target_gear < gear_count:
+	if forward_speed_ratio > gear_limit * rpm_curve_peak_adjusted and current_target_gear < gear_count:
 		return current_gear + 1
+
 	return current_target_gear
 
 func _physics_process(delta: float) -> void:

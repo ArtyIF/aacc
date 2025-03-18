@@ -33,7 +33,9 @@ func _ready() -> void:
 	car.set_param(&"switching_gears", switching_gears)
 	car.set_param(&"gear_switch_timer", gear_switch_timer)
 	car.set_param(&"rpm_ratio", rpm_ratio.get_value())
-	car.set_param(&"rpm_limiter", rpm_max)
+	car.set_param(&"rpm_curve", rpm_curve)
+	car.set_param(&"rpm_min", rpm_min)
+	car.set_param(&"rpm_max", rpm_max)
 
 	var rpm_curve_peak: float = rpm_curve.min_domain
 	var rpm_curve_peak_value: float = rpm_curve.min_value
@@ -92,6 +94,9 @@ func calculate_acceleration_multiplier(speed_ratio: float) -> float:
 	if current_gear < 0:
 		multiplier *= -1.0
 
+	if rpm_ratio.get_value() >= rpm_max:
+		multiplier = 0.0
+
 	return multiplier
 
 func process_plugin(delta: float) -> void:
@@ -114,7 +119,9 @@ func process_plugin(delta: float) -> void:
 	car.set_param(&"switching_gears", switching_gears)
 	car.set_param(&"gear_switch_timer", gear_switch_timer)
 	car.set_param(&"rpm_ratio", rpm_ratio.get_value())
-	car.set_param(&"rpm_limiter", rpm_max)
+	car.set_param(&"rpm_curve", rpm_curve)
+	car.set_param(&"rpm_min", rpm_min)
+	car.set_param(&"rpm_max", rpm_max)
 
 	if switching_gears:
 		return
