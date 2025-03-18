@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://crko52geporbo"]
+[gd_scene load_steps=31 format=3 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/default_car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -27,6 +27,10 @@ right_value = 1.0
 max_input = 25.0
 input_curve = 1.0
 metadata/_custom_type_script = "uid://crrd7ugev6afh"
+
+[sub_resource type="Curve" id="Curve_1amw3"]
+_data = [Vector2(0, 0.25), 0.0, 2.0, 0, 0, Vector2(0.85, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -8.0, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="Resource" id="Resource_n1pdp"]
 script = ExtResource("11_0wb0t")
@@ -146,6 +150,7 @@ metadata/_custom_type_script = "uid://v0cpq7q6mjou"
 [node name="Engine" type="Node3D" parent="Plugins"]
 script = ExtResource("4_pq6ol")
 engine_force = 15000.0
+rpm_curve = SubResource("Curve_1amw3")
 metadata/_custom_type_script = "uid://bvfqai7uunpc3"
 
 [node name="SideGrip" type="Node3D" parent="Plugins"]

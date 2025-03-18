@@ -9,6 +9,7 @@ class_name CarEngine extends CarPluginBase
 @export var gearbox_switch_time: float = 0.1
 
 @export_group("RPM", "rpm_")
+@export var rpm_curve: Curve
 @export var rpm_min: float = 0.1
 @export var rpm_max: float = 0.9
 @export var rpm_speed_up: float = 2.0
@@ -33,6 +34,15 @@ func _ready() -> void:
 	car.set_param(&"gear_switch_timer", gear_switch_timer)
 	car.set_param(&"rpm_ratio", rpm_ratio.get_value())
 	car.set_param(&"rpm_limiter", rpm_max)
+
+	var rpm_curve_peak: float = rpm_curve.min_domain
+	var rpm_curve_peak_value: float = rpm_curve.min_value
+	for i in range(0, rpm_curve.bake_resolution + 1):
+		var point: float = float(i) / rpm_curve.bake_resolution
+		if rpm_curve.sample_baked(point) > rpm_curve_peak_value:
+			rpm_curve_peak = point
+			rpm_curve_peak_value = rpm_curve.sample_baked(point)
+	car.set_param(&"rpm_curve_peak", rpm_curve_peak)
 
 func update_gear(delta: float):
 	# TODO: think out the behavior for current and target gear comparison
@@ -76,16 +86,8 @@ func update_rpm_ratio(input_accelerate: float, delta: float) -> void:
 
 func calculate_acceleration_multiplier(speed_ratio: float) -> float:
 	var multiplier: float = 1.0
-	# TODO: use that but with an RPM-to-torque curve
-	#multiplier *= 1.0 - rpm_ratio.get_value()
-	#multiplier *= 1.0 - calculate_gear_limit(max(0.0, current_gear - 1))
-	#return multiplier
-
-	multiplier = 1.0 - min(speed_ratio, 1.0)
-	multiplier = min(multiplier, 1.0 - calculate_gear_limit(current_gear - 1))
-
-	if speed_ratio > calculate_gear_limit(current_gear):
-		multiplier *= 0.0
+	multiplier *= rpm_curve.sample_baked(rpm_ratio.get_value())
+	multiplier *= 1.0 - calculate_gear_limit(max(0.0, current_gear - 1))
 
 	if current_gear < 0:
 		multiplier *= -1.0

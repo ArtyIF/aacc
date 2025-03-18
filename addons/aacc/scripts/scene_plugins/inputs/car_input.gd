@@ -75,9 +75,10 @@ func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) 
 	var forward_speed_ratio: float = abs(local_linear_velocity.z / top_speed)
 	var lower_gear_limit_offset: float = auto_trans_downshift_offset / top_speed
 
+	# TODO: remap the curve peak to previous gear and compare against that
 	if current_target_gear > 0 and forward_speed_ratio < calculate_gear_limit(current_gear - 1, gear_count) - lower_gear_limit_offset:
 		return current_gear - 1
-	if forward_speed_ratio > calculate_gear_limit(current_gear, gear_count) and current_target_gear < gear_count:
+	if car.get_param(&"rpm_ratio", 0.0) > car.get_param(&"rpm_curve_peak", 1.0) and current_target_gear < gear_count:
 		return current_gear + 1
 	return current_target_gear
 
