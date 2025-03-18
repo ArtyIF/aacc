@@ -35,6 +35,7 @@ enabled=PackedStringArray("res://addons/aacc/plugin.cfg")
 
 [gui]
 
+theme/custom="uid://chyo0wdvcye0a"
 theme/custom_font="uid://det3spjbidf7d"
 
 [input]
