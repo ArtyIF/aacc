@@ -48,7 +48,7 @@ func _ready() -> void:
 
 	# TODO: calculate best gear switch time based on:
 	# https://www.yourdatadriven.com/the-best-rpm-to-shift-gears-in-a-racing-car/
-	# pretty simple, stretch the curves and find intersections (max value
+	# pretty simple, stretch the RPM curves and find intersections (max value
 	# changes to a different curve's value)
 
 func update_gear(delta: float):

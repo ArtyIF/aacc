@@ -19,5 +19,5 @@ func _draw() -> void:
 	var rpm_max: float = AACCGlobal.car.get_param(&"rpm_max", 1.0)
 	draw_rect(Rect2(rpm_max * size.x, 0.0, (1.0 - rpm_max) * size.x, size.y), Color(Color.RED, 0.5))
 
-func _process(_delta: float) -> void:
-	queue_redraw()
+#func _process(_delta: float) -> void:
+#	queue_redraw()
