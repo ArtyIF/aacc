@@ -131,9 +131,9 @@ func process_plugin(delta: float) -> void:
 		input_accelerate *= 1.0 - brake_value
 
 	gear_target = car.get_meta(&"input_gear_target", 0)
-	update_car_meta()
 	update_gear(delta)
 	update_rpm_ratio(input_accelerate, delta)
+	update_car_meta()
 
 	if rpm_ratio.get_value() >= rpm_max:
 		rpm_limiter = true

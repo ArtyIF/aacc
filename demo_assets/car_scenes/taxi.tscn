@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://crko52geporbo"]
+[gd_scene load_steps=34 format=3 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/default_car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -20,6 +20,8 @@
 [ext_resource type="Script" uid="uid://put3fygiiqh8" path="res://addons/aacc/scripts/car_plugins/resistances/car_coast_resistance.gd" id="13_iv7oc"]
 [ext_resource type="Script" uid="uid://cgyn0v8p7gfu6" path="res://addons/aacc/scripts/car_plugins/visuals/car_wheel_visuals.gd" id="14_n1pdp"]
 [ext_resource type="Script" uid="uid://bejoolwrgdt81" path="res://addons/aacc/scripts/car_plugins/resistances/car_air_drag.gd" id="17_1amw3"]
+[ext_resource type="Script" uid="uid://ceu8yif662nyj" path="res://addons/aacc/scripts/car_plugins/audio/car_engine_audio.gd" id="19_wyo5d"]
+[ext_resource type="PackedScene" uid="uid://b0cyxisxowe8n" path="res://addons/aacc/scenes/audio/engine_3.tscn" id="20_xg3rg"]
 
 [sub_resource type="Resource" id="Resource_4f48m"]
 script = ExtResource("11_0wb0t")
@@ -156,7 +158,9 @@ metadata/_custom_type_script = "uid://v0cpq7q6mjou"
 [node name="Engine" type="Node3D" parent="Plugins"]
 script = ExtResource("4_pq6ol")
 engine_force = 15000.0
+gearbox_switch_time = 0.5
 rpm_curve = SubResource("Curve_1amw3")
+rpm_speed_up = 0.5
 rpm_speed_down = 0.25
 metadata/_custom_type_script = "uid://bvfqai7uunpc3"
 
@@ -197,6 +201,13 @@ metadata/_custom_type_script = "uid://b1lao6jpcowsa"
 [node name="AirDrag" type="Node3D" parent="Plugins"]
 script = ExtResource("17_1amw3")
 metadata/_custom_type_script = "uid://bejoolwrgdt81"
+
+[node name="EngineAudio" type="Node3D" parent="Plugins"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, -0.8)
+script = ExtResource("19_wyo5d")
+max_pitch = 1.2
+engine_audio_scene = ExtResource("20_xg3rg")
+metadata/_custom_type_script = "uid://ceu8yif662nyj"
 
 [node name="Visuals" parent="." instance=ExtResource("12_r3t53")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

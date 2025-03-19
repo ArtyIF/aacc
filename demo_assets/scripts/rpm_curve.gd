@@ -14,8 +14,8 @@ func _draw() -> void:
 	draw_polyline(points_current, Color.WHITE, 1.0, true)
 
 	var gear_current: float = float(AACCGlobal.car.get_meta(&"gear_current", 0))
-	if not AACCGlobal.car.get_meta(&"gear_switching", false) and gear_current >= 0 and gear_current < AACCGlobal.car.get_meta(&"gear_count", 0):
-		if AACCGlobal.car.get_meta(&"ground_coefficient", 0.0) > 0.0:
+	if not AACCGlobal.car.get_meta(&"gear_switching", false):
+		if AACCGlobal.car.get_meta(&"ground_coefficient", 0.0) > 0.0 and gear_current >= 0 and gear_current < AACCGlobal.car.get_meta(&"gear_count", 0):
 			var current_next_ratio: float = max(gear_current, 1.0) / max(gear_current + 1, 1.0)
 			if current_next_ratio < 1.0:
 				var points_next: PackedVector2Array = []
@@ -26,8 +26,9 @@ func _draw() -> void:
 				draw_polyline(points_next, Color.BLACK, 2.0, true)
 				draw_polyline(points_next, Color.YELLOW, 1.0, true)
 
-		var gear_perfect_switch: float = AACCGlobal.car.get_meta(&"gear_perfect_switch", 1.0)
-		draw_line(Vector2(gear_perfect_switch * size.x, 0.0), Vector2(gear_perfect_switch * size.x, size.y), Color(Color.GREEN, 0.5), 2.0)
+		if (gear_current >= 0 and gear_current < AACCGlobal.car.get_meta(&"gear_count", 0)) or is_zero_approx(AACCGlobal.car.get_meta(&"ground_coefficient", 0.0)):
+			var gear_perfect_switch: float = AACCGlobal.car.get_meta(&"gear_perfect_switch", 1.0)
+			draw_line(Vector2(gear_perfect_switch * size.x, 0.0), Vector2(gear_perfect_switch * size.x, size.y), Color(Color.GREEN, 0.5), 2.0)
 
 	var rpm_max: float = AACCGlobal.car.get_meta(&"rpm_max", 1.0)
 	draw_rect(Rect2(rpm_max * size.x, 0.0, (1.0 - rpm_max) * size.x, size.y), Color(Color.RED, 0.5))

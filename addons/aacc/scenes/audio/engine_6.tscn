@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://2e0kuw2vua1v"]
+
+[ext_resource type="AudioStream" uid="uid://ckgmy3qjy53b" path="res://addons/aacc/audio/engine/engine_6.wav" id="1_twdva"]
+
+[node name="EngineAudio" type="AudioStreamPlayer3D"]
+stream = ExtResource("1_twdva")
+autoplay = true
+bus = &"Engine"
+playback_type = 1
+attenuation_filter_cutoff_hz = 10000.0
+doppler_tracking = 1
