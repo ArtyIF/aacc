@@ -79,16 +79,17 @@ func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) 
 		return -velocity_z_sign
 
 	var forward_speed_ratio: float = abs(local_linear_velocity.z / top_speed)
-	var rpm_curve_peak: float = car.get_param(&"rpm_curve_peak", 1.0)
-	var rpm_curve_peak_adjusted: float = inverse_lerp(car.get_param(&"rpm_min"), car.get_param(&"rpm_max"), rpm_curve_peak)
+	# TODO: DRY
+	var gear_perfect_switch: float = car.get_param(&"gear_perfect_switch", 1.0)
+	var gear_perfect_switch_adjusted: float = inverse_lerp(car.get_param(&"rpm_min"), car.get_param(&"rpm_max"), gear_perfect_switch)
 
 	var gear_limit: float = calculate_gear_limit(current_gear, gear_count)
 	var gear_limit_lower_offset: float = auto_trans_downshift_offset / top_speed
 	var gear_limit_lower: float = calculate_gear_limit(current_gear - 1, gear_count) - gear_limit_lower_offset
 
-	if forward_speed_ratio < gear_limit_lower * rpm_curve_peak_adjusted and current_target_gear > 0:
+	if forward_speed_ratio < gear_limit_lower * gear_perfect_switch_adjusted and current_target_gear > 0:
 		return current_gear - 1
-	if forward_speed_ratio > gear_limit * rpm_curve_peak_adjusted and current_target_gear < gear_count:
+	if forward_speed_ratio > gear_limit * gear_perfect_switch_adjusted and current_target_gear < gear_count:
 		return current_gear + 1
 
 	return current_target_gear
@@ -123,9 +124,10 @@ func _physics_process(delta: float) -> void:
 		target_gear = clampi(target_gear, -1, car.get_param(&"gear_count", 0))
 		var launch_control_multiplier: float = 1.0
 		if target_gear == 0:
+			# TODO: DRY
 			if launch_control_engaged:
-				var rpm_curve_peak: float = car.get_param(&"rpm_curve_peak", 1.0)
-				launch_control_multiplier = inverse_lerp(car.get_param(&"rpm_min"), car.get_param(&"rpm_max"), rpm_curve_peak)
+				var gear_perfect_switch: float = car.get_param(&"gear_perfect_switch", 1.0)
+				launch_control_multiplier = inverse_lerp(car.get_param(&"rpm_min"), car.get_param(&"rpm_max"), gear_perfect_switch)
 		else:
 			launch_control_engaged = false
 		car.set_param(&"input_accelerate", input_forward * launch_control_multiplier)
@@ -141,10 +143,11 @@ func _physics_process(delta: float) -> void:
 			car.set_param(&"input_accelerate", input_backward)
 			car.set_param(&"input_brake", input_forward)
 		else:
+			# TODO: DRY
 			var launch_control_multiplier: float = 1.0
 			if launch_control_engaged:
-				var rpm_curve_peak: float = car.get_param(&"rpm_curve_peak", 1.0)
-				launch_control_multiplier = inverse_lerp(car.get_param(&"rpm_min"), car.get_param(&"rpm_max"), rpm_curve_peak)
+				var gear_perfect_switch: float = car.get_param(&"gear_perfect_switch", 1.0)
+				launch_control_multiplier = inverse_lerp(car.get_param(&"rpm_min"), car.get_param(&"rpm_max"), gear_perfect_switch)
 			car.set_param(&"input_accelerate", max(input_forward, input_backward) * launch_control_multiplier)
 			car.set_param(&"input_brake", 0.0)
 

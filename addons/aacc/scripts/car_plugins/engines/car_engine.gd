@@ -26,7 +26,7 @@ func _ready() -> void:
 	car.set_param(&"input_accelerate", 0.0)
 	car.set_param(&"input_target_gear", 0)
 	update_params()
-	update_rpm_curve_peak()
+	update_gear_perfect_switch()
 
 func update_params():
 	car.set_param(&"top_speed", engine_top_speed)
@@ -39,7 +39,7 @@ func update_params():
 	car.set_param(&"rpm_min", rpm_min)
 	car.set_param(&"rpm_max", rpm_max)
 
-func update_rpm_curve_peak():
+func update_gear_perfect_switch():
 	rpm_curve_peak = rpm_curve.min_domain
 	var rpm_curve_peak_value: float = rpm_curve.min_value
 	for i in range(0, rpm_curve.bake_resolution + 1):
@@ -47,7 +47,7 @@ func update_rpm_curve_peak():
 		if rpm_curve.sample_baked(point) > rpm_curve_peak_value:
 			rpm_curve_peak = point
 			rpm_curve_peak_value = rpm_curve.sample_baked(point)
-	car.set_param(&"rpm_curve_peak", rpm_curve_peak)
+	car.set_param(&"gear_perfect_switch", rpm_curve_peak)
 
 	# TODO: calculate best gear switch time based on:
 	# https://www.yourdatadriven.com/the-best-rpm-to-shift-gears-in-a-racing-car/
