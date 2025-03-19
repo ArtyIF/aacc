@@ -1,15 +1,15 @@
 extends Control
 
 func _process(_delta: float) -> void:
-	var current_gear: String = str(AACCGlobal.car.get_param(&"current_gear", 0))
-	if current_gear == "0":
-		current_gear = "N"
-	elif current_gear == "-1":
-		current_gear = "R"
-	if AACCGlobal.car.get_param(&"switching_gears", false):
-		current_gear = "-"
+	var gear_current: String = str(AACCGlobal.car.get_param(&"gear_current", 0))
+	if gear_current == "0":
+		gear_current = "N"
+	elif gear_current == "-1":
+		gear_current = "R"
+	if AACCGlobal.car.get_param(&"gear_switching", false):
+		gear_current = "-"
 
-	$"Gear".text = current_gear.lpad(4, " ")
+	$"Gear".text = gear_current.lpad(4, " ")
 	$"GearTransmission".text = "MANL" if AACCGlobal.get_plugin(&"CarInput").manual_transmission else "AUTO"
 	if AACCGlobal.get_plugin(&"CarInput").launch_control_engaged:
 		$"GearTransmission".text = "LNCH"

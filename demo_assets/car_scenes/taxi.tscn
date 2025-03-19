@@ -30,7 +30,7 @@ input_curve = 1.0
 metadata/_custom_type_script = "uid://crrd7ugev6afh"
 
 [sub_resource type="Curve" id="Curve_1amw3"]
-_data = [Vector2(0, 0), 0.0, 2.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 4.0, 0, 0, Vector2(0.7, 1), 0.0, 0.0, 0, 0, Vector2(0.9, 0), -4.0, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="Resource" id="Resource_n1pdp"]

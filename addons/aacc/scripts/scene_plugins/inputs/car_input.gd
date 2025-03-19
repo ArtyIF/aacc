@@ -24,7 +24,7 @@ class_name CarInput extends ScenePluginBase
 
 var manual_transmission: bool = false
 var launch_control_engaged: bool = false
-var target_gear: int = 0
+var gear_target: int = 0
 var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
 func calculate_steer(input_steer: float, input_handbrake: float, velocity_z_sign: float, delta: float) -> float:
@@ -55,20 +55,20 @@ func calculate_steer(input_steer: float, input_handbrake: float, velocity_z_sign
 func calculate_gear_limit(gear: int, gear_count: int) -> float:
 	return float(gear) / gear_count
 
-func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) -> int:
+func calculate_gear_target_auto(input_handbrake: float, velocity_z_sign: float) -> int:
 	var local_linear_velocity: Vector3 = car.get_param(&"local_linear_velocity", Vector3.ZERO)
 	var ground_coefficient: float = car.get_param(&"ground_coefficient", 1.0)
 
-	var current_gear: int = car.get_param(&"current_gear", 0)
+	var gear_current: int = car.get_param(&"gear_current", 0)
 	var top_speed: float = car.get_param(&"top_speed", 0.0)
 	var gear_count: int = car.get_param(&"gear_count", 0)
-	var current_target_gear: int = car.get_param(&"input_target_gear", 0)
+	var current_gear_target: int = car.get_param(&"input_gear_target", 0)
 
-	if car.get_param(&"switching_gears", false):
-		return current_target_gear
+	if car.get_param(&"gear_switching", false):
+		return current_gear_target
 
 	if (input_handbrake > 0.0 and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
-		return current_gear
+		return gear_current
 	if input_handbrake > 0.0 and local_linear_velocity.length() < 0.25:
 		return 0
 	
@@ -83,17 +83,17 @@ func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) 
 	var gear_perfect_switch: float = car.get_param(&"gear_perfect_switch", 1.0)
 	var gear_perfect_switch_adjusted: float = inverse_lerp(car.get_param(&"rpm_min"), car.get_param(&"rpm_max"), gear_perfect_switch)
 
-	var gear_limit: float = calculate_gear_limit(current_gear, gear_count)
+	var gear_limit: float = calculate_gear_limit(gear_current, gear_count)
 	var gear_limit_lower_offset: float = auto_trans_downshift_offset / top_speed
-	var gear_limit_lower: float = calculate_gear_limit(current_gear - 1, gear_count) - gear_limit_lower_offset
+	var gear_limit_lower: float = calculate_gear_limit(gear_current - 1, gear_count) - gear_limit_lower_offset
 
 	# TODO: use rpm
-	if forward_speed_ratio < gear_limit_lower * gear_perfect_switch_adjusted and current_target_gear > 0:
-		return current_gear - 1
-	if forward_speed_ratio > gear_limit * gear_perfect_switch_adjusted and current_target_gear < gear_count:
-		return current_gear + 1
+	if forward_speed_ratio < gear_limit_lower * gear_perfect_switch_adjusted and current_gear_target > 0:
+		return gear_current - 1
+	if forward_speed_ratio > gear_limit * gear_perfect_switch_adjusted and current_gear_target < gear_count:
+		return gear_current + 1
 
-	return current_target_gear
+	return current_gear_target
 
 func _physics_process(delta: float) -> void:
 	update_car()
@@ -119,12 +119,12 @@ func _physics_process(delta: float) -> void:
 
 	if manual_transmission:
 		if Input.is_action_just_pressed(action_gear_up):
-			target_gear += 1
+			gear_target += 1
 		if Input.is_action_just_pressed(action_gear_down):
-			target_gear -= 1
-		target_gear = clampi(target_gear, -1, car.get_param(&"gear_count", 0))
+			gear_target -= 1
+		gear_target = clampi(gear_target, -1, car.get_param(&"gear_count", 0))
 		var launch_control_multiplier: float = 1.0
-		if target_gear == 0:
+		if gear_target == 0:
 			# TODO: DRY
 			if launch_control_engaged:
 				var gear_perfect_switch: float = car.get_param(&"gear_perfect_switch", 1.0)
@@ -134,12 +134,12 @@ func _physics_process(delta: float) -> void:
 		car.set_param(&"input_accelerate", input_forward * launch_control_multiplier)
 		car.set_param(&"input_brake", input_backward)
 	else:
-		target_gear = calculate_target_gear_auto(input_handbrake, velocity_z_sign)
-		if target_gear > 0:
+		gear_target = calculate_gear_target_auto(input_handbrake, velocity_z_sign)
+		if gear_target > 0:
 			launch_control_engaged = false
 			car.set_param(&"input_accelerate", input_forward)
 			car.set_param(&"input_brake", input_backward)
-		elif target_gear < 0:
+		elif gear_target < 0:
 			launch_control_engaged = false
 			car.set_param(&"input_accelerate", input_backward)
 			car.set_param(&"input_brake", input_forward)
@@ -152,7 +152,7 @@ func _physics_process(delta: float) -> void:
 			car.set_param(&"input_accelerate", max(input_forward, input_backward) * launch_control_multiplier)
 			car.set_param(&"input_brake", 1.0)
 
-	car.set_param(&"input_target_gear", target_gear)
+	car.set_param(&"input_gear_target", gear_target)
 	car.set_param(&"input_steer", calculate_steer(input_steer, input_handbrake, velocity_z_sign, delta))
 	car.set_param(&"input_handbrake", input_handbrake)
 	car.set_param(&"input_boost", input_boost)

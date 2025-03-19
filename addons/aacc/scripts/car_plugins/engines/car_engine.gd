@@ -15,23 +15,23 @@ class_name CarEngine extends CarPluginBase
 @export var rpm_speed_up: float = 1.0
 @export var rpm_speed_down: float = 0.5
 
-var current_gear: int = 0
-var target_gear: int = 0
-var switching_gears: bool = false
+var gear_current: int = 0
+var gear_target: int = 0
 var gear_switch_timer: float = 0.0
+var gear_switching: bool = false
 var rpm_ratio: SmoothedFloat = SmoothedFloat.new()
 
 func _ready() -> void:
 	car.set_param(&"input_accelerate", 0.0)
-	car.set_param(&"input_target_gear", 0)
+	car.set_param(&"input_gear_target", 0)
 	update_params()
 	update_gear_perfect_switch()
 
 func update_params():
 	car.set_param(&"top_speed", engine_top_speed)
 	car.set_param(&"gear_count", gearbox_gear_count)
-	car.set_param(&"current_gear", current_gear)
-	car.set_param(&"switching_gears", switching_gears)
+	car.set_param(&"gear_current", gear_current)
+	car.set_param(&"gear_switching", gear_switching)
 	car.set_param(&"gear_switch_timer", gear_switch_timer)
 	car.set_param(&"rpm_ratio", rpm_ratio.get_value())
 	car.set_param(&"rpm_curve", rpm_curve)
@@ -41,7 +41,7 @@ func update_params():
 func update_gear_perfect_switch():
 	var gear_perfect_switch: float = 0.0
 
-	if current_gear == 0:
+	if gear_current == 0 or is_zero_approx(car.get_param(&"ground_coefficient", 0.0)):
 		var rpm_curve_peak_value: float = 0.0
 		for i in range(0, rpm_curve.bake_resolution + 1):
 			var point_x: float = float(i) / rpm_curve.bake_resolution
@@ -51,7 +51,7 @@ func update_gear_perfect_switch():
 				gear_perfect_switch = point_x
 				rpm_curve_peak_value = point_y
 	else:
-		var current_next_ratio: float = max(float(current_gear), 1.0) / max(float(current_gear) + 1, 1.0)
+		var current_next_ratio: float = max(float(gear_current), 1.0) / max(float(gear_current) + 1, 1.0)
 		for i in range(0, rpm_curve.bake_resolution + 1):
 			var point_x_1: float = float(i) / rpm_curve.bake_resolution
 			var point_y_1: float = rpm_curve.sample_baked(point_x_1)
@@ -65,17 +65,17 @@ func update_gear_perfect_switch():
 	car.set_param(&"gear_perfect_switch", gear_perfect_switch)
 
 func update_gear(delta: float):
-	if target_gear != current_gear and not switching_gears:
-		switching_gears = true
-		if not current_gear == 0:
+	if gear_target != gear_current and not gear_switching:
+		gear_switching = true
+		if not gear_current == 0:
 			gear_switch_timer = gearbox_switch_time
-			if sign(current_gear) == -sign(target_gear):
+			if sign(gear_current) == -sign(gear_target):
 				gear_switch_timer *= 2.0
 
-	if gear_switch_timer <= 0.0 or target_gear == current_gear:
-		current_gear = target_gear
-		if switching_gears:
-			switching_gears = false
+	if gear_switch_timer <= 0.0 or gear_target == gear_current:
+		gear_current = gear_target
+		if gear_switching:
+			gear_switching = false
 			update_gear_perfect_switch()
 
 	if gear_switch_timer >= 0.0:
@@ -92,16 +92,16 @@ func update_rpm_ratio(input_accelerate: float, delta: float) -> void:
 	var local_linear_velocity: Vector3 = car.get_param(&"local_linear_velocity", Vector3.ZERO)
 	var ground_coefficient: float = car.get_param(&"ground_coefficient", 0.0)
 
-	if current_gear == 0 or is_zero_approx(ground_coefficient):
+	if gear_current == 0 or is_zero_approx(ground_coefficient):
 		target_rpm_ratio = lerp(rpm_min, rpm_max, input_accelerate)
-	elif switching_gears:
+	elif gear_switching:
 		target_rpm_ratio = rpm_min
 	else:
 		var speed_ratio = abs(local_linear_velocity.z) / engine_top_speed
 		var upper_limit: float = 1.0
-		if current_gear > 0 and current_gear < gearbox_gear_count:
-			upper_limit = calculate_gear_limit(current_gear)
-		elif current_gear < 0:
+		if gear_current > 0 and gear_current < gearbox_gear_count:
+			upper_limit = calculate_gear_limit(gear_current)
+		elif gear_current < 0:
 			upper_limit = 1.0 / gearbox_gear_count
 		target_rpm_ratio = clamp(remap(speed_ratio, 0.0, upper_limit, rpm_min, rpm_max), 0.0, 1.0)
 	# TODO: RPM limiter
@@ -111,9 +111,9 @@ func update_rpm_ratio(input_accelerate: float, delta: float) -> void:
 func calculate_acceleration_multiplier(speed_ratio: float) -> float:
 	var multiplier: float = 1.0
 	multiplier *= rpm_curve.sample_baked(rpm_ratio.get_value())
-	multiplier *= 1.0 - calculate_gear_limit(max(0.0, current_gear - 1))
+	multiplier *= 1.0 - calculate_gear_limit(max(0.0, gear_current - 1))
 
-	if current_gear < 0:
+	if gear_current < 0:
 		multiplier *= -1.0
 
 	if rpm_ratio.get_value() >= rpm_max:
@@ -127,19 +127,20 @@ func process_plugin(delta: float) -> void:
 	var input_handbrake: float = car.get_param(&"input_handbrake", 0.0)
 
 	var brake_value: float = max(input_brake, input_handbrake)
-	if current_gear != 0:
+	if gear_current != 0:
 		input_accelerate *= 1.0 - brake_value
 
-	target_gear = car.get_param(&"input_target_gear", 0)
+	gear_target = car.get_param(&"input_gear_target", 0)
 	update_params()
 	update_gear(delta)
 	update_rpm_ratio(input_accelerate, delta)
 
-	if switching_gears:
+	if gear_switching:
 		return
-	if current_gear == 0:
+	if gear_current == 0:
 		return
 	if is_zero_approx(car.get_param(&"ground_coefficient", 0.0)):
+		update_gear_perfect_switch()
 		return
 	if is_zero_approx(input_accelerate):
 		return
