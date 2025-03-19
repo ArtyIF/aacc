@@ -29,16 +29,16 @@ var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
 func calculate_steer(input_steer: float, input_handbrake: float, velocity_z_sign: float, delta: float) -> float:
 	var input_full_steer: float = input_handbrake if full_steer_on_handbrake else 0.0
-	if is_zero_approx(car.get_param(&"ground_coefficient", 1.0)):
+	if is_zero_approx(car.get_meta(&"ground_coefficient", 1.0)):
 		input_full_steer = 1.0
 	if full_steer_on_reverse and velocity_z_sign > 0:
 		input_full_steer = 1.0
 
 	# TODO: add an ability to have the car send the info somehow, otherwise this is delayed by a frame
-	var distance_between_wheels: float = car.get_param(&"distance_between_wheels", 1.0)
-	var steer_velocity_base: float = car.get_param(&"steer_velocity_base", 1.0)
-	var steer_velocity_target: float = car.get_param(&"steer_velocity_target", 1.0)
-	var velocity_z: float = abs(car.get_param(&"local_linear_velocity", Vector3.ZERO).z)
+	var distance_between_wheels: float = car.get_meta(&"distance_between_wheels", 1.0)
+	var steer_velocity_base: float = car.get_meta(&"steer_velocity_base", 1.0)
+	var steer_velocity_target: float = car.get_meta(&"steer_velocity_target", 1.0)
+	var velocity_z: float = abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).z)
 
 	var input_steer_multiplier: float = 1.0
 	if not always_full_steer:
@@ -46,8 +46,8 @@ func calculate_steer(input_steer: float, input_handbrake: float, velocity_z_sign
 		input_steer_multiplier = lerp(input_steer_multiplier, 1.0, input_full_steer)
 	var input_steer_converted: float = input_steer * input_steer_multiplier
 
-	smooth_steer.speed_up = min(desired_smooth_steer_speed, car.get_param(&"smooth_steer_max_speed", desired_smooth_steer_speed))
-	smooth_steer.speed_down = min(desired_smooth_steer_speed, car.get_param(&"smooth_steer_max_speed", desired_smooth_steer_speed))
+	smooth_steer.speed_up = min(desired_smooth_steer_speed, car.get_meta(&"smooth_steer_max_speed", desired_smooth_steer_speed))
+	smooth_steer.speed_down = min(desired_smooth_steer_speed, car.get_meta(&"smooth_steer_max_speed", desired_smooth_steer_speed))
 	smooth_steer.advance_to(input_steer_converted, delta)
 
 	return smooth_steer.get_value()
@@ -56,15 +56,15 @@ func calculate_gear_limit(gear: int, gear_count: int) -> float:
 	return float(gear) / gear_count
 
 func calculate_gear_target_auto(input_handbrake: float, velocity_z_sign: float) -> int:
-	var local_linear_velocity: Vector3 = car.get_param(&"local_linear_velocity", Vector3.ZERO)
-	var ground_coefficient: float = car.get_param(&"ground_coefficient", 1.0)
+	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
+	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 1.0)
 
-	var gear_current: int = car.get_param(&"gear_current", 0)
-	var top_speed: float = car.get_param(&"top_speed", 0.0)
-	var gear_count: int = car.get_param(&"gear_count", 0)
-	var current_gear_target: int = car.get_param(&"input_gear_target", 0)
+	var gear_current: int = car.get_meta(&"gear_current", 0)
+	var top_speed: float = car.get_meta(&"top_speed", 0.0)
+	var gear_count: int = car.get_meta(&"gear_count", 0)
+	var current_gear_target: int = car.get_meta(&"input_gear_target", 0)
 
-	if car.get_param(&"gear_switching", false):
+	if car.get_meta(&"gear_switching", false):
 		return current_gear_target
 
 	if (input_handbrake > 0.0 and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
@@ -80,8 +80,8 @@ func calculate_gear_target_auto(input_handbrake: float, velocity_z_sign: float) 
 
 	var forward_speed_ratio: float = abs(local_linear_velocity.z / top_speed)
 	# TODO: DRY
-	var gear_perfect_switch: float = car.get_param(&"gear_perfect_switch", 1.0)
-	var gear_perfect_switch_adjusted: float = inverse_lerp(car.get_param(&"rpm_min"), car.get_param(&"rpm_max"), gear_perfect_switch)
+	var gear_perfect_switch: float = car.get_meta(&"gear_perfect_switch", 1.0)
+	var gear_perfect_switch_adjusted: float = inverse_lerp(car.get_meta(&"rpm_min"), car.get_meta(&"rpm_max"), gear_perfect_switch)
 
 	var gear_limit: float = calculate_gear_limit(gear_current, gear_count)
 	var gear_limit_lower_offset: float = auto_trans_downshift_offset / top_speed
@@ -110,7 +110,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed(action_launch_toggle):
 		launch_control_engaged = not launch_control_engaged
 
-	var velocity_z_sign: float = car.get_param(&"velocity_z_sign", 0.0)
+	var velocity_z_sign: float = car.get_meta(&"velocity_z_sign", 0.0)
 	if is_zero_approx(velocity_z_sign):
 		if input_forward > 0.0 and is_zero_approx(input_backward):
 			velocity_z_sign = -1.0
@@ -122,37 +122,37 @@ func _physics_process(delta: float) -> void:
 			gear_target += 1
 		if Input.is_action_just_pressed(action_gear_down):
 			gear_target -= 1
-		gear_target = clampi(gear_target, -1, car.get_param(&"gear_count", 0))
+		gear_target = clampi(gear_target, -1, car.get_meta(&"gear_count", 0))
 		var launch_control_multiplier: float = 1.0
 		if gear_target == 0:
 			# TODO: DRY
 			if launch_control_engaged:
-				var gear_perfect_switch: float = car.get_param(&"gear_perfect_switch", 1.0)
-				launch_control_multiplier = inverse_lerp(car.get_param(&"rpm_min"), car.get_param(&"rpm_max"), gear_perfect_switch)
+				var gear_perfect_switch: float = car.get_meta(&"gear_perfect_switch", 1.0)
+				launch_control_multiplier = inverse_lerp(car.get_meta(&"rpm_min"), car.get_meta(&"rpm_max"), gear_perfect_switch)
 		else:
 			launch_control_engaged = false
-		car.set_param(&"input_accelerate", input_forward * launch_control_multiplier)
-		car.set_param(&"input_brake", input_backward)
+		car.set_meta(&"input_accelerate", input_forward * launch_control_multiplier)
+		car.set_meta(&"input_brake", input_backward)
 	else:
 		gear_target = calculate_gear_target_auto(input_handbrake, velocity_z_sign)
 		if gear_target > 0:
 			launch_control_engaged = false
-			car.set_param(&"input_accelerate", input_forward)
-			car.set_param(&"input_brake", input_backward)
+			car.set_meta(&"input_accelerate", input_forward)
+			car.set_meta(&"input_brake", input_backward)
 		elif gear_target < 0:
 			launch_control_engaged = false
-			car.set_param(&"input_accelerate", input_backward)
-			car.set_param(&"input_brake", input_forward)
+			car.set_meta(&"input_accelerate", input_backward)
+			car.set_meta(&"input_brake", input_forward)
 		else:
 			# TODO: DRY
 			var launch_control_multiplier: float = 1.0
 			if launch_control_engaged:
-				var gear_perfect_switch: float = car.get_param(&"gear_perfect_switch", 1.0)
-				launch_control_multiplier = inverse_lerp(car.get_param(&"rpm_min"), car.get_param(&"rpm_max"), gear_perfect_switch)
-			car.set_param(&"input_accelerate", max(input_forward, input_backward) * launch_control_multiplier)
-			car.set_param(&"input_brake", 1.0)
+				var gear_perfect_switch: float = car.get_meta(&"gear_perfect_switch", 1.0)
+				launch_control_multiplier = inverse_lerp(car.get_meta(&"rpm_min"), car.get_meta(&"rpm_max"), gear_perfect_switch)
+			car.set_meta(&"input_accelerate", max(input_forward, input_backward) * launch_control_multiplier)
+			car.set_meta(&"input_brake", 1.0)
 
-	car.set_param(&"input_gear_target", gear_target)
-	car.set_param(&"input_steer", calculate_steer(input_steer, input_handbrake, velocity_z_sign, delta))
-	car.set_param(&"input_handbrake", input_handbrake)
-	car.set_param(&"input_boost", input_boost)
+	car.set_meta(&"input_gear_target", gear_target)
+	car.set_meta(&"input_steer", calculate_steer(input_steer, input_handbrake, velocity_z_sign, delta))
+	car.set_meta(&"input_handbrake", input_handbrake)
+	car.set_meta(&"input_boost", input_boost)

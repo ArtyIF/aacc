@@ -23,7 +23,7 @@ func process_plugin(delta: float) -> void:
 		new_transform = new_transform.translated_local(suspension_translation)
 
 		if wheel_path in wheel_flags.keys() and wheel_flags[wheel_path] & WHEEL_FLAG_STEER:
-			var steer_rotation: float = -car.get_param(&"input_steer", 0.0) * car.get_param(&"steer_velocity_base", 0.0)
+			var steer_rotation: float = -car.get_meta(&"input_steer", 0.0) * car.get_meta(&"steer_velocity_base", 0.0)
 			# TODO: ackermann simulation
 			new_transform = new_transform.rotated_local(Vector3.UP, steer_rotation)
 

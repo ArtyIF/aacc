@@ -22,26 +22,26 @@ var gear_switching: bool = false
 var rpm_ratio: SmoothedFloat = SmoothedFloat.new()
 
 func _ready() -> void:
-	car.set_param(&"input_accelerate", 0.0)
-	car.set_param(&"input_gear_target", 0)
+	car.set_meta(&"input_accelerate", 0.0)
+	car.set_meta(&"input_gear_target", 0)
 	update_params()
 	update_gear_perfect_switch()
 
 func update_params():
-	car.set_param(&"top_speed", engine_top_speed)
-	car.set_param(&"gear_count", gearbox_gear_count)
-	car.set_param(&"gear_current", gear_current)
-	car.set_param(&"gear_switching", gear_switching)
-	car.set_param(&"gear_switch_timer", gear_switch_timer)
-	car.set_param(&"rpm_ratio", rpm_ratio.get_value())
-	car.set_param(&"rpm_curve", rpm_curve)
-	car.set_param(&"rpm_min", rpm_min)
-	car.set_param(&"rpm_max", rpm_max)
+	car.set_meta(&"top_speed", engine_top_speed)
+	car.set_meta(&"gear_count", gearbox_gear_count)
+	car.set_meta(&"gear_current", gear_current)
+	car.set_meta(&"gear_switching", gear_switching)
+	car.set_meta(&"gear_switch_timer", gear_switch_timer)
+	car.set_meta(&"rpm_ratio", rpm_ratio.get_value())
+	car.set_meta(&"rpm_curve", rpm_curve)
+	car.set_meta(&"rpm_min", rpm_min)
+	car.set_meta(&"rpm_max", rpm_max)
 
 func update_gear_perfect_switch():
 	var gear_perfect_switch: float = 0.0
 
-	if gear_current == 0 or is_zero_approx(car.get_param(&"ground_coefficient", 0.0)):
+	if gear_current == 0 or is_zero_approx(car.get_meta(&"ground_coefficient", 0.0)):
 		var rpm_curve_peak_value: float = 0.0
 		for i in range(0, rpm_curve.bake_resolution + 1):
 			var point_x: float = float(i) / rpm_curve.bake_resolution
@@ -62,7 +62,7 @@ func update_gear_perfect_switch():
 				gear_perfect_switch = point_x_1
 				break
 
-	car.set_param(&"gear_perfect_switch", gear_perfect_switch)
+	car.set_meta(&"gear_perfect_switch", gear_perfect_switch)
 
 func update_gear(delta: float):
 	if gear_target != gear_current and not gear_switching:
@@ -89,8 +89,8 @@ func update_rpm_ratio(input_accelerate: float, delta: float) -> void:
 	rpm_ratio.speed_down = rpm_speed_down
 
 	var target_rpm_ratio: float = 0.0
-	var local_linear_velocity: Vector3 = car.get_param(&"local_linear_velocity", Vector3.ZERO)
-	var ground_coefficient: float = car.get_param(&"ground_coefficient", 0.0)
+	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
+	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 0.0)
 
 	if gear_current == 0 or is_zero_approx(ground_coefficient):
 		target_rpm_ratio = lerp(rpm_min, rpm_max, input_accelerate)
@@ -122,15 +122,15 @@ func calculate_acceleration_multiplier(speed_ratio: float) -> float:
 	return multiplier
 
 func process_plugin(delta: float) -> void:
-	var input_accelerate: float = car.get_param(&"input_accelerate", 0.0)
-	var input_brake: float = car.get_param(&"input_brake", 0.0)
-	var input_handbrake: float = car.get_param(&"input_handbrake", 0.0)
+	var input_accelerate: float = car.get_meta(&"input_accelerate", 0.0)
+	var input_brake: float = car.get_meta(&"input_brake", 0.0)
+	var input_handbrake: float = car.get_meta(&"input_handbrake", 0.0)
 
 	var brake_value: float = max(input_brake, input_handbrake)
 	if gear_current != 0:
 		input_accelerate *= 1.0 - brake_value
 
-	gear_target = car.get_param(&"input_gear_target", 0)
+	gear_target = car.get_meta(&"input_gear_target", 0)
 	update_params()
 	update_gear(delta)
 	update_rpm_ratio(input_accelerate, delta)
@@ -139,13 +139,13 @@ func process_plugin(delta: float) -> void:
 		return
 	if gear_current == 0:
 		return
-	if is_zero_approx(car.get_param(&"ground_coefficient", 0.0)):
+	if is_zero_approx(car.get_meta(&"ground_coefficient", 0.0)):
 		update_gear_perfect_switch()
 		return
 	if is_zero_approx(input_accelerate):
 		return
 
-	var acceleration_multiplier: float = calculate_acceleration_multiplier(abs(car.get_param(&"local_linear_velocity", Vector3.ZERO).z) / engine_top_speed)
+	var acceleration_multiplier: float = calculate_acceleration_multiplier(abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).z) / engine_top_speed)
 	var force: float = input_accelerate * engine_force * acceleration_multiplier
 	if is_zero_approx(force):
 		return

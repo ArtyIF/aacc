@@ -2,17 +2,6 @@ class_name Car extends RigidBody3D
 
 # TODO: add an editor tool to compile plugins into one script for optimization
 
-#region Params
-func set_param(param_name: StringName, new_value: Variant):
-	set_meta(param_name, new_value)
-
-func get_param(param_name: StringName, default_value: Variant = null) -> Variant:
-	return get_meta(param_name, default_value)
-
-func remove_param(param_name: StringName):
-	remove_meta(param_name)
-#endregion Params
-
 #region Forces
 class Force:
 	var force: Vector3 = Vector3.ZERO

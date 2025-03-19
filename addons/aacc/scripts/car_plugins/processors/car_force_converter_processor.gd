@@ -33,7 +33,7 @@ func _ready() -> void:
 	pass
 
 func process_plugin(delta: float) -> void:
-	if is_zero_approx(car.get_param(&"ground_coefficient", 0.0)):
+	if is_zero_approx(car.get_meta(&"ground_coefficient", 0.0)):
 		return
 
 	var sum_of_forces: Vector3 = Vector3.ZERO
@@ -44,20 +44,20 @@ func process_plugin(delta: float) -> void:
 	# TODO: add ability to only apply some of those conversions
 	var reduced_grip: float = 1.0
 	if reduced_grip_curve:
-		reduced_grip = reduced_grip_curve.sample(abs(car.get_param(&"local_linear_velocity", Vector3.ZERO).x))
+		reduced_grip = reduced_grip_curve.sample(abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).x))
 
 	var converted_force: Vector3 = sum_of_forces
 	if reduced_grip_limit_x_force:
 		converted_force.x = clamp(converted_force.x, -grip_linear * reduced_grip, grip_linear * reduced_grip)
 	converted_force = car.global_basis * converted_force
-	converted_force = converted_force.slide(car.get_param(&"ground_average_normal", Vector3.ZERO))
+	converted_force = converted_force.slide(car.get_meta(&"ground_average_normal", Vector3.ZERO))
 
-	var force_length_limit: float = grip_linear * car.get_param(&"ground_coefficient", 0.0)
+	var force_length_limit: float = grip_linear * car.get_meta(&"ground_coefficient", 0.0)
 	if reduced_grip_apply_to_forces:
 		force_length_limit *= reduced_grip
 	converted_force = converted_force.limit_length(force_length_limit)
 
-	car.set_force(&"converted_force", converted_force, false, car.get_param(&"ground_average_point", Vector3.ZERO) - car.global_position)
+	car.set_force(&"converted_force", converted_force, false, car.get_meta(&"ground_average_point", Vector3.ZERO) - car.global_position)
 
 	var sum_of_torques: Vector3 = Vector3.ZERO
 	for torque in car.get_torque_list():
@@ -66,9 +66,9 @@ func process_plugin(delta: float) -> void:
 
 	var converted_torque: Vector3 = sum_of_torques
 	converted_torque = car.global_basis * converted_torque
-	converted_torque = converted_torque.project(car.get_param(&"ground_average_normal", Vector3.ZERO))
+	converted_torque = converted_torque.project(car.get_meta(&"ground_average_normal", Vector3.ZERO))
 
-	var torque_length_limit: float = grip_angular * car.get_param(&"ground_coefficient", 0.0)
+	var torque_length_limit: float = grip_angular * car.get_meta(&"ground_coefficient", 0.0)
 	if reduced_grip_apply_to_torques:
 		torque_length_limit *= reduced_grip
 	converted_torque = converted_torque.limit_length(torque_length_limit)
