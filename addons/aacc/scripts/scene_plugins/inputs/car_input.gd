@@ -87,6 +87,7 @@ func calculate_target_gear_auto(input_handbrake: float, velocity_z_sign: float) 
 	var gear_limit_lower_offset: float = auto_trans_downshift_offset / top_speed
 	var gear_limit_lower: float = calculate_gear_limit(current_gear - 1, gear_count) - gear_limit_lower_offset
 
+	# TODO: use rpm
 	if forward_speed_ratio < gear_limit_lower * gear_perfect_switch_adjusted and current_target_gear > 0:
 		return current_gear - 1
 	if forward_speed_ratio > gear_limit * gear_perfect_switch_adjusted and current_target_gear < gear_count:
@@ -149,7 +150,7 @@ func _physics_process(delta: float) -> void:
 				var gear_perfect_switch: float = car.get_param(&"gear_perfect_switch", 1.0)
 				launch_control_multiplier = inverse_lerp(car.get_param(&"rpm_min"), car.get_param(&"rpm_max"), gear_perfect_switch)
 			car.set_param(&"input_accelerate", max(input_forward, input_backward) * launch_control_multiplier)
-			car.set_param(&"input_brake", 0.0)
+			car.set_param(&"input_brake", 1.0)
 
 	car.set_param(&"input_target_gear", target_gear)
 	car.set_param(&"input_steer", calculate_steer(input_steer, input_handbrake, velocity_z_sign, delta))

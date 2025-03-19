@@ -15,7 +15,6 @@ class_name CarEngine extends CarPluginBase
 @export var rpm_speed_up: float = 1.0
 @export var rpm_speed_down: float = 0.5
 
-var rpm_curve_peak: float = 1.0
 var current_gear: int = 0
 var target_gear: int = 0
 var switching_gears: bool = false
@@ -40,29 +39,44 @@ func update_params():
 	car.set_param(&"rpm_max", rpm_max)
 
 func update_gear_perfect_switch():
-	rpm_curve_peak = rpm_curve.min_domain
-	var rpm_curve_peak_value: float = rpm_curve.min_value
-	for i in range(0, rpm_curve.bake_resolution + 1):
-		var point: float = float(i) / rpm_curve.bake_resolution
-		if rpm_curve.sample_baked(point) > rpm_curve_peak_value:
-			rpm_curve_peak = point
-			rpm_curve_peak_value = rpm_curve.sample_baked(point)
-	car.set_param(&"gear_perfect_switch", rpm_curve_peak)
+	var gear_perfect_switch: float = 0.0
 
-	# TODO: calculate best gear switch time based on:
-	# https://www.yourdatadriven.com/the-best-rpm-to-shift-gears-in-a-racing-car/
-	# pretty simple, stretch the RPM curves and find intersections (max value
-	# changes to a different curve's value)
+	if current_gear == 0:
+		var rpm_curve_peak_value: float = 0.0
+		for i in range(0, rpm_curve.bake_resolution + 1):
+			var point_x: float = float(i) / rpm_curve.bake_resolution
+			var point_y: float = rpm_curve.sample_baked(point_x)
+
+			if point_y >= rpm_curve_peak_value:
+				gear_perfect_switch = point_x
+				rpm_curve_peak_value = point_y
+	else:
+		var current_next_ratio: float = max(float(current_gear), 1.0) / max(float(current_gear) + 1, 1.0)
+		for i in range(0, rpm_curve.bake_resolution + 1):
+			var point_x_1: float = float(i) / rpm_curve.bake_resolution
+			var point_y_1: float = rpm_curve.sample_baked(point_x_1)
+			var point_x_2: float = float(i) * current_next_ratio / rpm_curve.bake_resolution
+			var point_y_2: float = rpm_curve.sample_baked(point_x_2) * current_next_ratio
+
+			if point_y_2 >= point_y_1 and point_y_1 > 0.0 and point_y_2 > 0.0:
+				gear_perfect_switch = point_x_1
+				break
+
+	car.set_param(&"gear_perfect_switch", gear_perfect_switch)
 
 func update_gear(delta: float):
-	# TODO: think out the behavior for current and target gear comparison
-	if target_gear != current_gear and not switching_gears and sign(current_gear) == sign(target_gear):
-		gear_switch_timer = gearbox_switch_time
+	if target_gear != current_gear and not switching_gears:
 		switching_gears = true
+		if not current_gear == 0:
+			gear_switch_timer = gearbox_switch_time
+			if sign(current_gear) == -sign(target_gear):
+				gear_switch_timer *= 2.0
 
 	if gear_switch_timer <= 0.0 or target_gear == current_gear:
 		current_gear = target_gear
-		switching_gears = false
+		if switching_gears:
+			switching_gears = false
+			update_gear_perfect_switch()
 
 	if gear_switch_timer >= 0.0:
 		gear_switch_timer -= delta
@@ -117,10 +131,9 @@ func process_plugin(delta: float) -> void:
 		input_accelerate *= 1.0 - brake_value
 
 	target_gear = car.get_param(&"input_target_gear", 0)
+	update_params()
 	update_gear(delta)
 	update_rpm_ratio(input_accelerate, delta)
-
-	update_params()
 
 	if switching_gears:
 		return

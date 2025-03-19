@@ -7,6 +7,7 @@ func process_plugin(delta: float) -> void:
 	if is_zero_approx(car.get_param(&"ground_coefficient", 0.0)):
 		return
 
+	# TODO: use RPM limiter status
 	var local_linear_velocity: Vector3 = car.get_param(&"local_linear_velocity", Vector3.ZERO)
 	var top_speed: float = car.get_param(&"top_speed", 0.0)
 	var gear_count: int = car.get_param(&"gear_count", 1)
