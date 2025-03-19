@@ -15,7 +15,7 @@ func _process(_delta: float) -> void:
 	label.append_text("Scene Plugins")
 	label.pop()
 	label.push_cell()
-	label.append_text("Types")
+	label.append_text("Type")
 	label.pop()
 	for plugin in AACCGlobal.scene_plugins.keys():
 		label.push_cell()
@@ -42,7 +42,7 @@ func _process(_delta: float) -> void:
 	label.append_text("Car Plugins")
 	label.pop()
 	label.push_cell()
-	label.append_text("Types")
+	label.append_text("Type")
 	label.pop()
 	for plugin in AACCGlobal.car.plugins_list:
 		label.push_cell()
@@ -56,17 +56,17 @@ func _process(_delta: float) -> void:
 
 	label.push_table(2)
 	label.push_cell()
-	label.append_text("Params")
+	label.append_text("Metadata")
 	label.pop()
 	label.push_cell()
-	label.append_text("Values")
+	label.append_text("Value")
 	label.pop()
-	for param: StringName in AACCGlobal.car.get_meta_list():
+	for meta: StringName in AACCGlobal.car.get_meta_list():
 		label.push_cell()
-		label.append_text(param)
+		label.append_text(meta)
 		label.pop()
 		label.push_cell()
-		label.append_text(str(AACCGlobal.car.get_meta(param)))
+		label.append_text(str(AACCGlobal.car.get_meta(meta)))
 		label.pop()
 	label.pop()
 	label.append_text("\n")
@@ -76,10 +76,10 @@ func _process(_delta: float) -> void:
 	label.append_text("Forces")
 	label.pop()
 	label.push_cell()
-	label.append_text("Values")
+	label.append_text("Value")
 	label.pop()
 	label.push_cell()
-	label.append_text("Offsets")
+	label.append_text("Offset")
 	label.pop()
 	for force: String in AACCGlobal.car.get_force_list():
 		label.push_cell()
@@ -111,7 +111,7 @@ func _process(_delta: float) -> void:
 	label.append_text("Torques")
 	label.pop()
 	label.push_cell()
-	label.append_text("Values")
+	label.append_text("Value")
 	label.pop()
 	for torque: String in AACCGlobal.car.get_torque_list():
 		label.push_cell()

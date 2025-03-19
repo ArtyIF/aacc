@@ -24,10 +24,10 @@ var rpm_ratio: SmoothedFloat = SmoothedFloat.new()
 func _ready() -> void:
 	car.set_meta(&"input_accelerate", 0.0)
 	car.set_meta(&"input_gear_target", 0)
-	update_params()
+	update_car_meta()
 	update_gear_perfect_switch()
 
-func update_params():
+func update_car_meta():
 	car.set_meta(&"top_speed", engine_top_speed)
 	car.set_meta(&"gear_count", gearbox_gear_count)
 	car.set_meta(&"gear_current", gear_current)
@@ -131,7 +131,7 @@ func process_plugin(delta: float) -> void:
 		input_accelerate *= 1.0 - brake_value
 
 	gear_target = car.get_meta(&"input_gear_target", 0)
-	update_params()
+	update_car_meta()
 	update_gear(delta)
 	update_rpm_ratio(input_accelerate, delta)
 
