@@ -128,7 +128,7 @@ func _physics_process(delta: float) -> void:
 			# TODO: DRY
 			if launch_control_engaged:
 				var gear_perfect_switch: float = car.get_meta(&"gear_perfect_switch", 1.0)
-				launch_control_multiplier = inverse_lerp(car.get_meta(&"rpm_min"), car.get_meta(&"rpm_max"), gear_perfect_switch)
+				launch_control_multiplier = inverse_lerp(car.get_meta(&"rpm_min"), 1.0, gear_perfect_switch)
 		else:
 			launch_control_engaged = false
 		car.set_meta(&"input_accelerate", input_forward * launch_control_multiplier)
@@ -148,7 +148,7 @@ func _physics_process(delta: float) -> void:
 			var launch_control_multiplier: float = 1.0
 			if launch_control_engaged:
 				var gear_perfect_switch: float = car.get_meta(&"gear_perfect_switch", 1.0)
-				launch_control_multiplier = inverse_lerp(car.get_meta(&"rpm_min"), car.get_meta(&"rpm_max"), gear_perfect_switch)
+				launch_control_multiplier = inverse_lerp(car.get_meta(&"rpm_min"), 1.0, gear_perfect_switch)
 			car.set_meta(&"input_accelerate", max(input_forward, input_backward) * launch_control_multiplier)
 			car.set_meta(&"input_brake", 1.0)
 

@@ -1,11 +1,13 @@
 class_name CarWheelsProcessor extends CarPluginBase
 
 @export_custom(PROPERTY_HINT_ARRAY_TYPE, "22/26:CarWheelSuspension") var wheels: Array[NodePath] = []
+var ground_coefficient_prev: float = 0.0
 
 func _ready() -> void:
 	car.set_meta(&"ground_average_point", Vector3.ZERO)
 	car.set_meta(&"ground_average_normal", Vector3.ZERO)
 	car.set_meta(&"ground_coefficient", 0.0)
+	car.set_meta(&"ground_coefficient_prev", 0.0)
 
 func process_plugin(delta: float) -> void:
 	var total_landed: int = 0
@@ -31,3 +33,5 @@ func process_plugin(delta: float) -> void:
 	car.set_meta(&"ground_average_point", average_point)
 	car.set_meta(&"ground_average_normal", average_normal)
 	car.set_meta(&"ground_coefficient", ground_coefficient)
+	car.set_meta(&"ground_coefficient_prev", ground_coefficient_prev)
+	ground_coefficient_prev = ground_coefficient
