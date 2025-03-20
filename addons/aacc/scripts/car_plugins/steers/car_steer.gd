@@ -16,8 +16,9 @@ var old_input_handbrake: bool = false
 
 func _ready() -> void:
 	car.set_meta(&"input_steer", 0.0)
+	update_meta()
 
-	# TODO: DRY
+func update_meta():
 	car.set_meta(&"distance_between_wheels", distance_between_wheels)
 	car.set_meta(&"steer_velocity_base", steer_velocity_base)
 	car.set_meta(&"steer_velocity_target", steer_velocity_target)
@@ -27,11 +28,7 @@ func process_plugin(delta: float) -> void:
 	if is_zero_approx(car.get_meta(&"ground_coefficient", 0.0)):
 		return
 
-	# TODO: DRY
-	car.set_meta(&"distance_between_wheels", distance_between_wheels)
-	car.set_meta(&"steer_velocity_base", steer_velocity_base)
-	car.set_meta(&"steer_velocity_target", steer_velocity_target)
-	car.set_meta(&"smooth_steer_max_speed", smooth_steer_max_speed)
+	update_meta()
 
 	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
 	var local_angular_velocity: Vector3 = car.get_meta(&"local_angular_velocity", Vector3.ZERO)

@@ -12,6 +12,4 @@ to use them!
 
 ## Dependencies
 - Godot 4.4+
-- [Hydraboo's TrailRenderer](https://github.com/Hyrdaboo/TrailRenderer)
-  for skid trails
 - Blender 3.5 or later (3.0-3.4 might also work) for the demo

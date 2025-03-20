@@ -26,10 +26,10 @@ var rpm_limiter: bool = false
 func _ready() -> void:
 	car.set_meta(&"input_accelerate", 0.0)
 	car.set_meta(&"input_gear_target", 0)
-	update_car_meta()
+	update_meta()
 	update_gear_perfect_switch()
 
-func update_car_meta():
+func update_meta():
 	car.set_meta(&"top_speed", engine_top_speed)
 	car.set_meta(&"gear_count", gearbox_gear_count)
 	car.set_meta(&"gear_current", gear_current)
@@ -131,7 +131,7 @@ func process_plugin(delta: float) -> void:
 	gear_target = car.get_meta(&"input_gear_target", 0)
 	update_gear(delta)
 	update_rpm_ratio(input_accelerate, delta)
-	update_car_meta()
+	update_meta()
 
 	if rpm_ratio.get_value() >= rpm_max:
 		rpm_limiter = true
