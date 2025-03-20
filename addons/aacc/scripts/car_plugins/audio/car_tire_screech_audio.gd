@@ -15,13 +15,14 @@ func _ready() -> void:
 	player.pitch_scale = pitch_range.x
 
 func _physics_process(delta: float) -> void:
-	if is_zero_approx(car.get_meta(&"ground_coefficient", 0.0)):
-		player.stop()
-		return
 
 	# TODO: burnout amount plugin
-	smooth_burnout_amount_volume.advance_to(clamp(abs(car.get_meta(&"local_linear_velocity").x) / 5.0, 0.0, 1.0), delta)
-	smooth_burnout_amount_pitch.advance_to(clamp(abs(car.get_meta(&"local_linear_velocity").x) / 5.0, 0.0, 1.0), delta)
+	if car.get_meta(&"ground_coefficient", 0.0) > 0.0:
+		smooth_burnout_amount_volume.advance_to(clamp(abs(car.get_meta(&"local_linear_velocity").x) / 5.0, 0.0, 1.0), delta)
+		smooth_burnout_amount_pitch.advance_to(clamp(abs(car.get_meta(&"local_linear_velocity").x) / 5.0, 0.0, 1.0), delta)
+	else:
+		smooth_burnout_amount_volume.advance_to(0.0, delta)
+		smooth_burnout_amount_pitch.advance_to(0.0, delta)
 
 	# TODO: screech sound on landing (separate plugin?)
 
