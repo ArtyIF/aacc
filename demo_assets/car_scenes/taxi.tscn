@@ -99,29 +99,33 @@ metadata/_custom_type_script = "uid://cudk564mgmydg"
 [node name="WheelFL" type="Node3D" parent="Plugins/Wheels"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
-suspension_spring = 30000.0
-suspension_damper = 2000.0
+wheel_width = 0.25
+suspension_spring = 15000.0
+suspension_damper = 500.0
 metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
 [node name="WheelFR" type="Node3D" parent="Plugins/Wheels"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
-suspension_spring = 30000.0
-suspension_damper = 2000.0
+wheel_width = 0.25
+suspension_spring = 15000.0
+suspension_damper = 500.0
 metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
 [node name="WheelBL" type="Node3D" parent="Plugins/Wheels"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
-suspension_spring = 30000.0
-suspension_damper = 2000.0
+wheel_width = 0.25
+suspension_spring = 15000.0
+suspension_damper = 500.0
 metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
 [node name="WheelBR" type="Node3D" parent="Plugins/Wheels"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
-suspension_spring = 30000.0
-suspension_damper = 2000.0
+wheel_width = 0.25
+suspension_spring = 15000.0
+suspension_damper = 500.0
 metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
 [node name="WheelsProcessor" type="Node3D" parent="Plugins"]

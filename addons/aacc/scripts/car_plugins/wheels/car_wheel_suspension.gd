@@ -2,7 +2,6 @@ class_name CarWheelSuspension extends CarPluginBase
 
 @export_group("Shape", "wheel_")
 @export var wheel_radius: float = 0.3
-@export var wheel_buffer_radius: float = 0.3
 @export var wheel_width: float = 0.3
 @export_flags_3d_physics var wheel_collision_mask: int = 1
 
@@ -28,7 +27,8 @@ func _ready() -> void:
 	configure_raycasts()
 
 func configure_raycasts() -> void:
-	raycast_instance.target_position = (Vector3.DOWN * (wheel_radius + suspension_length + wheel_buffer_radius))
+	raycast_instance.position = Vector3.RIGHT * wheel_width
+	raycast_instance.target_position = (Vector3.DOWN * (wheel_radius + suspension_length))
 	raycast_instance.enabled = true
 	raycast_instance.hit_from_inside = false
 	raycast_instance.hit_back_faces = false

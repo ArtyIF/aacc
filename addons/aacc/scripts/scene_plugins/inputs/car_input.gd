@@ -64,9 +64,6 @@ func calculate_gear_target_auto(input_handbrake: float, velocity_z_sign: float) 
 	var gear_count: int = car.get_meta(&"gear_count", 0)
 	var current_gear_target: int = car.get_meta(&"input_gear_target", 0)
 
-	if car.get_meta(&"gear_switching", false):
-		return current_gear_target
-
 	if (input_handbrake > 0.0 and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
 		return gear_current
 	if input_handbrake > 0.0 and local_linear_velocity.length() < 0.25:
