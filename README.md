@@ -1,4 +1,4 @@
-# Arty's Arcadey Car Controller
+# AACC
 
 A very work-in-progress car controller. Includes a very basic demo.
 
