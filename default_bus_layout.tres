@@ -1,26 +1,49 @@
-[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://dlvooltmwt87l"]
+[gd_resource type="AudioBusLayout" load_steps=3 format=3 uid="uid://dlvooltmwt87l"]
 
 [sub_resource type="AudioEffectHardLimiter" id="AudioEffectHardLimiter_uymns"]
 resource_name = "HardLimiter"
+ceiling_db = -6.0
+release = 1.0
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_j3pel"]
+resource_name = "Reverb"
+predelay_msec = 50.0
+room_size = 0.1
+damping = 0.0
+wet = 0.1
 
 [resource]
 bus/0/effect/0/effect = SubResource("AudioEffectHardLimiter_uymns")
 bus/0/effect/0/enabled = true
-bus/1/name = &"SFX"
+bus/1/name = &"Diegetic"
 bus/1/solo = false
 bus/1/mute = false
 bus/1/bypass_fx = false
 bus/1/volume_db = 0.0
-bus/1/send = &"Compressor"
-bus/2/name = &"Engine"
+bus/1/send = &"Master"
+bus/1/effect/0/effect = SubResource("AudioEffectReverb_j3pel")
+bus/1/effect/0/enabled = true
+bus/2/name = &"Background"
 bus/2/solo = false
 bus/2/mute = false
 bus/2/bypass_fx = false
 bus/2/volume_db = 0.0
-bus/2/send = &"SFX"
-bus/3/name = &"UI"
+bus/2/send = &"Diegetic"
+bus/3/name = &"SFX"
 bus/3/solo = false
 bus/3/mute = false
 bus/3/bypass_fx = false
 bus/3/volume_db = 0.0
-bus/3/send = &"Master"
+bus/3/send = &"Diegetic"
+bus/4/name = &"Engine"
+bus/4/solo = false
+bus/4/mute = false
+bus/4/bypass_fx = false
+bus/4/volume_db = 0.0
+bus/4/send = &"Diegetic"
+bus/5/name = &"UI"
+bus/5/solo = false
+bus/5/mute = false
+bus/5/bypass_fx = false
+bus/5/volume_db = 0.0
+bus/5/send = &"Master"

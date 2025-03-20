@@ -4,8 +4,9 @@
 
 [node name="EngineAudio" type="AudioStreamPlayer3D"]
 stream = ExtResource("1_nc3lg")
+max_db = 0.0
 autoplay = true
 bus = &"Engine"
 playback_type = 1
 attenuation_filter_cutoff_hz = 10000.0
-doppler_tracking = 1
+doppler_tracking = 2

@@ -135,22 +135,6 @@ downforce = 20000.0
 downforce_speed_curve = SubResource("Resource_4f48m")
 metadata/_custom_type_script = "uid://i723lqbcm7qo"
 
-[node name="WheelVisuals" type="Node3D" parent="Plugins"]
-script = ExtResource("14_n1pdp")
-wheel_meshes = Dictionary[NodePath, NodePath]({
-NodePath("../WheelFL"): NodePath("../../Visuals/wheel-front-left"),
-NodePath("../WheelFR"): NodePath("../../Visuals/wheel-front-right"),
-NodePath("../WheelBL"): NodePath("../../Visuals/wheel-back-left"),
-NodePath("../WheelBR"): NodePath("../../Visuals/wheel-back-right")
-})
-wheel_flags = Dictionary[NodePath, int]({
-NodePath("../WheelFL"): 5,
-NodePath("../WheelFR"): 5,
-NodePath("../WheelBL"): 2,
-NodePath("../WheelBR"): 2
-})
-metadata/_custom_type_script = "uid://cgyn0v8p7gfu6"
-
 [node name="Brake" type="Node3D" parent="Plugins"]
 script = ExtResource("7_dm0ij")
 metadata/_custom_type_script = "uid://v0cpq7q6mjou"
@@ -160,7 +144,6 @@ script = ExtResource("4_pq6ol")
 engine_force = 15000.0
 gearbox_switch_time = 0.5
 rpm_curve = SubResource("Curve_1amw3")
-rpm_speed_up = 0.5
 rpm_speed_down = 0.25
 metadata/_custom_type_script = "uid://bvfqai7uunpc3"
 
@@ -202,7 +185,27 @@ metadata/_custom_type_script = "uid://b1lao6jpcowsa"
 script = ExtResource("17_1amw3")
 metadata/_custom_type_script = "uid://bejoolwrgdt81"
 
-[node name="EngineAudio" type="Node3D" parent="Plugins"]
+[node name="Visuals" type="Node3D" parent="Plugins"]
+
+[node name="WheelVisuals" type="Node3D" parent="Plugins/Visuals"]
+script = ExtResource("14_n1pdp")
+wheel_meshes = Dictionary[NodePath, NodePath]({
+NodePath("../../WheelFL"): NodePath("../../../Visuals/wheel-front-left"),
+NodePath("../../WheelFR"): NodePath("../../../Visuals/wheel-front-right"),
+NodePath("../../WheelBL"): NodePath("../../../Visuals/wheel-back-left"),
+NodePath("../../WheelBR"): NodePath("../../../Visuals/wheel-back-right")
+})
+wheel_flags = Dictionary[NodePath, int]({
+NodePath("../../WheelFL"): 5,
+NodePath("../../WheelFR"): 5,
+NodePath("../../WheelBL"): 2,
+NodePath("../../WheelBR"): 2
+})
+metadata/_custom_type_script = "uid://cgyn0v8p7gfu6"
+
+[node name="Audio" type="Node3D" parent="Plugins"]
+
+[node name="EngineAudio" type="Node3D" parent="Plugins/Audio"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, -0.8)
 script = ExtResource("19_wyo5d")
 max_pitch = 1.2

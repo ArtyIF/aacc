@@ -73,8 +73,6 @@ func update_gear(delta: float):
 		gear_switching = true
 		if not gear_current == 0:
 			gear_switch_timer = gearbox_switch_time
-			if sign(gear_current) == -sign(gear_target):
-				gear_switch_timer *= 2.0
 
 	if gear_switch_timer <= 0.0 or gear_target == gear_current:
 		gear_current = gear_target

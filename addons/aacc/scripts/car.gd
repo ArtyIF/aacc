@@ -50,18 +50,7 @@ func get_torque_list() -> Array[StringName]:
 	return torques.keys()
 #endregion Torques
 
-#region Plugins
 var plugins_list: Array[CarPluginBase] = []
-
-func update_plugins():
-	plugins_list.clear()
-	for child in $"Plugins".get_children():
-		if child is CarPluginBase:
-			plugins_list.append(child)
-#endregion Plugins
-
-func _ready() -> void:
-	update_plugins()
 
 func _physics_process(delta: float) -> void:
 	if freeze:
