@@ -55,6 +55,38 @@ func calculate_steer(input_steer: float, input_handbrake: float, velocity_z_sign
 func calculate_gear_limit(gear: int, gear_count: int) -> float:
 	return float(gear) / gear_count
 
+# TODO: return range instead of one value
+# TODO: threshold for comparison
+func get_gear_perfect_switch(rpm_min: float = 0.0, rpm_max: float = 1.0) -> float:
+	var gear_perfect_switch: float = 0.0
+
+	var gear_current: int = car.get_meta(&"gear_current", 0)
+	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 0.0)
+	var rpm_curve: Curve = car.get_meta(&"rpm_curve")
+
+	if gear_current == 0 or is_zero_approx(ground_coefficient):
+		var rpm_curve_peak_value: float = 0.0
+		for i in range(0, rpm_curve.bake_resolution + 1):
+			var point_x: float = float(i) / rpm_curve.bake_resolution
+			var point_y: float = rpm_curve.sample_baked(point_x)
+
+			if point_y >= rpm_curve_peak_value:
+				gear_perfect_switch = point_x
+				rpm_curve_peak_value = point_y
+	else:
+		var current_next_ratio: float = max(float(gear_current), 1.0) / max(float(gear_current) + 1, 1.0)
+		for i in range(0, rpm_curve.bake_resolution + 1):
+			var point_x_1: float = float(i) / rpm_curve.bake_resolution
+			var point_y_1: float = rpm_curve.sample_baked(point_x_1)
+			var point_x_2: float = float(i) * current_next_ratio / rpm_curve.bake_resolution
+			var point_y_2: float = rpm_curve.sample_baked(point_x_2) * current_next_ratio
+
+			if point_y_2 >= point_y_1 and point_y_1 > 0.0 and point_y_2 > 0.0:
+				gear_perfect_switch = point_x_1
+				break
+
+	return inverse_lerp(rpm_min, rpm_max, gear_perfect_switch)
+
 func calculate_gear_target_auto(input_handbrake: float, velocity_z_sign: float) -> int:
 	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
 	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 1.0)
@@ -76,18 +108,16 @@ func calculate_gear_target_auto(input_handbrake: float, velocity_z_sign: float) 
 		return -velocity_z_sign
 
 	var forward_speed_ratio: float = abs(local_linear_velocity.z / top_speed)
-	# TODO: DRY
-	var gear_perfect_switch: float = car.get_meta(&"gear_perfect_switch", 1.0)
-	var gear_perfect_switch_adjusted: float = inverse_lerp(car.get_meta(&"rpm_min"), car.get_meta(&"rpm_max"), gear_perfect_switch)
 
 	var gear_limit: float = calculate_gear_limit(gear_current, gear_count)
 	var gear_limit_lower_offset: float = auto_trans_downshift_offset / top_speed
 	var gear_limit_lower: float = calculate_gear_limit(gear_current - 1, gear_count) - gear_limit_lower_offset
+	var gear_perfect_switch: float = get_gear_perfect_switch(car.get_meta(&"rpm_min"), car.get_meta(&"rpm_max"))
 
 	# TODO: use rpm
-	if forward_speed_ratio < gear_limit_lower * gear_perfect_switch_adjusted and current_gear_target > 0:
+	if forward_speed_ratio < gear_limit_lower * gear_perfect_switch and current_gear_target > 0:
 		return gear_current - 1
-	if forward_speed_ratio > gear_limit * gear_perfect_switch_adjusted and current_gear_target < gear_count:
+	if forward_speed_ratio > gear_limit * gear_perfect_switch and current_gear_target < gear_count:
 		return gear_current + 1
 
 	return current_gear_target
@@ -120,14 +150,15 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed(action_gear_down):
 			gear_target -= 1
 		gear_target = clampi(gear_target, -1, car.get_meta(&"gear_count", 0))
+	
+		# TODO: DRY
 		var launch_control_multiplier: float = 1.0
 		if gear_target == 0:
-			# TODO: DRY
 			if launch_control_engaged:
-				var gear_perfect_switch: float = car.get_meta(&"gear_perfect_switch", 1.0)
-				launch_control_multiplier = inverse_lerp(car.get_meta(&"rpm_min"), 1.0, gear_perfect_switch)
+				launch_control_multiplier = get_gear_perfect_switch(car.get_meta(&"rpm_min"), 1.0)
 		else:
 			launch_control_engaged = false
+	
 		car.set_meta(&"input_accelerate", input_forward * launch_control_multiplier)
 		car.set_meta(&"input_brake", input_backward)
 	else:
@@ -144,8 +175,7 @@ func _physics_process(delta: float) -> void:
 			# TODO: DRY
 			var launch_control_multiplier: float = 1.0
 			if launch_control_engaged:
-				var gear_perfect_switch: float = car.get_meta(&"gear_perfect_switch", 1.0)
-				launch_control_multiplier = inverse_lerp(car.get_meta(&"rpm_min"), 1.0, gear_perfect_switch)
+				launch_control_multiplier = get_gear_perfect_switch(car.get_meta(&"rpm_min"), 1.0)
 			car.set_meta(&"input_accelerate", max(input_forward, input_backward) * launch_control_multiplier)
 			car.set_meta(&"input_brake", 1.0 if is_zero_approx(input_boost) else 0.0)
 

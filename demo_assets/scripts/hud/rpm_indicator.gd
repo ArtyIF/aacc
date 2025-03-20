@@ -24,8 +24,9 @@ func _draw() -> void:
 						points_next.append(Vector2(point_x * size.x / current_next_ratio, (1.0 - point_y) * size.y))
 					draw_polyline(points_next, Color.YELLOW, 1.0, true)
 
+			var car_input: CarInput = AACCGlobal.get_plugin(&"CarInput")
 			if (gear_current >= 0 and gear_current < AACCGlobal.car.get_meta(&"gear_count", 0)) or is_zero_approx(AACCGlobal.car.get_meta(&"ground_coefficient", 0.0)):
-				var gear_perfect_switch: float = AACCGlobal.car.get_meta(&"gear_perfect_switch", 1.0)
+				var gear_perfect_switch: float = car_input.get_gear_perfect_switch()
 				draw_line(Vector2(gear_perfect_switch * size.x, 0.0), Vector2(gear_perfect_switch * size.x, size.y), Color(Color.GREEN, 0.5), 2.0)
 
 	var rpm_ratio: float = AACCGlobal.car.get_meta(&"rpm_ratio", 1.0)

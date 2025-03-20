@@ -27,7 +27,6 @@ func _ready() -> void:
 	car.set_meta(&"input_accelerate", 0.0)
 	car.set_meta(&"input_gear_target", 0)
 	update_meta()
-	update_gear_perfect_switch()
 
 func update_meta():
 	car.set_meta(&"top_speed", engine_top_speed)
@@ -41,33 +40,6 @@ func update_meta():
 	car.set_meta(&"rpm_max", rpm_max)
 	car.set_meta(&"rpm_limiter", rpm_limiter)
 
-# TODO: move to input
-func update_gear_perfect_switch():
-	var gear_perfect_switch: float = 0.0
-
-	if gear_current == 0 or is_zero_approx(car.get_meta(&"ground_coefficient", 0.0)):
-		var rpm_curve_peak_value: float = 0.0
-		for i in range(0, rpm_curve.bake_resolution + 1):
-			var point_x: float = float(i) / rpm_curve.bake_resolution
-			var point_y: float = rpm_curve.sample_baked(point_x)
-
-			if point_y >= rpm_curve_peak_value:
-				gear_perfect_switch = point_x
-				rpm_curve_peak_value = point_y
-	else:
-		var current_next_ratio: float = max(float(gear_current), 1.0) / max(float(gear_current) + 1, 1.0)
-		for i in range(0, rpm_curve.bake_resolution + 1):
-			var point_x_1: float = float(i) / rpm_curve.bake_resolution
-			var point_y_1: float = rpm_curve.sample_baked(point_x_1)
-			var point_x_2: float = float(i) * current_next_ratio / rpm_curve.bake_resolution
-			var point_y_2: float = rpm_curve.sample_baked(point_x_2) * current_next_ratio
-
-			if point_y_2 >= point_y_1 and point_y_1 > 0.0 and point_y_2 > 0.0:
-				gear_perfect_switch = point_x_1
-				break
-
-	car.set_meta(&"gear_perfect_switch", gear_perfect_switch)
-
 func update_gear(delta: float):
 	if gear_target != gear_current and not gear_switching:
 		gear_switching = true
@@ -78,7 +50,6 @@ func update_gear(delta: float):
 		gear_current = gear_target
 		if gear_switching:
 			gear_switching = false
-			update_gear_perfect_switch()
 
 	if gear_switch_timer >= 0.0:
 		gear_switch_timer -= delta
@@ -138,11 +109,6 @@ func process_plugin(delta: float) -> void:
 	elif rpm_ratio.get_value() <= rpm_max - rpm_limiter_offset:
 		rpm_limiter = false
 	car.set_meta(&"rpm_limiter", rpm_limiter)
-
-	if is_zero_approx(car.get_meta(&"ground_coefficient_prev", 0.0)):
-		update_gear_perfect_switch()
-		if is_zero_approx(car.get_meta(&"ground_coefficient", 0.0)):
-			return
 
 	if gear_switching or rpm_limiter:
 		return
