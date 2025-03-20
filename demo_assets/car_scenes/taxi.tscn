@@ -92,41 +92,43 @@ metadata/_custom_type_script = "uid://wiw33iaw2pjg"
 script = ExtResource("3_tcv0s")
 metadata/_custom_type_script = "uid://cudk564mgmydg"
 
-[node name="WheelFL" type="Node3D" parent="Plugins"]
+[node name="Wheels" type="Node3D" parent="Plugins"]
+
+[node name="WheelFL" type="Node3D" parent="Plugins/Wheels"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.25
-suspension_spring = 15000.0
+suspension_spring = 30000.0
 suspension_damper = 1500.0
 metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
-[node name="WheelFR" type="Node3D" parent="Plugins"]
+[node name="WheelFR" type="Node3D" parent="Plugins/Wheels"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.25
-suspension_spring = 15000.0
+suspension_spring = 30000.0
 suspension_damper = 1500.0
 metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
-[node name="WheelBL" type="Node3D" parent="Plugins"]
+[node name="WheelBL" type="Node3D" parent="Plugins/Wheels"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.25
-suspension_spring = 15000.0
+suspension_spring = 30000.0
 suspension_damper = 1500.0
 metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
-[node name="WheelBR" type="Node3D" parent="Plugins"]
+[node name="WheelBR" type="Node3D" parent="Plugins/Wheels"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.76)
 script = ExtResource("3_gy57t")
 wheel_width = 0.25
-suspension_spring = 15000.0
+suspension_spring = 30000.0
 suspension_damper = 1500.0
 metadata/_custom_type_script = "uid://cffihwqtqvy4x"
 
 [node name="WheelsProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("4_leshp")
-wheels = Array[NodePath]([NodePath("../WheelFL"), NodePath("../WheelFR"), NodePath("../WheelBL"), NodePath("../WheelBR")])
+wheels = Array[NodePath]([NodePath("../Wheels/WheelFL"), NodePath("../Wheels/WheelFR"), NodePath("../Wheels/WheelBL"), NodePath("../Wheels/WheelBR")])
 metadata/_custom_type_script = "uid://branpjvwdtvgm"
 
 [node name="Downforce" type="Node3D" parent="Plugins"]
@@ -190,16 +192,16 @@ metadata/_custom_type_script = "uid://bejoolwrgdt81"
 [node name="WheelVisuals" type="Node3D" parent="Plugins/Visuals"]
 script = ExtResource("14_n1pdp")
 wheel_meshes = Dictionary[NodePath, NodePath]({
-NodePath("../../WheelFL"): NodePath("../../../Visuals/wheel-front-left"),
-NodePath("../../WheelFR"): NodePath("../../../Visuals/wheel-front-right"),
-NodePath("../../WheelBL"): NodePath("../../../Visuals/wheel-back-left"),
-NodePath("../../WheelBR"): NodePath("../../../Visuals/wheel-back-right")
+NodePath("../../Wheels/WheelFL"): NodePath("../../../Visuals/wheel-front-left"),
+NodePath("../../Wheels/WheelFR"): NodePath("../../../Visuals/wheel-front-right"),
+NodePath("../../Wheels/WheelBL"): NodePath("../../../Visuals/wheel-back-left"),
+NodePath("../../Wheels/WheelBR"): NodePath("../../../Visuals/wheel-back-right")
 })
 wheel_flags = Dictionary[NodePath, int]({
-NodePath("../../WheelFL"): 5,
-NodePath("../../WheelFR"): 5,
-NodePath("../../WheelBL"): 2,
-NodePath("../../WheelBR"): 2
+NodePath("../../Wheels/WheelFL"): 5,
+NodePath("../../Wheels/WheelFR"): 5,
+NodePath("../../Wheels/WheelBL"): 2,
+NodePath("../../Wheels/WheelBR"): 2
 })
 metadata/_custom_type_script = "uid://cgyn0v8p7gfu6"
 

@@ -89,7 +89,7 @@ transform = Transform3D(-0.999863, -2.11876e-08, 0.0331244, -0.00285096, 0.98507
 [node name="ReflectionProbe" type="ReflectionProbe" parent="."]
 blend_distance = 0.0
 size = Vector3(1000, 1000, 1000)
-origin_offset = Vector3(19, 1, 241)
+origin_offset = Vector3(17, 1.25, 250)
 enable_shadows = true
 cull_mask = 1048571
 

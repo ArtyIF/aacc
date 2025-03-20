@@ -10,8 +10,7 @@ class_name CarWheelSuspension extends CarPluginBase
 @export var suspension_spring: float = 10000.0
 @export var suspension_damper: float = 1000.0
 
-var raycast_instance_1: RayCast3D
-var raycast_instance_2: RayCast3D
+var raycast_instance: RayCast3D
 
 var compression: float = 0.0
 var last_compression: float = 0.0
@@ -23,53 +22,26 @@ var collision_normal: Vector3 = Vector3.ZERO
 var distance: float = 0.0
 
 func _ready() -> void:
-	raycast_instance_1 = RayCast3D.new()
-	add_child(raycast_instance_1)
-	raycast_instance_2 = RayCast3D.new()
-	add_child(raycast_instance_2)
+	raycast_instance = RayCast3D.new()
+	add_child(raycast_instance)
 	configure_raycasts()
 
 func configure_raycasts() -> void:
-	raycast_instance_1.target_position = (Vector3.DOWN * (wheel_radius + suspension_length))
-	raycast_instance_1.enabled = true
-	raycast_instance_1.hit_from_inside = false
-	raycast_instance_1.hit_back_faces = false
-	raycast_instance_1.collision_mask = wheel_collision_mask
-	raycast_instance_1.process_physics_priority = -1000
-	raycast_instance_1.position = Vector3.RIGHT * wheel_width
-
-	raycast_instance_2.target_position = (Vector3.DOWN * (wheel_radius + suspension_length))
-	raycast_instance_2.enabled = true
-	raycast_instance_2.hit_from_inside = false
-	raycast_instance_2.hit_back_faces = false
-	raycast_instance_1.collision_mask = wheel_collision_mask
-	raycast_instance_2.process_physics_priority = -1000
+	raycast_instance.target_position = (Vector3.DOWN * (wheel_radius + suspension_length))
+	raycast_instance.enabled = true
+	raycast_instance.hit_from_inside = false
+	raycast_instance.hit_back_faces = false
+	raycast_instance.collision_mask = wheel_collision_mask
+	raycast_instance.process_physics_priority = -1000
 
 func set_raycast_values() -> void:
-	# TODO: apply forces per raycast
-	var collision_point_1: Vector3 = raycast_instance_1.get_collision_point()
-	var collision_normal_1: Vector3 = raycast_instance_1.get_collision_normal()
-	var distance_1: float = raycast_instance_1.global_position.distance_to(collision_point_1)
-
-	var collision_point_2: Vector3 = raycast_instance_2.get_collision_point()
-	var collision_normal_2: Vector3 = raycast_instance_2.get_collision_normal()
-	var distance_2: float = raycast_instance_2.global_position.distance_to(collision_point_2)
-
-	if raycast_instance_1.is_colliding() and raycast_instance_2.is_colliding():
-		collision_point = (collision_point_1 + collision_point_2) / 2.0
-		collision_normal = (collision_normal_1 + collision_normal_2).normalized()
-		distance = (distance_1 + distance_2) / 2.0
-	elif raycast_instance_1.is_colliding():
-		collision_point = collision_point_1 + (global_basis.x * wheel_width / 2.0).slide(collision_normal_1)
-		collision_normal = collision_normal_1
-		distance = distance_1
-	elif raycast_instance_2.is_colliding():
-		collision_point = collision_point_2 - (global_basis.x * wheel_width / 2.0).slide(collision_normal_2)
-		collision_normal = collision_normal_2
-		distance = distance_2
+	if raycast_instance.is_colliding():
+		collision_point = raycast_instance.get_collision_point()
+		collision_normal = raycast_instance.get_collision_normal()
+		distance = raycast_instance.global_position.distance_to(collision_point)
 
 func process_plugin(delta: float) -> void:
-	if raycast_instance_1.is_colliding() or raycast_instance_2.is_colliding():
+	if raycast_instance.is_colliding():
 		is_landed = true
 
 		set_raycast_values()
