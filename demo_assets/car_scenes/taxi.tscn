@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://crko52geporbo"]
+[gd_scene load_steps=36 format=3 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/default_car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -21,7 +21,9 @@
 [ext_resource type="Script" uid="uid://cgyn0v8p7gfu6" path="res://addons/aacc/scripts/car_plugins/visuals/car_wheel_visuals.gd" id="14_n1pdp"]
 [ext_resource type="Script" uid="uid://bejoolwrgdt81" path="res://addons/aacc/scripts/car_plugins/resistances/car_air_drag.gd" id="17_1amw3"]
 [ext_resource type="Script" uid="uid://ceu8yif662nyj" path="res://addons/aacc/scripts/car_plugins/audio/car_engine_audio.gd" id="19_wyo5d"]
-[ext_resource type="PackedScene" uid="uid://b0cyxisxowe8n" path="res://addons/aacc/scenes/audio/engine_3.tscn" id="20_xg3rg"]
+[ext_resource type="PackedScene" uid="uid://b0cyxisxowe8n" path="res://addons/aacc/scenes/audio/engine/engine_3.tscn" id="20_xg3rg"]
+[ext_resource type="Script" uid="uid://cr0lfkck7jwru" path="res://addons/aacc/scripts/car_plugins/audio/car_tire_screech_audio.gd" id="21_oy1jj"]
+[ext_resource type="PackedScene" uid="uid://bgtdb8mvduhn1" path="res://addons/aacc/scenes/audio/tire_screech.tscn" id="22_heuji"]
 
 [sub_resource type="Resource" id="Resource_4f48m"]
 script = ExtResource("11_0wb0t")
@@ -209,6 +211,11 @@ script = ExtResource("19_wyo5d")
 max_pitch = 1.2
 engine_audio_scene = ExtResource("20_xg3rg")
 metadata/_custom_type_script = "uid://ceu8yif662nyj"
+
+[node name="TireScreechAudio" type="Node3D" parent="Plugins/Audio"]
+script = ExtResource("21_oy1jj")
+tire_screech_scene = ExtResource("22_heuji")
+metadata/_custom_type_script = "uid://cr0lfkck7jwru"
 
 [node name="Visuals" parent="." instance=ExtResource("12_r3t53")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

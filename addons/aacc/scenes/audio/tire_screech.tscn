@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgtdb8mvduhn1"]
+
+[ext_resource type="AudioStream" uid="uid://dkstnkcccibpg" path="res://addons/aacc/audio/tire_screech.wav" id="1_l4yhq"]
+
+[node name="TireScreech" type="AudioStreamPlayer3D"]
+stream = ExtResource("1_l4yhq")
+volume_db = -80.0
+unit_size = 5.0
+max_db = 0.0
+bus = &"SFX"
+playback_type = 1
+attenuation_filter_cutoff_hz = 10000.0
+doppler_tracking = 2
