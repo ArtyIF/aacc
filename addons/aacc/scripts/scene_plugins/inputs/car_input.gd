@@ -1,6 +1,6 @@
 class_name CarInput extends ScenePluginBase
+# TODO: split into several plugins
 
-# TODO: sort some of this?
 @export_group("Input Map")
 @export var action_forward: StringName = &"aacc_forward"
 @export var action_backward: StringName = &"aacc_backward"
@@ -147,7 +147,7 @@ func _physics_process(delta: float) -> void:
 				var gear_perfect_switch: float = car.get_meta(&"gear_perfect_switch", 1.0)
 				launch_control_multiplier = inverse_lerp(car.get_meta(&"rpm_min"), 1.0, gear_perfect_switch)
 			car.set_meta(&"input_accelerate", max(input_forward, input_backward) * launch_control_multiplier)
-			car.set_meta(&"input_brake", 1.0)
+			car.set_meta(&"input_brake", 1.0 if is_zero_approx(input_boost) else 0.0)
 
 	car.set_meta(&"input_gear_target", gear_target)
 	car.set_meta(&"input_steer", calculate_steer(input_steer, input_handbrake, velocity_z_sign, delta))

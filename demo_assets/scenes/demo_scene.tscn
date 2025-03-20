@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=23 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_2t12c"]
 [ext_resource type="Script" uid="uid://bwjnqe5mvkcbx" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input.gd" id="2_1kif7"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="8_2t12c"]
 [ext_resource type="PackedScene" uid="uid://ca1oyf482fq72" path="res://demo_assets/subscenes/ramptest.blend" id="9_l5mqg"]
 [ext_resource type="Script" uid="uid://c1spgv68sfhct" path="res://demo_assets/scripts/hud/rpm_indicator.gd" id="10_lmxsi"]
+[ext_resource type="Script" uid="uid://b0jpu8tivuwhf" path="res://demo_assets/scripts/hud/boost_amount_bar.gd" id="12_l5mqg"]
 [ext_resource type="Script" uid="uid://cam0f0nudmuj2" path="res://demo_assets/scripts/hud/speed_label.gd" id="15_s4qbg"]
 [ext_resource type="PackedScene" uid="uid://cs38a62litxur" path="res://addons/aacc/scenes/debug_label.tscn" id="17_2t12c"]
 
@@ -35,6 +36,8 @@ shader_parameter/tint_multiplier = 1.0
 [sub_resource type="QuadMesh" id="QuadMesh_vx7r4"]
 flip_faces = true
 size = Vector2(2, 2)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_2t12c"]
 
 [node name="DemoScene" type="Node3D"]
 
@@ -213,13 +216,14 @@ anchor_top = 1.0
 anchor_bottom = 1.0
 grow_vertical = 0
 
-[node name="BoostProgress" type="ProgressBar" parent="HUDMargin/HUD/BoostPanel"]
+[node name="BoostAmount" type="ProgressBar" parent="HUDMargin/HUD/BoostPanel"]
 custom_minimum_size = Vector2(150, 10)
 layout_mode = 2
 max_value = 1.0
 step = 0.0
 value = 0.5
 show_percentage = false
+script = ExtResource("12_l5mqg")
 
 [node name="Plugins" type="Node" parent="."]
 
@@ -261,3 +265,9 @@ enabled = false
 target_position = Vector3(0, 0, -1000)
 
 [node name="DebugLabel" parent="Plugins" instance=ExtResource("17_2t12c")]
+
+[node name="LowerPlane" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -15, 0)
+
+[node name="PlaneShape" type="CollisionShape3D" parent="LowerPlane"]
+shape = SubResource("WorldBoundaryShape3D_2t12c")

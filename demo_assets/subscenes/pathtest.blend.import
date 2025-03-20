@@ -36,19 +36,19 @@ _subresources={
 "materials": {
 "Baseplate": {
 "use_external/enabled": true,
-"use_external/path": "res://demo_assets/materials/material_baseplate.tres"
+"use_external/path": "uid://bjvti60htjs6b"
 },
 "Border": {
 "use_external/enabled": true,
-"use_external/path": "res://demo_assets/materials/material_border.tres"
+"use_external/path": "uid://ui3j4h1iliu6"
 },
 "Road": {
 "use_external/enabled": true,
-"use_external/path": "res://demo_assets/materials/material_road.tres"
+"use_external/path": "uid://bt21rtci3ho8p"
 },
 "StartingPoint": {
 "use_external/enabled": true,
-"use_external/path": "res://demo_assets/materials/material_start.tres"
+"use_external/path": "uid://d23j5rrpr1ws6"
 }
 }
 }

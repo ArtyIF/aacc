@@ -12,7 +12,7 @@ class_name CarSteer extends CarPluginBase
 
 var smooth_sign: SmoothedFloat = SmoothedFloat.new()
 var use_smooth_sign: bool = false
-var old_input_handbrake: bool = false
+var input_handbrake_prev: bool = false
 
 func _ready() -> void:
 	car.set_meta(&"input_steer", 0.0)
@@ -38,7 +38,7 @@ func process_plugin(delta: float) -> void:
 
 	if smooth_steer_smooth_sign:
 		if input_handbrake:
-			use_smooth_sign = old_input_handbrake
+			use_smooth_sign = input_handbrake_prev
 		else:
 			if use_smooth_sign and smooth_sign.get_value() == sign(local_linear_velocity.z):
 				use_smooth_sign = false
@@ -68,4 +68,4 @@ func process_plugin(delta: float) -> void:
 	var steer_force: Vector3 = Vector3.UP * steer_velocity
 	car.set_torque(&"steer", steer_force * car.mass / delta, true)
 
-	old_input_handbrake = input_handbrake
+	input_handbrake_prev = input_handbrake

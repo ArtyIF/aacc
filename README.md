@@ -3,7 +3,7 @@
 A very work-in-progress car controller. Includes a very basic demo.
 
 This branch makes AACC plugin-based. It's very work-in-progress. If you need
-a car controller now, check out the `master` branch. You will still need to work
+a car controller now, check out the `main` branch. You will still need to work
 on it a bit, however.
 
 **NOTE**: please pay attention to the `attribution.txt` files in the
