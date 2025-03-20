@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://syj7f3xk3jur"
-path.bptc="res://.godot/imported/table_mountain_1_2k_sdr.png-d7a73ccd1ca4e041700f1f72df57bbf4.bptc.ctex"
+uid="uid://sq8qunravoei"
+path.s3tc="res://.godot/imported/taxi_ao.png-614dc053e7f9f0f02c53216608086c9d.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,18 +11,18 @@ metadata={
 
 [deps]
 
-source_file="res://demo_assets/textures/table_mountain_1_2k_sdr.png"
-dest_files=["res://.godot/imported/table_mountain_1_2k_sdr.png-d7a73ccd1ca4e041700f1f72df57bbf4.bptc.ctex"]
+source_file="res://demo_assets/textures/car/taxi_ao.png"
+dest_files=["res://.godot/imported/taxi_ao.png-614dc053e7f9f0f02c53216608086c9d.s3tc.ctex"]
 
 [params]
 
 compress/mode=2
-compress/high_quality=true
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

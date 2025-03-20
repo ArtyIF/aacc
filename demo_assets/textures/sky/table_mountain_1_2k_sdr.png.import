@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btcf2nli4k7yc"
-path.bptc="res://.godot/imported/table_mountain_1_2k.hdr-4c1ef6bebbb689cd329a5e032e1b96ce.bptc.ctex"
+uid="uid://syj7f3xk3jur"
+path.bptc="res://.godot/imported/table_mountain_1_2k_sdr.png-00f1af17a60318e1c057b6934aa1dd58.bptc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://demo_assets/textures/table_mountain_1_2k.hdr"
-dest_files=["res://.godot/imported/table_mountain_1_2k.hdr-4c1ef6bebbb689cd329a5e032e1b96ce.bptc.ctex"]
+source_file="res://demo_assets/textures/sky/table_mountain_1_2k_sdr.png"
+dest_files=["res://.godot/imported/table_mountain_1_2k_sdr.png-00f1af17a60318e1c057b6934aa1dd58.bptc.ctex"]
 
 [params]
 

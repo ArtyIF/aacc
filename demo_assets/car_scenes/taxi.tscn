@@ -16,7 +16,7 @@
 [ext_resource type="Script" uid="uid://crrd7ugev6afh" path="res://addons/aacc/scripts/helper_classes/procedural_curve.gd" id="11_0wb0t"]
 [ext_resource type="Script" uid="uid://un1kd6buaufw" path="res://addons/aacc/scripts/car_plugins/extras/boosts/car_hold_boost.gd" id="12_4f48m"]
 [ext_resource type="PackedScene" uid="uid://dutpfjvhdc2p1" path="res://demo_assets/kenney_car_kit/taxi.glb" id="12_r3t53"]
-[ext_resource type="Material" uid="uid://brsv8h2fccu15" path="res://demo_assets/materials/taxi_body.tres" id="13_eq170"]
+[ext_resource type="Material" uid="uid://brsv8h2fccu15" path="res://demo_assets/materials/car/taxi.tres" id="13_eq170"]
 [ext_resource type="Script" uid="uid://put3fygiiqh8" path="res://addons/aacc/scripts/car_plugins/resistances/car_coast_resistance.gd" id="13_iv7oc"]
 [ext_resource type="Script" uid="uid://cgyn0v8p7gfu6" path="res://addons/aacc/scripts/car_plugins/visuals/car_wheel_visuals.gd" id="14_n1pdp"]
 [ext_resource type="Script" uid="uid://bejoolwrgdt81" path="res://addons/aacc/scripts/car_plugins/resistances/car_air_drag.gd" id="17_1amw3"]
