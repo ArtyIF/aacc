@@ -13,7 +13,8 @@ func _ready() -> void:
 func process_plugin(delta: float) -> void:
 	boost_amount.speed_up = boost_fill_speed
 	boost_amount.speed_down = boost_use_speed
-	
+
+	# TODO: make sure you need some nitro for the boost to work
 	if car.get_meta(&"input_boost", 0.0) > 0.0:
 		boost_amount.advance_to(0.0, delta)
 		if abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).z) <= boost_top_speed and boost_amount.get_value() > 0.0:
