@@ -23,6 +23,7 @@ class_name CarInput extends ScenePluginBase
 @export var perfect_launch_threshold: float = 0.95
 @export var perfect_shift_up_threshold: float = 0.2
 @export var perfect_shift_down_threshold: float = 0.2
+@export var auto_downshift_on_manual: bool = true
 
 var manual_transmission: bool = false
 var launch_control_engaged: bool = false
@@ -167,9 +168,9 @@ func calculate_gear_target_auto(input_handbrake: float, velocity_z_sign: float) 
 	var gear_perfect_shift_up: float = get_gear_perfect_shift_up_range().y
 	var gear_perfect_shift_down: float = get_gear_perfect_shift_down()
 
-	if car.get_meta(&"rpm_ratio") < gear_perfect_shift_down and gear_target > 0:
+	if car.get_meta(&"rpm_ratio", 0.0) < gear_perfect_shift_down and gear_target > 0:
 		return gear_current - 1
-	if car.get_meta(&"rpm_ratio") > gear_perfect_shift_up and gear_target < gear_count:
+	if car.get_meta(&"rpm_ratio", 0.0) > gear_perfect_shift_up and gear_target < gear_count:
 		return gear_current + 1
 
 	return gear_target
@@ -201,6 +202,12 @@ func _physics_process(delta: float) -> void:
 			gear_target += 1
 		if Input.is_action_just_pressed(action_gear_down):
 			gear_target -= 1
+
+		if auto_downshift_on_manual and (input_backward > 0.0 or is_zero_approx(input_forward)):
+			var gear_perfect_shift_down: float = get_gear_perfect_shift_down()
+			if car.get_meta(&"rpm_ratio", 0.0) < gear_perfect_shift_down and gear_target > 0:
+				gear_target = car.get_meta(&"gear_current", 1) - 1
+
 		gear_target = clampi(gear_target, -1, car.get_meta(&"gear_count", 0))
 	
 		# TODO: DRY

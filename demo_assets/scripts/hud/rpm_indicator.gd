@@ -35,15 +35,22 @@ func _draw() -> void:
 
 			if (gear_current >= 0 and gear_current < AACCGlobal.car.get_meta(&"gear_count", 0)) or is_zero_approx(AACCGlobal.car.get_meta(&"ground_coefficient", 0.0)):
 				gear_perfect_shift_up_range = car_input.get_gear_perfect_shift_up_range()
-				draw_rect(Rect2(gear_perfect_shift_up_range.x * size.x, 0.0, (gear_perfect_shift_up_range.z - gear_perfect_shift_up_range.x) * size.x, size.y), Color(Color.GREEN, 0.5))
 
 			if (gear_current > 1 and gear_current <= AACCGlobal.car.get_meta(&"gear_count", 0)):
 				gear_perfect_shift_down = car_input.get_gear_perfect_shift_down()
-				draw_rect(Rect2(0.0, 0.0, gear_perfect_shift_down * size.x, size.y), Color(Color.RED, 0.5))
 
-	var rpm_bar_color: Color = Color(Color.WHITE, 0.5)
 	var rpm_ratio: float = AACCGlobal.car.get_meta(&"rpm_ratio", 1.0)
-	draw_rect(Rect2(0.0, 0.0, rpm_ratio * size.x, size.y), rpm_bar_color)
+	var rpm_bar_color: Color = Color.WHITE
+	if rpm_ratio <= gear_perfect_shift_down:
+		rpm_bar_color = Color.RED
+	elif rpm_ratio > gear_perfect_shift_up_range.x and rpm_ratio < gear_perfect_shift_up_range.z:
+		var rpm_bar_color_lerp: float = 0.0
+		if rpm_ratio < gear_perfect_shift_up_range.y:
+			rpm_bar_color_lerp = inverse_lerp(gear_perfect_shift_up_range.x, gear_perfect_shift_up_range.y, rpm_ratio)
+		else:
+			rpm_bar_color_lerp = inverse_lerp(gear_perfect_shift_up_range.z, gear_perfect_shift_up_range.y, rpm_ratio)
+		rpm_bar_color = Color.WHITE.lerp(Color.GREEN, clamp(rpm_bar_color_lerp, 0.0, 1.0))
+	draw_rect(Rect2(0.0, 0.0, rpm_ratio * size.x, size.y), Color(rpm_bar_color, 0.75))
 
 	var rpm_max: float = AACCGlobal.car.get_meta(&"rpm_max", 1.0)
 	draw_rect(Rect2(rpm_max * size.x, 0.0, (1.0 - rpm_max) * size.x, size.y), Color(Color.RED, 0.5))
