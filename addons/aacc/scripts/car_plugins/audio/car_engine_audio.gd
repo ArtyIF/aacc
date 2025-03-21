@@ -1,5 +1,5 @@
 class_name CarEngineAudio extends CarPluginBase
-@export_range(0.0, 1.0) var min_volume: float = 0.15
+@export_range(0.0, 1.0) var min_volume: float = 0.25
 @export_range(0.01, 4.0) var max_pitch: float = 1.0
 @export var engine_audio_scene: PackedScene
 
@@ -10,7 +10,7 @@ func _ready() -> void:
 	player = engine_audio_scene.instantiate()
 	add_child(player)
 
-	player.volume_linear = min_volume
+	player.max_db = linear_to_db(engine_volume.get_value())
 	player.pitch_scale = max_pitch
 
 func _physics_process(delta: float) -> void:
@@ -20,7 +20,7 @@ func _physics_process(delta: float) -> void:
 	var input_accelerate: float = car.get_meta(&"input_accelerate", 0.0)
 
 	engine_volume.advance_to(min_volume if (gear_switching or rpm_limiter) else lerp(min_volume, 1.0, input_accelerate), delta)
-	player.volume_linear = engine_volume.get_value()
+	player.max_db = linear_to_db(engine_volume.get_value())
 	if rpm_ratio > 0.0:
 		player.pitch_scale = rpm_ratio * max_pitch
 

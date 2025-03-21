@@ -151,7 +151,7 @@ func calculate_gear_target_auto(input_handbrake: float, velocity_z_sign: float) 
 
 	var gear_current: int = car.get_meta(&"gear_current", 0)
 	var gear_count: int = car.get_meta(&"gear_count", 0)
-	var gear_current_target: int = car.get_meta(&"input_gear_target", 0)
+	var gear_target: int = car.get_meta(&"input_gear_target", 0)
 
 	if (input_handbrake > 0.0 and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
 		return gear_current
@@ -167,12 +167,12 @@ func calculate_gear_target_auto(input_handbrake: float, velocity_z_sign: float) 
 	var gear_perfect_shift_up: float = get_gear_perfect_shift_up_range().y
 	var gear_perfect_shift_down: float = get_gear_perfect_shift_down()
 
-	if car.get_meta(&"rpm_ratio") < gear_perfect_shift_down and gear_current_target > 0:
+	if car.get_meta(&"rpm_ratio") < gear_perfect_shift_down and gear_target > 0:
 		return gear_current - 1
-	if car.get_meta(&"rpm_ratio") > gear_perfect_shift_up and gear_current_target < gear_count:
+	if car.get_meta(&"rpm_ratio") > gear_perfect_shift_up and gear_target < gear_count:
 		return gear_current + 1
 
-	return gear_current_target
+	return gear_target
 
 func _physics_process(delta: float) -> void:
 	update_car()

@@ -88,6 +88,9 @@ func calculate_acceleration_multiplier(speed_ratio: float) -> float:
 	if gear_current < 0:
 		multiplier *= -1.0
 
+	if rpm_ratio.get_value() >= rpm_max:
+		multiplier = 0.0
+
 	return multiplier
 
 func process_plugin(delta: float) -> void:
@@ -104,9 +107,12 @@ func process_plugin(delta: float) -> void:
 	update_rpm_ratio(input_accelerate, delta)
 	update_meta()
 
-	if rpm_ratio.get_value() >= rpm_max:
-		rpm_limiter = true
-	elif rpm_ratio.get_value() <= rpm_max - rpm_limiter_offset:
+	if gear_current >= 0:
+		if rpm_ratio.get_value() >= rpm_max:
+			rpm_limiter = true
+		elif rpm_ratio.get_value() <= rpm_max - rpm_limiter_offset:
+			rpm_limiter = false
+	else:
 		rpm_limiter = false
 	car.set_meta(&"rpm_limiter", rpm_limiter)
 
