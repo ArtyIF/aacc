@@ -1,7 +1,13 @@
 extends Control
 
+func remap_points(points: PackedVector2Array) -> PackedVector2Array:
+	for i in range(len(points)):
+		var point: Vector2 = points[i]
+		points[i] = Vector2(point.x * size.x, (1.0 - point.y) * size.y)
+	return points
+
 func _draw() -> void:
-	var gear_perfect_shift_up_range: Vector2 = Vector2.ZERO
+	var gear_perfect_shift_up_range: Vector3 = Vector3.ZERO
 
 	var points_current: PackedVector2Array = []
 	var points_next: PackedVector2Array = []
@@ -9,40 +15,32 @@ func _draw() -> void:
 	if not AACCGlobal.car.has_meta(&"rpm_curve"):
 		draw_string(ThemeDB.fallback_font, Vector2(0.0, size.y), "No RPM curve!")
 	else:
-		var curve: Curve = AACCGlobal.car.get_meta(&"rpm_curve")
-
-		for i in range(0, curve.bake_resolution + 1):
-			var point_x: float = float(i) / curve.bake_resolution
-			points_current.append(Vector2(point_x * size.x, (1.0 - curve.sample_baked(point_x)) * size.y))
-
+		var rpm_curve: Curve = AACCGlobal.car.get_meta(&"rpm_curve")
+		var car_input: CarInput = AACCGlobal.get_plugin(&"CarInput")
 		var gear_current: float = float(AACCGlobal.car.get_meta(&"gear_current", 0))
+		points_current = remap_points(car_input.get_curve_samples(rpm_curve))
+
 		if not AACCGlobal.car.get_meta(&"gear_switching", false):
 			if AACCGlobal.car.get_meta(&"ground_coefficient", 0.0) > 0.0:
 				if gear_current >= 0 and gear_current < AACCGlobal.car.get_meta(&"gear_count", 0):
 					var current_next_ratio: float = max(gear_current, 1.0) / max(gear_current + 1, 1.0)
 					if current_next_ratio < 1.0:
-						for i in range(0, curve.bake_resolution + 1):
-							var point_x: float = float(i) * current_next_ratio / curve.bake_resolution
-							var point_y: float = curve.sample_baked(point_x) * current_next_ratio
-							points_next.append(Vector2(point_x * size.x / current_next_ratio, (1.0 - point_y) * size.y))
+						points_next = remap_points(car_input.get_curve_samples(rpm_curve, current_next_ratio))
+
 				if gear_current > 0 and gear_current <= AACCGlobal.car.get_meta(&"gear_count", 0):
 					var current_prev_ratio: float = max(gear_current, 1.0) / max(gear_current - 1, 1.0)
 					if current_prev_ratio > 1.0:
-						for i in range(0, curve.bake_resolution + 1):
-							var point_x: float = float(i) * current_prev_ratio / curve.bake_resolution
-							var point_y: float = curve.sample_baked(point_x) * current_prev_ratio
-							points_prev.append(Vector2(point_x * size.x / current_prev_ratio, (1.0 - point_y) * size.y))
+						points_prev = remap_points(car_input.get_curve_samples(rpm_curve, current_prev_ratio))
 
-			var car_input: CarInput = AACCGlobal.get_plugin(&"CarInput")
 			if (gear_current >= 0 and gear_current < AACCGlobal.car.get_meta(&"gear_count", 0)) or is_zero_approx(AACCGlobal.car.get_meta(&"ground_coefficient", 0.0)):
 				gear_perfect_shift_up_range = car_input.get_gear_perfect_shift_up_range()
-				draw_rect(Rect2(gear_perfect_shift_up_range.x * size.x, 0.0, (gear_perfect_shift_up_range.y - gear_perfect_shift_up_range.x) * size.x, size.y), Color(Color.GREEN, 0.5))
+				draw_rect(Rect2(gear_perfect_shift_up_range.x * size.x, 0.0, (gear_perfect_shift_up_range.z - gear_perfect_shift_up_range.x) * size.x, size.y), Color(Color.GREEN, 0.5))
 
 	var rpm_bar_color: Color = Color(Color.WHITE, 0.5)
 	var rpm_ratio: float = AACCGlobal.car.get_meta(&"rpm_ratio", 1.0)
-	if rpm_ratio >= gear_perfect_shift_up_range.x and rpm_ratio <= gear_perfect_shift_up_range.y:
+	if rpm_ratio >= gear_perfect_shift_up_range.x and rpm_ratio <= gear_perfect_shift_up_range.z:
 		rpm_bar_color = Color(Color.GREEN, 0.5)
-	elif rpm_ratio > gear_perfect_shift_up_range.y and gear_perfect_shift_up_range.y > 0.0:
+	elif rpm_ratio > gear_perfect_shift_up_range.z and gear_perfect_shift_up_range.z > 0.0:
 		rpm_bar_color = Color(Color.RED, 0.5)
 	draw_rect(Rect2(0.0, 0.0, rpm_ratio * size.x, size.y), rpm_bar_color)
 

@@ -57,46 +57,88 @@ func calculate_steer(input_steer: float, input_handbrake: float, velocity_z_sign
 func calculate_gear_limit(gear: int, gear_count: int) -> float:
 	return float(gear) / gear_count
 
-# TODO: return range instead of one value
-# TODO: threshold for comparison
-func get_gear_perfect_shift_up_range(rpm_min: float = 0.0, rpm_max: float = 1.0) -> Vector2:
-	var gear_perfect_shift_up_range: Vector2 = Vector2.ZERO
+# TODO: move into helper class
+func get_curve_samples(curve: Curve, ratio: float = 1.0) -> PackedVector2Array:
+	var list: PackedVector2Array = []
+
+	for i in range(0, curve.bake_resolution + 1):
+		var point_x: float = float(i) / curve.bake_resolution
+		var point_y: float = curve.sample_baked(point_x * ratio) * ratio
+		list.append(Vector2(point_x, point_y))
+
+	return list
+
+# x = min range, y = actual peak, z = max range
+func get_curve_samples_peak_range(samples: PackedVector2Array, range_threshold: float) -> Vector3:
+	var range: Vector3 = Vector3.ZERO
+	var range_x_set: bool = false
+	var max_y: float = 0.0
+
+	for point in samples:
+		if point.y >= range_threshold:
+			range.z = point.x
+			if not range_x_set:
+				range.x = point.x
+				range_x_set = true
+			if point.y >= max_y:
+				range.y = point.x
+				max_y = point.y
+
+	return range
+
+func get_curve_samples_intersection_range(samples_1: PackedVector2Array, samples_2: PackedVector2Array, range_threshold: float) -> Vector3:
+	var range: Vector3 = Vector3.ZERO
+	var range_x_set: bool = false
+	var diff_sign_prev: float = 0.0
+
+	for i in range(0, len(samples_1)):
+		var point_1: Vector2 = samples_1[i]
+		var point_2: Vector2 = samples_2[i]
+
+		var diff_sign: float = sign(point_2.y - point_1.y)
+		if diff_sign != diff_sign_prev:
+			range.y = point_1.x
+		diff_sign_prev = diff_sign
+
+		if abs(point_2.y - point_1.y) <= range_threshold:
+			range.z = point_1.x
+			if not range_x_set:
+				range.x = point_1.x
+				range_x_set = true
+		else:
+			range_x_set = false
+
+	return range
+
+func get_gear_perfect_shift_up_range(rpm_min: float = 0.0, rpm_max: float = 1.0) -> Vector3:
+	var range: Vector3 = Vector3.ZERO
 
 	var gear_current: int = car.get_meta(&"gear_current", 0)
 	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 0.0)
 	var rpm_curve: Curve = car.get_meta(&"rpm_curve")
+	var rpm_curve_samples_current: PackedVector2Array = get_curve_samples(rpm_curve)
 
 	if gear_current == 0 or is_zero_approx(ground_coefficient):
-		var range_x_set: bool = false
-		for i in range(0, rpm_curve.bake_resolution + 1):
-			var point_x: float = float(i) / rpm_curve.bake_resolution
-			var point_y: float = rpm_curve.sample_baked(point_x)
-
-			if point_y >= perfect_launch_threshold:
-				gear_perfect_shift_up_range.y = point_x
-				if not range_x_set:
-					gear_perfect_shift_up_range.x = point_x
-					range_x_set = true
+		range = get_curve_samples_peak_range(rpm_curve_samples_current, perfect_launch_threshold)
 	else:
 		var current_next_ratio: float = max(float(gear_current), 1.0) / max(float(gear_current) + 1, 1.0)
-		var range_x_set: bool = false
-		for i in range(0, rpm_curve.bake_resolution + 1):
-			var point_x_1: float = float(i) / rpm_curve.bake_resolution
-			var point_y_1: float = rpm_curve.sample_baked(point_x_1)
-			var point_x_2: float = float(i) * current_next_ratio / rpm_curve.bake_resolution
-			var point_y_2: float = rpm_curve.sample_baked(point_x_2) * current_next_ratio
+		var rpm_curve_samples_next: PackedVector2Array = get_curve_samples(rpm_curve, current_next_ratio)
+		range = get_curve_samples_intersection_range(rpm_curve_samples_current, rpm_curve_samples_next, perfect_shift_up_threshold)
 
-			if point_y_1 > 0.0 and point_y_2 > 0.0 and abs(point_y_2 - point_y_1) <= perfect_shift_up_threshold:
-				gear_perfect_shift_up_range.y = point_x_1
-				if not range_x_set:
-					gear_perfect_shift_up_range.x = point_x_1
-					range_x_set = true
-			else:
-				range_x_set = false
+	range.x = inverse_lerp(rpm_min, rpm_max, range.x)
+	range.y = inverse_lerp(rpm_min, rpm_max, range.y)
+	range.z = inverse_lerp(rpm_min, rpm_max, range.z)
+	return range
 
-	gear_perfect_shift_up_range.x = inverse_lerp(rpm_min, rpm_max, gear_perfect_shift_up_range.x)
-	gear_perfect_shift_up_range.y = inverse_lerp(rpm_min, rpm_max, gear_perfect_shift_up_range.y)
-	return gear_perfect_shift_up_range
+func get_gear_perfect_shift_down_range(rpm_min: float = 0.0, rpm_max: float = 1.0) -> Vector3:
+	var range: Vector3 = Vector3.ZERO
+
+	# TODO
+
+	range.x = inverse_lerp(rpm_min, rpm_max, range.x)
+	range.y = inverse_lerp(rpm_min, rpm_max, range.y)
+	range.z = inverse_lerp(rpm_min, rpm_max, range.z)
+	return range
 
 func calculate_gear_target_auto(input_handbrake: float, velocity_z_sign: float) -> int:
 	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
