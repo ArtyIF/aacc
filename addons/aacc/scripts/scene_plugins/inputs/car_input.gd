@@ -21,8 +21,8 @@ class_name CarInput extends ScenePluginBase
 
 @export_group("Gearbox")
 @export var perfect_launch_threshold: float = 0.95
-@export var perfect_shift_up_threshold: float = 0.15
-@export var auto_trans_downshift_offset: float = 2.0
+@export var perfect_shift_up_threshold: float = 0.2
+@export var perfect_shift_down_threshold: float = 0.2
 
 var manual_transmission: bool = false
 var launch_control_engaged: bool = false
@@ -96,7 +96,7 @@ func get_curve_samples_intersection_range(samples_1: PackedVector2Array, samples
 		var point_2: Vector2 = samples_2[i]
 
 		var diff_sign: float = sign(point_2.y - point_1.y)
-		if diff_sign != diff_sign_prev:
+		if diff_sign != diff_sign_prev and not is_zero_approx(diff_sign):
 			range.y = point_1.x
 		diff_sign_prev = diff_sign
 
@@ -130,24 +130,28 @@ func get_gear_perfect_shift_up_range(rpm_min: float = 0.0, rpm_max: float = 1.0)
 	range.z = inverse_lerp(rpm_min, rpm_max, range.z)
 	return range
 
-func get_gear_perfect_shift_down_range(rpm_min: float = 0.0, rpm_max: float = 1.0) -> Vector3:
-	var range: Vector3 = Vector3.ZERO
+func get_gear_perfect_shift_down(rpm_min: float = 0.0, rpm_max: float = 1.0) -> float:
+	var perfect: float = 0.0
 
-	# TODO
+	var gear_current: int = car.get_meta(&"gear_current", 0)
+	var rpm_curve: Curve = car.get_meta(&"rpm_curve")
+	var rpm_curve_samples_current: PackedVector2Array = get_curve_samples(rpm_curve)
 
-	range.x = inverse_lerp(rpm_min, rpm_max, range.x)
-	range.y = inverse_lerp(rpm_min, rpm_max, range.y)
-	range.z = inverse_lerp(rpm_min, rpm_max, range.z)
-	return range
+	if gear_current > 1:
+		var current_prev_ratio: float = max(float(gear_current), 1.0) / max(float(gear_current) - 1, 1.0)
+		var rpm_curve_samples_prev: PackedVector2Array = get_curve_samples(rpm_curve, current_prev_ratio)
+		perfect = get_curve_samples_intersection_range(rpm_curve_samples_current, rpm_curve_samples_prev, perfect_shift_down_threshold).y
+
+	perfect = inverse_lerp(rpm_min, rpm_max, perfect)
+	return perfect
 
 func calculate_gear_target_auto(input_handbrake: float, velocity_z_sign: float) -> int:
 	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
 	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 1.0)
 
 	var gear_current: int = car.get_meta(&"gear_current", 0)
-	var top_speed: float = car.get_meta(&"top_speed", 0.0)
 	var gear_count: int = car.get_meta(&"gear_count", 0)
-	var current_gear_target: int = car.get_meta(&"input_gear_target", 0)
+	var gear_current_target: int = car.get_meta(&"input_gear_target", 0)
 
 	if (input_handbrake > 0.0 and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
 		return gear_current
@@ -160,21 +164,15 @@ func calculate_gear_target_auto(input_handbrake: float, velocity_z_sign: float) 
 	if abs(local_linear_velocity.z) < 0.25:
 		return -velocity_z_sign
 
-	var forward_speed_ratio: float = abs(local_linear_velocity.z / top_speed)
-
-	var gear_limit: float = calculate_gear_limit(gear_current, gear_count)
-	var gear_limit_lower_offset: float = auto_trans_downshift_offset / top_speed
-	var gear_limit_lower: float = calculate_gear_limit(gear_current - 1, gear_count) - gear_limit_lower_offset
 	var gear_perfect_shift_up: float = get_gear_perfect_shift_up_range().y
-	var gear_perfect_shift_up_mult: float = get_gear_perfect_shift_up_range(car.get_meta(&"rpm_min"), car.get_meta(&"rpm_max")).y
+	var gear_perfect_shift_down: float = get_gear_perfect_shift_down()
 
-	# TODO: use rpm
-	if forward_speed_ratio < gear_limit_lower * gear_perfect_shift_up_mult and current_gear_target > 0:
+	if car.get_meta(&"rpm_ratio") < gear_perfect_shift_down and gear_current_target > 0:
 		return gear_current - 1
-	if car.get_meta(&"rpm_ratio") > gear_perfect_shift_up and current_gear_target < gear_count:
+	if car.get_meta(&"rpm_ratio") > gear_perfect_shift_up and gear_current_target < gear_count:
 		return gear_current + 1
 
-	return current_gear_target
+	return gear_current_target
 
 func _physics_process(delta: float) -> void:
 	update_car()

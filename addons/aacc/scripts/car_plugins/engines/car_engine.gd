@@ -61,24 +61,24 @@ func update_rpm_ratio(input_accelerate: float, delta: float) -> void:
 	rpm_ratio.speed_up = rpm_speed_up
 	rpm_ratio.speed_down = rpm_speed_down
 
-	var target_rpm_ratio: float = 0.0
+	var rpm_ratio_target: float = 0.0
 	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
 	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 0.0)
 
-	if gear_switching or rpm_limiter:
-		target_rpm_ratio = rpm_min
+	if rpm_limiter:
+		rpm_ratio_target = rpm_min
 	elif gear_current == 0 or is_zero_approx(ground_coefficient):
-		target_rpm_ratio = lerp(rpm_min, 1.0, input_accelerate)
+		rpm_ratio_target = lerp(rpm_min, 1.0, input_accelerate)
 	else:
 		var speed_ratio = abs(local_linear_velocity.z) / engine_top_speed
 		var upper_limit: float = 1.0
-		if gear_current > 0 and gear_current < gearbox_gear_count:
-			upper_limit = calculate_gear_limit(gear_current)
-		elif gear_current < 0:
+		if gear_target > 0 and gear_target <= gearbox_gear_count:
+			upper_limit = calculate_gear_limit(gear_target)
+		elif gear_target < 0:
 			upper_limit = 1.0 / gearbox_gear_count
-		target_rpm_ratio = clamp(remap(speed_ratio, 0.0, upper_limit, rpm_min, rpm_max), 0.0, 1.0)
+		rpm_ratio_target = clamp(remap(speed_ratio, 0.0, upper_limit, rpm_min, rpm_max), 0.0, 1.0)
 
-	rpm_ratio.advance_to(target_rpm_ratio, delta)
+	rpm_ratio.advance_to(rpm_ratio_target, delta)
 
 func calculate_acceleration_multiplier(speed_ratio: float) -> float:
 	var multiplier: float = 1.0

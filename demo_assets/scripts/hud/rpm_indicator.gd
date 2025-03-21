@@ -8,6 +8,7 @@ func remap_points(points: PackedVector2Array) -> PackedVector2Array:
 
 func _draw() -> void:
 	var gear_perfect_shift_up_range: Vector3 = Vector3.ZERO
+	var gear_perfect_shift_down: float = 0.0
 
 	var points_current: PackedVector2Array = []
 	var points_next: PackedVector2Array = []
@@ -27,7 +28,7 @@ func _draw() -> void:
 					if current_next_ratio < 1.0:
 						points_next = remap_points(car_input.get_curve_samples(rpm_curve, current_next_ratio))
 
-				if gear_current > 0 and gear_current <= AACCGlobal.car.get_meta(&"gear_count", 0):
+				if gear_current > 1 and gear_current <= AACCGlobal.car.get_meta(&"gear_count", 0):
 					var current_prev_ratio: float = max(gear_current, 1.0) / max(gear_current - 1, 1.0)
 					if current_prev_ratio > 1.0:
 						points_prev = remap_points(car_input.get_curve_samples(rpm_curve, current_prev_ratio))
@@ -36,12 +37,12 @@ func _draw() -> void:
 				gear_perfect_shift_up_range = car_input.get_gear_perfect_shift_up_range()
 				draw_rect(Rect2(gear_perfect_shift_up_range.x * size.x, 0.0, (gear_perfect_shift_up_range.z - gear_perfect_shift_up_range.x) * size.x, size.y), Color(Color.GREEN, 0.5))
 
+			if (gear_current > 1 and gear_current <= AACCGlobal.car.get_meta(&"gear_count", 0)):
+				gear_perfect_shift_down = car_input.get_gear_perfect_shift_down()
+				draw_rect(Rect2(0.0, 0.0, gear_perfect_shift_down * size.x, size.y), Color(Color.RED, 0.5))
+
 	var rpm_bar_color: Color = Color(Color.WHITE, 0.5)
 	var rpm_ratio: float = AACCGlobal.car.get_meta(&"rpm_ratio", 1.0)
-	if rpm_ratio >= gear_perfect_shift_up_range.x and rpm_ratio <= gear_perfect_shift_up_range.z:
-		rpm_bar_color = Color(Color.GREEN, 0.5)
-	elif rpm_ratio > gear_perfect_shift_up_range.z and gear_perfect_shift_up_range.z > 0.0:
-		rpm_bar_color = Color(Color.RED, 0.5)
 	draw_rect(Rect2(0.0, 0.0, rpm_ratio * size.x, size.y), rpm_bar_color)
 
 	var rpm_max: float = AACCGlobal.car.get_meta(&"rpm_max", 1.0)
