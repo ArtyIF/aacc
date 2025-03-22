@@ -158,7 +158,7 @@ func calculate_gear_target_auto(input_handbrake: float, velocity_z_sign: float) 
 		return gear_current
 	if input_handbrake > 0.0 and local_linear_velocity.length() < 0.25:
 		return 0
-	
+
 	if velocity_z_sign > 0:
 		return -1
 
@@ -169,9 +169,9 @@ func calculate_gear_target_auto(input_handbrake: float, velocity_z_sign: float) 
 	var gear_perfect_shift_down: float = get_gear_perfect_shift_down()
 
 	if car.get_meta(&"rpm_ratio", 0.0) < gear_perfect_shift_down and gear_target > 0:
-		return gear_current - 1
+		return gear_target - 1
 	if car.get_meta(&"rpm_ratio", 0.0) > gear_perfect_shift_up and gear_target < gear_count:
-		return gear_current + 1
+		return gear_target + 1
 
 	return gear_target
 
@@ -209,7 +209,7 @@ func _physics_process(delta: float) -> void:
 				gear_target = car.get_meta(&"gear_current", 1) - 1
 
 		gear_target = clampi(gear_target, -1, car.get_meta(&"gear_count", 0))
-	
+
 		# TODO: DRY
 		var launch_control_multiplier: float = 1.0
 		if gear_target == 0:
@@ -217,7 +217,7 @@ func _physics_process(delta: float) -> void:
 				launch_control_multiplier = get_gear_perfect_shift_up_range(car.get_meta(&"rpm_min"), 1.0).y
 		else:
 			launch_control_engaged = false
-	
+
 		car.set_meta(&"input_accelerate", input_forward * launch_control_multiplier)
 		car.set_meta(&"input_brake", input_backward)
 	else:

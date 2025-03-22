@@ -26,6 +26,8 @@ auto_exposure_speed = 1.0
 auto_exposure_min_sensitivity = 800.0
 auto_exposure_max_sensitivity = 2800.0
 
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_2t12c"]
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1kif7"]
 render_priority = 0
 shader = ExtResource("2_vx7r4")
@@ -36,8 +38,6 @@ shader_parameter/tint_multiplier = 1.0
 [sub_resource type="QuadMesh" id="QuadMesh_vx7r4"]
 flip_faces = true
 size = Vector2(2, 2)
-
-[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_2t12c"]
 
 [node name="DemoScene" type="Node3D"]
 
@@ -80,14 +80,20 @@ light_data = ExtResource("6_s4qbg")
 
 [node name="pathtest" parent="." instance=ExtResource("7_c6qrw")]
 
-[node name="Taxi" parent="." instance=ExtResource("8_2t12c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
-
 [node name="ramptest" parent="." instance=ExtResource("9_l5mqg")]
 transform = Transform3D(-0.952601, -0.0225841, -0.304014, -0.0107575, 1.99987, -0.00343316, 0.304033, -9.31321e-09, -0.952662, 145.31, 9.88008, -125.437)
 
 [node name="ramptest2" parent="." instance=ExtResource("9_l5mqg")]
 transform = Transform3D(-0.999863, -2.11876e-08, 0.0331244, -0.00285096, 0.985073, -0.344223, -0.016315, -0.172135, -1.96988, 172.325, 8.77901, -0.812098)
+
+[node name="LowerPlane" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -15, 0)
+
+[node name="PlaneShape" type="CollisionShape3D" parent="LowerPlane"]
+shape = SubResource("WorldBoundaryShape3D_2t12c")
+
+[node name="Taxi" parent="." instance=ExtResource("8_2t12c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
 
 [node name="ReflectionProbe" type="ReflectionProbe" parent="."]
 blend_distance = 0.0
@@ -265,9 +271,3 @@ enabled = false
 target_position = Vector3(0, 0, -1000)
 
 [node name="DebugLabel" parent="Plugins" instance=ExtResource("17_2t12c")]
-
-[node name="LowerPlane" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -15, 0)
-
-[node name="PlaneShape" type="CollisionShape3D" parent="LowerPlane"]
-shape = SubResource("WorldBoundaryShape3D_2t12c")
