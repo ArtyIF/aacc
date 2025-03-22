@@ -18,7 +18,7 @@ func set_force(force_name: StringName, force: Vector3, do_not_apply: bool = fals
 	forces[force_name] = new_force
 
 func get_force(force_name: StringName) -> Force:
-	return forces[force_name]
+	return forces.get(force_name, null)
 
 func remove_force(force_name: StringName):
 	forces.erase(force_name)
@@ -41,7 +41,7 @@ func set_torque(torque_name: StringName, torque: Vector3, do_not_apply: bool = f
 	torques[torque_name] = new_torque
 
 func get_torque(torque_name: StringName) -> Torque:
-	return torques[torque_name]
+	return torques.get(torque_name, null)
 
 func remove_torque(torque_name: StringName):
 	torques.erase(torque_name)

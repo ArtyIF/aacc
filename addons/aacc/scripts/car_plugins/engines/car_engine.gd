@@ -29,7 +29,8 @@ func _ready() -> void:
 	update_meta()
 
 func update_meta():
-	car.set_meta(&"top_speed", engine_top_speed)
+	car.set_meta(&"top_speed", engine_top_speed) # TODO: engine_top_speed
+	car.set_meta(&"engine_max_force", engine_force)
 	car.set_meta(&"gear_count", gearbox_gear_count)
 	car.set_meta(&"gear_current", gear_current)
 	car.set_meta(&"gear_switching", gear_switching)
