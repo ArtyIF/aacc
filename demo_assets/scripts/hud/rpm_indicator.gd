@@ -33,11 +33,11 @@ func _draw() -> void:
 					if current_prev_ratio > 1.0:
 						points_prev = remap_points(car_input.get_curve_samples(rpm_curve, current_prev_ratio))
 
-			if (gear_current >= 0 and gear_current < AACCGlobal.car.get_meta(&"gear_count", 0)) or is_zero_approx(AACCGlobal.car.get_meta(&"ground_coefficient", 0.0)):
-				gear_perfect_shift_up_range = car_input.get_gear_perfect_shift_up_range()
+				if (gear_current >= 0 and gear_current < AACCGlobal.car.get_meta(&"gear_count", 0)) or is_zero_approx(AACCGlobal.car.get_meta(&"ground_coefficient", 0.0)):
+					gear_perfect_shift_up_range = car_input.get_gear_perfect_shift_up_range()
 
-			if (gear_current > 1 and gear_current <= AACCGlobal.car.get_meta(&"gear_count", 0)):
-				gear_perfect_shift_down = car_input.get_gear_perfect_shift_down()
+				if (gear_current > 1 and gear_current <= AACCGlobal.car.get_meta(&"gear_count", 0)):
+					gear_perfect_shift_down = car_input.get_gear_perfect_shift_down()
 
 	var rpm_ratio: float = AACCGlobal.car.get_meta(&"rpm_ratio", 1.0)
 	var rpm_bar_color: Color = Color.WHITE
