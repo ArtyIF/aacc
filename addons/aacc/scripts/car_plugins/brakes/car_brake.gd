@@ -5,15 +5,15 @@ class_name CarBrake extends CarPluginBase
 
 func _ready() -> void:
 	car.set_meta(&"input_brake", 0.0)
-	car.set_meta(&"input_handbrake", 0.0)
+	car.set_meta(&"input_handbrake", false)
 
 func process_plugin(delta: float) -> void:
 	if is_zero_approx(car.get_meta(&"ground_coefficient", 0.0)):
 		return
 
 	var input_brake: float = car.get_meta(&"input_brake", 0.0)
-	var input_handbrake: float = car.get_meta(&"input_handbrake", 0.0)
-	var brake_value: float = max(input_brake, input_handbrake)
+	var input_handbrake: bool = car.get_meta(&"input_handbrake", false)
+	var brake_value: float = 1.0 if input_handbrake else input_brake
 
 	if is_zero_approx(brake_value):
 		return

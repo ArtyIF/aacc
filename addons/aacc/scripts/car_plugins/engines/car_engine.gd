@@ -97,9 +97,9 @@ func calculate_acceleration_multiplier(speed_ratio: float) -> float:
 func process_plugin(delta: float) -> void:
 	var input_accelerate: float = car.get_meta(&"input_accelerate", 0.0)
 	var input_brake: float = car.get_meta(&"input_brake", 0.0)
-	var input_handbrake: float = car.get_meta(&"input_handbrake", 0.0)
+	var input_handbrake: bool = car.get_meta(&"input_handbrake", false)
 
-	var brake_value: float = max(input_brake, input_handbrake)
+	var brake_value: float = 1.0 if input_handbrake else input_brake
 	if gear_current != 0:
 		input_accelerate *= 1.0 - brake_value
 

@@ -34,7 +34,7 @@ func process_plugin(delta: float) -> void:
 	var local_angular_velocity: Vector3 = car.get_meta(&"local_angular_velocity", Vector3.ZERO)
 
 	var input_steer: float = car.get_meta(&"input_steer", 0.0)
-	var input_handbrake: float = car.get_meta(&"input_handbrake", 0.0) > 0.0
+	var input_handbrake: bool = car.get_meta(&"input_handbrake", false)
 
 	if smooth_steer_smooth_sign:
 		if input_handbrake:

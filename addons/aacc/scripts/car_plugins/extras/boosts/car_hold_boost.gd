@@ -8,14 +8,13 @@ class_name CarHoldBoost extends CarPluginBase
 var boost_amount: SmoothedFloat = SmoothedFloat.new(0.0, boost_fill_speed, boost_use_speed)
 
 func _ready() -> void:
-	car.set_meta(&"input_boost", 0.0)
+	car.set_meta(&"input_boost", false)
 
 func process_plugin(delta: float) -> void:
 	boost_amount.speed_up = boost_fill_speed
 	boost_amount.speed_down = boost_use_speed
 
-	# TODO: make sure you need some nitro for the boost to work
-	if car.get_meta(&"input_boost", 0.0) > 0.0:
+	if car.get_meta(&"input_boost", false):
 		boost_amount.advance_to(0.0, delta)
 		if abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).z) <= boost_top_speed and boost_amount.get_value() > 0.0:
 			var ground_coefficient: float = car.get_meta(&"ground_coefficient", 0.0)

@@ -30,8 +30,8 @@ var launch_control_engaged: bool = false
 var gear_target: int = 0
 var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
-func calculate_steer(input_steer: float, input_handbrake: float, velocity_z_sign: float, delta: float) -> float:
-	var input_full_steer: float = input_handbrake if full_steer_on_handbrake else 0.0
+func calculate_steer(input_steer: float, input_handbrake: bool, velocity_z_sign: float, delta: float) -> float:
+	var input_full_steer: float = (1.0 if input_handbrake else 0.0) if full_steer_on_handbrake else 0.0
 	if is_zero_approx(car.get_meta(&"ground_coefficient", 1.0)):
 		input_full_steer = 1.0
 	if full_steer_on_reverse and velocity_z_sign > 0:
@@ -146,7 +146,7 @@ func get_gear_perfect_shift_down(rpm_min: float = 0.0, rpm_max: float = 1.0) -> 
 	perfect = inverse_lerp(rpm_min, rpm_max, perfect)
 	return perfect
 
-func calculate_gear_target_auto(input_handbrake: float, velocity_z_sign: float) -> int:
+func calculate_gear_target_auto(input_handbrake: bool, velocity_z_sign: float) -> int:
 	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
 	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 1.0)
 
@@ -154,9 +154,9 @@ func calculate_gear_target_auto(input_handbrake: float, velocity_z_sign: float) 
 	var gear_count: int = car.get_meta(&"gear_count", 0)
 	var gear_target: int = car.get_meta(&"input_gear_target", 0)
 
-	if (input_handbrake > 0.0 and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
+	if (input_handbrake and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
 		return gear_current
-	if input_handbrake > 0.0 and local_linear_velocity.length() < 0.25:
+	if input_handbrake and local_linear_velocity.length() < 0.25:
 		return 0
 
 	if velocity_z_sign > 0:
@@ -182,8 +182,8 @@ func _physics_process(delta: float) -> void:
 	var input_forward: float = clamp(Input.get_action_strength(action_forward), 0.0, 1.0)
 	var input_backward: float = clamp(Input.get_action_strength(action_backward), 0.0, 1.0)
 	var input_steer: float = clamp(Input.get_action_strength(action_steer_right) - Input.get_action_strength(action_steer_left), -1.0, 1.0)
-	var input_handbrake: float = 1.0 if Input.is_action_pressed(action_handbrake) else 0.0
-	var input_boost: float = 1.0 if Input.is_action_pressed(action_boost) else 0.0
+	var input_handbrake: bool = Input.is_action_pressed(action_handbrake)
+	var input_boost: bool = Input.is_action_pressed(action_boost)
 
 	if Input.is_action_just_pressed(action_trans_toggle):
 		manual_transmission = not manual_transmission

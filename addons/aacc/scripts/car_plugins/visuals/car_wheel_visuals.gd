@@ -18,7 +18,7 @@ func process_plugin(delta: float) -> void:
 	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
 	var input_steer: float = car.get_meta(&"input_steer", 0.0)
 	var steer_velocity_base: float = car.get_meta(&"steer_velocity_base", 0.0)
-	var input_handbrake: float = car.get_meta(&"input_handbrake", 0.0)
+	var input_handbrake: bool = car.get_meta(&"input_handbrake", false)
 
 	for wheel_path: NodePath in wheel_meshes.keys():
 		var wheel: CarWheelSuspension = get_node(wheel_path)
@@ -36,7 +36,7 @@ func process_plugin(delta: float) -> void:
 				new_transform = new_transform.rotated_local(Vector3.UP, steer_rotation)
 
 			if wheel.is_landed: # TODO: keep rotating in air with some sort of resistance
-				if not (wheel_flags[wheel_path] & WHEEL_FLAG_HANDBRAKE and input_handbrake > 0.0):
+				if not (wheel_flags[wheel_path] & WHEEL_FLAG_HANDBRAKE and input_handbrake):
 					forward_rotations[wheel_path] -= local_linear_velocity.z * delta / wheel.wheel_radius
 					# TODO: wheelspin
 
