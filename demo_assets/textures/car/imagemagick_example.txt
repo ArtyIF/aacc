@@ -1,0 +1,4 @@
+magick lm.exr -set colorspace RGB -colorspace Gray -crop "220x220+1+1" -resize "128x128!" ao.png
+220x220+1+1 - save lmbake as tres, open in notepad or something, find an array
+of NodePaths and Rect2's, multiply Rect2 values by image resolution, then write
+as 3x4+1+2, where numbers are argument positions

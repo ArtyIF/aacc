@@ -25,12 +25,12 @@
 [ext_resource type="PackedScene" uid="uid://bgtdb8mvduhn1" path="res://addons/aacc/scenes/audio/tire_screech.tscn" id="22_heuji"]
 [ext_resource type="Shader" uid="uid://ycsv74cb0xt" path="res://addons/aacc/shaders/aacc_shadow.gdshader" id="25_dnanp"]
 [ext_resource type="Texture2D" uid="uid://cjps7quork0b2" path="res://demo_assets/kenney_car_kit/Textures/colormap.png" id="25_nei8b"]
-[ext_resource type="Texture2D" uid="uid://dqq6wj3pv6t8q" path="res://demo_assets/textures/car/taxi_ao_wheel_fr.png" id="26_m8gdy"]
-[ext_resource type="Texture2D" uid="uid://d2e03lnhkun0g" path="res://demo_assets/textures/car/taxi_ao_body.png" id="26_nei8b"]
-[ext_resource type="Texture2D" uid="uid://72jvwgt0kgyg" path="res://demo_assets/textures/car/taxi_ao_wheel_fl.png" id="26_ye1oy"]
-[ext_resource type="Texture2D" uid="uid://dsmtc8gh8m6ub" path="res://demo_assets/textures/car/taxi_ao_wheel_br.png" id="27_pr8vl"]
-[ext_resource type="Texture2D" uid="uid://dt65drqcip7gj" path="res://demo_assets/textures/car/taxi_ao_wheel_bl.png" id="28_4hmk7"]
-[ext_resource type="Texture2D" uid="uid://djbjhjao2dbxo" path="res://demo_assets/textures/car/taxi_shadow.png" id="31_pr8vl"]
+[ext_resource type="Texture2D" uid="uid://ciytpb2cup1c4" path="res://demo_assets/textures/car/taxi_ao_wheel_fr.png" id="25_pr8vl"]
+[ext_resource type="Texture2D" uid="uid://fxy40522e4qh" path="res://demo_assets/textures/car/taxi_ao_wheel_fl.png" id="26_4hmk7"]
+[ext_resource type="Texture2D" uid="uid://ds33f6tcs33fr" path="res://demo_assets/textures/car/taxi_ao_body.png" id="26_nei8b"]
+[ext_resource type="Texture2D" uid="uid://c1yodn0cbt8b3" path="res://demo_assets/textures/car/taxi_ao_wheel_br.png" id="27_e2ws0"]
+[ext_resource type="Texture2D" uid="uid://cv2ot4eon83fj" path="res://demo_assets/textures/car/taxi_ao_wheel_bl.png" id="28_ybcwt"]
+[ext_resource type="Texture2D" uid="uid://c5swxnnoq0i2t" path="res://demo_assets/textures/car/taxi_shadow.png" id="31_pr8vl"]
 
 [sub_resource type="Resource" id="Resource_4f48m"]
 script = ExtResource("11_0wb0t")
@@ -66,7 +66,7 @@ albedo_texture = ExtResource("25_nei8b")
 roughness = 0.5
 ao_enabled = true
 ao_light_affect = 1.0
-ao_texture = ExtResource("26_m8gdy")
+ao_texture = ExtResource("25_pr8vl")
 ao_on_uv2 = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m8gdy"]
@@ -75,7 +75,7 @@ albedo_texture = ExtResource("25_nei8b")
 roughness = 0.5
 ao_enabled = true
 ao_light_affect = 1.0
-ao_texture = ExtResource("26_ye1oy")
+ao_texture = ExtResource("26_4hmk7")
 ao_on_uv2 = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ye1oy"]
@@ -84,7 +84,7 @@ albedo_texture = ExtResource("25_nei8b")
 roughness = 0.5
 ao_enabled = true
 ao_light_affect = 1.0
-ao_texture = ExtResource("27_pr8vl")
+ao_texture = ExtResource("27_e2ws0")
 ao_on_uv2 = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pr8vl"]
@@ -93,7 +93,7 @@ albedo_texture = ExtResource("25_nei8b")
 roughness = 0.5
 ao_enabled = true
 ao_light_affect = 1.0
-ao_texture = ExtResource("28_4hmk7")
+ao_texture = ExtResource("28_ybcwt")
 ao_on_uv2 = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_541op"]
@@ -117,7 +117,7 @@ shader_parameter/shadow_size = 5.0
 shader_parameter/shadow_height_above = 0.25
 shader_parameter/shadow_height_below = 1.25
 shader_parameter/shadow_intensity = 1.0
-shader_parameter/shadow_range = Vector2(0, 1)
+shader_parameter/shadow_range = Vector2(-0.05, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_m8gdy"]
 material = SubResource("ShaderMaterial_nei8b")
