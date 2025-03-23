@@ -1,11 +1,13 @@
 class_name CarWheelVisuals extends CarPluginBase
 
-const WHEEL_FLAG_STEER = 1 << 0
-const WHEEL_FLAG_DRIVE = 1 << 1
-const WHEEL_FLAG_HANDBRAKE = 1 << 2
+enum WheelFlag {
+	Steer = 1 << 0,
+	Drive = 1 << 1,
+	Handbrake = 1 << 2,
+}
 
 @export_custom(PROPERTY_HINT_DICTIONARY_TYPE, "22/26:CarWheelSuspension;22/26:Node3D") var wheel_meshes: Dictionary[NodePath, NodePath] = {}
-@export_custom(PROPERTY_HINT_DICTIONARY_TYPE, "22/26:CarWheelSuspension;2/6:Steer,Drive,Handbrake") var wheel_flags: Dictionary[NodePath, int] = {}
+@export_custom(PROPERTY_HINT_DICTIONARY_TYPE, "22/26:CarWheelSuspension;2/6:Steer,Drive,Handbrake") var wheel_flags: Dictionary[NodePath, WheelFlag] = {}
 var initial_wheel_mesh_transforms: Dictionary[NodePath, Transform3D] = {}
 var forward_rotations: Dictionary[NodePath, float] = {}
 
@@ -30,13 +32,13 @@ func process_plugin(delta: float) -> void:
 		new_transform = new_transform.translated_local(suspension_translation)
 
 		if wheel_path in wheel_flags.keys():
-			if wheel_flags[wheel_path] & WHEEL_FLAG_STEER:
+			if wheel_flags[wheel_path] & WheelFlag.Steer:
 				var steer_rotation: float = -input_steer * steer_velocity_base
 				# TODO: ackermann simulation
 				new_transform = new_transform.rotated_local(Vector3.UP, steer_rotation)
 
 			if wheel.is_landed: # TODO: keep rotating in air with some sort of resistance
-				if not (wheel_flags[wheel_path] & WHEEL_FLAG_HANDBRAKE and input_handbrake):
+				if not (wheel_flags[wheel_path] & WheelFlag.Handbrake and input_handbrake):
 					forward_rotations[wheel_path] -= local_linear_velocity.z * delta / wheel.wheel_radius
 					# TODO: wheelspin
 

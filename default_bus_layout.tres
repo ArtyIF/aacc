@@ -2,7 +2,6 @@
 
 [sub_resource type="AudioEffectHardLimiter" id="AudioEffectHardLimiter_uymns"]
 resource_name = "HardLimiter"
-ceiling_db = -6.0
 release = 1.0
 
 [resource]

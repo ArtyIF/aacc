@@ -29,9 +29,6 @@ class_name CarForceConverterProcessor extends CarPluginBase
 	&"angular_grip",
 ]
 
-func _ready() -> void:
-	pass
-
 func process_plugin(delta: float) -> void:
 	if is_zero_approx(car.get_meta(&"ground_coefficient", 0.0)):
 		return
