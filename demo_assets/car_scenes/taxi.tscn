@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://crko52geporbo"]
+[gd_scene load_steps=50 format=3 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/default_car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -16,7 +16,6 @@
 [ext_resource type="Script" uid="uid://crrd7ugev6afh" path="res://addons/aacc/scripts/helper_classes/procedural_curve.gd" id="11_0wb0t"]
 [ext_resource type="Script" uid="uid://un1kd6buaufw" path="res://addons/aacc/scripts/car_plugins/extras/boosts/car_hold_boost.gd" id="12_4f48m"]
 [ext_resource type="PackedScene" uid="uid://dutpfjvhdc2p1" path="res://demo_assets/kenney_car_kit/taxi.glb" id="12_r3t53"]
-[ext_resource type="Material" uid="uid://brsv8h2fccu15" path="res://demo_assets/materials/car/taxi.tres" id="13_eq170"]
 [ext_resource type="Script" uid="uid://put3fygiiqh8" path="res://addons/aacc/scripts/car_plugins/resistances/car_coast_resistance.gd" id="13_iv7oc"]
 [ext_resource type="Script" uid="uid://cgyn0v8p7gfu6" path="res://addons/aacc/scripts/car_plugins/visuals/car_wheel_visuals.gd" id="14_n1pdp"]
 [ext_resource type="Script" uid="uid://bejoolwrgdt81" path="res://addons/aacc/scripts/car_plugins/resistances/car_air_drag.gd" id="17_1amw3"]
@@ -24,6 +23,14 @@
 [ext_resource type="PackedScene" uid="uid://b0cyxisxowe8n" path="res://addons/aacc/scenes/audio/engine/engine_3.tscn" id="20_xg3rg"]
 [ext_resource type="Script" uid="uid://cr0lfkck7jwru" path="res://addons/aacc/scripts/car_plugins/audio/car_tire_screech_audio.gd" id="21_oy1jj"]
 [ext_resource type="PackedScene" uid="uid://bgtdb8mvduhn1" path="res://addons/aacc/scenes/audio/tire_screech.tscn" id="22_heuji"]
+[ext_resource type="Shader" uid="uid://ycsv74cb0xt" path="res://addons/aacc/shaders/aacc_shadow.gdshader" id="25_dnanp"]
+[ext_resource type="Texture2D" uid="uid://cjps7quork0b2" path="res://demo_assets/kenney_car_kit/Textures/colormap.png" id="25_nei8b"]
+[ext_resource type="Texture2D" uid="uid://dqq6wj3pv6t8q" path="res://demo_assets/textures/car/taxi_ao_wheel_fr.png" id="26_m8gdy"]
+[ext_resource type="Texture2D" uid="uid://d2e03lnhkun0g" path="res://demo_assets/textures/car/taxi_ao_body.png" id="26_nei8b"]
+[ext_resource type="Texture2D" uid="uid://72jvwgt0kgyg" path="res://demo_assets/textures/car/taxi_ao_wheel_fl.png" id="26_ye1oy"]
+[ext_resource type="Texture2D" uid="uid://dsmtc8gh8m6ub" path="res://demo_assets/textures/car/taxi_ao_wheel_br.png" id="27_pr8vl"]
+[ext_resource type="Texture2D" uid="uid://dt65drqcip7gj" path="res://demo_assets/textures/car/taxi_ao_wheel_bl.png" id="28_4hmk7"]
+[ext_resource type="Texture2D" uid="uid://djbjhjao2dbxo" path="res://demo_assets/textures/car/taxi_shadow.png" id="31_pr8vl"]
 
 [sub_resource type="Resource" id="Resource_4f48m"]
 script = ExtResource("11_0wb0t")
@@ -52,6 +59,69 @@ right_value = 0.5
 max_input = 10.0
 input_curve = 0.5
 metadata/_custom_type_script = "uid://crrd7ugev6afh"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i48u0"]
+resource_name = "colormap"
+albedo_texture = ExtResource("25_nei8b")
+roughness = 0.5
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = ExtResource("26_m8gdy")
+ao_on_uv2 = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m8gdy"]
+resource_name = "colormap"
+albedo_texture = ExtResource("25_nei8b")
+roughness = 0.5
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = ExtResource("26_ye1oy")
+ao_on_uv2 = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ye1oy"]
+resource_name = "colormap"
+albedo_texture = ExtResource("25_nei8b")
+roughness = 0.5
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = ExtResource("27_pr8vl")
+ao_on_uv2 = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pr8vl"]
+resource_name = "colormap"
+albedo_texture = ExtResource("25_nei8b")
+roughness = 0.5
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = ExtResource("28_4hmk7")
+ao_on_uv2 = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_541op"]
+resource_name = "colormap"
+albedo_texture = ExtResource("25_nei8b")
+metallic = 0.5
+roughness = 0.0
+clearcoat_enabled = true
+clearcoat_roughness = 1.0
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = ExtResource("26_nei8b")
+ao_on_uv2 = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nei8b"]
+render_priority = 0
+shader = ExtResource("25_dnanp")
+shader_parameter/shadow_texture = ExtResource("31_pr8vl")
+shader_parameter/max_shadow_texture_mipmaps = 6.0
+shader_parameter/shadow_size = 5.0
+shader_parameter/shadow_height_above = 0.25
+shader_parameter/shadow_height_below = 1.25
+shader_parameter/shadow_intensity = 1.0
+shader_parameter/shadow_range = Vector2(0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_m8gdy"]
+material = SubResource("ShaderMaterial_nei8b")
+size = Vector3(5, 5, 5)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_gh3hu"]
 points = PackedVector3Array(-0.386737, 0.05, -0.649657, 0.54101, 0.694947, 0.632256, -0.160595, -0.0218254, 1.39641, -0.771676, 0.676583, 0.43644, 0.668484, 0.414653, -0.741645, -0.538039, 0.709803, -0.71158, 0.610279, 0.05, 1.22483, -0.509089, 0.65, 1.22959, -0.626152, 0.05, 1.18485, 0.610279, 0.05, -0.37053, 0.53333, 0.65, 1.22959, 0.54101, 0.694947, -0.668777, -0.684357, 0.414653, -0.741645, -0.626152, 0.05, -0.37053, 0.755803, 0.676583, 0.43644, 0.624825, 0.28376, 1.35287, -0.684357, 0.28376, 1.26558, 0.370864, 0.05, -0.649657, 0.188381, -0.0218254, 1.39641, -0.522134, 0.698984, 0.635815, 0.755803, 0.545545, 0.567268, -0.771676, 0.545545, 0.43644, 0.668484, 0.28376, 1.30933, -0.640698, 0.28376, 1.30933, -0.160595, -0.0218254, 1.30933, 0.755803, 0.545545, 0.43644, -0.546347, 0.05, 1.26463, 0.188381, -0.0218254, 1.30933, -0.771676, 0.545545, 0.567268, 0.570377, 0.05, 1.26463)
@@ -227,23 +297,33 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 [node name="wheel-front-right" parent="Visuals" index="0"]
 layers = 4
 gi_mode = 2
+surface_material_override/0 = SubResource("StandardMaterial3D_i48u0")
 
 [node name="wheel-front-left" parent="Visuals" index="1"]
 layers = 4
 gi_mode = 2
+surface_material_override/0 = SubResource("StandardMaterial3D_m8gdy")
 
 [node name="wheel-back-right" parent="Visuals" index="2"]
 layers = 4
 gi_mode = 2
+surface_material_override/0 = SubResource("StandardMaterial3D_ye1oy")
 
 [node name="wheel-back-left" parent="Visuals" index="3"]
 layers = 4
 gi_mode = 2
+surface_material_override/0 = SubResource("StandardMaterial3D_pr8vl")
 
 [node name="body" parent="Visuals" index="4"]
 layers = 4
 gi_mode = 2
-surface_material_override/0 = ExtResource("13_eq170")
+surface_material_override/0 = SubResource("StandardMaterial3D_541op")
+
+[node name="Shadow" type="MeshInstance3D" parent="Visuals"]
+layers = 4
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("BoxMesh_m8gdy")
 
 [node name="FollowCameraOffset" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
