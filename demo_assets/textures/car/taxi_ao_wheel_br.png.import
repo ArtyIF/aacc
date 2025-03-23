@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c1yodn0cbt8b3"
-path.s3tc="res://.godot/imported/taxi_ao_wheel_br.png-fdd18393f93eef592aef089b7d60469f.s3tc.ctex"
+path="res://.godot/imported/taxi_ao_wheel_br.png-fdd18393f93eef592aef089b7d60469f.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://demo_assets/textures/car/taxi_ao_wheel_br.png"
-dest_files=["res://.godot/imported/taxi_ao_wheel_br.png-fdd18393f93eef592aef089b7d60469f.s3tc.ctex"]
+dest_files=["res://.godot/imported/taxi_ao_wheel_br.png-fdd18393f93eef592aef089b7d60469f.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=3
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

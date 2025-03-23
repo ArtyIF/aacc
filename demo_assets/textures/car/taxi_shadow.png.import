@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c5swxnnoq0i2t"
-path.bptc="res://.godot/imported/taxi_shadow.png-bac57d28e723aa913f4362d031e86ae6.bptc.ctex"
+path="res://.godot/imported/taxi_shadow.png-bac57d28e723aa913f4362d031e86ae6.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://demo_assets/textures/car/taxi_shadow.png"
-dest_files=["res://.godot/imported/taxi_shadow.png-bac57d28e723aa913f4362d031e86ae6.bptc.ctex"]
+dest_files=["res://.godot/imported/taxi_shadow.png-bac57d28e723aa913f4362d031e86ae6.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=3
 compress/high_quality=true
 compress/lossy_quality=0.7
 compress/hdr_compression=1

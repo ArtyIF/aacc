@@ -326,7 +326,7 @@ gi_mode = 0
 mesh = SubResource("BoxMesh_m8gdy")
 
 [node name="FollowCameraOffset" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4.25)
 
 [node name="HoodCamera" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, -0.75)
