@@ -1,4 +1,4 @@
-class_name CarForceConverterProcessor extends CarPluginBase
+class_name CarForceProcessor extends CarPluginBase
 
 @export_group("Grip", "grip_")
 @export var grip_linear: float = 40000.0

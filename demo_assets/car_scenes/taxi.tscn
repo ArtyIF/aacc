@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://bvfqai7uunpc3" path="res://addons/aacc/scripts/car_plugins/engines/car_engine.gd" id="4_pq6ol"]
 [ext_resource type="Script" uid="uid://v0cpq7q6mjou" path="res://addons/aacc/scripts/car_plugins/brakes/car_brake.gd" id="7_dm0ij"]
 [ext_resource type="Script" uid="uid://cil4ufto2v87g" path="res://addons/aacc/scripts/car_plugins/grips/car_side_grip.gd" id="8_dm0ij"]
-[ext_resource type="Script" uid="uid://b1lao6jpcowsa" path="res://addons/aacc/scripts/car_plugins/processors/car_force_converter_processor.gd" id="9_bknco"]
+[ext_resource type="Script" uid="uid://b1lao6jpcowsa" path="res://addons/aacc/scripts/car_plugins/processors/car_force_processor.gd" id="9_bknco"]
 [ext_resource type="Script" uid="uid://br0vp35kb6pyw" path="res://addons/aacc/scripts/car_plugins/steers/car_steer.gd" id="9_r3t53"]
 [ext_resource type="Script" uid="uid://i723lqbcm7qo" path="res://addons/aacc/scripts/car_plugins/resistances/car_downforce.gd" id="10_axug4"]
 [ext_resource type="Script" uid="uid://bieogbd1wisbk" path="res://addons/aacc/scripts/car_plugins/processors/car_steer_offset_processor.gd" id="10_gh3hu"]
@@ -250,7 +250,7 @@ metadata/_custom_type_script = "uid://br0vp35kb6pyw"
 script = ExtResource("10_r3t53")
 metadata/_custom_type_script = "uid://dbisg1nrvftc4"
 
-[node name="ForceConverterProcessor" type="Node3D" parent="Plugins"]
+[node name="ForceProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("9_bknco")
 reduced_grip_curve = SubResource("Resource_0wb0t")
 metadata/_custom_type_script = "uid://b1lao6jpcowsa"

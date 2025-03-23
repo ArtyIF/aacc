@@ -126,7 +126,6 @@ func process_plugin(delta: float) -> void:
 	var force: float = input_accelerate * engine_force * acceleration_multiplier
 	if is_zero_approx(force):
 		return
-	car.set_force(&"engine_desired", Vector3.FORWARD * force, true)
 
 	if gear_current == 0:
 		return
