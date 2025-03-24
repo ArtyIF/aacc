@@ -48,7 +48,7 @@ func process_plugin(delta: float) -> void:
 		set_raycast_values()
 
 		compression = 1.0 - ((distance - wheel_radius) / suspension_length)
-		compression = clamp(compression, 0.0, 1.0)
+		compression = clamp(compression, 0.0, 1.0) # TODO: choice between this and max(compression, 0.0)
 		if not last_compression_set:
 			last_compression = compression
 			last_compression_set = true

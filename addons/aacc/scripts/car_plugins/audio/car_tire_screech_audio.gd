@@ -15,11 +15,11 @@ func _ready() -> void:
 	player.pitch_scale = pitch_range.x
 
 func _physics_process(delta: float) -> void:
-
-	# TODO: burnout amount plugin
 	if car.get_meta(&"ground_coefficient", 0.0) > 0.0:
-		smooth_burnout_amount_volume.advance_to(clamp(abs(car.get_meta(&"local_linear_velocity").x) / 5.0, 0.0, 1.0), delta)
-		smooth_burnout_amount_pitch.advance_to(clamp(abs(car.get_meta(&"local_linear_velocity").x) / 5.0, 0.0, 1.0), delta)
+		var slip: Vector3 = car.get_meta(&"slip", Vector3.ZERO)
+		# TODO: use slip z as well
+		smooth_burnout_amount_volume.advance_to(clamp(abs(slip.x * delta) / 10.0, 0.0, 1.0), delta)
+		smooth_burnout_amount_pitch.advance_to(clamp(abs(slip.x * delta) / 10.0, 0.0, 1.0), delta)
 	else:
 		smooth_burnout_amount_volume.advance_to(0.0, delta)
 		smooth_burnout_amount_pitch.advance_to(0.0, delta)

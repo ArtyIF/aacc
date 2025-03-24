@@ -90,7 +90,7 @@ func process_plugin(delta: float) -> void:
 	var desired_acceleration: Vector3 = sum_of_tire_slip_forces / car.mass
 	var actual_acceleration: Vector3 = car.global_basis.inverse() * (car.linear_velocity - linear_velocity_prev) / delta
 
-	var tire_slip: Vector3 = actual_acceleration - desired_acceleration
-	car.set_meta(&"tire_slip", tire_slip)
+	var slip: Vector3 = actual_acceleration - desired_acceleration
+	car.set_meta(&"slip", slip)
 
 	linear_velocity_prev = car.linear_velocity
