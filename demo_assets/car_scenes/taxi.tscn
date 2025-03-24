@@ -282,6 +282,7 @@ metadata/_custom_type_script = "uid://cgyn0v8p7gfu6"
 [node name="EngineAudio" type="Node3D" parent="Plugins/Audio"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, -0.8)
 script = ExtResource("19_wyo5d")
+min_volume_limit = 0.65
 max_pitch = 1.2
 engine_audio_scene = ExtResource("20_xg3rg")
 metadata/_custom_type_script = "uid://ceu8yif662nyj"

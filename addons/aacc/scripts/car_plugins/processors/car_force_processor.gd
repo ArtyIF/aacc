@@ -29,6 +29,17 @@ class_name CarForceProcessor extends CarPluginBase
 	&"angular_grip",
 ]
 
+@export_group("Tire Slip", "tire_slip")
+@export var tire_slip_forces: Array[StringName] = [
+	&"engine_desired",
+	&"brake", # TODO: brake_desired
+	&"side_grip",
+	&"coast_resistance",
+]
+@export var tire_slip_multiply_x_by_delta: bool = true
+
+var linear_velocity_prev: Vector3 = Vector3.ZERO
+
 func process_plugin(delta: float) -> void:
 	if is_zero_approx(car.get_meta(&"ground_coefficient", 0.0)):
 		return
@@ -47,7 +58,7 @@ func process_plugin(delta: float) -> void:
 	if reduced_grip_limit_x_force:
 		converted_force.x = clamp(converted_force.x, -grip_linear * reduced_grip, grip_linear * reduced_grip)
 	converted_force = car.global_basis * converted_force
-	converted_force = converted_force.slide(car.get_meta(&"ground_average_normal", Vector3.ZERO))
+	converted_force = converted_force.slide(car.get_meta(&"ground_average_normal", Vector3.UP))
 
 	var force_length_limit: float = grip_linear * car.get_meta(&"ground_coefficient", 0.0)
 	if reduced_grip_apply_to_forces:
@@ -63,7 +74,7 @@ func process_plugin(delta: float) -> void:
 
 	var converted_torque: Vector3 = sum_of_torques
 	converted_torque = car.global_basis * converted_torque
-	converted_torque = converted_torque.project(car.get_meta(&"ground_average_normal", Vector3.ZERO))
+	converted_torque = converted_torque.project(car.get_meta(&"ground_average_normal", Vector3.UP))
 
 	var torque_length_limit: float = grip_angular * car.get_meta(&"ground_coefficient", 0.0)
 	if reduced_grip_apply_to_torques:
@@ -71,3 +82,18 @@ func process_plugin(delta: float) -> void:
 	converted_torque = converted_torque.limit_length(torque_length_limit)
 
 	car.set_torque(&"converted_torque", converted_torque)
+
+	var sum_of_tire_slip_forces: Vector3 = Vector3.ZERO
+	for force in car.get_force_list():
+		if tire_slip_forces.has(force):
+			sum_of_tire_slip_forces += car.get_force(force).force
+
+	var desired_acceleration: Vector3 = sum_of_tire_slip_forces / car.mass
+	var actual_acceleration: Vector3 = car.global_basis.inverse() * (car.linear_velocity - linear_velocity_prev) / delta
+
+	var tire_slip: Vector3 = actual_acceleration - desired_acceleration
+	if tire_slip_multiply_x_by_delta:
+		tire_slip.x *= delta
+	car.set_meta(&"tire_slip", tire_slip)
+
+	linear_velocity_prev = car.linear_velocity
