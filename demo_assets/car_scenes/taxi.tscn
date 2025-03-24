@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://crko52geporbo"]
+[gd_scene load_steps=48 format=3 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/default_car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -132,8 +132,10 @@ points = PackedVector3Array(-0.626304, 0.05, -1.24888, 0.541003, 0.694983, -0.76
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_n1pdp"]
 points = PackedVector3Array(-0.419202, 1.10631, -0.635671, 0.537698, 0.764009, 0.654762, 0.496789, 0.744843, 0.599126, -0.553571, 0.764009, 0.654762, 0.0513118, 1.34475, 0.0710843, 0.508698, 0.737699, -0.789925, -0.524569, 0.737701, -0.789921, 0.494009, 1.15666, -0.654745, -0.466193, 1.15666, 0.305521, 0.494009, 1.15666, 0.305521, 0.0513118, 1.34475, -0.404073, -0.512667, 0.74484, 0.599131, -0.509882, 0.98222, 0.480142, -0.466501, 1.0675, -0.645519, -0.407393, 1.14267, -0.581935, 0.494009, 0.98222, 0.480142, -0.0601894, 1.30924, -0.366216, -0.506343, 0.868286, -0.725059, -0.0601894, 1.30924, 0.0521557, -0.463825, 0.908945, -0.721429)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_pr8vl"]
-height = 0.3
+[sub_resource type="SphereShape3D" id="SphereShape3D_pr8vl"]
+radius = 0.3
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4hmk7"]
 radius = 0.3
 
 [node name="Taxi" type="RigidBody3D"]
@@ -337,19 +339,19 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.1855
 shape = SubResource("ConvexPolygonShape3D_n1pdp")
 
 [node name="CollisionWheelFR" type="CollisionShape3D" parent="."]
-transform = Transform3D(4.37114e-08, 1, -1.50996e-07, 1, -4.37114e-08, 0, -6.60024e-15, -1.50996e-07, -1, 0.45, 0.3, -0.76)
-shape = SubResource("CylinderShape3D_pr8vl")
+transform = Transform3D(4.37114e-08, 1, -1.50996e-07, 1, -4.37114e-08, 0, -6.60024e-15, -1.50996e-07, -1, 0.3, 0.3, -0.76)
+shape = SubResource("SphereShape3D_pr8vl")
 
 [node name="CollisionWheelFL" type="CollisionShape3D" parent="."]
-transform = Transform3D(4.37114e-08, 1, -1.50996e-07, 1, -4.37114e-08, 0, -6.60024e-15, -1.50996e-07, -1, -0.45, 0.3, -0.76)
-shape = SubResource("CylinderShape3D_pr8vl")
+transform = Transform3D(4.37114e-08, 1, -1.50996e-07, 1, -4.37114e-08, 0, -6.60024e-15, -1.50996e-07, -1, -0.3, 0.3, -0.76)
+shape = SubResource("SphereShape3D_4hmk7")
 
 [node name="CollisionWheelBR" type="CollisionShape3D" parent="."]
-transform = Transform3D(4.37114e-08, 1, -1.50996e-07, 1, -4.37114e-08, 0, -6.60024e-15, -1.50996e-07, -1, 0.45, 0.3, 0.76)
-shape = SubResource("CylinderShape3D_pr8vl")
+transform = Transform3D(4.37114e-08, 1, -1.50996e-07, 1, -4.37114e-08, 0, -6.60024e-15, -1.50996e-07, -1, 0.3, 0.3, 0.76)
+shape = SubResource("SphereShape3D_4hmk7")
 
 [node name="CollisionWheelBL" type="CollisionShape3D" parent="."]
-transform = Transform3D(4.37114e-08, 1, 8.74228e-08, 1, -4.37114e-08, 0, 3.82137e-15, 8.74228e-08, -1, -0.45, 0.3, 0.76)
-shape = SubResource("CylinderShape3D_pr8vl")
+transform = Transform3D(4.37114e-08, 1, 8.74228e-08, 1, -4.37114e-08, 0, 3.82137e-15, 8.74228e-08, -1, -0.3, 0.3, 0.76)
+shape = SubResource("SphereShape3D_4hmk7")
 
 [editable path="Visuals"]
