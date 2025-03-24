@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://bwjnqe5mvkcbx" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input.gd" id="2_1kif7"]
 [ext_resource type="Script" uid="uid://d17tlldwsdt56" path="res://demo_assets/scripts/opengl_world_environment.gd" id="2_lmxsi"]
 [ext_resource type="Shader" uid="uid://dcrk75c13vhp4" path="res://demo_assets/shaders/lens_flare_shader.gdshader" id="2_vx7r4"]
-[ext_resource type="Script" uid="uid://cjsul5ik02rhk" path="res://demo_assets/shaders/lens_flare.gd" id="3_46dqb"]
+[ext_resource type="Script" uid="uid://cjsul5ik02rhk" path="res://demo_assets/scripts/lens_flare.gd" id="3_46dqb"]
 [ext_resource type="Environment" uid="uid://b43bxtp54x0qn" path="res://demo_assets/demo_scene_environment_opengl.tres" id="3_63w87"]
 [ext_resource type="Script" uid="uid://be5ommjjotu3v" path="res://addons/aacc/scripts/scene_plugins/setters/car_setter_basic.gd" id="3_vx7r4"]
 [ext_resource type="Script" uid="uid://dncrn8e6ld0ld" path="res://demo_assets/scripts/scene_plugins/camera.gd" id="5_46lkv"]

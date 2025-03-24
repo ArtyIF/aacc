@@ -36,7 +36,6 @@ class_name CarForceProcessor extends CarPluginBase
 	&"side_grip",
 	&"coast_resistance",
 ]
-@export var tire_slip_multiply_x_by_delta: bool = true
 
 var linear_velocity_prev: Vector3 = Vector3.ZERO
 
@@ -92,8 +91,6 @@ func process_plugin(delta: float) -> void:
 	var actual_acceleration: Vector3 = car.global_basis.inverse() * (car.linear_velocity - linear_velocity_prev) / delta
 
 	var tire_slip: Vector3 = actual_acceleration - desired_acceleration
-	if tire_slip_multiply_x_by_delta:
-		tire_slip.x *= delta
 	car.set_meta(&"tire_slip", tire_slip)
 
 	linear_velocity_prev = car.linear_velocity

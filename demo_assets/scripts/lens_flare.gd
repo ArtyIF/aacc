@@ -5,7 +5,7 @@ extends GeometryInstance3D
 
 var viewport: Viewport
 var visibility_smooth: SmoothedFloat
-@onready var occlusion_cast: RayCast3D = $OcclusionCast # TODO: take angle into account
+@onready var occlusion_cast: RayCast3D = $OcclusionCast
 
 func _process(delta: float) -> void:
 	viewport = get_viewport()
