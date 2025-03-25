@@ -18,8 +18,8 @@ func _physics_process(delta: float) -> void:
 	if car.get_meta(&"ground_coefficient", 0.0) > 0.0:
 		var slip: Vector3 = car.get_meta(&"slip", Vector3.ZERO)
 		# TODO: use slip z as well
-		smooth_burnout_amount_volume.advance_to(clamp(abs(slip.x * delta) / 10.0, 0.0, 1.0), delta)
-		smooth_burnout_amount_pitch.advance_to(clamp(abs(slip.x * delta) / 10.0, 0.0, 1.0), delta)
+		smooth_burnout_amount_volume.advance_to(clamp(abs(slip.x) / 10.0, 0.0, 1.0), delta)
+		smooth_burnout_amount_pitch.advance_to(clamp(abs(slip.x) / 10.0, 0.0, 1.0), delta)
 	else:
 		smooth_burnout_amount_volume.advance_to(0.0, delta)
 		smooth_burnout_amount_pitch.advance_to(0.0, delta)

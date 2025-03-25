@@ -29,13 +29,14 @@ class_name CarForceProcessor extends CarPluginBase
 	&"angular_grip",
 ]
 
-@export_group("Tire Slip", "tire_slip")
-@export var tire_slip_forces: Array[StringName] = [
+@export_group("Slip", "slip")
+@export var slip_forces: Array[StringName] = [
 	&"engine_desired",
 	&"brake", # TODO: brake_desired
 	&"side_grip",
 	&"coast_resistance",
 ]
+@export_flags("X", "Y", "Z") var slip_multiply_by_delta: int = 1
 
 var linear_velocity_prev: Vector3 = Vector3.ZERO
 
@@ -84,13 +85,19 @@ func process_plugin(delta: float) -> void:
 
 	var sum_of_tire_slip_forces: Vector3 = Vector3.ZERO
 	for force in car.get_force_list():
-		if tire_slip_forces.has(force):
+		if slip_forces.has(force):
 			sum_of_tire_slip_forces += car.get_force(force).force
 
 	var desired_acceleration: Vector3 = sum_of_tire_slip_forces / car.mass
 	var actual_acceleration: Vector3 = car.global_basis.inverse() * (car.linear_velocity - linear_velocity_prev) / delta
 
-	var slip: Vector3 = actual_acceleration - desired_acceleration
+	var slip: Vector3 = desired_acceleration - actual_acceleration
+	if slip_multiply_by_delta & 1: # x
+		slip.x *= delta
+	if slip_multiply_by_delta & 2: # y
+		slip.y *= delta
+	if slip_multiply_by_delta & 4: # z
+		slip.z *= delta
 	car.set_meta(&"slip", slip)
 
 	linear_velocity_prev = car.linear_velocity
