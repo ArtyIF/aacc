@@ -18,7 +18,7 @@ class_name CarEngine extends CarPluginBase
 
 var gear_current: int = 0
 var gear_target: int = 0
-var gear_switch_timer: float = 0.0
+var gear_switch_timer: SmoothedFloat = SmoothedFloat.new(-1.0)
 var gear_switching: bool = false
 var rpm_ratio: SmoothedFloat = SmoothedFloat.new()
 var rpm_limiter: bool = false
@@ -34,7 +34,7 @@ func update_meta():
 	car.set_meta(&"gear_count", gearbox_gear_count)
 	car.set_meta(&"gear_current", gear_current)
 	car.set_meta(&"gear_switching", gear_switching)
-	car.set_meta(&"gear_switch_timer", gear_switch_timer)
+	car.set_meta(&"gear_switch_timer", gear_switch_timer.get_value())
 	car.set_meta(&"rpm_ratio", rpm_ratio.get_value())
 	car.set_meta(&"rpm_curve", rpm_curve)
 	car.set_meta(&"rpm_min", rpm_min)
@@ -45,15 +45,14 @@ func update_gear(delta: float):
 	if gear_target != gear_current and not gear_switching:
 		gear_switching = true
 		if not gear_current == 0:
-			gear_switch_timer = gearbox_switch_time
+			gear_switch_timer.force_current_value(gearbox_switch_time)
 
-	if gear_switch_timer <= 0.0 or gear_target == gear_current:
+	if gear_switch_timer.get_value() <= 0.0 or gear_target == gear_current:
 		gear_current = gear_target
 		if gear_switching:
 			gear_switching = false
 
-	if gear_switch_timer >= 0.0:
-		gear_switch_timer -= delta
+	gear_switch_timer.advance_to(-1.0, delta)
 
 func calculate_gear_limit(gear: int) -> float:
 	return abs(gear) / float(gearbox_gear_count)

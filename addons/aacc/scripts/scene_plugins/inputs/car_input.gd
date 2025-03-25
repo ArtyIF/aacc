@@ -24,11 +24,13 @@ class_name CarInput extends ScenePluginBase
 @export var perfect_shift_up_threshold: float = 0.2
 @export var perfect_shift_down_threshold: float = 0.2
 @export var auto_downshift_on_manual: bool = true
+@export var auto_shift_timeout: float = 0.5
 
 var manual_transmission: bool = false
 var launch_control_engaged: bool = false
 var gear_target: int = 0
 var smooth_steer: SmoothedFloat = SmoothedFloat.new()
+var gear_switch_timeout: SmoothedFloat = SmoothedFloat.new(-1.0)
 
 func calculate_steer(input_steer: float, input_handbrake: bool, velocity_z_sign: float, delta: float) -> float:
 	var input_full_steer: float = (1.0 if input_handbrake else 0.0) if full_steer_on_handbrake else 0.0
@@ -147,12 +149,15 @@ func get_gear_perfect_shift_down(rpm_min: float = 0.0, rpm_max: float = 1.0) -> 
 	return perfect
 
 func calculate_gear_target_auto(input_handbrake: bool, velocity_z_sign: float) -> int:
+	var gear_target: int = car.get_meta(&"input_gear_target", 0)
+	if gear_switch_timeout.get_value() > 0.0 or car.get_meta(&"gear_switching", false):
+		return gear_target
+
 	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
 	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 1.0)
 
 	var gear_current: int = car.get_meta(&"gear_current", 0)
 	var gear_count: int = car.get_meta(&"gear_count", 0)
-	var gear_target: int = car.get_meta(&"input_gear_target", 0)
 
 	if (input_handbrake and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
 		return gear_current
@@ -168,7 +173,6 @@ func calculate_gear_target_auto(input_handbrake: bool, velocity_z_sign: float) -
 	var gear_perfect_shift_up: float = get_gear_perfect_shift_up_range().y
 	var gear_perfect_shift_down: float = get_gear_perfect_shift_down()
 
-	# TODO: timer
 	if car.get_meta(&"rpm_ratio", 0.0) < gear_perfect_shift_down and gear_target > 0:
 		return gear_target - 1
 	if car.get_meta(&"rpm_ratio", 0.0) > gear_perfect_shift_up and gear_target < gear_count:
@@ -222,7 +226,11 @@ func _physics_process(delta: float) -> void:
 		car.set_meta(&"input_accelerate", input_forward * launch_control_multiplier)
 		car.set_meta(&"input_brake", input_backward)
 	else:
-		gear_target = calculate_gear_target_auto(input_handbrake, velocity_z_sign)
+		var gear_target_new: int = calculate_gear_target_auto(input_handbrake, velocity_z_sign)
+		if gear_target != gear_target_new:
+			gear_switch_timeout.force_current_value(auto_shift_timeout)
+			gear_target = gear_target_new
+
 		if gear_target > 0:
 			launch_control_engaged = false
 			car.set_meta(&"input_accelerate", input_forward)
@@ -243,3 +251,6 @@ func _physics_process(delta: float) -> void:
 	car.set_meta(&"input_steer", calculate_steer(input_steer, input_handbrake, velocity_z_sign, delta))
 	car.set_meta(&"input_handbrake", input_handbrake)
 	car.set_meta(&"input_boost", input_boost)
+
+	if not car.get_meta(&"gear_switching", false):
+		gear_switch_timeout.advance_to(-1.0, delta)
