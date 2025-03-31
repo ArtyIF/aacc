@@ -17,14 +17,20 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if car.get_meta(&"ground_coefficient", 0.0) > 0.0:
 		var slip: Vector3 = car.get_meta(&"slip", Vector3.ZERO)
-		# TODO: use slip z as well
-		smooth_burnout_amount_volume.advance_to(clamp(abs(slip.x) / 10.0, 0.0, 1.0), delta)
-		smooth_burnout_amount_pitch.advance_to(clamp(abs(slip.x) / 10.0, 0.0, 1.0), delta)
+		var total_slip: float = abs(slip.x)
+		# TODO: configurable
+		if slip.z < -2.0:
+			total_slip += abs(slip.z) - 2.0
+		total_slip /= 10.0
+		total_slip = clamp(total_slip, 0.0, 1.0)
+
+		smooth_burnout_amount_volume.advance_to(total_slip, delta)
+		smooth_burnout_amount_pitch.advance_to(total_slip, delta)
 	else:
 		smooth_burnout_amount_volume.advance_to(0.0, delta)
 		smooth_burnout_amount_pitch.advance_to(0.0, delta)
 
-	# TODO: screech sound on landing (separate plugin?)
+	# TODO: screech sound on landing (separate plugin)
 
 	player.volume_linear = clamp(smooth_burnout_amount_volume.get_value(), 0.0, 1.0)
 	player.pitch_scale = lerp(pitch_range.x, pitch_range.y, smooth_burnout_amount_pitch.get_value())
