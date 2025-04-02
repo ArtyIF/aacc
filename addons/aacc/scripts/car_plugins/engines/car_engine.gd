@@ -119,7 +119,6 @@ func process_plugin(delta: float) -> void:
 
 	var acceleration_multiplier: float = calculate_acceleration_multiplier(abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).z) / engine_top_speed)
 	var force: float = input_accelerate * engine_force * acceleration_multiplier
-	car.set_force(&"engine_desired", Vector3.FORWARD * force, true)
 
 	if gear_current == 0 or rpm_limiter:
 		return

@@ -16,11 +16,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if car.get_meta(&"ground_coefficient", 0.0) > 0.0:
-		var slip: Vector3 = car.get_meta(&"slip", Vector3.ZERO)
-		var total_slip: float = abs(slip.x)
-		# TODO: configurable
-		if slip.z < -2.0:
-			total_slip += abs(slip.z) - 2.0
+		# TODO: plugin to calculate
+		var total_slip: float = abs(car.get_meta(&"local_linear_velocity").x)
 		total_slip /= 10.0
 		total_slip = clamp(total_slip, 0.0, 1.0)
 
