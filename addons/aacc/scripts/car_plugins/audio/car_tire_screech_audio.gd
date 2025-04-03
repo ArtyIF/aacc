@@ -14,13 +14,9 @@ func _ready() -> void:
 	player.volume_linear = 0.0
 	player.pitch_scale = pitch_range.x
 
-func _physics_process(delta: float) -> void:
+func process_plugin(delta: float) -> void:
 	if car.get_meta(&"ground_coefficient", 0.0) > 0.0:
-		# TODO: plugin to calculate
-		var total_slip: float = abs(car.get_meta(&"local_linear_velocity").x)
-		total_slip /= 10.0
-		total_slip = clamp(total_slip, 0.0, 1.0)
-
+		var total_slip: float = car.get_meta(&"total_slip", 0.0)
 		smooth_burnout_amount_volume.advance_to(total_slip, delta)
 		smooth_burnout_amount_pitch.advance_to(total_slip, delta)
 	else:

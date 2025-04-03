@@ -17,7 +17,7 @@ func _ready() -> void:
 	player.max_db = linear_to_db(min_volume_limit)
 	player.pitch_scale = max_pitch
 
-func _physics_process(delta: float) -> void:
+func process_plugin(delta: float) -> void:
 	var rpm_ratio: float = car.get_meta(&"rpm_ratio", 1.0)
 	var gear_switching: bool = car.get_meta(&"gear_switching", false)
 	var rpm_limiter: bool = car.get_meta(&"rpm_limiter", false)

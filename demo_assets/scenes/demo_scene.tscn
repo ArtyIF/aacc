@@ -56,7 +56,7 @@ light_cull_mask = 4293918721
 shadow_enabled = true
 shadow_bias = 0.0
 shadow_normal_bias = 0.0
-shadow_caster_mask = 4294967294
+shadow_caster_mask = 4293918726
 directional_shadow_blend_splits = true
 directional_shadow_pancake_size = 50.0
 script = ExtResource("6_l5mqg")
@@ -93,7 +93,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -15, 0)
 shape = SubResource("WorldBoundaryShape3D_2t12c")
 
 [node name="Taxi" parent="." instance=ExtResource("8_2t12c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
 
 [node name="ReflectionProbe" type="ReflectionProbe" parent="."]
 blend_distance = 0.0
