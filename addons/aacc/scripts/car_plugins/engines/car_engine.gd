@@ -112,22 +112,24 @@ func process_plugin(delta: float) -> void:
 		rpm_limiter = false
 	car.set_meta(&"rpm_limiter", rpm_limiter)
 
-	if gear_switching:
+	car.set_meta(&"engine_desired_force_ratio", 0.0)
+	if gear_switching or rpm_limiter:
 		return
 	if is_zero_approx(input_accelerate):
 		return
 
 	var acceleration_multiplier: float = calculate_acceleration_multiplier(abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).z) / engine_top_speed)
-	var force: float = input_accelerate * engine_force * acceleration_multiplier
+	var force_ratio: float = input_accelerate * acceleration_multiplier
+	car.set_meta(&"engine_desired_force_ratio", force_ratio)
 
-	if gear_current == 0 or rpm_limiter:
+	if gear_current == 0:
 		return
 
 	var brake_value: float = 1.0 if input_handbrake else input_brake
 	if gear_current != 0:
-		force *= 1.0 - brake_value
+		force_ratio *= 1.0 - brake_value
 
-	if is_zero_approx(force):
+	if is_zero_approx(force_ratio):
 		return
 
-	car.set_force(&"engine", Vector3.FORWARD * force, true)
+	car.set_force(&"engine", Vector3.FORWARD * force_ratio * engine_force, true)

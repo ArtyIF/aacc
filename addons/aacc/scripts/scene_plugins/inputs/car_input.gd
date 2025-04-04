@@ -61,11 +61,13 @@ func calculate_gear_limit(gear: int, gear_count: int) -> float:
 	return float(gear) / gear_count
 
 # TODO: move into helper class
-func get_curve_samples(curve: Curve, ratio: float = 1.0) -> PackedVector2Array:
+func get_curve_samples(curve: Curve, ratio: float = 1.0, max_x: float = 1.0) -> PackedVector2Array:
 	var list: PackedVector2Array = []
 
 	for i in range(0, curve.bake_resolution + 1):
 		var point_x: float = float(i) / curve.bake_resolution
+		if point_x > max_x:
+			break
 		var point_y: float = curve.sample_baked(point_x * ratio) * ratio
 		list.append(Vector2(point_x, point_y))
 
@@ -94,7 +96,7 @@ func get_curve_samples_intersection_range(samples_1: PackedVector2Array, samples
 	var range_x_set: bool = false
 	var diff_sign_prev: float = 0.0
 
-	for i in range(0, len(samples_1)):
+	for i in range(0, min(len(samples_1), len(samples_2))):
 		var point_1: Vector2 = samples_1[i]
 		var point_2: Vector2 = samples_2[i]
 
@@ -142,7 +144,7 @@ func get_gear_perfect_shift_down(rpm_min: float = 0.0, rpm_max: float = 1.0) -> 
 
 	if gear_current > 1:
 		var current_prev_ratio: float = max(float(gear_current), 1.0) / max(float(gear_current) - 1, 1.0)
-		var rpm_curve_samples_prev: PackedVector2Array = get_curve_samples(rpm_curve, current_prev_ratio)
+		var rpm_curve_samples_prev: PackedVector2Array = get_curve_samples(rpm_curve, current_prev_ratio, 1.0 / current_prev_ratio)
 		perfect = get_curve_samples_intersection_range(rpm_curve_samples_current, rpm_curve_samples_prev, perfect_shift_down_threshold).y
 
 	perfect = inverse_lerp(rpm_min, rpm_max, perfect)
