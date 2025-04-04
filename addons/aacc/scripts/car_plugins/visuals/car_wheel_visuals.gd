@@ -40,7 +40,8 @@ func process_plugin(delta: float) -> void:
 			if wheel.is_landed: # TODO: keep rotating in air with some sort of resistance
 				if not (wheel_flags[wheel_path] & WheelFlag.Handbrake and input_handbrake):
 					forward_rotations[wheel_path] -= local_linear_velocity.z * delta / wheel.wheel_radius
-					# TODO: wheelspin
+					if wheel_flags[wheel_path] & WheelFlag.Drive and car.get_meta(&"gear_current", 0) == 0:
+						forward_rotations[wheel_path] += car.get_meta(&"engine_max_force", 0.0) * car.get_meta(&"slip_forward", 0.0) * delta / wheel.wheel_radius / car.mass
 
 			if forward_rotations[wheel_path] > 2 * PI:
 				forward_rotations[wheel_path] -= 2 * PI

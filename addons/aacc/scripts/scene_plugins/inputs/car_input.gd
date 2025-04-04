@@ -175,6 +175,7 @@ func calculate_gear_target_auto(input_handbrake: bool, velocity_z_sign: float) -
 	var gear_perfect_shift_up: float = get_gear_perfect_shift_up_range().y
 	var gear_perfect_shift_down: float = get_gear_perfect_shift_down()
 
+	# TODO: make it shift several gears up/down at once when necessary
 	if car.get_meta(&"rpm_ratio", 0.0) < gear_perfect_shift_down and gear_target > 0:
 		return gear_target - 1
 	if car.get_meta(&"rpm_ratio", 0.0) > gear_perfect_shift_up and gear_target < gear_count:

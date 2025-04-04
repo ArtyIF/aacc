@@ -16,9 +16,9 @@ func _ready() -> void:
 
 func process_plugin(delta: float) -> void:
 	if car.get_meta(&"ground_coefficient", 0.0) > 0.0:
-		var total_slip: float = car.get_meta(&"total_slip", 0.0)
-		smooth_burnout_amount_volume.advance_to(total_slip, delta)
-		smooth_burnout_amount_pitch.advance_to(total_slip, delta)
+		var slip_total: float = car.get_meta(&"slip_total", 0.0)
+		smooth_burnout_amount_volume.advance_to(slip_total, delta)
+		smooth_burnout_amount_pitch.advance_to(slip_total, delta)
 	else:
 		smooth_burnout_amount_volume.advance_to(0.0, delta)
 		smooth_burnout_amount_pitch.advance_to(0.0, delta)
