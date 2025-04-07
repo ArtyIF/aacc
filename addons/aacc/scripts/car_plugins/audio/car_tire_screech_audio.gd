@@ -11,9 +11,6 @@ func _ready() -> void:
 	player = tire_screech_scene.instantiate()
 	add_child(player)
 
-	player.volume_linear = 0.0
-	player.pitch_scale = pitch_range.x
-
 func process_plugin(delta: float) -> void:
 	if car.get_meta(&"ground_coefficient", 0.0) > 0.0:
 		var slip_total: float = car.get_meta(&"slip_total", 0.0)

@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://bf5ovocf772db"]
+
+[ext_resource type="AudioStream" uid="uid://b7f63qkasf7du" path="res://addons/aacc/audio/scrape.wav" id="1_hub2n"]
+
+[node name="Scrape" type="AudioStreamPlayer3D"]
+stream = ExtResource("1_hub2n")
+volume_db = -80.0
+unit_size = 5.0
+max_db = 0.0
+bus = &"SFX"
+playback_type = 1
+attenuation_filter_cutoff_hz = 10000.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://crko52geporbo"]
+[gd_scene load_steps=51 format=3 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/default_car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -24,9 +24,11 @@
 [ext_resource type="PackedScene" uid="uid://b0cyxisxowe8n" path="res://addons/aacc/scenes/audio/engine/engine_3.tscn" id="20_xg3rg"]
 [ext_resource type="Script" uid="uid://cr0lfkck7jwru" path="res://addons/aacc/scripts/car_plugins/audio/car_tire_screech_audio.gd" id="21_oy1jj"]
 [ext_resource type="PackedScene" uid="uid://bgtdb8mvduhn1" path="res://addons/aacc/scenes/audio/tire_screech.tscn" id="22_heuji"]
+[ext_resource type="Script" uid="uid://c3etr1fbahust" path="res://addons/aacc/scripts/car_plugins/audio/car_scrape_audio.gd" id="24_e2ws0"]
 [ext_resource type="Shader" uid="uid://ycsv74cb0xt" path="res://addons/aacc/shaders/aacc_shadow.gdshader" id="25_dnanp"]
 [ext_resource type="Texture2D" uid="uid://cjps7quork0b2" path="res://demo_assets/kenney_car_kit/Textures/colormap.png" id="25_nei8b"]
 [ext_resource type="Texture2D" uid="uid://ciytpb2cup1c4" path="res://demo_assets/textures/car/taxi_ao_wheel_fr.png" id="25_pr8vl"]
+[ext_resource type="PackedScene" uid="uid://bf5ovocf772db" path="res://addons/aacc/scenes/audio/scrape.tscn" id="25_ybcwt"]
 [ext_resource type="Texture2D" uid="uid://fxy40522e4qh" path="res://demo_assets/textures/car/taxi_ao_wheel_fl.png" id="26_4hmk7"]
 [ext_resource type="Texture2D" uid="uid://ds33f6tcs33fr" path="res://demo_assets/textures/car/taxi_ao_body.png" id="26_nei8b"]
 [ext_resource type="Texture2D" uid="uid://c1yodn0cbt8b3" path="res://demo_assets/textures/car/taxi_ao_wheel_br.png" id="27_e2ws0"]
@@ -148,6 +150,8 @@ center_of_mass_mode = 1
 center_of_mass = Vector3(0, 0.1, 0)
 freeze_mode = 1
 continuous_cd = true
+contact_monitor = true
+max_contacts_reported = 4
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_ik2h1")
@@ -290,6 +294,11 @@ metadata/_custom_type_script = "uid://ceu8yif662nyj"
 script = ExtResource("21_oy1jj")
 tire_screech_scene = ExtResource("22_heuji")
 metadata/_custom_type_script = "uid://cr0lfkck7jwru"
+
+[node name="ScrapeAudio" type="Node3D" parent="Plugins/Audio"]
+script = ExtResource("24_e2ws0")
+scrape_audio_scene = ExtResource("25_ybcwt")
+metadata/_custom_type_script = "uid://c3etr1fbahust"
 
 [node name="Visuals" parent="." instance=ExtResource("12_r3t53")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

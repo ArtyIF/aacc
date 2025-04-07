@@ -1,3 +1,9 @@
-tire_screech.wav: Chrysler LHS tire squeal 04 (04-25-2009).wav by audible-edge -- https://freesound.org/s/71739/ -- License: Creative Commons 0 -- Trimmed and looped, EQ'd to remove engine noise
+tire_screech.wav: Chrysler LHS tire squeal 04 (04-25-2009).wav by audible-edge -- https://freesound.org/s/71739/ -- License: Creative Commons 0 -- Trimmed and looped, EQd to remove engine noise
+collision_1.wav: Collision 1 by JustInvoke -- https://freesound.org/s/446126/ -- License: Attribution 4.0 -- No changes
+collision_2.wav: Collision 2 by JustInvoke -- https://freesound.org/s/446125/ -- License: Attribution 4.0 -- No changes
+land_1.wav, land_2.wav: Collision 3 by JustInvoke -- https://freesound.org/s/446132/ -- License: Attribution 4.0 -- Mixed with tire_screech.wav
+scratch.wav: metal plate scratch by Ridderick -- https://freesound.org/s/707639/ -- License: Creative Commons 0 -- Trimmed, looped and layered
+brake_squeal.wav: Car Brakes sqeak screech squeal stop.wav by WavJunction.com -- https://freesound.org/s/456764/ -- License: Creative Commons 0 -- Trimmed and looped
+tire_roll.wav: clip_12.wav by obin -- https://freesound.org/s/60042/ -- License: Attribution 3.0 -- Trimmed and looped
 
 Engine sounds created with https://github.com/DasEtwas/enginesound from on example .esc files
