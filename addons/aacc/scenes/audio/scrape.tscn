@@ -7,6 +7,6 @@ stream = ExtResource("1_hub2n")
 volume_db = -80.0
 unit_size = 5.0
 max_db = 0.0
-bus = &"SFX"
+bus = &"Reverb"
 playback_type = 1
 attenuation_filter_cutoff_hz = 10000.0

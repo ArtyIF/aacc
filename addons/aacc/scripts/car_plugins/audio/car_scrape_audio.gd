@@ -3,7 +3,6 @@ class_name CarScrapeAudio extends CarPluginBase
 
 var players: Array[AudioStreamPlayer3D] = []
 var smooth_scrape_volumes: Array[SmoothedFloat] = []
-var smooth_scrape_pitches: Array[SmoothedFloat] = []
 
 func _ready() -> void:
 	for i in range(car.max_contacts_reported):
@@ -11,7 +10,6 @@ func _ready() -> void:
 		add_child(players[i])
 
 		smooth_scrape_volumes.append(SmoothedFloat.new(0.0, 10.0, 10.0))
-		smooth_scrape_pitches.append(SmoothedFloat.new(0.0, 50.0, 1.0))
 
 func process_plugin(delta: float) -> void:
 	var state: PhysicsDirectBodyState3D = PhysicsServer3D.body_get_direct_state(car.get_rid())
@@ -27,13 +25,10 @@ func process_plugin(delta: float) -> void:
 			# TODO: configurable
 			var scrape_amount: float = (state.get_contact_local_velocity_at_position(i).length() - 0.1) / 20.0
 			smooth_scrape_volumes[i].advance_to(clamp(scrape_amount, 0.0, 1.0), delta)
-			smooth_scrape_pitches[i].advance_to(scrape_amount, delta)
 		else:
 			smooth_scrape_volumes[i].advance_to(0.0, delta)
-			smooth_scrape_pitches[i].advance_to(0.0, delta)
 
 		players[i].volume_linear = smooth_scrape_volumes[i].get_value()
-		players[i].pitch_scale = clamp(lerp(0.2, 1.0, smooth_scrape_pitches[i].get_value()), 0.2, 2.0) # TODO: configurable
 
 		if car.freeze:
 			players[i].volume_linear = 0.0
