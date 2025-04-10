@@ -12,19 +12,16 @@ func _ready() -> void:
 		smooth_scrape_volumes.append(SmoothedFloat.new(0.0, 10.0, 10.0))
 
 func process_plugin(delta: float) -> void:
-	var state: PhysicsDirectBodyState3D = PhysicsServer3D.body_get_direct_state(car.get_rid())
+	var contact_count: int = car.get_meta(&"contact_count", 0)
+	var contact_positions: PackedVector3Array = car.get_meta(&"contact_positions", [])
+	var contact_normals: PackedVector3Array = car.get_meta(&"contact_normals", [])
+	var contact_scrapes: PackedFloat32Array = car.get_meta(&"contact_scrapes", [])
 
-	# TODO: separate scrape calculation into a separate plugin
-	# TODO: maybe some scene-level management for scrapes? merge close contacts into one
-	# BUG: contacts' sorting isn't stable, which breaks doppler
-	var total_scrape_amount: float = 0.0
-	var average_scrape_position: Vector3 = Vector3.ZERO
+	# BUG: contacts' sorting isn't stable, which breaks doppler a bit
 	for i in range(len(players)):
-		if i < state.get_contact_count():
-			players[i].global_position = state.get_contact_collider_position(i)
-			# TODO: configurable
-			var scrape_amount: float = (state.get_contact_local_velocity_at_position(i).length() - 0.1) / 20.0
-			smooth_scrape_volumes[i].advance_to(clamp(scrape_amount, 0.0, 1.0), delta)
+		if i < contact_count and contact_normals[i].angle_to(car.global_basis.y) > deg_to_rad(30.0): # TODO: configurable
+			players[i].global_position = contact_positions[i]
+			smooth_scrape_volumes[i].advance_to(clamp(contact_scrapes[i], 0.0, 1.0), delta)
 		else:
 			smooth_scrape_volumes[i].advance_to(0.0, delta)
 

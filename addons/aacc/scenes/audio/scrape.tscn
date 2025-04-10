@@ -5,7 +5,6 @@
 [node name="Scrape" type="AudioStreamPlayer3D"]
 stream = ExtResource("1_hub2n")
 volume_db = -80.0
-unit_size = 5.0
 max_db = 0.0
 bus = &"Reverb"
 playback_type = 1

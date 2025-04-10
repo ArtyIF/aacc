@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://crko52geporbo"]
+[gd_scene load_steps=52 format=3 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/default_car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -20,6 +20,7 @@
 [ext_resource type="Script" uid="uid://cgyn0v8p7gfu6" path="res://addons/aacc/scripts/car_plugins/visuals/car_wheel_visuals.gd" id="14_n1pdp"]
 [ext_resource type="Script" uid="uid://bejoolwrgdt81" path="res://addons/aacc/scripts/car_plugins/resistances/car_air_drag.gd" id="17_1amw3"]
 [ext_resource type="Script" uid="uid://23chnpw2adul" path="res://addons/aacc/scripts/car_plugins/processors/car_slip_processor.gd" id="18_4hmk7"]
+[ext_resource type="Script" uid="uid://cl3yj5rnktbek" path="res://addons/aacc/scripts/car_plugins/processors/car_contact_processor.gd" id="19_guh54"]
 [ext_resource type="Script" uid="uid://ceu8yif662nyj" path="res://addons/aacc/scripts/car_plugins/audio/car_engine_audio.gd" id="19_wyo5d"]
 [ext_resource type="PackedScene" uid="uid://b0cyxisxowe8n" path="res://addons/aacc/scenes/audio/engine/engine_3.tscn" id="20_xg3rg"]
 [ext_resource type="Script" uid="uid://cr0lfkck7jwru" path="res://addons/aacc/scripts/car_plugins/audio/car_tire_screech_audio.gd" id="21_oy1jj"]
@@ -261,6 +262,10 @@ metadata/_custom_type_script = "uid://bejoolwrgdt81"
 [node name="SlipProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("18_4hmk7")
 metadata/_custom_type_script = "uid://23chnpw2adul"
+
+[node name="ContactProcessor" type="Node3D" parent="Plugins"]
+script = ExtResource("19_guh54")
+metadata/_custom_type_script = "uid://cl3yj5rnktbek"
 
 [node name="Visuals" type="Node3D" parent="Plugins"]
 

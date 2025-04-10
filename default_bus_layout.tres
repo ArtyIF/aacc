@@ -8,7 +8,6 @@ release = 1.0
 resource_name = "Reverb"
 predelay_msec = 75.0
 room_size = 0.0
-damping = 1.0
 spread = 0.0
 hipass = 1.0
 
