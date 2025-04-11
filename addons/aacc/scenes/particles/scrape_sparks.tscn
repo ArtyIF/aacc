@@ -4,6 +4,7 @@
 [ext_resource type="TubeTrailMesh" uid="uid://dapbl5ah3peg" path="res://addons/aacc/meshes/scrape_sparks_mesh.tres" id="2_jdqw7"]
 
 [node name="ScrapeSparks" type="GPUParticles3D"]
+emitting = false
 amount = 100
 trail_enabled = true
 trail_lifetime = 0.2
