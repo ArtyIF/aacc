@@ -13,6 +13,8 @@ func _ready() -> void:
 
 func process_plugin(delta: float) -> void:
 	if car.get_meta(&"ground_coefficient", 0.0) > 0.0:
+		player.global_position = car.get_meta(&"ground_average_point", car.global_position)
+
 		var slip_total: float = car.get_meta(&"slip_total", 0.0)
 		smooth_burnout_amount_volume.advance_to(slip_total, delta)
 		smooth_burnout_amount_pitch.advance_to(slip_total, delta)
