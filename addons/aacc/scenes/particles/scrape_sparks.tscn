@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmiohxwb2w23v"]
+
+[ext_resource type="Material" uid="uid://jng4xpl38yiy" path="res://addons/aacc/materials/particles/scrape/scrape_sparks_process.tres" id="1_5lk4l"]
+[ext_resource type="TubeTrailMesh" uid="uid://dapbl5ah3peg" path="res://addons/aacc/meshes/scrape_sparks_mesh.tres" id="2_jdqw7"]
+
+[node name="ScrapeSparks" type="GPUParticles3D"]
+amount = 100
+trail_enabled = true
+trail_lifetime = 0.2
+process_material = ExtResource("1_5lk4l")
+draw_pass_1 = ExtResource("2_jdqw7")
