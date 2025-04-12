@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://crko52geporbo"]
+[gd_scene load_steps=57 format=3 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/default_car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -36,6 +36,9 @@
 [ext_resource type="Texture2D" uid="uid://ds33f6tcs33fr" path="res://demo_assets/textures/car/taxi_ao_body.png" id="26_nei8b"]
 [ext_resource type="Texture2D" uid="uid://c1yodn0cbt8b3" path="res://demo_assets/textures/car/taxi_ao_wheel_br.png" id="27_e2ws0"]
 [ext_resource type="Texture2D" uid="uid://cv2ot4eon83fj" path="res://demo_assets/textures/car/taxi_ao_wheel_bl.png" id="28_ybcwt"]
+[ext_resource type="Script" uid="uid://ryxb54l00hyh" path="res://addons/aacc/scripts/car_plugins/audio/car_collision_audio.gd" id="29_8alfh"]
+[ext_resource type="PackedScene" uid="uid://m7eic2l7s1ok" path="res://addons/aacc/scenes/audio/collision.tscn" id="30_3luwv"]
+[ext_resource type="PackedScene" uid="uid://c0a0l5qonbany" path="res://addons/aacc/scenes/audio/land.tscn" id="31_jv7iv"]
 [ext_resource type="Texture2D" uid="uid://c5swxnnoq0i2t" path="res://demo_assets/textures/car/taxi_shadow.png" id="31_pr8vl"]
 
 [sub_resource type="Resource" id="Resource_4f48m"]
@@ -287,7 +290,7 @@ NodePath("../../Wheels/WheelBR"): 2
 })
 metadata/_custom_type_script = "uid://cgyn0v8p7gfu6"
 
-[node name="CarScrapeSparks" type="Node3D" parent="Plugins/Visuals"]
+[node name="ScrapeSparks" type="Node3D" parent="Plugins/Visuals"]
 script = ExtResource("21_ejac2")
 scrape_sparks_scene = ExtResource("22_d2sxc")
 metadata/_custom_type_script = "uid://dyokbfqjtjmtx"
@@ -311,6 +314,12 @@ metadata/_custom_type_script = "uid://cr0lfkck7jwru"
 script = ExtResource("24_e2ws0")
 scrape_audio_scene = ExtResource("25_ybcwt")
 metadata/_custom_type_script = "uid://c3etr1fbahust"
+
+[node name="CollisionAudio" type="Node3D" parent="Plugins/Audio"]
+script = ExtResource("29_8alfh")
+collision_audio_scene = ExtResource("30_3luwv")
+land_audio_scene = ExtResource("31_jv7iv")
+metadata/_custom_type_script = "uid://ryxb54l00hyh"
 
 [node name="Visuals" parent="." instance=ExtResource("12_r3t53")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

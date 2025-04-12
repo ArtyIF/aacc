@@ -19,7 +19,7 @@ func process_plugin(delta: float) -> void:
 
 	# BUG: contacts' sorting isn't stable, which breaks doppler a bit
 	for i in range(len(players)):
-		if i < contact_count and contact_normals[i].angle_to(car.global_basis.y) > deg_to_rad(30.0): # TODO: configurable
+		if i < contact_count:
 			players[i].global_position = contact_positions[i]
 			smooth_scrape_volumes[i].advance_to(clamp(contact_scrapes[i], 0.0, 1.0), delta)
 		else:

@@ -15,7 +15,7 @@ func process_plugin(delta: float) -> void:
 	var contact_scrapes: PackedFloat32Array = car.get_meta(&"contact_scrapes", [])
 
 	for i in range(len(sparks)):
-		if i < contact_count and contact_normals[i].angle_to(car.global_basis.y) > deg_to_rad(30.0): # TODO: configurable
+		if i < contact_count:
 			sparks[i].global_position = contact_positions[i]
 			if not Vector3.UP.cross(contact_normals[i]).is_zero_approx():
 				sparks[i].global_basis = Basis.looking_at(contact_normals[i], Vector3.UP.rotated(contact_normals[i], randf_range(0.0, TAU)))

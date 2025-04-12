@@ -4,7 +4,7 @@
 [ext_resource type="AudioStream" uid="uid://bteclj5rk6hlh" path="res://addons/aacc/audio/collision_2.wav" id="2_cnrjt"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_e1wns"]
-random_pitch = 1.2
+random_pitch = 1.1
 streams_count = 2
 stream_0/stream = ExtResource("1_4545l")
 stream_1/stream = ExtResource("2_cnrjt")
@@ -12,7 +12,6 @@ stream_1/stream = ExtResource("2_cnrjt")
 [node name="Collision" type="AudioStreamPlayer3D"]
 stream = SubResource("AudioStreamRandomizer_e1wns")
 max_db = 0.0
-autoplay = true
 bus = &"SFX"
 playback_type = 1
 attenuation_filter_cutoff_hz = 10000.0
