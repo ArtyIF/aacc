@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://btcf2nli4k7yc"
 path.bptc="res://.godot/imported/table_mountain_1_2k.hdr-ac636aaec05cb89a4bb25f8ca259e29e.bptc.ctex"
+path.astc="res://.godot/imported/table_mountain_1_2k.hdr-ac636aaec05cb89a4bb25f8ca259e29e.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://demo_assets/textures/sky/table_mountain_1_2k.hdr"
-dest_files=["res://.godot/imported/table_mountain_1_2k.hdr-ac636aaec05cb89a4bb25f8ca259e29e.bptc.ctex"]
+dest_files=["res://.godot/imported/table_mountain_1_2k.hdr-ac636aaec05cb89a4bb25f8ca259e29e.bptc.ctex", "res://.godot/imported/table_mountain_1_2k.hdr-ac636aaec05cb89a4bb25f8ca259e29e.astc.ctex"]
 
 [params]
 

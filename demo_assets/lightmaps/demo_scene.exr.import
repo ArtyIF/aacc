@@ -4,15 +4,16 @@ importer="2d_array_texture"
 type="CompressedTexture2DArray"
 uid="uid://bn134v4236weq"
 path.bptc="res://.godot/imported/demo_scene.exr-689333b4fb1268643bd4b7e7bdb1e138.bptc.ctexarray"
+path.astc="res://.godot/imported/demo_scene.exr-689333b4fb1268643bd4b7e7bdb1e138.astc.ctexarray"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://demo_assets/lightmaps/demo_scene.exr"
-dest_files=["res://.godot/imported/demo_scene.exr-689333b4fb1268643bd4b7e7bdb1e138.bptc.ctexarray"]
+dest_files=["res://.godot/imported/demo_scene.exr-689333b4fb1268643bd4b7e7bdb1e138.bptc.ctexarray", "res://.godot/imported/demo_scene.exr-689333b4fb1268643bd4b7e7bdb1e138.astc.ctexarray"]
 
 [params]
 
