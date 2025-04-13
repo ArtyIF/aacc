@@ -11,5 +11,5 @@ on it a bit, however.
 to use them!
 
 ## Dependencies
-- Godot 4.4+
+- Godot 4.5+
 - Blender 3.5 or later (3.0-3.4 might also work) for the demo
