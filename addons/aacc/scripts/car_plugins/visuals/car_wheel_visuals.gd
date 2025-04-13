@@ -58,7 +58,7 @@ func process_plugin(delta: float) -> void:
 				forward_rotations[wheel_path] += 2 * PI
 			new_transform = new_transform.rotated_local(Vector3.RIGHT, forward_rotations[wheel_path])
 
-			burnout_particles[wheel_path].global_position = wheel.collision_point
+			burnout_particles[wheel_path].global_position = wheel.global_position
 			if wheel.is_landed:
 				if (car.get_meta(&"gear_current", 0) == 0 and forward_rotation_speed != 0.0) or (car.get_meta(&"gear_current", 0) != 0):
 					burnout_particles[wheel_path].amount_ratio = car.get_meta(&"slip_total", 0.0)
