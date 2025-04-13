@@ -1,5 +1,6 @@
 class_name CarScrapeSparks extends CarPluginBase
 @export var scrape_sparks_scene: PackedScene
+@export var use_light: bool = true
 
 var sparks: Array[GPUParticles3D] = []
 
@@ -25,5 +26,7 @@ func process_plugin(delta: float) -> void:
 		else:
 			sparks[i].amount_ratio = 0.0
 
-		if not car.freeze:
-			sparks[i].emitting = sparks[i].amount_ratio > 0.0
+		sparks[i].emitting = sparks[i].amount_ratio > 0.0
+		if use_light:
+			sparks[i].get_node("Light").light_energy = 1.0 * sparks[i].amount_ratio # TODO: configurable
+		sparks[i].get_node("Light").visible = use_light and not is_zero_approx(sparks[i].amount_ratio)
