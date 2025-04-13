@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://crko52geporbo"]
+[gd_scene load_steps=59 format=3 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/default_car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -27,6 +27,7 @@
 [ext_resource type="Script" uid="uid://cr0lfkck7jwru" path="res://addons/aacc/scripts/car_plugins/audio/car_tire_screech_audio.gd" id="21_oy1jj"]
 [ext_resource type="PackedScene" uid="uid://dmiohxwb2w23v" path="res://addons/aacc/scenes/particles/scrape_sparks.tscn" id="22_d2sxc"]
 [ext_resource type="PackedScene" uid="uid://bgtdb8mvduhn1" path="res://addons/aacc/scenes/audio/tire_screech.tscn" id="22_heuji"]
+[ext_resource type="PackedScene" uid="uid://75n0p1b3i57g" path="res://addons/aacc/scenes/particles/burnout_particles.tscn" id="22_nvj2i"]
 [ext_resource type="Script" uid="uid://c3etr1fbahust" path="res://addons/aacc/scripts/car_plugins/audio/car_scrape_audio.gd" id="24_e2ws0"]
 [ext_resource type="Shader" uid="uid://ycsv74cb0xt" path="res://addons/aacc/shaders/aacc_shadow.gdshader" id="25_dnanp"]
 [ext_resource type="Texture2D" uid="uid://cjps7quork0b2" path="res://demo_assets/kenney_car_kit/Textures/colormap.png" id="25_nei8b"]
@@ -289,6 +290,7 @@ NodePath("../../Wheels/WheelFR"): 5,
 NodePath("../../Wheels/WheelBL"): 2,
 NodePath("../../Wheels/WheelBR"): 2
 })
+burnout_particles_scene = ExtResource("22_nvj2i")
 metadata/_custom_type_script = "uid://cgyn0v8p7gfu6"
 
 [node name="ScrapeSparks" type="Node3D" parent="Plugins/Visuals"]
