@@ -230,6 +230,7 @@ func _physics_process(delta: float) -> void:
 		car.set_meta(&"input_brake", input_backward)
 	else:
 		var gear_target_new: int = calculate_gear_target_auto(input_handbrake, velocity_z_sign)
+		# TODO: rewrite this, causes issues
 		if gear_target != gear_target_new:
 			gear_switch_timeout.force_current_value(auto_shift_timeout)
 			gear_target = gear_target_new
