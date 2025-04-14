@@ -8,6 +8,7 @@ func process_plugin(delta: float) -> void:
 	var slip_total: float = 0.0
 
 	slip_side += abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).x)
+	slip_side = max(slip_side - 0.2, 0.0)
 	slip_side /= 10.0 # TODO: configurable
 	slip_total += slip_side
 
@@ -20,6 +21,7 @@ func process_plugin(delta: float) -> void:
 		smooth_takeoff_slip.force_current_value(0.0)
 		if car.get_meta(&"input_handbrake", false):
 			slip_forward += abs(car.get_meta(&"brake_speed", 0.0))
+			slip_forward /= 10.0 # TODO: configurable
 	slip_total += slip_forward
 
 	slip_side = clamp(slip_side, 0.0, 1.0)

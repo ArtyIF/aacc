@@ -18,7 +18,7 @@ func process_plugin(delta: float) -> void:
 	if is_zero_approx(brake_value):
 		return
 
-	var brake_speed: float = clamp(car.get_meta(&"local_linear_velocity", Vector3.ZERO).z, -max_brake_velocity, max_brake_velocity) / max_brake_velocity
+	var brake_speed: float = car.get_meta(&"local_linear_velocity", Vector3.ZERO).z / max_brake_velocity
 	car.set_meta(&"brake_speed", brake_speed)
-	var force: Vector3 = Vector3.FORWARD * brake_value * brake_speed * brake_force
+	var force: Vector3 = Vector3.FORWARD * brake_value * clamp(brake_speed, -1.0, 1.0) * brake_force
 	car.set_force(&"brake", force, true)

@@ -358,6 +358,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_541op")
 
 [node name="Shadow" type="MeshInstance3D" parent="Visuals"]
 layers = 4
+sorting_offset = -100.0
 cast_shadow = 0
 gi_mode = 0
 mesh = SubResource("BoxMesh_m8gdy")
