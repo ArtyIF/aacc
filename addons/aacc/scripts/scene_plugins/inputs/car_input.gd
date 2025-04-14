@@ -219,14 +219,16 @@ func _physics_process(delta: float) -> void:
 		gear_target = clampi(gear_target, -1, car.get_meta(&"gear_count", 0))
 
 		# TODO: DRY
+		var input_accelerate: float = input_forward
 		var launch_control_multiplier: float = 1.0
 		if gear_target == 0:
 			if launch_control_engaged:
 				launch_control_multiplier = get_gear_perfect_shift_up_range(car.get_meta(&"rpm_min"), 1.0).y
 		else:
 			launch_control_engaged = false
+		input_accelerate = 0.0 if car.get_meta(&"rpm_ratio", 0.0) > launch_control_multiplier else input_accelerate
 
-		car.set_meta(&"input_accelerate", input_forward * launch_control_multiplier)
+		car.set_meta(&"input_accelerate", input_accelerate)
 		car.set_meta(&"input_brake", input_backward)
 	else:
 		var gear_target_new: int = calculate_gear_target_auto(input_handbrake, velocity_z_sign)
@@ -245,10 +247,12 @@ func _physics_process(delta: float) -> void:
 			car.set_meta(&"input_brake", input_forward)
 		else:
 			# TODO: DRY
+			var input_accelerate: float = max(input_forward, input_backward)
 			var launch_control_multiplier: float = 1.0
 			if launch_control_engaged:
 				launch_control_multiplier = get_gear_perfect_shift_up_range(car.get_meta(&"rpm_min"), 1.0).y
-			car.set_meta(&"input_accelerate", max(input_forward, input_backward) * launch_control_multiplier)
+			input_accelerate = 0.0 if car.get_meta(&"rpm_ratio", 0.0) > launch_control_multiplier else input_accelerate
+			car.set_meta(&"input_accelerate", input_accelerate)
 			car.set_meta(&"input_brake", 1.0 if is_zero_approx(input_boost) else 0.0)
 
 	car.set_meta(&"input_gear_target", gear_target)
