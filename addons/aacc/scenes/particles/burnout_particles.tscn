@@ -5,7 +5,6 @@
 
 [sub_resource type="QuadMesh" id="QuadMesh_umpaa"]
 material = ExtResource("2_ep0d4")
-size = Vector2(2, 2)
 
 [node name="BurnoutParticles" type="GPUParticles3D"]
 layers = 4

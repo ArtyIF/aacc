@@ -12,7 +12,9 @@ func process_plugin(delta: float) -> void:
 	slip_side /= 10.0 # TODO: configurable
 
 	if car.get_meta(&"gear_current", 0) == 0:
-		var engine_desired_force_ratio: float = car.get_meta(&"engine_desired_force_ratio", 0.0)
+		var engine_desired_force_ratio: float = 0.0
+		if car.get_meta(&"input_handbrake", false):
+			engine_desired_force_ratio = car.get_meta(&"engine_desired_force_ratio", 0.0)
 		smooth_takeoff_slip.advance_to(engine_desired_force_ratio, delta)
 	else:
 		smooth_takeoff_slip.advance_to(0.0, delta)
