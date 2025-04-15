@@ -10,6 +10,7 @@ gi_mode = 0
 visibility_range_end = 50.0
 visibility_range_end_margin = 10.0
 visibility_range_fade_mode = 1
+emitting = false
 amount = 50
 visibility_aabb = AABB(-10, -10, -10, 20, 20, 20)
 draw_order = 3

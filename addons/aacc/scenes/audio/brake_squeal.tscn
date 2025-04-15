@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4gra2buges20"]
+
+[ext_resource type="AudioStream" uid="uid://drw2k1gsle1m7" path="res://addons/aacc/audio/brake_squeal.wav" id="1_br1i7"]
+
+[node name="BrakeSqueal" type="AudioStreamPlayer3D"]
+stream = ExtResource("1_br1i7")
+volume_db = -80.0
+unit_size = 1.0
+max_db = 0.0
+bus = &"Reverb"
+playback_type = 1
+attenuation_filter_cutoff_hz = 10000.0

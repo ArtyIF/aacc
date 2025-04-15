@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=3 uid="uid://crko52geporbo"]
+[gd_scene load_steps=61 format=3 uid="uid://crko52geporbo"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://rgr13gn8pk0m" path="res://addons/aacc/default_car_physics_material.tres" id="1_av0nu"]
 [ext_resource type="Script" uid="uid://wiw33iaw2pjg" path="res://addons/aacc/scripts/car.gd" id="1_ik2h1"]
@@ -42,6 +42,8 @@
 [ext_resource type="Script" uid="uid://dymauy71fidl6" path="res://addons/aacc/scripts/car_plugins/audio/car_land_audio.gd" id="31_3luwv"]
 [ext_resource type="PackedScene" uid="uid://c0a0l5qonbany" path="res://addons/aacc/scenes/audio/land.tscn" id="31_jv7iv"]
 [ext_resource type="Texture2D" uid="uid://c5swxnnoq0i2t" path="res://demo_assets/textures/car/taxi_shadow.png" id="31_pr8vl"]
+[ext_resource type="Script" uid="uid://yhlge5bk107j" path="res://addons/aacc/scripts/car_plugins/audio/car_brake_squeal_audio.gd" id="34_nvj2i"]
+[ext_resource type="PackedScene" uid="uid://c4gra2buges20" path="res://addons/aacc/scenes/audio/brake_squeal.tscn" id="35_3pgx4"]
 
 [sub_resource type="Resource" id="Resource_4f48m"]
 script = ExtResource("11_0wb0t")
@@ -327,6 +329,11 @@ metadata/_custom_type_script = "uid://ryxb54l00hyh"
 script = ExtResource("31_3luwv")
 land_audio_scene = ExtResource("31_jv7iv")
 metadata/_custom_type_script = "uid://dymauy71fidl6"
+
+[node name="BrakeAudio" type="Node3D" parent="Plugins/Audio"]
+script = ExtResource("34_nvj2i")
+brake_audio_scene = ExtResource("35_3pgx4")
+metadata/_custom_type_script = "uid://yhlge5bk107j"
 
 [node name="Visuals" parent="." instance=ExtResource("12_r3t53")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
