@@ -8,7 +8,7 @@ func _ready() -> void:
 	add_child(player)
 
 func process_plugin(delta: float) -> void:
-	var volume: float = abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).z * car.get_meta(&"ground_coefficient", 0.0) / 5.0) # TODO: configurable
+	var volume: float = abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).z * car.get_meta(&"ground_coefficient", 0.0) / 25.0) # TODO: configurable
 	player.volume_linear = volume
 
 	if car.freeze:
