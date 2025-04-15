@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://b7pli82w7duq6"]
+
+[ext_resource type="AudioStream" uid="uid://biqycyirtgphw" path="res://addons/aacc/audio/tire_roll.wav" id="1_ryumf"]
+
+[node name="TireRoll" type="AudioStreamPlayer3D"]
+stream = ExtResource("1_ryumf")
+volume_db = -80.0
+unit_size = 1.0
+max_db = 0.0
+bus = &"SFX"
+playback_type = 1
+attenuation_filter_cutoff_hz = 10000.0
