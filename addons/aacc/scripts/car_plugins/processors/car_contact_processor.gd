@@ -1,5 +1,7 @@
 class_name CarContactProcessor extends CarPluginBase
 
+@export var ignore_shapes: Array[CollisionShape3D]
+
 var process_hits: bool = false
 
 func _ready() -> void:
@@ -24,10 +26,14 @@ func process_plugin(delta: float) -> void:
 		contact_positions.append(contact_position)
 		contact_normals.append(contact_normal)
 
-		var count_contact: bool = contact_normal.angle_to(car.global_basis.y) > deg_to_rad(30.0)
+		var count_contact: bool = true
 		var contact_velocity: Vector3 = Vector3.ZERO
 		var contact_hit: float = 0.0
 		var contact_scrape: float = 0.0
+
+		var shape_owner: CollisionShape3D = car.shape_owner_get_owner(car.shape_find_owner(state.get_contact_local_shape(i)))
+		if shape_owner in ignore_shapes:
+			count_contact = false
 
 		if count_contact:
 			var local_velocity: Vector3 = state.get_contact_local_velocity_at_position(i)

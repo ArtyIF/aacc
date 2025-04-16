@@ -274,8 +274,9 @@ metadata/_custom_type_script = "uid://bejoolwrgdt81"
 script = ExtResource("18_4hmk7")
 metadata/_custom_type_script = "uid://23chnpw2adul"
 
-[node name="ContactProcessor" type="Node3D" parent="Plugins"]
+[node name="ContactProcessor" type="Node3D" parent="Plugins" node_paths=PackedStringArray("ignore_shapes")]
 script = ExtResource("19_guh54")
+ignore_shapes = [NodePath("../../CollisionWheelFR"), NodePath("../../CollisionWheelFL"), NodePath("../../CollisionWheelBR"), NodePath("../../CollisionWheelBL")]
 metadata/_custom_type_script = "uid://cl3yj5rnktbek"
 
 [node name="Visuals" type="Node3D" parent="Plugins"]
