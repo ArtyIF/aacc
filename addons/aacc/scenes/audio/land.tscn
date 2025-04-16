@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0a0l5qonbany"]
+
+[ext_resource type="AudioStream" uid="uid://0fk0qfubcfd3" path="res://addons/aacc/audio/land_1.wav" id="1_my8ge"]
+[ext_resource type="AudioStream" uid="uid://vcj1g08nryd" path="res://addons/aacc/audio/land_2.wav" id="2_aaf6d"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_e1wns"]
+random_pitch = 1.1
+streams_count = 2
+stream_0/stream = ExtResource("1_my8ge")
+stream_1/stream = ExtResource("2_aaf6d")
+
+[node name="Land" type="AudioStreamPlayer3D"]
+stream = SubResource("AudioStreamRandomizer_e1wns")
+max_db = 0.0
+bus = &"SFX"
+playback_type = 1
+attenuation_filter_cutoff_hz = 10000.0

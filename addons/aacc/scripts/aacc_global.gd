@@ -1,37 +1,15 @@
 extends Node
 
-var current_car: Car
-var current_car_input: CarInput
-var current_shadow_intensity: float = 0.0
+var scene_plugins: Dictionary[StringName, ScenePluginBase] = {}
 
-enum BurnoutParticlesQuality {
-	OFF = 0, # disabled
-	VERY_LOW = 1, # unlit, no proximity fade
-	LOW = 2, # vertex lit, no shadow, no proximity fade (highest working for compatibility as of now)
-	MEDIUM = 3, # vertex lit, no shadow, proximity fade
-	HIGH = 4, # vertex lit, shadow, proximity fade
-	ULTRA = 5 # pixel lit, shadow, proximity fade
-}
-var current_burnout_particles_quality: BurnoutParticlesQuality = BurnoutParticlesQuality.LOW
+func add_plugin(name: StringName, plugin: ScenePluginBase):
+	scene_plugins[name] = plugin
 
-enum SoundQuality {
-	OFF = 0,
-	CURRENT_ONLY = 1,
-	ON = 2
-}
-var current_sound_qualities: Dictionary[StringName, SoundQuality] = {
-	"Engine" = SoundQuality.ON,
-	"TireScreech" = SoundQuality.ON,
-	"Scrape" = SoundQuality.ON,
-	"Collision" = SoundQuality.ON,
-	"BrakeSqueal" = SoundQuality.ON,
-	"TireRoll" = SoundQuality.ON,
-}
+func get_plugin(name: StringName) -> ScenePluginBase:
+	return scene_plugins[name]
 
-var current_emit_sparks: bool = true
+func remove_plugin(name: StringName):
+	scene_plugins.erase(name)
 
-func can_play(sound_type: StringName, car: Car) -> bool:
-	return (
-		current_sound_qualities[sound_type] == SoundQuality.ON or
-		(current_sound_qualities[sound_type] == SoundQuality.CURRENT_ONLY and car == current_car)
-	)
+# TODO: add support for several cars
+var car: Car

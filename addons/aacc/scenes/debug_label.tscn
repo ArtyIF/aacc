@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://cs38a62litxur"]
+
+[ext_resource type="Script" uid="uid://bqibtmc8iwudy" path="res://addons/aacc/scripts/extras/car_debug_label.gd" id="1_ii5vf"]
+[ext_resource type="FontFile" uid="uid://det3spjbidf7d" path="res://addons/aacc/fonts/CascadiaMono-Regular.ttf" id="2_vxoxw"]
+
+[node name="DebugLabel" type="Node"]
+script = ExtResource("1_ii5vf")
+metadata/_custom_type_script = "uid://bqibtmc8iwudy"
+
+[node name="DebugLabelText" type="RichTextLabel" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_vertical = 2
+theme_override_colors/table_border = Color(0, 0, 0, 0.501961)
+theme_override_colors/table_even_row_bg = Color(1, 1, 1, 0.501961)
+theme_override_colors/table_odd_row_bg = Color(0.878431, 0.878431, 0.878431, 0.501961)
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_constants/table_v_separation = 0
+theme_override_constants/table_h_separation = 5
+theme_override_fonts/normal_font = ExtResource("2_vxoxw")
+theme_override_font_sizes/normal_font_size = 16
+text = "Debug label"

@@ -2,17 +2,18 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dcfh0h4h0tw74"
+uid="uid://ce8wbstppxjkh"
 path.s3tc="res://.godot/imported/WispySmoke01_8x8.tga-cdfa1499596de4c517b95c1ba0f69081.s3tc.ctex"
+path.etc2="res://.godot/imported/WispySmoke01_8x8.tga-cdfa1499596de4c517b95c1ba0f69081.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://addons/aacc/textures/WispySmoke01_8x8.tga"
-dest_files=["res://.godot/imported/WispySmoke01_8x8.tga-cdfa1499596de4c517b95c1ba0f69081.s3tc.ctex"]
+dest_files=["res://.godot/imported/WispySmoke01_8x8.tga-cdfa1499596de4c517b95c1ba0f69081.s3tc.ctex", "res://.godot/imported/WispySmoke01_8x8.tga-cdfa1499596de4c517b95c1ba0f69081.etc2.ctex"]
 
 [params]
 

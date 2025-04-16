@@ -22,8 +22,8 @@ nodes/use_node_type_suffixes=true
 meshes/ensure_tangents=true
 meshes/generate_lods=true
 meshes/create_shadow_meshes=true
-meshes/light_baking=2
-meshes/lightmap_texel_size=0.2
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.1
 meshes/force_disable_compression=false
 skins/use_named_skins=true
 animation/import=true
@@ -40,8 +40,10 @@ _subresources={
 }
 },
 "nodes": {
-"PATH:Plane": {
-"generate/physics": true
+"PATH:Ramp": {
+"generate/physics": true,
+"mesh_instance/cast_shadow": 2,
+"mesh_instance/layers": 2
 }
 }
 }
