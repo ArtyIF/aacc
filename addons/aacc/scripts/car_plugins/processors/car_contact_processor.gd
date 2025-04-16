@@ -21,34 +21,31 @@ func process_plugin(delta: float) -> void:
 
 	# TODO: maybe some scene-level management for contacts? merge close contacts into one?
 	for i in range(state.get_contact_count()):
-		var count_contact: bool = true
-
 		var shape_owner: CollisionShape3D = car.shape_owner_get_owner(car.shape_find_owner(state.get_contact_local_shape(i)))
 		if shape_owner in ignore_shapes:
-			count_contact = false
+			continue
 
-		if count_contact:
-			var contact_position: Vector3 = state.get_contact_collider_position(i)
-			var contact_normal: Vector3 = state.get_contact_local_normal(i)
+		var contact_position: Vector3 = state.get_contact_collider_position(i)
+		var contact_normal: Vector3 = state.get_contact_local_normal(i)
 
-			var local_velocity: Vector3 = state.get_contact_local_velocity_at_position(i)
-			var collider_velocity: Vector3 = state.get_contact_collider_velocity_at_position(i)
-			var contact_velocity: Vector3 = local_velocity - collider_velocity
+		var local_velocity: Vector3 = state.get_contact_local_velocity_at_position(i)
+		var collider_velocity: Vector3 = state.get_contact_collider_velocity_at_position(i)
+		var contact_velocity: Vector3 = local_velocity - collider_velocity
 
-			var contact_hit: float = 0.0
-			if process_hits:
-				var projected_velocity: Vector3 = contact_velocity.project(contact_normal)
-				if projected_velocity.length() > 0.1:
-					contact_hit = max((projected_velocity.length() - 0.1) / 10.0, 0.0) # TODO: configurable
+		var contact_hit: float = 0.0
+		if process_hits:
+			var projected_velocity: Vector3 = contact_velocity.project(contact_normal)
+			if projected_velocity.length() > 0.1:
+				contact_hit = max((projected_velocity.length() - 0.1) / 10.0, 0.0) # TODO: configurable
 
-			var scrape_speed: float = contact_velocity.cross(contact_normal).length()
-			var contact_scrape: float = max((scrape_speed - 0.1) / 20.0, 0.0) # TODO: configurable
+		var scrape_speed: float = contact_velocity.cross(contact_normal).length()
+		var contact_scrape: float = max((scrape_speed - 0.1) / 20.0, 0.0) # TODO: configurable
 
-			contact_positions.append(contact_position)
-			contact_normals.append(contact_normal)
-			contact_velocities.append(contact_velocity)
-			contact_hits.append(contact_hit)
-			contact_scrapes.append(contact_scrape)
+		contact_positions.append(contact_position)
+		contact_normals.append(contact_normal)
+		contact_velocities.append(contact_velocity)
+		contact_hits.append(contact_hit)
+		contact_scrapes.append(contact_scrape)
 
 	car.set_meta(&"contact_count", len(contact_positions))
 	car.set_meta(&"contact_positions", contact_positions)
