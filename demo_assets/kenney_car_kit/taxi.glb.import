@@ -36,6 +36,7 @@ _subresources={
 "materials": {
 "colormap": {
 "use_external/enabled": true,
+"use_external/fallback_path": "res://demo_assets/materials/car/generic.tres",
 "use_external/path": "uid://iyyp6q7p13dj"
 }
 }

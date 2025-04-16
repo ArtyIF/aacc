@@ -36,6 +36,7 @@ _subresources={
 "materials": {
 "Material": {
 "use_external/enabled": true,
+"use_external/fallback_path": "res://demo_assets/materials/level/ramp.tres",
 "use_external/path": "uid://d27rvl1ybn7xj"
 }
 },
