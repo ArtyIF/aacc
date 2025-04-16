@@ -19,6 +19,7 @@ func _ready() -> void:
 
 func update_nodes() -> void:
 	update_car()
+	# TODO: use plugins instead
 	follow_node = car.get_node("Visuals")
 	follow_offset_node = car.get_node("FollowCameraOffset")
 	hood_camera_node = car.get_node("HoodCamera")

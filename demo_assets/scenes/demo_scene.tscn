@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=22 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_2t12c"]
 [ext_resource type="Script" uid="uid://bwjnqe5mvkcbx" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input.gd" id="2_1kif7"]
@@ -15,7 +15,6 @@
 [ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="8_2t12c"]
 [ext_resource type="PackedScene" uid="uid://ca1oyf482fq72" path="res://demo_assets/subscenes/ramptest.blend" id="9_l5mqg"]
 [ext_resource type="Script" uid="uid://c1spgv68sfhct" path="res://demo_assets/scripts/hud/rpm_indicator.gd" id="10_lmxsi"]
-[ext_resource type="Script" uid="uid://b0jpu8tivuwhf" path="res://demo_assets/scripts/hud/boost_amount_bar.gd" id="12_l5mqg"]
 [ext_resource type="Script" uid="uid://cam0f0nudmuj2" path="res://demo_assets/scripts/hud/speed_label.gd" id="15_s4qbg"]
 [ext_resource type="PackedScene" uid="uid://cs38a62litxur" path="res://addons/aacc/scenes/debug_label.tscn" id="17_2t12c"]
 
@@ -101,135 +100,6 @@ origin_offset = Vector3(17, 1.25, 250)
 enable_shadows = true
 cull_mask = 1048571
 
-[node name="HUDMargin" type="MarginContainer" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="HUD" type="Control" parent="HUDMargin"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="SpeedPanel" type="PanelContainer" parent="HUDMargin/HUD"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 0
-grow_vertical = 0
-
-[node name="VBox" type="VBoxContainer" parent="HUDMargin/HUD/SpeedPanel"]
-layout_mode = 2
-
-[node name="RPMIndicator" type="Control" parent="HUDMargin/HUD/SpeedPanel/VBox"]
-clip_contents = true
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-script = ExtResource("10_lmxsi")
-
-[node name="SpeedContainer" type="GridContainer" parent="HUDMargin/HUD/SpeedPanel/VBox"]
-layout_mode = 2
-size_flags_horizontal = 8
-columns = 3
-script = ExtResource("15_s4qbg")
-
-[node name="GearBadge" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
-layout_mode = 2
-text = "Gear"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Gear" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
-layout_mode = 2
-text = "1"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="GearTransmission" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
-layout_mode = 2
-text = "AUTO"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="TotalBadge" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
-layout_mode = 2
-text = "Total"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="TotalSpeed" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
-layout_mode = 2
-text = "0"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="TotalUnit" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
-layout_mode = 2
-text = "km/h"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="ForwardBadge" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
-layout_mode = 2
-text = "Forward"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="ForwardSpeed" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
-layout_mode = 2
-text = "0"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="ForwardUnit" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
-layout_mode = 2
-text = "km/h"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="SideBadge" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
-layout_mode = 2
-text = "Side"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="SideSpeed" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
-layout_mode = 2
-text = "0"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="SideUnit" type="Label" parent="HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
-layout_mode = 2
-text = "km/h"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="BoostPanel" type="PanelContainer" parent="HUDMargin/HUD"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 1.0
-anchor_bottom = 1.0
-grow_vertical = 0
-
-[node name="BoostAmount" type="ProgressBar" parent="HUDMargin/HUD/BoostPanel"]
-custom_minimum_size = Vector2(150, 10)
-layout_mode = 2
-max_value = 1.0
-step = 0.0
-value = 0.5
-show_percentage = false
-script = ExtResource("12_l5mqg")
-
 [node name="Plugins" type="Node" parent="."]
 
 [node name="CarSetter" type="Node" parent="Plugins" node_paths=PackedStringArray("car_to_set")]
@@ -268,5 +138,143 @@ flare_intensity = 0.25
 [node name="OcclusionCast" type="RayCast3D" parent="Plugins/Camera/Camera/LensMesh"]
 enabled = false
 target_position = Vector3(0, 0, -1000)
+
+[node name="HUD" type="Node" parent="Plugins"]
+script = ExtResource("15_s4qbg")
+
+[node name="HUDMargin" type="MarginContainer" parent="Plugins/HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HUD" type="Control" parent="Plugins/HUD/HUDMargin"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="SpeedPanel" type="PanelContainer" parent="Plugins/HUD/HUDMargin/HUD"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel"]
+layout_mode = 2
+
+[node name="RPMIndicator" type="Control" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+script = ExtResource("10_lmxsi")
+
+[node name="SpeedContainer" type="GridContainer" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox"]
+layout_mode = 2
+size_flags_horizontal = 8
+columns = 3
+
+[node name="GearBadge" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "Gear"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Gear" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "1"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="GearTransmission" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "AUTO"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TotalBadge" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "Total"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TotalSpeed" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TotalUnit" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "km/h"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ForwardBadge" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "Forward"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ForwardSpeed" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ForwardUnit" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "km/h"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SideBadge" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "Side"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SideSpeed" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SideUnit" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
+layout_mode = 2
+text = "km/h"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="BoostPanel" type="PanelContainer" parent="Plugins/HUD/HUDMargin/HUD"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="Plugins/HUD/HUDMargin/HUD/BoostPanel"]
+layout_mode = 2
+
+[node name="BoostLabel" type="Label" parent="Plugins/HUD/HUDMargin/HUD/BoostPanel/VBox"]
+layout_mode = 2
+text = "Boost"
+vertical_alignment = 1
+
+[node name="BoostAmount" type="ProgressBar" parent="Plugins/HUD/HUDMargin/HUD/BoostPanel/VBox"]
+custom_minimum_size = Vector2(150, 10)
+layout_mode = 2
+max_value = 1.0
+step = 0.0
+value = 0.5
+show_percentage = false
 
 [node name="DebugLabel" parent="Plugins" instance=ExtResource("17_2t12c")]
