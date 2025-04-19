@@ -4,20 +4,12 @@ class_name CarInput extends ScenePluginBase
 @export_group("Input Map")
 @export var action_forward: StringName = &"aacc_forward"
 @export var action_backward: StringName = &"aacc_backward"
-@export var action_steer_left: StringName = &"aacc_steer_left"
-@export var action_steer_right: StringName = &"aacc_steer_right"
 @export var action_handbrake: StringName = &"aacc_handbrake"
 @export var action_boost: StringName = &"aacc_boost"
 @export var action_launch_toggle: StringName = &"aacc_launch_toggle"
 @export var action_trans_toggle: StringName = &"aacc_trans_toggle"
 @export var action_gear_up: StringName = &"aacc_gear_up"
 @export var action_gear_down: StringName = &"aacc_gear_down"
-
-@export_group("Steering")
-@export var always_full_steer: bool = false
-@export var full_steer_on_reverse: bool = true
-@export var full_steer_on_handbrake: bool = true
-@export var desired_smooth_steer_speed: float = 10.0
 
 @export_group("Gearbox")
 @export var perfect_launch_threshold: float = 0.95
@@ -29,33 +21,7 @@ class_name CarInput extends ScenePluginBase
 var manual_transmission: bool = false
 var launch_control_engaged: bool = false
 var gear_target: int = 0
-var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 var gear_switch_timeout: SmoothedFloat = SmoothedFloat.new(-1.0)
-
-func calculate_steer(input_steer: float, input_handbrake: bool, velocity_z_sign: float, delta: float) -> float:
-	var input_full_steer: float = (1.0 if input_handbrake else 0.0) if full_steer_on_handbrake else 0.0
-	if is_zero_approx(car.get_meta(&"ground_coefficient", 1.0)):
-		input_full_steer = 1.0
-	if full_steer_on_reverse and velocity_z_sign > 0:
-		input_full_steer = 1.0
-
-	# TODO: add an ability to have the car send the info somehow, otherwise this is delayed by a frame
-	var distance_between_wheels: float = car.get_meta(&"distance_between_wheels", 1.0)
-	var steer_velocity_base: float = car.get_meta(&"steer_velocity_base", 1.0)
-	var steer_velocity_target: float = car.get_meta(&"steer_velocity_target", 1.0)
-	var velocity_z: float = abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).z)
-
-	var input_steer_multiplier: float = 1.0
-	if not always_full_steer:
-		input_steer_multiplier = min(distance_between_wheels * (steer_velocity_target / steer_velocity_base) / velocity_z, 1.0)
-		input_steer_multiplier = lerp(input_steer_multiplier, 1.0, input_full_steer)
-	var input_steer_converted: float = input_steer * input_steer_multiplier
-
-	smooth_steer.speed_up = min(desired_smooth_steer_speed, car.get_meta(&"smooth_steer_max_speed", desired_smooth_steer_speed))
-	smooth_steer.speed_down = min(desired_smooth_steer_speed, car.get_meta(&"smooth_steer_max_speed", desired_smooth_steer_speed))
-	smooth_steer.advance_to(input_steer_converted, delta)
-
-	return smooth_steer.get_value()
 
 func calculate_gear_limit(gear: int, gear_count: int) -> float:
 	return float(gear) / gear_count
@@ -189,7 +155,6 @@ func _physics_process(delta: float) -> void:
 
 	var input_forward: float = clamp(Input.get_action_strength(action_forward), 0.0, 1.0)
 	var input_backward: float = clamp(Input.get_action_strength(action_backward), 0.0, 1.0)
-	var input_steer: float = clamp(Input.get_action_strength(action_steer_right) - Input.get_action_strength(action_steer_left), -1.0, 1.0)
 	var input_handbrake: bool = Input.is_action_pressed(action_handbrake)
 	var input_boost: bool = Input.is_action_pressed(action_boost)
 
@@ -256,7 +221,6 @@ func _physics_process(delta: float) -> void:
 			car.set_meta(&"input_brake", 1.0 if is_zero_approx(input_boost) else 0.0)
 
 	car.set_meta(&"input_gear_target", gear_target)
-	car.set_meta(&"input_steer", calculate_steer(input_steer, input_handbrake, velocity_z_sign, delta))
 	car.set_meta(&"input_handbrake", input_handbrake)
 	car.set_meta(&"input_boost", input_boost)
 

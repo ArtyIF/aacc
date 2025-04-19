@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=23 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_2t12c"]
 [ext_resource type="Script" uid="uid://bwjnqe5mvkcbx" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input.gd" id="2_1kif7"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="8_2t12c"]
 [ext_resource type="PackedScene" uid="uid://ca1oyf482fq72" path="res://demo_assets/subscenes/ramptest.blend" id="9_l5mqg"]
 [ext_resource type="Script" uid="uid://c1spgv68sfhct" path="res://demo_assets/scripts/hud/rpm_indicator.gd" id="10_lmxsi"]
+[ext_resource type="Script" uid="uid://d1r5t2tqeycan" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input_steer.gd" id="12_l5mqg"]
 [ext_resource type="Script" uid="uid://cam0f0nudmuj2" path="res://demo_assets/scripts/scene_plugins/demo_hud.gd" id="15_s4qbg"]
 [ext_resource type="PackedScene" uid="uid://cs38a62litxur" path="res://addons/aacc/scenes/debug_label.tscn" id="17_2t12c"]
 
@@ -111,6 +112,10 @@ metadata/_custom_type_script = "uid://be5ommjjotu3v"
 [node name="CarInput" type="Node" parent="Plugins"]
 script = ExtResource("2_1kif7")
 metadata/_custom_type_script = "uid://bwjnqe5mvkcbx"
+
+[node name="CarInputSteer" type="Node" parent="Plugins"]
+script = ExtResource("12_l5mqg")
+metadata/_custom_type_script = "uid://d1r5t2tqeycan"
 
 [node name="Camera" type="Node" parent="Plugins"]
 script = ExtResource("5_46lkv")
