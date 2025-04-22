@@ -7,9 +7,10 @@ class_name CarSteer extends CarPluginBase
 @export_range(0.0, 360.0, 0.1, "or_greater", "radians", "suffix:°/sec") var steer_velocity_max: float = deg_to_rad(180.0)
 
 @export_group("Smooth Steering", "smooth_steer_")
-@export var smooth_steer_max_speed: float = 10.0
+@export var smooth_steer_speed: float = 10.0
 @export var smooth_steer_smooth_sign: bool = true
 
+var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 var smooth_sign: SmoothedFloat = SmoothedFloat.new()
 var use_smooth_sign: bool = false
 var input_handbrake_prev: bool = false
@@ -22,7 +23,6 @@ func update_meta():
 	car.set_meta(&"distance_between_wheels", distance_between_wheels)
 	car.set_meta(&"steer_velocity_base", steer_velocity_base)
 	car.set_meta(&"steer_velocity_target", steer_velocity_target)
-	car.set_meta(&"smooth_steer_max_speed", smooth_steer_max_speed)
 
 func process_plugin(delta: float) -> void:
 	if is_zero_approx(car.get_meta(&"ground_coefficient", 0.0)):
@@ -34,6 +34,10 @@ func process_plugin(delta: float) -> void:
 	var local_angular_velocity: Vector3 = car.get_meta(&"local_angular_velocity", Vector3.ZERO)
 
 	var input_steer: float = car.get_meta(&"input_steer", 0.0)
+	smooth_steer.speed_up = smooth_steer_speed
+	smooth_steer.speed_down = smooth_steer_speed
+	smooth_steer.advance_to(input_steer, delta)
+	car.set_meta(&"input_steer_smooth", smooth_steer.get_value())
 	var input_handbrake: bool = car.get_meta(&"input_handbrake", false)
 
 	if smooth_steer_smooth_sign:
@@ -59,7 +63,7 @@ func process_plugin(delta: float) -> void:
 		smooth_sign.force_current_value(sign(local_linear_velocity.z))
 
 	var steer_coefficient: float = velocity_sign * velocity_speed / distance_between_wheels
-	var steer_amount: float = (input_steer * steer_coefficient) + car.get_meta(&"steer_offset", 0.0)
+	var steer_amount: float = (smooth_steer.get_value() * steer_coefficient) + car.get_meta(&"steer_offset", 0.0)
 
 	if is_zero_approx(steer_amount):
 		return

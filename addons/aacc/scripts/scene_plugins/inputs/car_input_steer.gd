@@ -34,10 +34,8 @@ func calculate_steer(input_steer: float, input_handbrake: bool, velocity_z_sign:
 		input_steer_multiplier = lerp(input_steer_multiplier, 1.0, input_full_steer)
 	var input_steer_converted: float = input_steer * input_steer_multiplier
 
-	# TODO: instead of using desired speed, have the car's steer also calculate
-	# smooth steer at its own speed
-	smooth_steer.speed_up = min(desired_smooth_steer_speed, car.get_meta(&"smooth_steer_max_speed", desired_smooth_steer_speed))
-	smooth_steer.speed_down = min(desired_smooth_steer_speed, car.get_meta(&"smooth_steer_max_speed", desired_smooth_steer_speed))
+	smooth_steer.speed_up = desired_smooth_steer_speed
+	smooth_steer.speed_down = desired_smooth_steer_speed
 	smooth_steer.advance_to(input_steer_converted, delta)
 
 	return smooth_steer.get_value()

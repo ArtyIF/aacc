@@ -25,7 +25,7 @@ func _ready() -> void:
 
 func process_plugin(delta: float) -> void:
 	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
-	var input_steer: float = car.get_meta(&"input_steer", 0.0)
+	var input_steer: float = car.get_meta(&"input_steer_smooth", 0.0)
 	var steer_velocity_base: float = car.get_meta(&"steer_velocity_base", 0.0)
 	var input_handbrake: bool = car.get_meta(&"input_handbrake", false)
 
