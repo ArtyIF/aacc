@@ -1,7 +1,6 @@
-[gd_scene load_steps=23 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=27 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_2t12c"]
-[ext_resource type="Script" uid="uid://bwjnqe5mvkcbx" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input.gd" id="2_1kif7"]
 [ext_resource type="Script" uid="uid://d17tlldwsdt56" path="res://demo_assets/scripts/opengl_world_environment.gd" id="2_lmxsi"]
 [ext_resource type="Shader" uid="uid://dcrk75c13vhp4" path="res://demo_assets/shaders/lens_flare_shader.gdshader" id="2_vx7r4"]
 [ext_resource type="Script" uid="uid://cjsul5ik02rhk" path="res://demo_assets/scripts/lens_flare.gd" id="3_46dqb"]
@@ -15,7 +14,12 @@
 [ext_resource type="PackedScene" uid="uid://crko52geporbo" path="res://demo_assets/car_scenes/taxi.tscn" id="8_2t12c"]
 [ext_resource type="PackedScene" uid="uid://ca1oyf482fq72" path="res://demo_assets/subscenes/ramptest.blend" id="9_l5mqg"]
 [ext_resource type="Script" uid="uid://c1spgv68sfhct" path="res://demo_assets/scripts/hud/rpm_indicator.gd" id="10_lmxsi"]
+[ext_resource type="Script" uid="uid://fu63aj26jdxj" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input_engine_trans_toggle.gd" id="11_p1o0i"]
+[ext_resource type="Script" uid="uid://o1t7bpo3rpur" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input_handbrake.gd" id="12_63w87"]
 [ext_resource type="Script" uid="uid://d1r5t2tqeycan" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input_steer.gd" id="12_l5mqg"]
+[ext_resource type="Script" uid="uid://u2c2kwkw4icl" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input_boost.gd" id="12_lmxsi"]
+[ext_resource type="Script" uid="uid://dqojltgs5uspk" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input_engine_manual.gd" id="13_g0gu6"]
+[ext_resource type="Script" uid="uid://dolcf2iwday38" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input_engine_auto.gd" id="13_lmxsi"]
 [ext_resource type="Script" uid="uid://cam0f0nudmuj2" path="res://demo_assets/scripts/scene_plugins/demo_hud.gd" id="15_s4qbg"]
 [ext_resource type="PackedScene" uid="uid://cs38a62litxur" path="res://addons/aacc/scenes/debug_label.tscn" id="17_2t12c"]
 
@@ -109,13 +113,31 @@ script = ExtResource("3_vx7r4")
 car_to_set = NodePath("../../Taxi")
 metadata/_custom_type_script = "uid://be5ommjjotu3v"
 
-[node name="CarInput" type="Node" parent="Plugins"]
-script = ExtResource("2_1kif7")
-metadata/_custom_type_script = "uid://bwjnqe5mvkcbx"
+[node name="CarInputEngineTransToggle" type="Node" parent="Plugins" node_paths=PackedStringArray("engine_plugin_auto", "engine_plugin_manual")]
+script = ExtResource("11_p1o0i")
+engine_plugin_auto = NodePath("../CarInputEngineAuto")
+engine_plugin_manual = NodePath("../CarInputEngineManual")
+metadata/_custom_type_script = "uid://fu63aj26jdxj"
+
+[node name="CarInputEngineAuto" type="Node" parent="Plugins"]
+script = ExtResource("13_lmxsi")
+metadata/_custom_type_script = "uid://dolcf2iwday38"
+
+[node name="CarInputEngineManual" type="Node" parent="Plugins"]
+script = ExtResource("13_g0gu6")
+metadata/_custom_type_script = "uid://dqojltgs5uspk"
+
+[node name="CarInputHandbrake" type="Node" parent="Plugins"]
+script = ExtResource("12_63w87")
+metadata/_custom_type_script = "uid://o1t7bpo3rpur"
 
 [node name="CarInputSteer" type="Node" parent="Plugins"]
 script = ExtResource("12_l5mqg")
 metadata/_custom_type_script = "uid://d1r5t2tqeycan"
+
+[node name="CarInputBoost" type="Node" parent="Plugins"]
+script = ExtResource("12_lmxsi")
+metadata/_custom_type_script = "uid://u2c2kwkw4icl"
 
 [node name="Camera" type="Node" parent="Plugins"]
 script = ExtResource("5_46lkv")

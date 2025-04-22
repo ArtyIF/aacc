@@ -5,7 +5,7 @@
 [node name="BrakeSqueal" type="AudioStreamPlayer3D"]
 stream = ExtResource("1_br1i7")
 volume_db = -80.0
-unit_size = 1.0
+unit_size = 2.0
 max_db = 0.0
 bus = &"Reverb"
 playback_type = 1
