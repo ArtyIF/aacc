@@ -3,7 +3,6 @@ class_name CarInputEngineAuto extends ScenePluginBase
 @export_group("Input Map")
 @export var action_forward: StringName = &"aacc_forward"
 @export var action_backward: StringName = &"aacc_backward"
-# TODO: reimplement launch control toggle?
 
 @export_group("Gearbox")
 @export var shift_timeout: float = 0.5

@@ -21,7 +21,7 @@ var gear_target: int = 0
 var gear_switch_timer: SmoothedFloat = SmoothedFloat.new(-1.0)
 var gear_switching: bool = false
 var rpm_ratio: SmoothedFloat = SmoothedFloat.new()
-var rpm_limiter: bool = false
+var rpm_limiter: bool = false # TODO: rewrite rpm limiters
 
 func _ready() -> void:
 	car.set_meta(&"input_accelerate", 0.0)

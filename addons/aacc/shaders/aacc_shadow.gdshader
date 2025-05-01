@@ -5,9 +5,9 @@ shader_type spatial;
 render_mode world_vertex_coords, unshaded, cull_front, depth_test_disabled, blend_mix, fog_disabled;
 
 uniform sampler2D DEPTH_TEXTURE : hint_depth_texture, filter_linear;
-#if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
-	uniform sampler2D NORMAL_TEXTURE : hint_normal_roughness_texture, filter_linear;
-#endif
+//#if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
+//	uniform sampler2D NORMAL_TEXTURE : hint_normal_roughness_texture, filter_linear;
+//#endif
 
 uniform sampler2D shadow_texture : source_color, hint_default_black, repeat_disable, filter_linear_mipmap_anisotropic;
 uniform float max_shadow_texture_mipmaps = 6.0;
@@ -63,12 +63,12 @@ void fragment() {
 	vec3 shadow = textureLod(shadow_texture, decal_uv, blur * texture_levels).rgb;
 
 	float normal_blend = 1.0;
-	#if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
-		vec3 normal = texture(NORMAL_TEXTURE, SCREEN_UV).xyz * 2.0 - 1.0;
-		vec3 world_normals = (INV_VIEW_MATRIX * vec4(normal, 0.0)).xyz;
-		mat3 basis = mat3(MODEL_MATRIX);
-		normal_blend = clamp(dot(basis * vec3(0.0, 1.0, 0.0), world_normals), 0.0, 1.0);
-	#endif
+//	#if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
+//		vec3 normal = texture(NORMAL_TEXTURE, SCREEN_UV).xyz * 2.0 - 1.0;
+//		vec3 world_normals = (INV_VIEW_MATRIX * vec4(normal, 0.0)).xyz;
+//		mat3 basis = mat3(MODEL_MATRIX);
+//		normal_blend = clamp(dot(basis * vec3(0.0, 1.0, 0.0), world_normals), 0.0, 1.0);
+//	#endif
 
 	ALBEDO = vec3(0.0);
 	ALPHA = clamp(mix(shadow_range.x, shadow_range.y, mix(0.0, 1.0 - shadow.x, vertical_blend * normal_blend * shadow_intensity)), 0.0, 1.0);
