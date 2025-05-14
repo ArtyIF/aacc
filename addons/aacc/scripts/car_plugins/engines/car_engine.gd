@@ -7,6 +7,7 @@ class_name CarEngine extends CarPluginBase
 @export_group("Gearbox", "gearbox_")
 @export var gearbox_gear_count: int = 5
 @export var gearbox_switch_time: float = 0.1
+@export var gearbox_reverse_gear: bool = true # TODO
 
 @export_group("RPM", "rpm_")
 @export var rpm_curve: Curve
@@ -42,10 +43,9 @@ func update_meta():
 	car.set_meta(&"rpm_limiter", rpm_limiter)
 
 func update_gear(delta: float):
-	if gear_target != gear_current and not gear_switching:
+	if not gear_switching and gear_target != gear_current and not gear_current == 0:
 		gear_switching = true
-		if not gear_current == 0:
-			gear_switch_timer.force_current_value(gearbox_switch_time)
+		gear_switch_timer.force_current_value(gearbox_switch_time)
 
 	if gear_switch_timer.get_value() <= 0.0 or gear_target == gear_current:
 		gear_current = gear_target
@@ -95,8 +95,6 @@ func calculate_acceleration_multiplier(speed_ratio: float) -> float:
 
 func process_plugin(delta: float) -> void:
 	var input_accelerate: float = car.get_meta(&"input_accelerate", 0.0)
-	var input_brake: float = car.get_meta(&"input_brake", 0.0)
-	var input_handbrake: bool = car.get_meta(&"input_handbrake", false)
 
 	gear_target = car.get_meta(&"input_gear_target", 0)
 	update_gear(delta)
@@ -124,10 +122,6 @@ func process_plugin(delta: float) -> void:
 
 	if gear_current == 0:
 		return
-
-	var brake_value: float = 1.0 if input_handbrake else input_brake
-	if gear_current != 0:
-		force_ratio *= 1.0 - brake_value
 
 	if is_zero_approx(force_ratio):
 		return

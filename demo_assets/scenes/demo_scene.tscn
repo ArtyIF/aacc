@@ -103,7 +103,7 @@ shape = SubResource("WorldBoundaryShape3D_2t12c")
 [node name="ReflectionProbe" type="ReflectionProbe" parent="."]
 blend_distance = 0.0
 size = Vector3(1000, 1000, 1000)
-origin_offset = Vector3(17, 1.25, 250)
+origin_offset = Vector3(14, 1.25, 265)
 enable_shadows = true
 cull_mask = 1048571
 
