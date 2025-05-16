@@ -229,6 +229,7 @@ script = ExtResource("4_pq6ol")
 engine_max_force = 15000.0
 gearbox_switch_time = 0.5
 rpm_curve = SubResource("Curve_1amw3")
+rpm_limiter_offset = 0.03
 rpm_speed_down = 0.25
 metadata/_custom_type_script = "uid://bvfqai7uunpc3"
 

@@ -8,7 +8,7 @@ func process_plugin(delta: float) -> void:
 		return
 
 	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
-	var multiplier: float = 1.0 if car.get_meta(&"rpm_limiter") else (1.0 - car.get_meta(&"input_accelerate", 0.0))
+	var multiplier: float = 1.0 if car.get_meta(&"rpm_limiter") or abs(local_linear_velocity.z) > car.get_meta(&"engine_top_speed", 0.0) else (1.0 - car.get_meta(&"input_accelerate", 0.0))
 
 	var force: float = clamp(local_linear_velocity.z / resistance_force_knee, -1.0, 1.0) * multiplier * resistance_force
 	if is_zero_approx(force):

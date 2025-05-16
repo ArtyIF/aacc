@@ -107,7 +107,7 @@ func process_plugin(delta: float) -> void:
 	update_rpm_ratio(input_accelerate, delta)
 	update_meta()
 
-	if gear_current >= 0:
+	if gear_current >= 0 and not is_zero_approx(rpm_limiter_offset) and not gear_current == gearbox_gear_count:
 		if rpm_ratio.get_value() >= rpm_max:
 			rpm_limiter = true
 		elif rpm_ratio.get_value() <= rpm_max - rpm_limiter_offset:
