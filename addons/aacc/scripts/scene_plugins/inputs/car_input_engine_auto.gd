@@ -7,6 +7,8 @@ class_name CarInputEngineAuto extends ScenePluginBase
 @export_group("Gearbox")
 @export var downshift_offset: float = 0.1
 
+var gear_target: int = 0
+
 func calculate_gear_limit(gear: int, gear_count: int) -> float:
 	return float(gear) / gear_count
 
@@ -55,11 +57,14 @@ func _physics_process(delta: float) -> void:
 		elif input_backward > 0.0 and is_zero_approx(input_forward):
 			velocity_z_sign = 1.0
 
-	var gear_target: int = calculate_gear_target(input_handbrake, velocity_z_sign)
+	gear_target = calculate_gear_target(input_handbrake, velocity_z_sign)
+	var gear_allow_reverse: bool = car.get_meta(&"gear_allow_reverse", false)
+	if not gear_allow_reverse:
+		gear_target = max(0, gear_target)
 	car.set_meta(&"input_gear_target", gear_target)
 
 	if gear_target == 0 or (sign(gear_target) != sign(car.get_meta(&"gear_current", 0))):
-		car.set_meta(&"input_accelerate", max(input_forward, input_backward))
+		car.set_meta(&"input_accelerate", max(input_forward, input_backward) if gear_allow_reverse else input_forward)
 		car.set_meta(&"input_brake", 1.0)
 	elif gear_target > 0:
 		car.set_meta(&"input_accelerate", input_forward)

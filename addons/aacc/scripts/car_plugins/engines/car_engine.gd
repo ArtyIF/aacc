@@ -1,13 +1,13 @@
 class_name CarEngine extends CarPluginBase
 
 @export_group("Engine", "engine_")
-@export var engine_force: float = 10000.0
+@export var engine_max_force: float = 10000.0
 @export var engine_top_speed: float = 50.0
 
 @export_group("Gearbox", "gearbox_")
 @export var gearbox_gear_count: int = 5
 @export var gearbox_switch_time: float = 0.1
-@export var gearbox_reverse_gear: bool = true # TODO
+@export var gearbox_allow_reverse: bool = true
 
 @export_group("RPM", "rpm_")
 @export var rpm_curve: Curve
@@ -30,12 +30,16 @@ func _ready() -> void:
 	update_meta()
 
 func update_meta():
-	car.set_meta(&"top_speed", engine_top_speed) # TODO: engine_top_speed
-	car.set_meta(&"engine_max_force", engine_force)
+	car.set_meta(&"engine_top_speed", engine_top_speed)
+	car.set_meta(&"engine_max_force", engine_max_force)
+
+	# TODO: gearbox_
 	car.set_meta(&"gear_count", gearbox_gear_count)
+	car.set_meta(&"gear_allow_reverse", gearbox_allow_reverse)
 	car.set_meta(&"gear_current", gear_current)
 	car.set_meta(&"gear_switching", gear_switching)
 	car.set_meta(&"gear_switch_timer", gear_switch_timer.get_value())
+
 	car.set_meta(&"rpm_ratio", rpm_ratio.get_value())
 	car.set_meta(&"rpm_curve", rpm_curve)
 	car.set_meta(&"rpm_min", rpm_min)
@@ -43,6 +47,8 @@ func update_meta():
 	car.set_meta(&"rpm_limiter", rpm_limiter)
 
 func update_gear(delta: float):
+	gear_target = clampi(gear_target, -1 if gearbox_allow_reverse else 0, gearbox_gear_count)
+
 	if not gear_switching and gear_target != gear_current and not gear_current == 0:
 		gear_switching = true
 		gear_switch_timer.force_current_value(gearbox_switch_time)
@@ -85,7 +91,7 @@ func calculate_acceleration_multiplier(speed_ratio: float) -> float:
 	multiplier *= rpm_curve.sample_baked(rpm_ratio.get_value())
 	multiplier *= 1.0 - calculate_gear_limit(max(0.0, gear_current - 1))
 
-	if gear_current < 0:
+	if gear_current < 0 and gearbox_allow_reverse:
 		multiplier *= -1.0
 
 	if rpm_ratio.get_value() >= rpm_max:
@@ -126,4 +132,4 @@ func process_plugin(delta: float) -> void:
 	if is_zero_approx(force_ratio):
 		return
 
-	car.set_force(&"engine", Vector3.FORWARD * force_ratio * engine_force, true)
+	car.set_force(&"engine", Vector3.FORWARD * force_ratio * engine_max_force, true)

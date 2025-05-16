@@ -1,10 +1,12 @@
 class_name CarSteer extends CarPluginBase
 
 @export var distance_between_wheels: float = 1.5
+
 @export_subgroup("Steering Velocity", "steer_velocity_")
 @export_range(0.0, 360.0, 0.1, "or_greater", "radians", "suffix:°/sec") var steer_velocity_base: float = deg_to_rad(30.0)
 @export_range(0.0, 360.0, 0.1, "or_greater", "radians", "suffix:°/sec") var steer_velocity_target: float = deg_to_rad(60.0)
 @export_range(0.0, 360.0, 0.1, "or_greater", "radians", "suffix:°/sec") var steer_velocity_max: float = deg_to_rad(180.0)
+@export var steer_velocity_invert_on_reverse: bool = true
 
 @export_group("Smooth Steering", "smooth_steer_")
 @export var smooth_steer_speed: float = 10.0
@@ -61,6 +63,8 @@ func process_plugin(delta: float) -> void:
 		velocity_speed = abs(local_linear_velocity.z)
 		velocity_sign = sign(local_linear_velocity.z)
 		smooth_sign.force_current_value(sign(local_linear_velocity.z))
+	if not steer_velocity_invert_on_reverse:
+		velocity_sign = -1.0
 
 	var steer_coefficient: float = velocity_sign * velocity_speed / distance_between_wheels
 	var steer_amount: float = (smooth_steer.get_value() * steer_coefficient) + car.get_meta(&"steer_offset", 0.0)
