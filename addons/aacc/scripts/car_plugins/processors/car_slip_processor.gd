@@ -17,7 +17,7 @@ func process_plugin(delta: float) -> void:
 			engine_desired_force_ratio = car.get_meta(&"engine_desired_force_ratio", 0.0)
 		smooth_takeoff_slip.advance_to(engine_desired_force_ratio, delta)
 	else:
-		smooth_takeoff_slip.advance_to(0.0, delta)
+		smooth_takeoff_slip.force_current_value(0.0)
 		if car.get_meta(&"input_handbrake", false):
 			slip_forward += abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).z)
 			slip_forward /= 10.0 # TODO: configurable
