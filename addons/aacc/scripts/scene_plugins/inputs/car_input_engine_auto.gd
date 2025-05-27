@@ -20,6 +20,7 @@ func calculate_gear_target(input_handbrake: bool, velocity_z_sign: float) -> int
 
 	var gear_current: int = car.get_meta(&"gear_current", 0)
 	var gear_count: int = car.get_meta(&"gear_count", 0)
+	var engine_top_speed: float = car.get_meta(&"engine_top_speed", 0.0)
 
 	if (input_handbrake and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
 		return gear_target_car
@@ -34,11 +35,12 @@ func calculate_gear_target(input_handbrake: bool, velocity_z_sign: float) -> int
 
 	var gear_perfect_shift_up: float = AACCCurveTools.get_gear_perfect_shift_up(car)
 	var gear_perfect_shift_down: float = AACCCurveTools.get_gear_perfect_shift_down(car) - downshift_offset
+	var rpm_ratio: float = abs(local_linear_velocity.z) / (engine_top_speed * calculate_gear_limit(gear_current, gear_count))
 
-	if car.get_meta(&"rpm_ratio", 0.0) < gear_perfect_shift_down and gear_target_car > 0:
-		return gear_target_car - 1
-	if car.get_meta(&"rpm_ratio", 0.0) > gear_perfect_shift_up and gear_target_car < gear_count:
-		return gear_target_car + 1
+	if rpm_ratio < gear_perfect_shift_down and gear_target_car > 0:
+		return gear_current - 1
+	if rpm_ratio > gear_perfect_shift_up and gear_target_car < gear_count:
+		return gear_current + 1
 
 	return gear_target_car
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=29 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_2t12c"]
 [ext_resource type="Script" uid="uid://d17tlldwsdt56" path="res://demo_assets/scripts/opengl_world_environment.gd" id="2_lmxsi"]
@@ -15,6 +15,7 @@
 [ext_resource type="Curve3D" uid="uid://dmx1qc554qvry" path="res://demo_assets/subscenes/pathtest_curve.tres" id="8_g0gu6"]
 [ext_resource type="PackedScene" uid="uid://ca1oyf482fq72" path="res://demo_assets/subscenes/ramptest.blend" id="9_l5mqg"]
 [ext_resource type="Script" uid="uid://c1spgv68sfhct" path="res://demo_assets/scripts/hud/rpm_indicator.gd" id="10_lmxsi"]
+[ext_resource type="PackedScene" uid="uid://cguhdasj8lc5p" path="res://demo_assets/car_scenes/race.tscn" id="11_0ns3d"]
 [ext_resource type="Script" uid="uid://fu63aj26jdxj" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input_engine_trans_toggle.gd" id="11_p1o0i"]
 [ext_resource type="Script" uid="uid://o1t7bpo3rpur" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input_handbrake.gd" id="12_63w87"]
 [ext_resource type="Script" uid="uid://d1r5t2tqeycan" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input_steer.gd" id="12_l5mqg"]
@@ -109,6 +110,9 @@ enable_shadows = true
 cull_mask = 1048571
 
 [node name="Taxi" parent="." instance=ExtResource("8_2t12c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+
+[node name="Race" parent="." instance=ExtResource("11_0ns3d")]
 
 [node name="Plugins" type="Node" parent="."]
 
@@ -126,6 +130,7 @@ metadata/_custom_type_script = "uid://fu63aj26jdxj"
 
 [node name="CarInputEngineAuto" type="Node" parent="Plugins"]
 script = ExtResource("13_lmxsi")
+downshift_offset = 0.05
 metadata/_custom_type_script = "uid://dolcf2iwday38"
 
 [node name="CarInputEngineManual" type="Node" parent="Plugins"]
@@ -308,5 +313,16 @@ max_value = 1.0
 step = 0.0
 value = 0.5
 show_percentage = false
+
+[node name="OptionButton" type="OptionButton" parent="Plugins/HUD/HUDMargin/HUD"]
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 20.0
+selected = 0
+item_count = 2
+popup/item_0/text = "Taxi"
+popup/item_0/id = 0
+popup/item_1/text = "Racecar"
+popup/item_1/id = 1
 
 [node name="DebugLabel" parent="Plugins" instance=ExtResource("17_2t12c")]
