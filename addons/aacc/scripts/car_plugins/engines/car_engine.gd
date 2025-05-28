@@ -84,7 +84,10 @@ func update_rpm_ratio(input_accelerate: float, delta: float) -> void:
 			upper_limit = 1.0 / gearbox_gear_count
 		rpm_ratio_target = clamp(remap(speed_ratio, 0.0, upper_limit, rpm_min, rpm_max), 0.0, 1.0)
 
-	rpm_ratio.advance_to(rpm_ratio_target, delta)
+	var delta_multiplier: float = 1.0
+	if rpm_ratio.get_value() >= rpm_min and rpm_ratio_target > rpm_ratio.get_value():
+		delta_multiplier = rpm_curve.sample_baked(rpm_ratio.get_value())
+	rpm_ratio.advance_to(rpm_ratio_target, delta * delta_multiplier)
 
 func calculate_acceleration_multiplier(speed_ratio: float) -> float:
 	var multiplier: float = 1.0
