@@ -51,8 +51,8 @@ input_curve = 1.0
 metadata/_custom_type_script = "uid://crrd7ugev6afh"
 
 [sub_resource type="Curve" id="Curve_1amw3"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 2.0, 0.0, 0, 0, Vector2(1, 0.1), -4.0, 0.0, 0, 0]
-point_count = 3
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.1, 0.05), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 4.0, 0.0, 0, 0, Vector2(1, 0.1), -2.0, 0.0, 0, 0]
+point_count = 4
 
 [sub_resource type="Resource" id="Resource_n1pdp"]
 script = ExtResource("7_rkebg")
@@ -266,6 +266,7 @@ engine_top_speed = 100.0
 gearbox_gear_count = 10
 gearbox_switch_time = 0.05
 rpm_curve = SubResource("Curve_1amw3")
+rpm_max = 0.95
 rpm_limiter_offset = 0.0
 rpm_speed_up = 2.0
 metadata/_custom_type_script = "uid://bvfqai7uunpc3"

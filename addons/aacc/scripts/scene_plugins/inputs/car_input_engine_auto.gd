@@ -36,6 +36,7 @@ func calculate_gear_target(input_handbrake: bool, velocity_z_sign: float) -> int
 	var gear_perfect_shift_up: float = AACCCurveTools.get_gear_perfect_shift_up(car)
 	var gear_perfect_shift_down: float = AACCCurveTools.get_gear_perfect_shift_down(car) - downshift_offset
 	var rpm_ratio: float = abs(local_linear_velocity.z) / (engine_top_speed * calculate_gear_limit(gear_current, gear_count))
+	rpm_ratio = lerp(car.get_meta(&"rpm_min"), car.get_meta(&"rpm_max"), rpm_ratio)
 
 	if rpm_ratio < gear_perfect_shift_down and gear_target_car > 0:
 		return gear_current - 1
