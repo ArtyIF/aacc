@@ -31,17 +31,17 @@
 [ext_resource type="Script" uid="uid://c3etr1fbahust" path="res://addons/aacc/scripts/car_plugins/audio/car_scrape_audio.gd" id="24_e2ws0"]
 [ext_resource type="Shader" uid="uid://ycsv74cb0xt" path="res://addons/aacc/shaders/aacc_shadow.gdshader" id="25_dnanp"]
 [ext_resource type="Texture2D" uid="uid://cjps7quork0b2" path="res://demo_assets/kenney_car_kit/Textures/colormap.png" id="25_nei8b"]
-[ext_resource type="Texture2D" uid="uid://ciytpb2cup1c4" path="res://demo_assets/textures/car/taxi_ao_wheel_fr.png" id="25_pr8vl"]
+[ext_resource type="Texture2D" uid="uid://ciytpb2cup1c4" path="res://demo_assets/textures/car/taxi/taxi_ao_wheel_fr.png" id="25_pr8vl"]
 [ext_resource type="PackedScene" uid="uid://bf5ovocf772db" path="res://addons/aacc/scenes/audio/scrape.tscn" id="25_ybcwt"]
-[ext_resource type="Texture2D" uid="uid://fxy40522e4qh" path="res://demo_assets/textures/car/taxi_ao_wheel_fl.png" id="26_4hmk7"]
-[ext_resource type="Texture2D" uid="uid://ds33f6tcs33fr" path="res://demo_assets/textures/car/taxi_ao_body.png" id="26_nei8b"]
-[ext_resource type="Texture2D" uid="uid://c1yodn0cbt8b3" path="res://demo_assets/textures/car/taxi_ao_wheel_br.png" id="27_e2ws0"]
-[ext_resource type="Texture2D" uid="uid://cv2ot4eon83fj" path="res://demo_assets/textures/car/taxi_ao_wheel_bl.png" id="28_ybcwt"]
+[ext_resource type="Texture2D" uid="uid://fxy40522e4qh" path="res://demo_assets/textures/car/taxi/taxi_ao_wheel_fl.png" id="26_4hmk7"]
+[ext_resource type="Texture2D" uid="uid://ds33f6tcs33fr" path="res://demo_assets/textures/car/taxi/taxi_ao_body.png" id="26_nei8b"]
+[ext_resource type="Texture2D" uid="uid://c1yodn0cbt8b3" path="res://demo_assets/textures/car/taxi/taxi_ao_wheel_br.png" id="27_e2ws0"]
+[ext_resource type="Texture2D" uid="uid://cv2ot4eon83fj" path="res://demo_assets/textures/car/taxi/taxi_ao_wheel_bl.png" id="28_ybcwt"]
 [ext_resource type="Script" uid="uid://ryxb54l00hyh" path="res://addons/aacc/scripts/car_plugins/audio/car_collision_audio.gd" id="29_8alfh"]
 [ext_resource type="PackedScene" uid="uid://m7eic2l7s1ok" path="res://addons/aacc/scenes/audio/collision.tscn" id="30_3luwv"]
 [ext_resource type="Script" uid="uid://dymauy71fidl6" path="res://addons/aacc/scripts/car_plugins/audio/car_land_audio.gd" id="31_3luwv"]
 [ext_resource type="PackedScene" uid="uid://c0a0l5qonbany" path="res://addons/aacc/scenes/audio/land.tscn" id="31_jv7iv"]
-[ext_resource type="Texture2D" uid="uid://c5swxnnoq0i2t" path="res://demo_assets/textures/car/taxi_shadow.png" id="31_pr8vl"]
+[ext_resource type="Texture2D" uid="uid://c5swxnnoq0i2t" path="res://demo_assets/textures/car/taxi/taxi_shadow.png" id="31_pr8vl"]
 [ext_resource type="Script" uid="uid://yhlge5bk107j" path="res://addons/aacc/scripts/car_plugins/audio/car_brake_squeal_audio.gd" id="34_nvj2i"]
 [ext_resource type="PackedScene" uid="uid://c4gra2buges20" path="res://addons/aacc/scenes/audio/brake_squeal.tscn" id="35_3pgx4"]
 [ext_resource type="Script" uid="uid://begv66gnnevcx" path="res://addons/aacc/scripts/car_plugins/audio/car_tire_roll_audio.gd" id="36_c8387"]
@@ -132,7 +132,7 @@ shader_parameter/shadow_size = 5.0
 shader_parameter/shadow_height_above = 0.25
 shader_parameter/shadow_height_below = 1.25
 shader_parameter/shadow_intensity = 1.0
-shader_parameter/shadow_range = Vector2(-0.05, 1.2)
+shader_parameter/shadow_range = Vector2(-0.05, 1.1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_m8gdy"]
 material = SubResource("ShaderMaterial_nei8b")

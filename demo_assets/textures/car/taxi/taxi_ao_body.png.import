@@ -2,25 +2,27 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://fxy40522e4qh"
-path="res://.godot/imported/taxi_ao_wheel_fl.png-07b5102c7e39047caefb341be96f0878.ctex"
+uid="uid://ds33f6tcs33fr"
+path="res://.godot/imported/taxi_ao_body.png-0fd26987eae3dc781ee822f6aa3b9f6e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://demo_assets/textures/car/taxi_ao_wheel_fl.png"
-dest_files=["res://.godot/imported/taxi_ao_wheel_fl.png-07b5102c7e39047caefb341be96f0878.ctex"]
+source_file="res://demo_assets/textures/car/taxi/taxi_ao_body.png"
+dest_files=["res://.godot/imported/taxi_ao_body.png-0fd26987eae3dc781ee822f6aa3b9f6e.ctex"]
 
 [params]
 
 compress/mode=3
-compress/high_quality=false
+compress/high_quality=true
 compress/lossy_quality=0.7
+compress/uastc_level=0
+compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
-compress/channel_pack=0
+compress/channel_pack=1
 mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0

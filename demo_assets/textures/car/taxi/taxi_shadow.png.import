@@ -2,22 +2,24 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cv2ot4eon83fj"
-path="res://.godot/imported/taxi_ao_wheel_bl.png-0bb41edf9423413d7cc72c8e0e4e4679.ctex"
+uid="uid://c5swxnnoq0i2t"
+path="res://.godot/imported/taxi_shadow.png-64f944e233215b68f3dc78ace79b0a28.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://demo_assets/textures/car/taxi_ao_wheel_bl.png"
-dest_files=["res://.godot/imported/taxi_ao_wheel_bl.png-0bb41edf9423413d7cc72c8e0e4e4679.ctex"]
+source_file="res://demo_assets/textures/car/taxi/taxi_shadow.png"
+dest_files=["res://.godot/imported/taxi_shadow.png-64f944e233215b68f3dc78ace79b0a28.ctex"]
 
 [params]
 
 compress/mode=3
-compress/high_quality=false
+compress/high_quality=true
 compress/lossy_quality=0.7
+compress/uastc_level=0
+compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
