@@ -119,7 +119,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
 [node name="CarSetter" type="Node" parent="Plugins" node_paths=PackedStringArray("car_to_set")]
 process_priority = -1000
 script = ExtResource("3_vx7r4")
-car_to_set = NodePath("../../Race")
+car_to_set = NodePath("../../Taxi")
 metadata/_custom_type_script = "uid://be5ommjjotu3v"
 
 [node name="CarInputEngineTransToggle" type="Node" parent="Plugins" node_paths=PackedStringArray("engine_plugin_auto", "engine_plugin_manual")]

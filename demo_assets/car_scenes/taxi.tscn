@@ -62,7 +62,7 @@ point_count = 3
 [sub_resource type="Resource" id="Resource_n1pdp"]
 script = ExtResource("11_0wb0t")
 left_value = 0.0
-right_value = 1.75
+right_value = 1.8500000000058208
 max_input = 10.0
 input_curve = 0.5
 metadata/_custom_type_script = "uid://crrd7ugev6afh"
