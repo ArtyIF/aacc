@@ -1,8 +1,8 @@
 class_name CarInputEngineAuto extends ScenePluginBase
 
 @export_group("Input Map")
-@export var action_forward: StringName = &"aacc_forward"
-@export var action_backward: StringName = &"aacc_backward"
+@export_custom(PROPERTY_HINT_INPUT_NAME, "") var action_forward: StringName = &"aacc_forward"
+@export_custom(PROPERTY_HINT_INPUT_NAME, "") var action_backward: StringName = &"aacc_backward"
 
 @export_group("Gearbox")
 @export var downshift_offset: float = 0.1

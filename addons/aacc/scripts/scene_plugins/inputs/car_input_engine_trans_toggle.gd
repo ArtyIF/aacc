@@ -1,7 +1,7 @@
 class_name CarInputEngineTransToggle extends ScenePluginBase
 
 @export_group("Input Map")
-@export var action_trans_toggle: StringName = &"aacc_trans_toggle"
+@export_custom(PROPERTY_HINT_INPUT_NAME, "") var action_trans_toggle: StringName = &"aacc_trans_toggle"
 
 @export_group("Engine Plugins", "engine_plugin_")
 @export var engine_plugin_auto: CarInputEngineAuto

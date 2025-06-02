@@ -1,7 +1,7 @@
 class_name CarInputBoost extends ScenePluginBase
 
 @export_group("Input Map")
-@export var action_boost: StringName = &"aacc_boost"
+@export_custom(PROPERTY_HINT_INPUT_NAME, "") var action_boost: StringName = &"aacc_boost"
 
 func _physics_process(delta: float) -> void:
 	update_car()

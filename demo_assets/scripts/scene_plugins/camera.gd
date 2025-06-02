@@ -27,7 +27,7 @@ func update_nodes() -> void:
 func _process(delta: float) -> void:
 	update_nodes()
 
-	if Input.is_action_just_pressed("aaccdemo_camera"):
+	if Input.is_action_just_pressed(&"aaccdemo_camera"):
 		use_hood_camera = not use_hood_camera
 
 	var smooth_amount: float = 10.0

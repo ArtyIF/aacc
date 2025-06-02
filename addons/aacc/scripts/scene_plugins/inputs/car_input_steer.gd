@@ -1,11 +1,11 @@
 class_name CarInputSteer extends ScenePluginBase
 
 @export_group("Input Map")
-@export var action_forward: StringName = &"aacc_forward"
-@export var action_backward: StringName = &"aacc_backward"
-@export var action_steer_left: StringName = &"aacc_steer_left"
-@export var action_steer_right: StringName = &"aacc_steer_right"
-@export var action_handbrake: StringName = &"aacc_handbrake"
+@export_custom(PROPERTY_HINT_INPUT_NAME, "") var action_forward: StringName = &"aacc_forward"
+@export_custom(PROPERTY_HINT_INPUT_NAME, "") var action_backward: StringName = &"aacc_backward"
+@export_custom(PROPERTY_HINT_INPUT_NAME, "") var action_steer_left: StringName = &"aacc_steer_left"
+@export_custom(PROPERTY_HINT_INPUT_NAME, "") var action_steer_right: StringName = &"aacc_steer_right"
+@export_custom(PROPERTY_HINT_INPUT_NAME, "") var action_handbrake: StringName = &"aacc_handbrake"
 
 @export_group("Steering")
 @export var always_full_steer: bool = false

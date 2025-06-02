@@ -1,7 +1,7 @@
 class_name CarInputHandbrake extends ScenePluginBase
 
 @export_group("Input Map")
-@export var action_handbrake: StringName = &"aacc_handbrake"
+@export_custom(PROPERTY_HINT_INPUT_NAME, "") var action_handbrake: StringName = &"aacc_handbrake"
 
 func _physics_process(delta: float) -> void:
 	update_car()
