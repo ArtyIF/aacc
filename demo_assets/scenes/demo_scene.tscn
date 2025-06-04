@@ -63,7 +63,6 @@ shadow_enabled = true
 shadow_bias = 0.0
 shadow_normal_bias = 0.0
 shadow_caster_mask = 4293918726
-directional_shadow_blend_splits = true
 directional_shadow_pancake_size = 50.0
 script = ExtResource("6_l5mqg")
 
@@ -73,7 +72,6 @@ light_energy = 16.0
 light_bake_mode = 0
 light_cull_mask = 4294967294
 shadow_enabled = true
-directional_shadow_blend_splits = true
 directional_shadow_pancake_size = 50.0
 sky_mode = 1
 script = ExtResource("6_2t12c")

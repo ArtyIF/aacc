@@ -7,3 +7,5 @@ func _ready() -> void:
 		# add bias to static sunlight
 		$"..".shadow_bias = 0.1
 		$"..".shadow_normal_bias = 2.0
+		# make the shadows work everywhere
+		$"..".shadow_caster_mask = shadow_caster_mask
