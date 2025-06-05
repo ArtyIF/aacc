@@ -28,7 +28,6 @@
 exposure_multiplier = 0.5
 auto_exposure_enabled = true
 auto_exposure_scale = 1.0
-auto_exposure_speed = 1.0
 auto_exposure_min_sensitivity = 800.0
 auto_exposure_max_sensitivity = 2800.0
 

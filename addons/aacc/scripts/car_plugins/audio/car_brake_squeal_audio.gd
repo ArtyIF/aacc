@@ -10,7 +10,7 @@ func _ready() -> void:
 
 func process_plugin(delta: float) -> void:
 	var target_value: float = 0.0
-	if car.get_meta(&"gear_current", 0) != 0:
+	if car.get_meta(&"gear_current", 0) != 0 and not car.get_meta(&"input_handbrake", false):
 		target_value = car.get_meta(&"input_brake", 0.0) * abs(car.get_meta(&"brake_speed", 0.0)) * car.get_meta(&"ground_coefficient", 0.0)
 	brake_volume.advance_to(clamp(target_value, 0.0, 1.0), delta)
 	player.volume_linear = brake_volume.get_value()
