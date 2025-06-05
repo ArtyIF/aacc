@@ -28,8 +28,9 @@
 exposure_multiplier = 0.5
 auto_exposure_enabled = true
 auto_exposure_scale = 1.0
+auto_exposure_speed = 1.0
 auto_exposure_min_sensitivity = 800.0
-auto_exposure_max_sensitivity = 2800.0
+auto_exposure_max_sensitivity = 3200.0
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_2t12c"]
 
@@ -53,7 +54,7 @@ script = ExtResource("2_lmxsi")
 opengl_environment = ExtResource("3_63w87")
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.942641, 0.0722491, -0.325895, 0, 0.976296, 0.21644, 0.333807, -0.204025, 0.920297, 0, 0, 0)
+transform = Transform3D(0.76040566, -0.14056629, 0.6340537, 0, 0.976296, 0.21643966, -0.64944774, -0.16458197, 0.74238145, 0, 0, 0)
 light_color = Color(1, 0.909804, 0.576471, 1)
 light_energy = 16.0
 light_volumetric_fog_energy = 0.0
@@ -62,7 +63,6 @@ shadow_enabled = true
 shadow_bias = 0.0
 shadow_normal_bias = 0.0
 shadow_caster_mask = 4293918726
-directional_shadow_pancake_size = 50.0
 script = ExtResource("6_l5mqg")
 
 [node name="SunlightDynamic" type="DirectionalLight3D" parent="Sunlight"]
@@ -76,6 +76,7 @@ sky_mode = 1
 script = ExtResource("6_2t12c")
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
+quality = 3
 shadowmask_mode = 2
 texel_scale = 4.0
 generate_probes_subdiv = 0
@@ -101,7 +102,7 @@ shape = SubResource("WorldBoundaryShape3D_2t12c")
 [node name="ReflectionProbe" type="ReflectionProbe" parent="."]
 blend_distance = 0.0
 size = Vector3(1000, 1000, 1000)
-origin_offset = Vector3(14, 1.25, 265)
+origin_offset = Vector3(-17, 1, 301)
 enable_shadows = true
 cull_mask = 1048571
 
