@@ -14,8 +14,10 @@ class_name CarEngine extends CarPluginBase
 @export var rpm_min: float = 0.1
 @export var rpm_max: float = 0.9
 @export var rpm_limiter_offset: float = 0.05
-@export var rpm_speed_up: float = 1.0
-@export var rpm_speed_down: float = 0.5
+@export var rpm_speed_up: float = 10.0
+@export var rpm_speed_down: float = 5.0
+@export var rpm_speed_up_idle: float = 2.0
+@export var rpm_speed_down_idle: float = 1.0
 
 var gear_current: int = 0
 var gear_target: int = 0
@@ -64,12 +66,16 @@ func calculate_gear_limit(gear: int) -> float:
 	return abs(gear) / float(gearbox_gear_count)
 
 func update_rpm_ratio(input_accelerate: float, delta: float) -> void:
-	rpm_ratio.speed_up = rpm_speed_up
-	rpm_ratio.speed_down = rpm_speed_down
+	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 0.0)
+	if gear_current == 0 or gear_switching or is_zero_approx(ground_coefficient):
+		rpm_ratio.speed_up = rpm_speed_up_idle
+		rpm_ratio.speed_down = rpm_speed_down_idle
+	else:
+		rpm_ratio.speed_up = rpm_speed_up
+		rpm_ratio.speed_down = rpm_speed_down
 
 	var rpm_ratio_target: float = 0.0
 	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
-	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 0.0)
 
 	if rpm_limiter:
 		rpm_ratio_target = rpm_min

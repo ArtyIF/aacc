@@ -230,7 +230,9 @@ engine_max_force = 15000.0
 gearbox_switch_time = 0.5
 rpm_curve = SubResource("Curve_1amw3")
 rpm_limiter_offset = 0.03
-rpm_speed_down = 0.25
+rpm_speed_down = 2.0
+rpm_speed_up_idle = 1.0
+rpm_speed_down_idle = 0.19999999999708962
 metadata/_custom_type_script = "uid://bvfqai7uunpc3"
 
 [node name="SideGrip" type="Node3D" parent="Plugins"]
