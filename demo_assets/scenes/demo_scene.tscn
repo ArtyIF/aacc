@@ -1,6 +1,6 @@
 [gd_scene load_steps=28 format=3 uid="uid://b8dibdn7lv1o0"]
 
-[ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_2t12c"]
+[ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_g0gu6"]
 [ext_resource type="Script" uid="uid://d17tlldwsdt56" path="res://demo_assets/scripts/opengl_world_environment.gd" id="2_lmxsi"]
 [ext_resource type="Shader" uid="uid://dcrk75c13vhp4" path="res://demo_assets/shaders/lens_flare_shader.gdshader" id="2_vx7r4"]
 [ext_resource type="Script" uid="uid://cjsul5ik02rhk" path="res://demo_assets/scripts/lens_flare.gd" id="3_46dqb"]
@@ -48,7 +48,7 @@ size = Vector2(2, 2)
 [node name="DemoScene" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource("1_2t12c")
+environment = ExtResource("1_g0gu6")
 camera_attributes = SubResource("CameraAttributesPractical_ny1lv")
 script = ExtResource("2_lmxsi")
 opengl_environment = ExtResource("3_63w87")
