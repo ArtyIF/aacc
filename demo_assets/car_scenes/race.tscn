@@ -78,7 +78,10 @@ metadata/_custom_type_script = "uid://crrd7ugev6afh"
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sgsbn"]
 resource_name = "colormap"
 albedo_texture = ExtResource("39_qpokd")
-roughness = 0.5
+metallic = 0.5
+roughness = 0.0
+clearcoat_enabled = true
+clearcoat_roughness = 1.0
 ao_enabled = true
 ao_light_affect = 1.0
 ao_texture = ExtResource("39_340n5")
@@ -317,8 +320,10 @@ gearbox_gear_count = 10
 gearbox_switch_time = 0.05
 rpm_curve = SubResource("Curve_1amw3")
 rpm_limiter_offset = 0.0
-rpm_speed_up = 3.0
-rpm_speed_down = 0.33
+rpm_speed_up = 5.0
+rpm_speed_down = 1.0
+rpm_speed_up_idle = 3.0
+rpm_speed_down_idle = 0.33000000000174623
 metadata/_custom_type_script = "uid://bvfqai7uunpc3"
 
 [node name="SideGrip" type="Node3D" parent="Plugins"]
