@@ -27,28 +27,29 @@ func update_nodes() -> void:
 func _process(delta: float) -> void:
 	update_nodes()
 
-	if Input.is_action_just_pressed(&"aaccdemo_camera"):
-		use_hood_camera = not use_hood_camera
-
 	var smooth_amount_direction: float = 10.0
-	var smooth_amount_up: float = 1.0
+	var smooth_amount_up: float = 10.0
 	var node_transform: Transform3D = hood_camera_node.get_global_transform_interpolated() if use_hood_camera else follow_node.get_global_transform_interpolated()
 
 	if use_hood_camera:
 		camera.global_position = node_transform.origin
 		direction_target = node_transform.basis.z
 		up_vector_target = node_transform.basis.y
-		smooth_amount_up = 10.0
 	else:
 		up_vector_target = car.get_meta(&"ground_average_normal", Vector3.UP)
 		var velocity: Vector3 = (last_position - node_transform.origin) / delta
 		velocity = velocity.slide(up_vector_target)
 		smooth_amount_direction = clamp(remap(velocity.length(), 0.0, 10.0, 0.0, 10.0), 0.0, 10.0)
 		direction_target = velocity.normalized()
+		smooth_amount_up = 1.0
+
+	if Input.is_action_just_pressed(&"aaccdemo_camera"):
+		smoothed_up_vector = up_vector_target
+		smoothed_direction = direction_target
+		use_hood_camera = not use_hood_camera
 
 	if up_vector_target.distance_to(smoothed_up_vector) > 0.001:
 		smoothed_up_vector = smoothed_up_vector.slerp(up_vector_target, delta * smooth_amount_up)
-
 	if direction_target.distance_to(smoothed_direction) > 0.001:
 		smoothed_direction = smoothed_direction.slerp(direction_target, delta * smooth_amount_direction)
 		smoothed_direction = smoothed_direction.slide(smoothed_up_vector).normalized()
