@@ -35,7 +35,7 @@ func _physics_process(delta: float) -> void:
 		if car.get_meta(&"rpm_ratio", 0.0) < gear_perfect_shift_down and gear_target > 0:
 			gear_target = car.get_meta(&"gear_current", 1) - 1
 
-	gear_target = clampi(gear_target, -1, car.get_meta(&"gear_count", 0))
+	gear_target = clampi(gear_target, -1, car.get_meta(&"gearbox_gear_count", 0))
 	car.set_meta(&"input_gear_target", gear_target)
 
 	car.set_meta(&"input_accelerate", input_forward)

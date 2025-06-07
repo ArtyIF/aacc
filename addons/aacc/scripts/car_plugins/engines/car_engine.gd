@@ -35,9 +35,8 @@ func update_meta():
 	car.set_meta(&"engine_top_speed", engine_top_speed)
 	car.set_meta(&"engine_max_force", engine_max_force)
 
-	# TODO: gearbox_
-	car.set_meta(&"gear_count", gearbox_gear_count)
-	car.set_meta(&"gear_allow_reverse", gearbox_allow_reverse)
+	car.set_meta(&"gearbox_gear_count", gearbox_gear_count)
+	car.set_meta(&"gearbox_allow_reverse", gearbox_allow_reverse)
 	car.set_meta(&"gear_current", gear_current)
 	car.set_meta(&"gear_switching", gear_switching)
 	car.set_meta(&"gear_switch_timer", gear_switch_timer.get_value())

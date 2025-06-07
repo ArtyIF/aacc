@@ -19,7 +19,7 @@ func calculate_gear_target(input_handbrake: bool, velocity_z_sign: float) -> int
 	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 1.0)
 
 	var gear_current: int = car.get_meta(&"gear_current", 0)
-	var gear_count: int = car.get_meta(&"gear_count", 0)
+	var gear_count: int = car.get_meta(&"gearbox_gear_count", 0)
 	var engine_top_speed: float = car.get_meta(&"engine_top_speed", 0.0)
 
 	if (input_handbrake and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
@@ -61,7 +61,7 @@ func _physics_process(delta: float) -> void:
 			velocity_z_sign = 1.0
 
 	gear_target = calculate_gear_target(input_handbrake, velocity_z_sign)
-	var gear_allow_reverse: bool = car.get_meta(&"gear_allow_reverse", false)
+	var gear_allow_reverse: bool = car.get_meta(&"gearbox_allow_reverse", false)
 	if not gear_allow_reverse:
 		gear_target = max(0, gear_target)
 	car.set_meta(&"input_gear_target", gear_target)

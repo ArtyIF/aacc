@@ -22,20 +22,20 @@ func _draw() -> void:
 
 		if not AACCGlobal.car.get_meta(&"gear_switching", false):
 			if AACCGlobal.car.get_meta(&"ground_coefficient", 0.0) > 0.0:
-				if gear_current >= 0 and gear_current < AACCGlobal.car.get_meta(&"gear_count", 0):
+				if gear_current >= 0 and gear_current < AACCGlobal.car.get_meta(&"gearbox_gear_count", 0):
 					var current_next_ratio: float = max(gear_current, 1.0) / max(gear_current + 1, 1.0)
 					if current_next_ratio < 1.0:
 						points_next = remap_points(AACCCurveTools.get_curve_samples(rpm_curve, current_next_ratio))
 
-				if gear_current > 1 and gear_current <= AACCGlobal.car.get_meta(&"gear_count", 0):
+				if gear_current > 1 and gear_current <= AACCGlobal.car.get_meta(&"gearbox_gear_count", 0):
 					var current_prev_ratio: float = max(gear_current, 1.0) / max(gear_current - 1, 1.0)
 					if current_prev_ratio > 1.0:
 						points_prev = remap_points(AACCCurveTools.get_curve_samples(rpm_curve, current_prev_ratio))
 
-				if (gear_current > 0 and gear_current < AACCGlobal.car.get_meta(&"gear_count", 0)):
+				if (gear_current > 0 and gear_current < AACCGlobal.car.get_meta(&"gearbox_gear_count", 0)):
 					gear_perfect_shift_up = AACCCurveTools.get_gear_perfect_shift_up(AACCGlobal.car)
 
-				if (gear_current > 1 and gear_current <= AACCGlobal.car.get_meta(&"gear_count", 0)):
+				if (gear_current > 1 and gear_current <= AACCGlobal.car.get_meta(&"gearbox_gear_count", 0)):
 					gear_perfect_shift_down = AACCCurveTools.get_gear_perfect_shift_down(AACCGlobal.car)
 
 	var rpm_ratio: float = AACCGlobal.car.get_meta(&"rpm_ratio", 0.0)
