@@ -1,11 +1,71 @@
-[gd_resource type="Theme" load_steps=6 format=3 uid="uid://chyo0wdvcye0a"]
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://chyo0wdvcye0a"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jum22"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 5
+border_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lia4w"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_588c2"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 5
+border_color = Color(0, 0.5019608, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vnig4"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 5
+border_color = Color(0.2509804, 0.2509804, 0.2509804, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8kth3"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 5
+border_color = Color(0, 1, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qnhho"]
 content_margin_left = 5.0
 content_margin_top = 5.0
 content_margin_right = 5.0
 content_margin_bottom = 5.0
-bg_color = Color(0, 0, 0, 0.501961)
+bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_46lkv"]
 
@@ -18,6 +78,18 @@ bg_color = Color(1, 1, 1, 1)
 bg_color = Color(1, 0, 0, 1)
 
 [resource]
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(1, 1, 1, 0.5019608)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.5019608)
+Button/styles/disabled = SubResource("StyleBoxFlat_jum22")
+Button/styles/focus = SubResource("StyleBoxFlat_lia4w")
+Button/styles/hover = SubResource("StyleBoxFlat_588c2")
+Button/styles/normal = SubResource("StyleBoxFlat_vnig4")
+Button/styles/pressed = SubResource("StyleBoxFlat_8kth3")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_qnhho")
 ProgressBar/styles/background = SubResource("StyleBoxEmpty_46lkv")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_s4qbg")

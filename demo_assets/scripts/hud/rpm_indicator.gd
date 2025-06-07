@@ -46,17 +46,17 @@ func _draw() -> void:
 		rpm_bar_color = Color.RED
 	elif rpm_ratio >= gear_perfect_shift_up:
 		rpm_bar_color = Color.GREEN
-	draw_rect(Rect2(0.0, 0.0, rpm_ratio * size.x, size.y), Color(rpm_bar_color, 0.75))
+	draw_rect(Rect2(0.0, 0.0, rpm_ratio * size.x, size.y), rpm_bar_color)
 
 	var rpm_max: float = AACCGlobal.car.get_meta(&"rpm_max", 1.0)
-	draw_rect(Rect2(rpm_max * size.x, 0.0, (1.0 - rpm_max) * size.x, size.y), Color(Color.RED, 0.5))
+	draw_rect(Rect2(rpm_max * size.x, 0.0, (1.0 - rpm_max) * size.x, size.y), Color.RED)
 
-	if not points_current.is_empty():
-		draw_polyline(points_current, Color.WHITE, 1.0, true)
-	if not points_next.is_empty():
-		draw_polyline(points_next, Color.GREEN, 1.0, true)
 	if not points_prev.is_empty():
 		draw_polyline(points_prev, Color.RED, 1.0, true)
+	if not points_next.is_empty():
+		draw_polyline(points_next, Color.GREEN, 1.0, true)
+	if not points_current.is_empty():
+		draw_polyline(points_current, Color.CYAN, 1.0, true)
 
 func _process(_delta: float) -> void:
 	queue_redraw()

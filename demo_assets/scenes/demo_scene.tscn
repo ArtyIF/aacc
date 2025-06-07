@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://b8dibdn7lv1o0"]
+[gd_scene load_steps=30 format=3 uid="uid://b8dibdn7lv1o0"]
 
 [ext_resource type="Environment" uid="uid://ysvc1jqnkuid" path="res://demo_assets/demo_scene_environment.tres" id="1_g0gu6"]
 [ext_resource type="Script" uid="uid://d17tlldwsdt56" path="res://demo_assets/scripts/opengl_world_environment.gd" id="2_lmxsi"]
@@ -23,6 +23,8 @@
 [ext_resource type="Script" uid="uid://dolcf2iwday38" path="res://addons/aacc/scripts/scene_plugins/inputs/car_input_engine_auto.gd" id="13_lmxsi"]
 [ext_resource type="Script" uid="uid://cam0f0nudmuj2" path="res://demo_assets/scripts/scene_plugins/demo_hud.gd" id="15_s4qbg"]
 [ext_resource type="PackedScene" uid="uid://cs38a62litxur" path="res://addons/aacc/scenes/debug_label.tscn" id="17_2t12c"]
+[ext_resource type="Texture2D" uid="uid://da647baj60ugj" path="res://demo_assets/car_scenes/taxi_preview.png" id="23_74ysn"]
+[ext_resource type="Texture2D" uid="uid://cjh5ieh8ui75y" path="res://demo_assets/car_scenes/race_preview.png" id="24_43vvw"]
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ny1lv"]
 exposure_multiplier = 0.5
@@ -215,25 +217,25 @@ columns = 3
 
 [node name="GearBadge" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
 layout_mode = 2
-text = "Gear"
+text = "GEAR"
 horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="Gear" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
 layout_mode = 2
-text = "1"
+text = "   1"
 horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="GearTransmission" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
 layout_mode = 2
-text = "AUTO"
+text = "AT"
 horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="TotalBadge" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
 layout_mode = 2
-text = "Total"
+text = "SPEED"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -251,7 +253,7 @@ vertical_alignment = 1
 
 [node name="ForwardBadge" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
 layout_mode = 2
-text = "Forward"
+text = "FWD VEL"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -269,7 +271,7 @@ vertical_alignment = 1
 
 [node name="SideBadge" type="Label" parent="Plugins/HUD/HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer"]
 layout_mode = 2
-text = "Side"
+text = "SIDE VEL"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -297,7 +299,7 @@ layout_mode = 2
 
 [node name="BoostLabel" type="Label" parent="Plugins/HUD/HUDMargin/HUD/BoostPanel/VBox"]
 layout_mode = 2
-text = "Boost"
+text = "BOOST"
 vertical_alignment = 1
 
 [node name="BoostAmount" type="ProgressBar" parent="Plugins/HUD/HUDMargin/HUD/BoostPanel/VBox"]
@@ -307,5 +309,52 @@ max_value = 1.0
 step = 0.0
 value = 0.5
 show_percentage = false
+
+[node name="CarSelect" type="PanelContainer" parent="Plugins/HUD"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Plugins/HUD/CarSelect"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Plugins/HUD/CarSelect/VBox"]
+custom_minimum_size = Vector2(192, 0)
+layout_mode = 2
+theme_type_variation = &"HeaderLarge"
+text = "CAR SELECT"
+horizontal_alignment = 1
+clip_text = true
+text_overrun_behavior = 1
+
+[node name="CarGrid" type="GridContainer" parent="Plugins/HUD/CarSelect/VBox"]
+layout_mode = 2
+columns = 3
+
+[node name="Taxi" type="Button" parent="Plugins/HUD/CarSelect/VBox/CarGrid"]
+custom_minimum_size = Vector2(150, 174)
+layout_mode = 2
+text = "TAXI"
+icon = ExtResource("23_74ysn")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="Race" type="Button" parent="Plugins/HUD/CarSelect/VBox/CarGrid"]
+custom_minimum_size = Vector2(150, 174)
+layout_mode = 2
+text = "RACE"
+icon = ExtResource("24_43vvw")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
 
 [node name="DebugLabel" parent="Plugins" instance=ExtResource("17_2t12c")]
