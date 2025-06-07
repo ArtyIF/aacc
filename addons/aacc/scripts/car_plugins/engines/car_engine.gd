@@ -77,7 +77,7 @@ func update_rpm_ratio(input_accelerate: float, delta: float) -> void:
 	var rpm_ratio_target: float = 0.0
 	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
 
-	if rpm_limiter:
+	if rpm_limiter or gear_switching:
 		rpm_ratio_target = rpm_min
 	elif gear_current == 0 or is_zero_approx(ground_coefficient):
 		rpm_ratio_target = lerp(rpm_min, 1.0, input_accelerate)
@@ -91,8 +91,11 @@ func update_rpm_ratio(input_accelerate: float, delta: float) -> void:
 		rpm_ratio_target = clamp(remap(speed_ratio, 0.0, upper_limit, rpm_min, rpm_max), 0.0, 1.0)
 
 	var delta_multiplier: float = 1.0
-	if rpm_ratio.get_value() >= rpm_min and rpm_ratio_target > rpm_ratio.get_value():
-		delta_multiplier = rpm_curve.sample_baked(rpm_ratio.get_value())
+	if rpm_ratio.get_value() >= rpm_min:
+		if rpm_ratio_target > rpm_ratio.get_value():
+			delta_multiplier = rpm_curve.sample_baked(rpm_ratio.get_value())
+		else:
+			delta_multiplier = rpm_ratio.get_value()
 	rpm_ratio.advance_to(rpm_ratio_target, delta * delta_multiplier)
 
 func calculate_acceleration_multiplier(speed_ratio: float) -> float:

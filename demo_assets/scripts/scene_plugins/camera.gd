@@ -40,7 +40,8 @@ func _process(delta: float) -> void:
 		var velocity: Vector3 = (last_position - node_transform.origin) / delta
 		velocity = velocity.slide(up_vector_target)
 		smooth_amount_direction = clamp(remap(velocity.length(), 0.0, 10.0, 0.0, 10.0), 0.0, 10.0)
-		direction_target = velocity.normalized()
+		if not velocity.is_zero_approx():
+			direction_target = velocity.normalized()
 		smooth_amount_up = 1.0
 
 	if Input.is_action_just_pressed(&"aaccdemo_camera"):

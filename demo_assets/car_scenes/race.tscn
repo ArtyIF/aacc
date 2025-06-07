@@ -322,8 +322,7 @@ rpm_curve = SubResource("Curve_1amw3")
 rpm_limiter_offset = 0.0
 rpm_speed_up = 5.0
 rpm_speed_down = 1.0
-rpm_speed_up_idle = 3.0
-rpm_speed_down_idle = 0.33000000000174623
+rpm_speed_down_idle = 0.5
 metadata/_custom_type_script = "uid://bvfqai7uunpc3"
 
 [node name="SideGrip" type="Node3D" parent="Plugins"]

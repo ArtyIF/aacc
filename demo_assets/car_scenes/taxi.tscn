@@ -56,7 +56,7 @@ input_curve = 1.0
 metadata/_custom_type_script = "uid://crrd7ugev6afh"
 
 [sub_resource type="Curve" id="Curve_1amw3"]
-_data = [Vector2(0, 0), 0.0, 1.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.1), -2.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 1.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="Resource" id="Resource_n1pdp"]
@@ -229,10 +229,12 @@ script = ExtResource("4_pq6ol")
 engine_max_force = 15000.0
 gearbox_switch_time = 0.5
 rpm_curve = SubResource("Curve_1amw3")
+rpm_min = 0.07499999999708962
+rpm_max = 0.8500000000058208
 rpm_limiter_offset = 0.03
 rpm_speed_down = 2.0
 rpm_speed_up_idle = 1.0
-rpm_speed_down_idle = 0.19999999999708962
+rpm_speed_down_idle = 0.5
 metadata/_custom_type_script = "uid://bvfqai7uunpc3"
 
 [node name="SideGrip" type="Node3D" parent="Plugins"]
