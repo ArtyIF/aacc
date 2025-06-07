@@ -11,23 +11,19 @@ class_name AACCDemoCamera extends ScenePluginBase
 @onready var up_vector_target: Vector3 = Vector3.UP
 @onready var smoothed_up_vector: Vector3 = Vector3.UP
 
-var car: Car
 var use_hood_camera: bool = false
 
 func _ready() -> void:
 	process_priority = 1000
-	update_nodes()
 
 func update_nodes() -> void:
-	car = AACCGlobal.car
-	if not car: return
-
 	# TODO: use plugins instead
 	follow_node = car.get_node("Visuals")
 	follow_offset_node = car.get_node("FollowCameraOffset")
 	hood_camera_node = car.get_node("HoodCamera")
 
 func _process(delta: float) -> void:
+	if not car: return
 	update_nodes()
 
 	var smooth_amount_direction: float = 10.0

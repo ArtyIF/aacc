@@ -9,11 +9,9 @@ class_name CarInputEngineManual extends ScenePluginBase
 @export_group("Gearbox")
 @export var auto_downshift: bool = true
 
-var car: Car
 var gear_target: int = 0
 
 func _physics_process(delta: float) -> void:
-	car = AACCGlobal.car
 	if not car: return
 
 	var input_forward: float = clamp(Input.get_action_strength(action_forward), 0.0, 1.0)

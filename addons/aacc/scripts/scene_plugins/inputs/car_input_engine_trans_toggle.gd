@@ -7,11 +7,9 @@ class_name CarInputEngineTransToggle extends ScenePluginBase
 @export var engine_plugin_auto: CarInputEngineAuto
 @export var engine_plugin_manual: CarInputEngineManual
 
-var car: Car
 var trans_manual: bool = false
 
 func _physics_process(delta: float) -> void:
-	car = AACCGlobal.car
 	if not car: return
 
 	if Input.is_action_just_pressed(action_trans_toggle):

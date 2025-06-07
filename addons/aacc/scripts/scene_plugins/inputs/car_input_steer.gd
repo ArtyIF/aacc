@@ -13,7 +13,6 @@ class_name CarInputSteer extends ScenePluginBase
 @export var full_steer_on_handbrake: bool = true
 @export var desired_smooth_steer_speed: float = 10.0
 
-var car: Car
 var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
 func calculate_steer(input_steer: float, input_handbrake: bool, velocity_z_sign: float, delta: float) -> float:
@@ -42,7 +41,6 @@ func calculate_steer(input_steer: float, input_handbrake: bool, velocity_z_sign:
 	return smooth_steer.get_value()
 
 func _physics_process(delta: float) -> void:
-	car = AACCGlobal.car
 	if not car: return
 
 	var input_forward: float = clamp(Input.get_action_strength(action_forward), 0.0, 1.0)

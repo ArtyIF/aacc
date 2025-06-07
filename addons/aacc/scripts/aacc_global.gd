@@ -12,4 +12,11 @@ func remove_plugin(name: StringName):
 	scene_plugins.erase(name)
 
 # TODO: add support for several cars
-var car: Car
+var _car: Car
+signal car_changed
+var car: Car:
+	get:
+		return _car
+	set(value):
+		_car = value
+		car_changed.emit(value)

@@ -7,7 +7,6 @@ class_name CarInputEngineAuto extends ScenePluginBase
 @export_group("Gearbox")
 @export var downshift_offset: float = 0.1
 
-var car: Car
 var gear_target: int = 0
 
 func calculate_gear_limit(gear: int, gear_count: int) -> float:
@@ -47,7 +46,6 @@ func calculate_gear_target(input_handbrake: bool, velocity_z_sign: float) -> int
 	return gear_target_car
 
 func _physics_process(delta: float) -> void:
-	car = AACCGlobal.car
 	if not car: return
 
 	var input_forward: float = clamp(Input.get_action_strength(action_forward), 0.0, 1.0)

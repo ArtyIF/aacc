@@ -7,6 +7,8 @@ func remap_points(points: PackedVector2Array) -> PackedVector2Array:
 	return points
 
 func _draw() -> void:
+	if not AACCGlobal.car: return
+
 	var gear_perfect_shift_up: float = 1.0
 	var gear_perfect_shift_down: float = 0.0
 

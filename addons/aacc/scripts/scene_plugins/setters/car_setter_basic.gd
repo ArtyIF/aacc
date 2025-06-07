@@ -7,5 +7,5 @@ func set_car() -> void:
 func _ready() -> void:
 	set_car()
 
-func _physics_process(_delta: float) -> void:
-	set_car()
+#func _physics_process(_delta: float) -> void:
+#	set_car()
