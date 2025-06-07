@@ -4,7 +4,7 @@ class_name CarEngine extends CarPluginBase
 @export var engine_max_force: float = 10000.0
 @export var engine_top_speed: float = 50.0
 
-@export_group("Perfect Start Boost", "boost_")
+@export_group("Start Boost", "boost_")
 @export var boost_multiplier: float = 2.0
 @export var boost_power_threshold: float = 0.8
 @export var boost_duration: float = 1.0
@@ -46,6 +46,11 @@ func update_meta():
 	car.set_meta(&"gear_current", gear_current)
 	car.set_meta(&"gear_switching", gear_switching)
 	car.set_meta(&"gear_switch_timer", gear_switch_timer.get_value())
+
+	car.set_meta(&"engine_boost_multiplier", boost_multiplier)
+	car.set_meta(&"engine_boost_power_threshold", boost_power_threshold)
+	car.set_meta(&"engine_boost_duration", boost_duration)
+	car.set_meta(&"engine_boost_amount", boost_amount.get_value())
 
 	car.set_meta(&"rpm_ratio", rpm_ratio.get_value())
 	car.set_meta(&"rpm_curve", rpm_curve)

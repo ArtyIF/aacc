@@ -1,6 +1,7 @@
 class_name Car extends RigidBody3D
 
 # TODO: add an editor tool to compile plugins into one script for optimization
+# TODO: rewrite every plugin to just store parameters in their own object, no metas
 
 #region Forces
 class Force:
@@ -50,7 +51,7 @@ func get_torque_list() -> Array[StringName]:
 	return torques.keys()
 #endregion Torques
 
-var plugins_list: Array[CarPluginBase] = []
+var plugins: Dictionary[StringName, CarPluginBase] = {}
 
 func _physics_process(delta: float) -> void:
 	if freeze:
@@ -61,8 +62,8 @@ func _physics_process(delta: float) -> void:
 	if not torques.is_empty():
 		torques.clear()
 
-	for plugin in plugins_list:
-		plugin.process_plugin(delta)
+	for plugin_name in plugins.keys():
+		plugins[plugin_name].process_plugin(delta)
 
 	for force_name in forces.keys():
 		var force: Force = forces[force_name]

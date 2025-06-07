@@ -1,7 +1,10 @@
 class_name AACCDemoHUD extends ScenePluginBase
 
+var car: Car
+
 func _process(_delta: float) -> void:
-	update_car()
+	car = AACCGlobal.car
+	if not car: return
 
 	var gear_current: String = str(AACCGlobal.car.get_meta(&"gear_current", 0))
 	if gear_current == "0":

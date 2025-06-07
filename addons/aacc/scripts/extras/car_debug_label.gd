@@ -44,12 +44,12 @@ func _process(_delta: float) -> void:
 	label.push_cell()
 	label.add_text("Type")
 	label.pop()
-	for plugin in AACCGlobal.car.plugins_list:
+	for plugin_name in AACCGlobal.car.plugins.keys():
 		label.push_cell()
-		label.add_text(plugin.name)
+		label.add_text(plugin_name)
 		label.pop()
 		label.push_cell()
-		label.add_text(plugin.get_script().get_global_name())
+		label.add_text(AACCGlobal.car.plugins[plugin_name].get_script().get_global_name())
 		label.pop()
 	label.pop()
 	label.add_text("\n\n")

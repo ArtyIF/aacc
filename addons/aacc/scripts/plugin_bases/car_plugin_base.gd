@@ -7,7 +7,7 @@ func _enter_tree() -> void:
 	while car_parent != null:
 		if car_parent is Car:
 			car = car_parent
-			car.plugins_list.append(self)
+			car.plugins[name] = self
 			return
 		else:
 			car_parent = car_parent.get_parent()

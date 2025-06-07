@@ -316,6 +316,7 @@ metadata/_custom_type_script = "uid://v0cpq7q6mjou"
 script = ExtResource("9_i0og4")
 engine_max_force = 16000.0
 engine_top_speed = 150.0
+boost_duration = 3.0
 gearbox_gear_count = 10
 gearbox_switch_time = 0.05
 rpm_curve = SubResource("Curve_1amw3")
