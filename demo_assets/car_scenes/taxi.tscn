@@ -227,11 +227,11 @@ metadata/_custom_type_script = "uid://v0cpq7q6mjou"
 [node name="Engine" type="Node3D" parent="Plugins"]
 script = ExtResource("4_pq6ol")
 engine_max_force = 15000.0
+boost_duration = 2.0
 gearbox_switch_time = 0.5
 rpm_curve = SubResource("Curve_1amw3")
 rpm_min = 0.07499999999708962
 rpm_max = 0.8500000000058208
-rpm_limiter_offset = 0.03
 rpm_speed_down = 2.0
 rpm_speed_up_idle = 1.0
 rpm_speed_down_idle = 0.5

@@ -4,6 +4,11 @@ class_name CarEngine extends CarPluginBase
 @export var engine_max_force: float = 10000.0
 @export var engine_top_speed: float = 50.0
 
+@export_group("Perfect Start Boost", "boost_")
+@export var boost_multiplier: float = 2.0
+@export var boost_power_threshold: float = 0.8
+@export var boost_duration: float = 1.0
+
 @export_group("Gearbox", "gearbox_")
 @export var gearbox_gear_count: int = 5
 @export var gearbox_switch_time: float = 0.1
@@ -19,6 +24,7 @@ class_name CarEngine extends CarPluginBase
 @export var rpm_speed_up_idle: float = 2.0
 @export var rpm_speed_down_idle: float = 1.0
 
+var boost_amount: SmoothedFloat = SmoothedFloat.new()
 var gear_current: int = 0
 var gear_target: int = 0
 var gear_switch_timer: SmoothedFloat = SmoothedFloat.new(-1.0)
@@ -50,6 +56,9 @@ func update_meta():
 func update_gear(delta: float):
 	gear_target = clampi(gear_target, -1 if gearbox_allow_reverse else 0, gearbox_gear_count)
 
+	if gear_current == 0 and gear_target != 0 and rpm_curve.sample_baked(rpm_ratio.get_value()) >= boost_power_threshold:
+		boost_amount.force_current_value(rpm_curve.sample_baked(rpm_ratio.get_value()))
+
 	if not gear_switching and gear_target != gear_current and not gear_current == 0:
 		gear_switching = true
 		gear_switch_timer.force_current_value(gearbox_switch_time)
@@ -66,7 +75,7 @@ func calculate_gear_limit(gear: int) -> float:
 
 func update_rpm_ratio(input_accelerate: float, delta: float) -> void:
 	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 0.0)
-	if gear_current == 0 or gear_switching or is_zero_approx(ground_coefficient):
+	if gear_current == 0 or gear_switching or rpm_limiter or is_zero_approx(ground_coefficient):
 		rpm_ratio.speed_up = rpm_speed_up_idle
 		rpm_ratio.speed_down = rpm_speed_down_idle
 	else:
@@ -101,12 +110,10 @@ func calculate_acceleration_multiplier(speed_ratio: float) -> float:
 	var multiplier: float = 1.0
 	multiplier *= rpm_curve.sample_baked(rpm_ratio.get_value())
 	multiplier *= 1.0 - calculate_gear_limit(max(0.0, gear_current - 1))
+	multiplier *= lerp(1.0, boost_multiplier, boost_amount.get_value())
 
 	if gear_current < 0 and gearbox_allow_reverse:
 		multiplier *= -1.0
-
-	if rpm_ratio.get_value() >= rpm_max:
-		multiplier = 0.0
 
 	return multiplier
 
@@ -126,6 +133,8 @@ func process_plugin(delta: float) -> void:
 	else:
 		rpm_limiter = false
 	car.set_meta(&"rpm_limiter", rpm_limiter)
+
+	boost_amount.advance_to(0.0, delta / boost_duration)
 
 	car.set_meta(&"engine_desired_force_ratio", 0.0)
 	if gear_switching or rpm_limiter:
