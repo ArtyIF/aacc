@@ -40,6 +40,9 @@ func _draw() -> void:
 				if (gear_current > 1 and gear_current <= AACCGlobal.car.get_meta(&"gearbox_gear_count", 0)):
 					gear_perfect_shift_down = AACCCurveTools.get_gear_perfect_shift_down(AACCGlobal.car)
 
+	var rpm_max: float = AACCGlobal.car.get_meta(&"rpm_max", 1.0)
+	draw_rect(Rect2(rpm_max * size.x, 0.0, (1.0 - rpm_max) * size.x, size.y), Color.RED)
+
 	var rpm_ratio: float = AACCGlobal.car.get_meta(&"rpm_ratio", 0.0)
 	var rpm_bar_color: Color = Color.WHITE
 	if rpm_ratio <= gear_perfect_shift_down:
@@ -47,9 +50,6 @@ func _draw() -> void:
 	elif rpm_ratio >= gear_perfect_shift_up:
 		rpm_bar_color = Color.GREEN
 	draw_rect(Rect2(0.0, 0.0, rpm_ratio * size.x, size.y), rpm_bar_color)
-
-	var rpm_max: float = AACCGlobal.car.get_meta(&"rpm_max", 1.0)
-	draw_rect(Rect2(rpm_max * size.x, 0.0, (1.0 - rpm_max) * size.x, size.y), Color.RED)
 
 	if not points_prev.is_empty():
 		draw_polyline(points_prev, Color.RED, 1.0, true)

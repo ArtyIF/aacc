@@ -8,7 +8,7 @@ func process_plugin(delta: float) -> void:
 	var slip_total: float = 0.0
 
 	slip_side += abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).x)
-	slip_side -= 0.2
+	slip_side -= 0.5
 	slip_side /= 10.0 # TODO: configurable
 
 	if car.get_meta(&"gear_current", 0) == 0:

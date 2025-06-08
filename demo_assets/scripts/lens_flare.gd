@@ -19,7 +19,7 @@ func _process(delta: float) -> void:
 	var effective_sun_dir: Vector3 = sun.global_basis.z * max(camera.near, 1.0)
 	effective_sun_dir += camera.global_position
 
-	var visibility: float = 1.0# if camera.is_position_in_frustum(effective_sun_dir) else 0.0
+	var visibility: float = 1.0
 
 	occlusion_cast.target_position = Vector3.FORWARD * camera.far
 	occlusion_cast.look_at(effective_sun_dir)

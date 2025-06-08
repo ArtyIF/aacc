@@ -165,8 +165,8 @@ ignore_occlusion_culling = true
 gi_mode = 0
 mesh = SubResource("QuadMesh_vx7r4")
 script = ExtResource("3_46dqb")
-sun = NodePath("../../../../Sunlight")
-flare_intensity = 0.25
+sun = NodePath("../../../../Sunlight/SunlightDynamic")
+flare_intensity = 0.1
 
 [node name="OcclusionCast" type="RayCast3D" parent="Plugins/Camera/Camera/LensMesh"]
 enabled = false
