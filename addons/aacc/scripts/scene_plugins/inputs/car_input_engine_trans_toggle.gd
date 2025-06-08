@@ -10,7 +10,7 @@ class_name CarInputEngineTransToggle extends ScenePluginBase
 var trans_manual: bool = false
 
 func _physics_process(delta: float) -> void:
-	if not car: return
+	if not is_instance_valid(car): return
 
 	if Input.is_action_just_pressed(action_trans_toggle):
 		trans_manual = not trans_manual

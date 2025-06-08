@@ -26,7 +26,7 @@ func _process(_delta: float) -> void:
 		label.add_text(plugin)
 		label.pop()
 		label.push_cell()
-		label.add_text(AACCGlobal.get_plugin(plugin).get_script().get_global_name())
+		label.add_text(AACCGlobal.get_scene_plugin(plugin).get_script().get_global_name())
 		label.pop()
 	label.pop()
 	label.add_text("\n\n")

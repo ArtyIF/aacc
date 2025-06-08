@@ -23,7 +23,7 @@ func update_nodes() -> void:
 	hood_camera_node = car.get_node("HoodCamera")
 
 func _process(delta: float) -> void:
-	if not car: return
+	if not is_instance_valid(car): return
 	update_nodes()
 
 	var smooth_amount_direction: float = 10.0

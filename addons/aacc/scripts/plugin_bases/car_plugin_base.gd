@@ -7,12 +7,16 @@ func _enter_tree() -> void:
 	while car_parent != null:
 		if car_parent is Car:
 			car = car_parent
-			car.plugins[name] = self
+			car.add_plugin(name, self)
 			return
 		else:
 			car_parent = car_parent.get_parent()
 
 	assert(false, "No car parent found for plugin " + str(get_path()))
+
+func _exit_tree() -> void:
+	if is_instance_valid(car):
+		car.remove_plugin(name)
 
 func process_plugin(delta: float) -> void:
 	pass

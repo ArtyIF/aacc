@@ -46,7 +46,7 @@ func calculate_gear_target(input_handbrake: bool, velocity_z_sign: float) -> int
 	return gear_target_car
 
 func _physics_process(delta: float) -> void:
-	if not car: return
+	if not is_instance_valid(car): return
 
 	var input_forward: float = clamp(Input.get_action_strength(action_forward), 0.0, 1.0)
 	var input_backward: float = clamp(Input.get_action_strength(action_backward), 0.0, 1.0)

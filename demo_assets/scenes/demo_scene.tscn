@@ -311,6 +311,7 @@ value = 0.5
 show_percentage = false
 
 [node name="CarSelect" type="PanelContainer" parent="Plugins/HUD"]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

@@ -51,12 +51,30 @@ func get_torque_list() -> Array[StringName]:
 	return torques.keys()
 #endregion Torques
 
+#region Plugins
 var plugins: Dictionary[StringName, CarPluginBase] = {}
+signal plugin_added(plugin_name: StringName)
+signal plugin_removed(plugin_name: StringName)
+
+func add_plugin(plugin_name: StringName, plugin: CarPluginBase):
+	plugins[plugin_name] = plugin
+	plugin_added.emit(plugin_name)
+
+func get_plugin(plugin_name: StringName) -> CarPluginBase:
+	return plugins[plugin_name]
+
+func has_plugin(plugin_name: StringName) -> bool:
+	return plugin_name in plugins.keys()
+
+func remove_plugin(plugin_name: StringName):
+	plugins.erase(plugin_name)
+	plugin_removed.emit(plugin_name)
+#endregion
 
 func _physics_process(delta: float) -> void:
 	if freeze:
 		return
-
+	
 	if not forces.is_empty():
 		forces.clear()
 	if not torques.is_empty():

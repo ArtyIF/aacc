@@ -4,7 +4,7 @@ class_name CarInputBoost extends ScenePluginBase
 @export_custom(PROPERTY_HINT_INPUT_NAME, "") var action_boost: StringName = &"aacc_boost"
 
 func _physics_process(delta: float) -> void:
-	if not car: return
+	if not is_instance_valid(car): return
 
 	var input_boost: bool = false
 	if car.linear_velocity.length() >= 0.25 or is_zero_approx(car.get_meta(&"ground_coefficient", 0.0)):
