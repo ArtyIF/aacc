@@ -308,6 +308,7 @@ first_button = NodePath("CarSelect/VBox/CarGrid/Taxi")
 metadata/_custom_type_script = "uid://ri7l8aly7sak"
 
 [node name="CarSelect" type="PanelContainer" parent="Plugins/CarSelect"]
+visible = false
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
