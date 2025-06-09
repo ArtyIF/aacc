@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://da647baj60ugj"
-path="res://.godot/imported/taxi_preview.png-f996a7b44894852357be6bfe53dda31b.ctex"
+uid="uid://cjh5ieh8ui75y"
+path="res://.godot/imported/race_preview.png-45f65b25791e59f70171a4577bceb89d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://demo_assets/car_scenes/taxi_preview.png"
-dest_files=["res://.godot/imported/taxi_preview.png-f996a7b44894852357be6bfe53dda31b.ctex"]
+source_file="res://demo_assets/ui/car_previews/race_preview.png"
+dest_files=["res://.godot/imported/race_preview.png-45f65b25791e59f70171a4577bceb89d.ctex"]
 
 [params]
 

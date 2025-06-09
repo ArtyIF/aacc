@@ -22,8 +22,8 @@
 [ext_resource type="Script" uid="uid://cam0f0nudmuj2" path="res://demo_assets/scripts/scene_plugins/demo_hud.gd" id="15_s4qbg"]
 [ext_resource type="PackedScene" uid="uid://cs38a62litxur" path="res://addons/aacc/scenes/debug_label.tscn" id="17_2t12c"]
 [ext_resource type="Script" uid="uid://ri7l8aly7sak" path="res://demo_assets/scripts/scene_plugins/car_select.gd" id="23_43vvw"]
-[ext_resource type="Texture2D" uid="uid://da647baj60ugj" path="res://demo_assets/car_scenes/taxi_preview.png" id="23_74ysn"]
-[ext_resource type="Texture2D" uid="uid://cjh5ieh8ui75y" path="res://demo_assets/car_scenes/race_preview.png" id="24_43vvw"]
+[ext_resource type="Texture2D" uid="uid://da647baj60ugj" path="res://demo_assets/ui/car_previews/taxi_preview.png" id="23_74ysn"]
+[ext_resource type="Texture2D" uid="uid://cjh5ieh8ui75y" path="res://demo_assets/ui/car_previews/race_preview.png" id="24_43vvw"]
 [ext_resource type="Script" uid="uid://16cdfvyx87a6" path="res://demo_assets/scripts/hud/car_button.gd" id="25_2ltpp"]
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ny1lv"]
@@ -309,7 +309,7 @@ metadata/_custom_type_script = "uid://ri7l8aly7sak"
 
 [node name="CarSelect" type="PanelContainer" parent="Plugins/CarSelect"]
 visible = false
-anchors_preset = -1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
