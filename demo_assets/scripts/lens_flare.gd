@@ -7,9 +7,21 @@ var viewport: Viewport
 var visibility_smooth: SmoothedFloat
 @onready var occlusion_cast: RayCast3D = $OcclusionCast
 
-func _process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	viewport = get_viewport()
 
+	if not sun or not viewport: return
+
+	var camera: Camera3D = viewport.get_camera_3d()
+	var effective_sun_dir: Vector3 = sun.global_basis.z * max(camera.near, 1.0)
+	effective_sun_dir += camera.global_position
+
+	occlusion_cast.target_position = Vector3.FORWARD * camera.far
+	occlusion_cast.look_at(effective_sun_dir)
+	occlusion_cast.force_raycast_update()
+
+func _process(delta: float) -> void:
+	viewport = get_viewport()
 	if not visibility_smooth:
 		visibility_smooth = SmoothedFloat.new(0.0, 5.0)
 
@@ -20,10 +32,6 @@ func _process(delta: float) -> void:
 	effective_sun_dir += camera.global_position
 
 	var visibility: float = 1.0
-
-	occlusion_cast.target_position = Vector3.FORWARD * camera.far
-	occlusion_cast.look_at(effective_sun_dir)
-	occlusion_cast.force_raycast_update()
 	visibility *= 0.0 if occlusion_cast.is_colliding() else 1.0
 
 	visibility_smooth.advance_to(visibility, delta)
