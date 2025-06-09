@@ -23,7 +23,14 @@ func update_nodes() -> void:
 	hood_camera_node = car.get_node("HoodCamera")
 
 func _process(delta: float) -> void:
-	if not is_instance_valid(car): return
+	if not is_instance_valid(car):
+		last_position = Vector3.ZERO
+		direction_target = -Vector3.FORWARD
+		smoothed_direction = -Vector3.FORWARD
+		up_vector_target = Vector3.UP
+		smoothed_up_vector = Vector3.UP
+		return
+
 	update_nodes()
 
 	var smooth_amount_direction: float = 10.0
