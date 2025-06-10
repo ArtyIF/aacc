@@ -17,6 +17,10 @@ var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
 var plugin_lvp: CarLocalVelocityProcessor
 
+func update_car(new_car: Car) -> void:
+	super(new_car)
+	plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
+
 func calculate_steer(input_steer: float, input_handbrake: bool, local_velocity_z_sign: float, delta: float) -> float:
 	var input_full_steer: float = (1.0 if input_handbrake else 0.0) if full_steer_on_handbrake else 0.0
 	if is_zero_approx(car.get_meta(&"ground_coefficient", 1.0)):
@@ -44,7 +48,6 @@ func calculate_steer(input_steer: float, input_handbrake: bool, local_velocity_z
 
 func _physics_process(delta: float) -> void:
 	if not is_instance_valid(car): return
-	plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
 
 	var input_forward: float = clamp(Input.get_action_strength(action_forward), 0.0, 1.0)
 	var input_backward: float = clamp(Input.get_action_strength(action_backward), 0.0, 1.0)

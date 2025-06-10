@@ -13,9 +13,12 @@ var gear_target: int = 0
 
 var plugin_lvp: CarLocalVelocityProcessor
 
+func update_car(new_car: Car) -> void:
+	super(new_car)
+	plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
+
 func _physics_process(delta: float) -> void:
 	if not is_instance_valid(car): return
-	plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
 
 	var input_forward: float = clamp(Input.get_action_strength(action_forward), 0.0, 1.0)
 	var input_backward: float = clamp(Input.get_action_strength(action_backward), 0.0, 1.0)

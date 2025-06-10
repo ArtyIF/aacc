@@ -2,9 +2,12 @@ class_name AACCDemoHUD extends ScenePluginBase
 
 var plugin_lvp: CarLocalVelocityProcessor
 
+func update_car(new_car: Car) -> void:
+	super(new_car)
+	plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
+
 func _process(_delta: float) -> void:
 	if not is_instance_valid(car): return
-	plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
 
 	var gear_current: String = str(AACCGlobal.car.get_meta(&"gear_current", 0))
 	if gear_current == "0":
