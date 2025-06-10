@@ -14,7 +14,7 @@ var plugin_lvp: CarLocalVelocityProcessor
 func calculate_gear_limit(gear: int, gear_count: int) -> float:
 	return float(gear) / gear_count
 
-func calculate_gear_target(input_handbrake: bool, velocity_z_sign: float) -> int:
+func calculate_gear_target(input_handbrake: bool, local_velocity_z_sign: float) -> int:
 	var gear_target_car: int = car.get_meta(&"input_gear_target", 0)
 
 	var local_velocity_linear: Vector3 = plugin_lvp.local_velocity_linear
@@ -30,9 +30,9 @@ func calculate_gear_target(input_handbrake: bool, velocity_z_sign: float) -> int
 		return 0
 
 	if abs(local_velocity_linear.z) < 0.25:
-		return -velocity_z_sign
+		return -local_velocity_z_sign
 
-	if velocity_z_sign > 0:
+	if local_velocity_z_sign > 0:
 		return -1
 
 	var gear_perfect_shift_up: float = AACCCurveTools.get_gear_perfect_shift_up(car)
@@ -55,14 +55,14 @@ func _physics_process(delta: float) -> void:
 	var input_backward: float = clamp(Input.get_action_strength(action_backward), 0.0, 1.0)
 	var input_handbrake: bool = car.get_meta(&"input_handbrake", false)
 
-	var velocity_z_sign: float = car.get_meta(&"velocity_z_sign", 0.0)
-	if is_zero_approx(velocity_z_sign):
+	var local_velocity_z_sign: float = plugin_lvp.local_velocity_z_sign
+	if is_zero_approx(local_velocity_z_sign):
 		if input_forward > 0.0 and is_zero_approx(input_backward):
-			velocity_z_sign = -1.0
+			local_velocity_z_sign = -1.0
 		elif input_backward > 0.0 and is_zero_approx(input_forward):
-			velocity_z_sign = 1.0
+			local_velocity_z_sign = 1.0
 
-	gear_target = calculate_gear_target(input_handbrake, velocity_z_sign)
+	gear_target = calculate_gear_target(input_handbrake, local_velocity_z_sign)
 	var gear_allow_reverse: bool = car.get_meta(&"gearbox_allow_reverse", false)
 	if not gear_allow_reverse:
 		gear_target = max(0, gear_target)

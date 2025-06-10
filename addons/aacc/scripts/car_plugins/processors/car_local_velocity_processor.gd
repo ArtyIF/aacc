@@ -19,7 +19,3 @@ func process_plugin(delta: float) -> void:
 		local_velocity_z_sign = sign(local_velocity_linear.z)
 	else:
 		local_velocity_z_sign = 0.0
-
-	# TODO: remove
-	car.set_meta(&"local_angular_velocity", local_velocity_angular)
-	car.set_meta(&"velocity_z_sign", local_velocity_z_sign)

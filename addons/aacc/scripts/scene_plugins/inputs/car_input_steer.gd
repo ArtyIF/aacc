@@ -17,11 +17,11 @@ var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
 var plugin_lvp: CarLocalVelocityProcessor
 
-func calculate_steer(input_steer: float, input_handbrake: bool, velocity_z_sign: float, delta: float) -> float:
+func calculate_steer(input_steer: float, input_handbrake: bool, local_velocity_z_sign: float, delta: float) -> float:
 	var input_full_steer: float = (1.0 if input_handbrake else 0.0) if full_steer_on_handbrake else 0.0
 	if is_zero_approx(car.get_meta(&"ground_coefficient", 1.0)):
 		input_full_steer = 1.0
-	if full_steer_on_reverse and velocity_z_sign > 0:
+	if full_steer_on_reverse and local_velocity_z_sign > 0:
 		input_full_steer = 1.0
 
 	# TODO: add an ability to have the car send the info somehow, otherwise this is delayed by a frame
@@ -51,11 +51,11 @@ func _physics_process(delta: float) -> void:
 	var input_steer: float = clamp(Input.get_action_strength(action_steer_right) - Input.get_action_strength(action_steer_left), -1.0, 1.0)
 	var input_handbrake: bool = Input.is_action_pressed(action_handbrake)
 
-	var velocity_z_sign: float = car.get_meta(&"velocity_z_sign", 0.0)
-	if is_zero_approx(velocity_z_sign):
+	var local_velocity_z_sign: float = plugin_lvp.local_velocity_z_sign
+	if is_zero_approx(local_velocity_z_sign):
 		if input_forward > 0.0 and is_zero_approx(input_backward):
-			velocity_z_sign = -1.0
+			local_velocity_z_sign = -1.0
 		elif input_backward > 0.0 and is_zero_approx(input_forward):
-			velocity_z_sign = 1.0
+			local_velocity_z_sign = 1.0
 
-	car.set_meta(&"input_steer", calculate_steer(input_steer, input_handbrake, velocity_z_sign, delta))
+	car.set_meta(&"input_steer", calculate_steer(input_steer, input_handbrake, local_velocity_z_sign, delta))

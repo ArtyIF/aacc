@@ -11,18 +11,21 @@ class_name CarInputEngineManual extends ScenePluginBase
 
 var gear_target: int = 0
 
+var plugin_lvp: CarLocalVelocityProcessor
+
 func _physics_process(delta: float) -> void:
 	if not is_instance_valid(car): return
+	plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
 
 	var input_forward: float = clamp(Input.get_action_strength(action_forward), 0.0, 1.0)
 	var input_backward: float = clamp(Input.get_action_strength(action_backward), 0.0, 1.0)
 
-	var velocity_z_sign: float = car.get_meta(&"velocity_z_sign", 0.0)
-	if is_zero_approx(velocity_z_sign):
+	var local_velocity_z_sign: float = plugin_lvp.local_velocity_z_sign
+	if is_zero_approx(local_velocity_z_sign):
 		if input_forward > 0.0 and is_zero_approx(input_backward):
-			velocity_z_sign = -1.0
+			local_velocity_z_sign = -1.0
 		elif input_backward > 0.0 and is_zero_approx(input_forward):
-			velocity_z_sign = 1.0
+			local_velocity_z_sign = 1.0
 
 	if Input.is_action_just_pressed(action_gear_up):
 		gear_target += 1
