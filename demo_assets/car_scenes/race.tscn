@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://v0cpq7q6mjou" path="res://addons/aacc/scripts/car_plugins/brakes/car_brake.gd" id="8_4dv23"]
 [ext_resource type="Script" uid="uid://bvfqai7uunpc3" path="res://addons/aacc/scripts/car_plugins/engines/car_engine.gd" id="9_i0og4"]
 [ext_resource type="Script" uid="uid://cil4ufto2v87g" path="res://addons/aacc/scripts/car_plugins/grips/car_side_grip.gd" id="10_6qa4x"]
-[ext_resource type="Script" uid="uid://un1kd6buaufw" path="res://addons/aacc/scripts/car_plugins/extras/boosts/car_hold_boost.gd" id="11_nhmty"]
+[ext_resource type="Script" uid="uid://un1kd6buaufw" path="res://addons/aacc/scripts/car_plugins/boosts/car_hold_boost.gd" id="11_nhmty"]
 [ext_resource type="Script" uid="uid://put3fygiiqh8" path="res://addons/aacc/scripts/car_plugins/resistances/car_coast_resistance.gd" id="12_6ual8"]
 [ext_resource type="Script" uid="uid://bieogbd1wisbk" path="res://addons/aacc/scripts/car_plugins/processors/car_steer_offset_processor.gd" id="13_alcwy"]
 [ext_resource type="Script" uid="uid://br0vp35kb6pyw" path="res://addons/aacc/scripts/car_plugins/steers/car_steer.gd" id="14_ax6fu"]
@@ -315,9 +315,9 @@ metadata/_custom_type_script = "uid://v0cpq7q6mjou"
 [node name="Engine" type="Node3D" parent="Plugins"]
 script = ExtResource("9_i0og4")
 engine_max_force = 16000.0
-engine_top_speed = 150.0
+engine_top_speed = 120.0
 boost_duration = 2.0
-gearbox_gear_count = 10
+gearbox_gear_count = 8
 gearbox_switch_time = 0.05
 rpm_curve = SubResource("Curve_1amw3")
 rpm_limiter_offset = 0.0
@@ -332,7 +332,7 @@ metadata/_custom_type_script = "uid://cil4ufto2v87g"
 
 [node name="HoldBoost" type="Node3D" parent="Plugins"]
 script = ExtResource("11_nhmty")
-boost_top_speed = 160.0
+boost_top_speed = 130.0
 metadata/_custom_type_script = "uid://un1kd6buaufw"
 
 [node name="CoastResistance" type="Node3D" parent="Plugins"]
