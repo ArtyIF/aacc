@@ -1,4 +1,4 @@
-class_name ScenePluginBase extends Node
+abstract class_name ScenePluginBase extends Node
 
 var car: Car
 

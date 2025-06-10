@@ -1,4 +1,4 @@
-class_name CarPluginBase extends Node3D
+abstract class_name CarPluginBase extends Node3D
 
 var car: Car
 
