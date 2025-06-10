@@ -72,6 +72,34 @@ func _process(_delta: float) -> void:
 		label.pop()
 		label.add_text("\n\n")
 
+		for plugin_name in AACCGlobal.car.plugins.keys():
+			var plugin_properties: Dictionary[StringName, String] = {}
+			for property_name in AACCGlobal.car.plugins[plugin_name].debuggable_properties:
+				plugin_properties[property_name] = str(AACCGlobal.car.plugins[plugin_name].get(property_name))
+			if plugin_properties.is_empty():
+				continue
+
+			label.push_bgcolor(Color.BLACK)
+			label.add_text("PLUGIN PROPERTIES: " + plugin_name + "\n")
+			label.pop()
+
+			label.push_table(2)
+			label.push_cell()
+			label.add_text("NAME")
+			label.pop()
+			label.push_cell()
+			label.add_text("VALUE")
+			label.pop()
+			for property_name in plugin_properties.keys():
+				label.push_cell()
+				label.add_text(property_name)
+				label.pop()
+				label.push_cell()
+				label.add_text(plugin_properties[property_name])
+				label.pop()
+			label.pop()
+			label.add_text("\n\n")
+
 		label.push_bgcolor(Color.BLACK)
 		label.add_text("METADATA\n")
 		label.pop()
