@@ -9,5 +9,5 @@ This car controller is still very much work-in-progress!
 to use them!
 
 ## Dependencies
-- Godot 4.5+
+- Godot 4.5+ (at least dev5)
 - Blender 3.5 or later (3.0-3.4 might also work) for the demo
