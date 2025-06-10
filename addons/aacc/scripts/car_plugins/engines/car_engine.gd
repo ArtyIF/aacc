@@ -32,6 +32,8 @@ var gear_switching: bool = false
 var rpm_ratio: SmoothedFloat = SmoothedFloat.new()
 var rpm_limiter: bool = false # TODO: rewrite rpm limiters
 
+@onready var plugin_lvp: CarLocalVelocityProcessor = car.get_plugin(&"LocalVelocityProcessor")
+
 func _ready() -> void:
 	car.set_meta(&"input_accelerate", 0.0)
 	car.set_meta(&"input_gear_target", 0)
@@ -78,7 +80,7 @@ func update_gear(delta: float):
 func calculate_gear_limit(gear: int) -> float:
 	return abs(gear) / float(gearbox_gear_count)
 
-func update_rpm_ratio(input_accelerate: float, delta: float) -> void:
+func update_rpm_ratio(input_accelerate: float, local_velocity_linear: Vector3, delta: float) -> void:
 	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 0.0)
 	if gear_current == 0 or gear_switching or rpm_limiter or is_zero_approx(ground_coefficient):
 		rpm_ratio.speed_up = rpm_speed_up_idle
@@ -88,14 +90,13 @@ func update_rpm_ratio(input_accelerate: float, delta: float) -> void:
 		rpm_ratio.speed_down = rpm_speed_down
 
 	var rpm_ratio_target: float = 0.0
-	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
 
 	if rpm_limiter or gear_switching:
 		rpm_ratio_target = rpm_min
 	elif gear_current == 0 or is_zero_approx(ground_coefficient):
 		rpm_ratio_target = lerp(rpm_min, 1.0, input_accelerate)
 	else:
-		var speed_ratio = abs(local_linear_velocity.z) / engine_top_speed
+		var speed_ratio = abs(local_velocity_linear.z) / engine_top_speed
 		var upper_limit: float = 1.0
 		if gear_target > 0 and gear_target <= gearbox_gear_count:
 			upper_limit = calculate_gear_limit(gear_target)
@@ -124,10 +125,11 @@ func calculate_acceleration_multiplier(speed_ratio: float) -> float:
 
 func process_plugin(delta: float) -> void:
 	var input_accelerate: float = car.get_meta(&"input_accelerate", 0.0)
+	var local_velocity_linear: Vector3 = plugin_lvp.local_velocity_linear
 
 	gear_target = car.get_meta(&"input_gear_target", 0)
 	update_gear(delta)
-	update_rpm_ratio(input_accelerate, delta)
+	update_rpm_ratio(input_accelerate, local_velocity_linear, delta)
 	update_meta()
 
 	if not is_zero_approx(rpm_limiter_offset) and ((gear_current >= 0 and not gear_current == gearbox_gear_count) or is_zero_approx(car.get_meta(&"ground_coefficient", 0.0))):
@@ -147,7 +149,7 @@ func process_plugin(delta: float) -> void:
 	if is_zero_approx(input_accelerate):
 		return
 
-	var acceleration_multiplier: float = calculate_acceleration_multiplier(abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).z) / engine_top_speed)
+	var acceleration_multiplier: float = calculate_acceleration_multiplier(abs(local_velocity_linear.z) / engine_top_speed)
 	var force_ratio: float = input_accelerate * acceleration_multiplier
 	car.set_meta(&"engine_desired_force_ratio", force_ratio)
 

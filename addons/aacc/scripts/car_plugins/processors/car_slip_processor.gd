@@ -2,12 +2,14 @@ class_name CarSlipProcessor extends CarPluginBase
 
 var smooth_takeoff_slip: SmoothedFloat = SmoothedFloat.new(0.0, 10.0, 1.0) # TODO: configurable
 
+@onready var plugin_lvp: CarLocalVelocityProcessor = car.get_plugin(&"LocalVelocityProcessor")
+
 func process_plugin(delta: float) -> void:
 	var slip_side: float = 0.0
 	var slip_forward: float = 0.0
 	var slip_total: float = 0.0
 
-	slip_side += abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).x)
+	slip_side += abs(plugin_lvp.local_velocity_linear.x)
 	slip_side -= 0.5
 	slip_side /= 10.0 # TODO: configurable
 
@@ -19,7 +21,7 @@ func process_plugin(delta: float) -> void:
 	else:
 		smooth_takeoff_slip.force_current_value(0.0)
 		if car.get_meta(&"input_handbrake", false):
-			slip_forward += abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).z)
+			slip_forward += abs(plugin_lvp.local_velocity_linear.z)
 			slip_forward /= 10.0 # TODO: configurable
 	slip_forward += smooth_takeoff_slip.get_value()
 

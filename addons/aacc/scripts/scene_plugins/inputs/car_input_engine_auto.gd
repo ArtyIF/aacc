@@ -9,25 +9,27 @@ class_name CarInputEngineAuto extends ScenePluginBase
 
 var gear_target: int = 0
 
+var plugin_lvp: CarLocalVelocityProcessor
+
 func calculate_gear_limit(gear: int, gear_count: int) -> float:
 	return float(gear) / gear_count
 
 func calculate_gear_target(input_handbrake: bool, velocity_z_sign: float) -> int:
 	var gear_target_car: int = car.get_meta(&"input_gear_target", 0)
 
-	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
+	var local_velocity_linear: Vector3 = plugin_lvp.local_velocity_linear
 	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 1.0)
 
 	var gear_current: int = car.get_meta(&"gear_current", 0)
 	var gear_count: int = car.get_meta(&"gearbox_gear_count", 0)
 	var engine_top_speed: float = car.get_meta(&"engine_top_speed", 0.0)
 
-	if (input_handbrake and local_linear_velocity.length() >= 0.25) or is_zero_approx(ground_coefficient):
+	if (input_handbrake and local_velocity_linear.length() >= 0.25) or is_zero_approx(ground_coefficient):
 		return gear_target_car
-	if input_handbrake and local_linear_velocity.length() < 0.25:
+	if input_handbrake and local_velocity_linear.length() < 0.25:
 		return 0
 
-	if abs(local_linear_velocity.z) < 0.25:
+	if abs(local_velocity_linear.z) < 0.25:
 		return -velocity_z_sign
 
 	if velocity_z_sign > 0:
@@ -35,7 +37,7 @@ func calculate_gear_target(input_handbrake: bool, velocity_z_sign: float) -> int
 
 	var gear_perfect_shift_up: float = AACCCurveTools.get_gear_perfect_shift_up(car)
 	var gear_perfect_shift_down: float = AACCCurveTools.get_gear_perfect_shift_down(car) - downshift_offset
-	var rpm_ratio: float = abs(local_linear_velocity.z) / (engine_top_speed * calculate_gear_limit(gear_current, gear_count))
+	var rpm_ratio: float = abs(local_velocity_linear.z) / (engine_top_speed * calculate_gear_limit(gear_current, gear_count))
 	rpm_ratio = lerp(car.get_meta(&"rpm_min"), car.get_meta(&"rpm_max"), rpm_ratio)
 
 	if rpm_ratio < gear_perfect_shift_down and gear_target_car > 0:
@@ -47,6 +49,7 @@ func calculate_gear_target(input_handbrake: bool, velocity_z_sign: float) -> int
 
 func _physics_process(delta: float) -> void:
 	if not is_instance_valid(car): return
+	plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
 
 	var input_forward: float = clamp(Input.get_action_strength(action_forward), 0.0, 1.0)
 	var input_backward: float = clamp(Input.get_action_strength(action_backward), 0.0, 1.0)

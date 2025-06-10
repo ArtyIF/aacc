@@ -17,6 +17,8 @@ var smooth_sign: SmoothedFloat = SmoothedFloat.new()
 var use_smooth_sign: bool = false
 var input_handbrake_prev: bool = false
 
+@onready var plugin_lvp: CarLocalVelocityProcessor = car.get_plugin(&"LocalVelocityProcessor")
+
 func _ready() -> void:
 	car.set_meta(&"input_steer", 0.0)
 	update_meta()
@@ -32,8 +34,8 @@ func process_plugin(delta: float) -> void:
 
 	update_meta()
 
-	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
-	var local_angular_velocity: Vector3 = car.get_meta(&"local_angular_velocity", Vector3.ZERO)
+	var local_velocity_linear: Vector3 = plugin_lvp.local_velocity_linear
+	var local_velocity_angular: Vector3 = plugin_lvp.local_velocity_angular
 
 	var input_steer: float = car.get_meta(&"input_steer", 0.0)
 	smooth_steer.speed_up = smooth_steer_speed
@@ -46,9 +48,9 @@ func process_plugin(delta: float) -> void:
 		if input_handbrake:
 			use_smooth_sign = input_handbrake_prev
 		else:
-			if use_smooth_sign and smooth_sign.get_value() == sign(local_linear_velocity.z):
+			if use_smooth_sign and smooth_sign.get_value() == sign(local_velocity_linear.z):
 				use_smooth_sign = false
-			if abs(local_angular_velocity.y) < (0.25 * steer_velocity_base / distance_between_wheels) and local_linear_velocity.length() < 0.25:
+			if abs(local_velocity_angular.y) < (0.25 * steer_velocity_base / distance_between_wheels) and local_velocity_linear.length() < 0.25:
 				use_smooth_sign = false
 	else:
 		use_smooth_sign = false
@@ -56,13 +58,13 @@ func process_plugin(delta: float) -> void:
 	var velocity_speed: float
 	var velocity_sign: float
 	if use_smooth_sign:
-		smooth_sign.advance_to(sign(local_linear_velocity.z), delta) # TODO: configurable speed
+		smooth_sign.advance_to(sign(local_velocity_linear.z), delta) # TODO: configurable speed
 		velocity_sign = smooth_sign.get_value()
-		velocity_speed = local_linear_velocity.length()
+		velocity_speed = local_velocity_linear.length()
 	else:
-		velocity_speed = abs(local_linear_velocity.z)
-		velocity_sign = sign(local_linear_velocity.z)
-		smooth_sign.force_current_value(sign(local_linear_velocity.z))
+		velocity_speed = abs(local_velocity_linear.z)
+		velocity_sign = sign(local_velocity_linear.z)
+		smooth_sign.force_current_value(sign(local_velocity_linear.z))
 	if not steer_velocity_invert_on_reverse:
 		velocity_sign = -1.0
 

@@ -14,6 +14,8 @@ var initial_wheel_mesh_transforms: Dictionary[NodePath, Transform3D] = {}
 var forward_rotations: Dictionary[NodePath, float] = {}
 var burnout_particles: Dictionary[NodePath, GPUParticles3D] = {}
 
+@onready var plugin_lvp: CarLocalVelocityProcessor = car.get_plugin(&"LocalVelocityProcessor")
+
 func _ready() -> void:
 	for wheel in wheel_meshes.keys():
 		initial_wheel_mesh_transforms[wheel] = get_node(wheel_meshes[wheel]).transform
@@ -24,7 +26,7 @@ func _ready() -> void:
 		add_child(particles)
 
 func process_plugin(delta: float) -> void:
-	var local_linear_velocity: Vector3 = car.get_meta(&"local_linear_velocity", Vector3.ZERO)
+	var local_velocity_linear: Vector3 = plugin_lvp.local_velocity_linear
 	var input_steer: float = car.get_meta(&"input_steer_smooth", 0.0)
 	var steer_velocity_base: float = car.get_meta(&"steer_velocity_base", 0.0)
 	var input_handbrake: bool = car.get_meta(&"input_handbrake", false)
@@ -47,7 +49,7 @@ func process_plugin(delta: float) -> void:
 			var forward_rotation_speed: float = 0.0
 			if wheel.is_landed: # TODO: keep rotating in air with some sort of resistance
 				if not (wheel_flags[wheel_path] & WheelFlag.Handbrake and input_handbrake):
-					forward_rotation_speed -= local_linear_velocity.z * delta / wheel.wheel_radius
+					forward_rotation_speed -= local_velocity_linear.z * delta / wheel.wheel_radius
 					if wheel_flags[wheel_path] & WheelFlag.Drive and car.get_meta(&"gear_current", 0) == 0:
 						forward_rotation_speed += car.get_meta(&"engine_max_force", 0.0) * car.get_meta(&"slip_forward", 0.0) * delta / wheel.wheel_radius / car.mass
 			forward_rotations[wheel_path] += forward_rotation_speed

@@ -29,6 +29,8 @@ class_name CarForceProcessor extends CarPluginBase
 	&"angular_grip",
 ]
 
+@onready var plugin_lvp: CarLocalVelocityProcessor = car.get_plugin(&"LocalVelocityProcessor")
+
 func process_plugin(delta: float) -> void:
 	if is_zero_approx(car.get_meta(&"ground_coefficient", 0.0)):
 		return
@@ -41,7 +43,7 @@ func process_plugin(delta: float) -> void:
 	# TODO: add ability to only apply some of those conversions
 	var reduced_grip: float = 1.0
 	if reduced_grip_curve:
-		reduced_grip = reduced_grip_curve.sample(abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).x))
+		reduced_grip = reduced_grip_curve.sample(abs(plugin_lvp.local_velocity_linear.x))
 
 	var converted_force: Vector3 = sum_of_forces
 	if reduced_grip_limit_x_force:

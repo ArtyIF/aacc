@@ -15,6 +15,8 @@ class_name CarInputSteer extends ScenePluginBase
 
 var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
+var plugin_lvp: CarLocalVelocityProcessor
+
 func calculate_steer(input_steer: float, input_handbrake: bool, velocity_z_sign: float, delta: float) -> float:
 	var input_full_steer: float = (1.0 if input_handbrake else 0.0) if full_steer_on_handbrake else 0.0
 	if is_zero_approx(car.get_meta(&"ground_coefficient", 1.0)):
@@ -26,7 +28,7 @@ func calculate_steer(input_steer: float, input_handbrake: bool, velocity_z_sign:
 	var distance_between_wheels: float = car.get_meta(&"distance_between_wheels", 1.0)
 	var steer_velocity_base: float = car.get_meta(&"steer_velocity_base", 1.0)
 	var steer_velocity_target: float = car.get_meta(&"steer_velocity_target", 1.0)
-	var velocity_z: float = abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).z)
+	var velocity_z: float = abs(plugin_lvp.local_velocity_linear.z)
 
 	var input_steer_multiplier: float = 1.0
 	if not always_full_steer:
@@ -42,6 +44,7 @@ func calculate_steer(input_steer: float, input_handbrake: bool, velocity_z_sign:
 
 func _physics_process(delta: float) -> void:
 	if not is_instance_valid(car): return
+	plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
 
 	var input_forward: float = clamp(Input.get_action_strength(action_forward), 0.0, 1.0)
 	var input_backward: float = clamp(Input.get_action_strength(action_backward), 0.0, 1.0)
