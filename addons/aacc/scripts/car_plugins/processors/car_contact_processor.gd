@@ -28,16 +28,19 @@ func process_plugin(delta: float) -> void:
 		contact_scrapes.resize(max_contacts)
 
 	# TODO: maybe some scene-level management for contacts? merge close contacts into one?
+	var valid_contact_i: int = -1
 	for i in range(state.get_contact_count()):
 		var shape_owner: CollisionShape3D = car.shape_owner_get_owner(car.shape_find_owner(state.get_contact_local_shape(i)))
 		if shape_owner in ignore_shapes:
 			continue
 
-		var contact_position: Vector3 = state.get_contact_collider_position(i)
-		var contact_normal: Vector3 = state.get_contact_local_normal(i)
+		valid_contact_i += 1
 
-		var local_velocity: Vector3 = state.get_contact_local_velocity_at_position(i)
-		var collider_velocity: Vector3 = state.get_contact_collider_velocity_at_position(i)
+		var contact_position: Vector3 = state.get_contact_collider_position(valid_contact_i)
+		var contact_normal: Vector3 = state.get_contact_local_normal(valid_contact_i)
+
+		var local_velocity: Vector3 = state.get_contact_local_velocity_at_position(valid_contact_i)
+		var collider_velocity: Vector3 = state.get_contact_collider_velocity_at_position(valid_contact_i)
 		var contact_velocity: Vector3 = local_velocity - collider_velocity
 
 		var contact_hit: float = 0.0
@@ -49,13 +52,13 @@ func process_plugin(delta: float) -> void:
 		var scrape_speed: float = contact_velocity.cross(contact_normal).length()
 		var contact_scrape: float = max((scrape_speed - 0.1) / 20.0, 0.0) # TODO: configurable
 
-		contact_positions[i] = contact_position
-		contact_normals[i] = contact_normal
-		contact_velocities[i] = contact_velocity
-		contact_hits[i] = contact_hit
-		contact_scrapes[i] = contact_scrape
+		contact_positions[valid_contact_i] = contact_position
+		contact_normals[valid_contact_i] = contact_normal
+		contact_velocities[valid_contact_i] = contact_velocity
+		contact_hits[valid_contact_i] = contact_hit
+		contact_scrapes[valid_contact_i] = contact_scrape
 
-	car.set_meta(&"contact_count", state.get_contact_count())
+	car.set_meta(&"contact_count", valid_contact_i + 1)
 	car.set_meta(&"contact_positions", contact_positions)
 	car.set_meta(&"contact_normals", contact_normals)
 	car.set_meta(&"contact_velocities", contact_velocities)
