@@ -17,7 +17,7 @@ func process_plugin(delta: float) -> void:
 	var contact_normals: PackedVector3Array = car.get_meta(&"contact_normals", [])
 	var contact_scrapes: PackedFloat32Array = car.get_meta(&"contact_scrapes", [])
 
-	# BUG: contacts' sorting isn't stable, which breaks doppler a bit
+	# BUG: contacts' sorting isn't stable, which breaks doppler
 	for i in range(len(players)):
 		if i < contact_count:
 			players[i].global_position = contact_positions[i]
