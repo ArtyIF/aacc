@@ -4,6 +4,8 @@ class_name CarScrapeAudio extends CarPluginBase
 var players: Array[AudioStreamPlayer3D] = []
 var smooth_scrape_volumes: Array[SmoothedFloat] = []
 
+@onready var plugin_cp: CarContactProcessor = car.get_plugin(&"ContactProcessor")
+
 func _ready() -> void:
 	for i in range(car.max_contacts_reported):
 		players.append(scrape_audio_scene.instantiate())
@@ -12,10 +14,11 @@ func _ready() -> void:
 		smooth_scrape_volumes.append(SmoothedFloat.new(0.0, 10.0, 10.0))
 
 func process_plugin(delta: float) -> void:
-	var contact_count: int = car.get_meta(&"contact_count")
-	var contact_positions: PackedVector3Array = car.get_meta(&"contact_positions")
-	var contact_normals: PackedVector3Array = car.get_meta(&"contact_normals")
-	var contact_scrapes: PackedFloat32Array = car.get_meta(&"contact_scrapes")
+	var contact_count: int = plugin_cp.contact_count
+	# TODO: packed arrays are passed by reference, maybe not reassign it every time?
+	var contact_positions: PackedVector3Array = plugin_cp.contact_positions
+	var contact_normals: PackedVector3Array = plugin_cp.contact_normals
+	var contact_scrapes: PackedFloat32Array = plugin_cp.contact_scrapes
 
 	# BUG: contacts' sorting isn't stable, which breaks doppler
 	for i in range(len(players)):
