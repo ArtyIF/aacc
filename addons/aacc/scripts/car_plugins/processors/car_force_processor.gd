@@ -30,9 +30,10 @@ class_name CarForceProcessor extends CarPluginBase
 ]
 
 @onready var plugin_lvp: CarLocalVelocityProcessor = car.get_plugin(&"LocalVelocityProcessor")
+@onready var plugin_wp: CarWheelsProcessor = car.get_plugin(&"WheelsProcessor")
 
 func process_plugin(delta: float) -> void:
-	if is_zero_approx(car.get_meta(&"ground_coefficient", 0.0)):
+	if is_zero_approx(plugin_wp.ground_coefficient):
 		return
 
 	var sum_of_forces: Vector3 = Vector3.ZERO
@@ -49,14 +50,14 @@ func process_plugin(delta: float) -> void:
 	if reduced_grip_limit_x_force:
 		converted_force.x = clamp(converted_force.x, -grip_linear * reduced_grip, grip_linear * reduced_grip)
 	converted_force = car.global_basis * converted_force
-	converted_force = converted_force.slide(car.get_meta(&"ground_average_normal", Vector3.UP))
+	converted_force = converted_force.slide(plugin_wp.ground_average_normal)
 
-	var force_length_limit: float = grip_linear * car.get_meta(&"ground_coefficient", 0.0)
+	var force_length_limit: float = grip_linear * plugin_wp.ground_coefficient
 	if reduced_grip_apply_to_forces:
 		force_length_limit *= reduced_grip
 	converted_force = converted_force.limit_length(force_length_limit)
 
-	car.set_force(&"converted_force", converted_force, false, car.get_meta(&"ground_average_point", Vector3.ZERO) - car.global_position)
+	car.set_force(&"converted_force", converted_force, false, plugin_wp.ground_average_point - car.global_position)
 
 	var sum_of_torques: Vector3 = Vector3.ZERO
 	for torque in car.get_torque_list():
@@ -65,9 +66,9 @@ func process_plugin(delta: float) -> void:
 
 	var converted_torque: Vector3 = sum_of_torques
 	converted_torque = car.global_basis * converted_torque
-	converted_torque = converted_torque.project(car.get_meta(&"ground_average_normal", Vector3.UP))
+	converted_torque = converted_torque.project(plugin_wp.ground_average_normal)
 
-	var torque_length_limit: float = grip_angular * car.get_meta(&"ground_coefficient", 0.0)
+	var torque_length_limit: float = grip_angular * plugin_wp.ground_coefficient
 	if reduced_grip_apply_to_torques:
 		torque_length_limit *= reduced_grip
 	converted_torque = converted_torque.limit_length(torque_length_limit)

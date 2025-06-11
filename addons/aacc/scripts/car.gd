@@ -1,7 +1,7 @@
 class_name Car extends RigidBody3D
 
-# TODO: add an editor tool to compile plugins into one script for optimization
 # TODO: rewrite every plugin to just store parameters in their own object, no metas
+# TODO for the repo: https://docs.codeberg.org/git/using-lfs
 
 #region Forces
 class Force:

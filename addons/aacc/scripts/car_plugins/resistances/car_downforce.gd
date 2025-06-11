@@ -9,8 +9,10 @@ class_name CarDownforce extends CarPluginBase
 # input curve: 1.000
 @export var downforce_speed_curve: ProceduralCurve
 
+@onready var plugin_wp: CarWheelsProcessor = car.get_plugin(&"WheelsProcessor")
+
 func process_plugin(delta: float) -> void:
-	if car.get_meta(&"ground_coefficient", 0.0) < min_ground_coefficient: return
+	if plugin_wp.ground_coefficient < min_ground_coefficient: return
 
 	var downforce_amount: float = downforce * downforce_speed_curve.sample(car.linear_velocity.length())
-	car.set_force(&"downforce", -car.get_meta(&"ground_average_normal", Vector3.UP) * downforce_amount, false, to_global(car.center_of_mass) - car.global_position)
+	car.set_force(&"downforce", -plugin_wp.ground_average_normal * downforce_amount, false, to_global(car.center_of_mass) - car.global_position)

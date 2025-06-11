@@ -7,13 +7,15 @@ var player: AudioStreamPlayer3D
 var smooth_burnout_amount_volume: SmoothedFloat = SmoothedFloat.new(0.0, 10.0, 10.0)
 var smooth_burnout_amount_pitch: SmoothedFloat = SmoothedFloat.new(0.0, 10.0, 1.0)
 
+@onready var plugin_wp: CarWheelsProcessor = car.get_plugin(&"WheelsProcessor")
+
 func _ready() -> void:
 	player = tire_screech_scene.instantiate()
 	add_child(player)
 
 func process_plugin(delta: float) -> void:
 	if car.get_meta(&"ground_coefficient", 0.0) > 0.0:
-		player.global_position = car.get_meta(&"ground_average_point", car.global_position)
+		player.global_position = plugin_wp.ground_average_point
 
 		var slip_total: float = car.get_meta(&"slip_total", 0.0)
 		smooth_burnout_amount_volume.advance_to(slip_total, delta)
