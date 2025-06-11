@@ -9,9 +9,9 @@ func _ready() -> void:
 		add_child(collision_players[i])
 
 func process_plugin(delta: float) -> void:
-	var contact_count: int = car.get_meta(&"contact_count", 0)
-	var contact_positions: PackedVector3Array = car.get_meta(&"contact_positions", [])
-	var contact_hits: PackedFloat32Array = car.get_meta(&"contact_hits", [])
+	var contact_count: int = car.get_meta(&"contact_count")
+	var contact_positions: PackedVector3Array = car.get_meta(&"contact_positions")
+	var contact_hits: PackedFloat32Array = car.get_meta(&"contact_hits")
 
 	for i in range(len(collision_players)):
 		if i < contact_count and contact_hits[i] > 0.0:

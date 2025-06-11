@@ -24,13 +24,17 @@ class_name CarEngine extends CarPluginBase
 @export var rpm_speed_up_idle: float = 2.0
 @export var rpm_speed_down_idle: float = 1.0
 
-var boost_amount: SmoothedFloat = SmoothedFloat.new()
 var gear_current: int = 0
 var gear_target: int = 0
 var gear_switch_timer: SmoothedFloat = SmoothedFloat.new(-1.0)
 var gear_switching: bool = false
+
+var boost_amount: SmoothedFloat = SmoothedFloat.new()
+
 var rpm_ratio: SmoothedFloat = SmoothedFloat.new()
 var rpm_limiter: bool = false # TODO: rewrite rpm limiters
+
+var force_ratio: float = 0.0
 
 @onready var plugin_lvp: CarLocalVelocityProcessor = car.get_plugin(&"LocalVelocityProcessor")
 @onready var plugin_wp: CarWheelsProcessor = car.get_plugin(&"WheelsProcessor")
@@ -41,20 +45,7 @@ func _ready() -> void:
 	update_meta()
 
 func update_meta():
-	car.set_meta(&"engine_top_speed", engine_top_speed)
-	car.set_meta(&"engine_max_force", engine_max_force)
-
-	car.set_meta(&"gearbox_gear_count", gearbox_gear_count)
-	car.set_meta(&"gearbox_allow_reverse", gearbox_allow_reverse)
-	car.set_meta(&"gear_current", gear_current)
-	car.set_meta(&"gear_switching", gear_switching)
-	car.set_meta(&"gear_switch_timer", gear_switch_timer.get_value())
-
-	car.set_meta(&"engine_boost_multiplier", boost_multiplier)
-	car.set_meta(&"engine_boost_power_threshold", boost_power_threshold)
-	car.set_meta(&"engine_boost_duration", boost_duration)
-	car.set_meta(&"engine_boost_amount", boost_amount.get_value())
-
+	# TODO: remove
 	car.set_meta(&"rpm_ratio", rpm_ratio.get_value())
 	car.set_meta(&"rpm_curve", rpm_curve)
 	car.set_meta(&"rpm_min", rpm_min)
@@ -124,11 +115,11 @@ func calculate_acceleration_multiplier(speed_ratio: float) -> float:
 	return multiplier
 
 func process_plugin(delta: float) -> void:
-	var input_accelerate: float = car.get_meta(&"input_accelerate", 0.0)
+	var input_accelerate: float = car.get_meta(&"input_accelerate")
 	var ground_coefficient: float = plugin_wp.ground_coefficient
 	var local_velocity_linear: Vector3 = plugin_lvp.local_velocity_linear
 
-	gear_target = car.get_meta(&"input_gear_target", 0)
+	gear_target = car.get_meta(&"input_gear_target")
 	update_gear(delta)
 	update_rpm_ratio(input_accelerate, ground_coefficient, local_velocity_linear, delta)
 	update_meta()
@@ -144,15 +135,14 @@ func process_plugin(delta: float) -> void:
 
 	boost_amount.advance_to(0.0, delta / boost_duration)
 
-	car.set_meta(&"engine_desired_force_ratio", 0.0)
+	force_ratio = 0.0
 	if gear_switching or rpm_limiter:
 		return
 	if is_zero_approx(input_accelerate):
 		return
 
 	var acceleration_multiplier: float = calculate_acceleration_multiplier(abs(local_velocity_linear.z) / engine_top_speed)
-	var force_ratio: float = input_accelerate * acceleration_multiplier
-	car.set_meta(&"engine_desired_force_ratio", force_ratio)
+	force_ratio = input_accelerate * acceleration_multiplier
 
 	if gear_current == 0:
 		return

@@ -32,9 +32,9 @@ func calculate_steer(input_steer: float, input_handbrake: bool, local_velocity_z
 		input_full_steer = 1.0
 
 	# TODO: add an ability to have the car send the info somehow, otherwise this is delayed by a frame
-	var distance_between_wheels: float = car.get_meta(&"distance_between_wheels", 1.0)
-	var steer_velocity_base: float = car.get_meta(&"steer_velocity_base", 1.0)
-	var steer_velocity_target: float = car.get_meta(&"steer_velocity_target", 1.0)
+	var distance_between_wheels: float = car.get_meta(&"distance_between_wheels")
+	var steer_velocity_base: float = car.get_meta(&"steer_velocity_base")
+	var steer_velocity_target: float = car.get_meta(&"steer_velocity_target")
 	var velocity_z: float = abs(plugin_lvp.local_velocity_linear.z)
 
 	var input_steer_multiplier: float = 1.0

@@ -38,12 +38,12 @@ func process_plugin(delta: float) -> void:
 	var local_velocity_linear: Vector3 = plugin_lvp.local_velocity_linear
 	var local_velocity_angular: Vector3 = plugin_lvp.local_velocity_angular
 
-	var input_steer: float = car.get_meta(&"input_steer", 0.0)
+	var input_steer: float = car.get_meta(&"input_steer")
 	smooth_steer.speed_up = smooth_steer_speed
 	smooth_steer.speed_down = smooth_steer_speed
 	smooth_steer.advance_to(input_steer, delta)
 	car.set_meta(&"input_steer_smooth", smooth_steer.get_value())
-	var input_handbrake: bool = car.get_meta(&"input_handbrake", false)
+	var input_handbrake: bool = car.get_meta(&"input_handbrake")
 
 	if smooth_steer_smooth_sign:
 		if input_handbrake:
@@ -70,7 +70,7 @@ func process_plugin(delta: float) -> void:
 		velocity_sign = -1.0
 
 	var steer_coefficient: float = velocity_sign * velocity_speed / distance_between_wheels
-	var steer_amount: float = (smooth_steer.get_value() * steer_coefficient) + car.get_meta(&"steer_offset", 0.0)
+	var steer_amount: float = (smooth_steer.get_value() * steer_coefficient) + car.get_meta(&"steer_offset")
 
 	if is_zero_approx(steer_amount):
 		return

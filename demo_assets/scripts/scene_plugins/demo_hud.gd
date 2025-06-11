@@ -14,12 +14,12 @@ func _on_car_changed(new_car: Car) -> void:
 func _process(_delta: float) -> void:
 	if not is_instance_valid(car): return
 
-	var gear_current: String = str(AACCGlobal.car.get_meta(&"gear_current", 0))
+	var gear_current: String = str(plugin_engine.gear_current)
 	if gear_current == "0":
 		gear_current = "N"
 	elif gear_current == "-1":
 		gear_current = "R"
-	if car.get_meta(&"gear_switching", false):
+	if plugin_engine.gear_switching:
 		gear_current = "-"
 
 	var rpm_indicator: AACCDemoRPMIndicator = $"HUDMargin/HUD/SpeedPanel/VBox/RPMIndicator"
@@ -37,4 +37,4 @@ func _process(_delta: float) -> void:
 	$"HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer/ForwardSpeed".text = str(roundi(-plugin_lvp.local_velocity_linear.z * 3.6))
 	$"HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer/SideSpeed".text = str(roundi(plugin_lvp.local_velocity_linear.x * 3.6))
 
-	$"HUDMargin/HUD/BoostPanel/VBox/BoostAmount".value = car.get_meta(&"boost_amount", 0.0)
+	$"HUDMargin/HUD/BoostPanel/VBox/BoostAmount".value = car.get_meta(&"boost_amount")

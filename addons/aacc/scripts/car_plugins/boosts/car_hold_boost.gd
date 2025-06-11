@@ -17,7 +17,7 @@ func process_plugin(delta: float) -> void:
 	boost_amount.speed_up = boost_fill_speed
 	boost_amount.speed_down = boost_use_speed
 
-	if car.get_meta(&"input_boost", false):
+	if car.get_meta(&"input_boost"):
 		boost_amount.advance_to(0.0, delta)
 		if abs(plugin_lvp.local_velocity_linear.z) <= boost_top_speed and boost_amount.get_value() > 0.0:
 			var ground_coefficient: float = plugin_wp.ground_coefficient

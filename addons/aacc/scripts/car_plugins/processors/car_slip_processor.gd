@@ -3,6 +3,7 @@ class_name CarSlipProcessor extends CarPluginBase
 var smooth_takeoff_slip: SmoothedFloat = SmoothedFloat.new(0.0, 10.0, 1.0) # TODO: configurable
 
 @onready var plugin_lvp: CarLocalVelocityProcessor = car.get_plugin(&"LocalVelocityProcessor")
+@onready var plugin_engine: CarEngine = car.get_plugin(&"Engine")
 
 func process_plugin(delta: float) -> void:
 	var slip_side: float = 0.0
@@ -13,14 +14,14 @@ func process_plugin(delta: float) -> void:
 	slip_side -= 0.5
 	slip_side /= 10.0 # TODO: configurable
 
-	if car.get_meta(&"gear_current", 0) == 0:
-		var engine_desired_force_ratio: float = 0.0
-		if car.get_meta(&"input_handbrake", false):
-			engine_desired_force_ratio = car.get_meta(&"engine_desired_force_ratio", 0.0)
-		smooth_takeoff_slip.advance_to(engine_desired_force_ratio, delta)
+	if plugin_engine.gear_current == 0:
+		var engine_force_ratio: float = 0.0
+		if car.get_meta(&"input_handbrake"):
+			engine_force_ratio = plugin_engine.force_ratio
+		smooth_takeoff_slip.advance_to(engine_force_ratio, delta)
 	else:
 		smooth_takeoff_slip.force_current_value(0.0)
-		if car.get_meta(&"input_handbrake", false):
+		if car.get_meta(&"input_handbrake"):
 			slip_forward += abs(plugin_lvp.local_velocity_linear.z)
 			slip_forward /= 10.0 # TODO: configurable
 	slip_forward += smooth_takeoff_slip.get_value()

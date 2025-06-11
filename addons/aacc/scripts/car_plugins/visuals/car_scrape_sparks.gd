@@ -10,10 +10,10 @@ func _ready() -> void:
 		add_child(particles[i])
 
 func process_plugin(delta: float) -> void:
-	var contact_count: int = car.get_meta(&"contact_count", 0)
-	var contact_positions: PackedVector3Array = car.get_meta(&"contact_positions", [])
-	var contact_normals: PackedVector3Array = car.get_meta(&"contact_normals", [])
-	var contact_scrapes: PackedFloat32Array = car.get_meta(&"contact_scrapes", [])
+	var contact_count: int = car.get_meta(&"contact_count")
+	var contact_positions: PackedVector3Array = car.get_meta(&"contact_positions")
+	var contact_normals: PackedVector3Array = car.get_meta(&"contact_normals")
+	var contact_scrapes: PackedFloat32Array = car.get_meta(&"contact_scrapes")
 
 	for i in range(len(particles)):
 		if i < contact_count:

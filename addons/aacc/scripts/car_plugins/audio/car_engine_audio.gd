@@ -9,6 +9,8 @@ class_name CarEngineAudio extends CarPluginBase
 var player: AudioStreamPlayer3D
 var engine_volume: SmoothedFloat = SmoothedFloat.new(0.0, 10.0)
 
+@onready var plugin_engine: CarEngine = car.get_plugin(&"Engine")
+
 func _ready() -> void:
 	player = engine_audio_scene.instantiate()
 	add_child(player)
@@ -18,10 +20,10 @@ func _ready() -> void:
 	player.pitch_scale = max_pitch
 
 func process_plugin(delta: float) -> void:
-	var rpm_ratio: float = car.get_meta(&"rpm_ratio", 1.0)
-	var gear_switching: bool = car.get_meta(&"gear_switching", false)
-	var rpm_limiter: bool = car.get_meta(&"rpm_limiter", false)
-	var input_accelerate: float = car.get_meta(&"input_accelerate", 0.0)
+	var rpm_ratio: float = plugin_engine.rpm_ratio.get_value()
+	var gear_switching: bool = plugin_engine.gear_switching
+	var rpm_limiter: bool = plugin_engine.rpm_limiter
+	var input_accelerate: float = car.get_meta(&"input_accelerate")
 
 	engine_volume.advance_to(0.0 if (gear_switching or rpm_limiter) else lerp(0.0, 1.0, input_accelerate), delta)
 	player.volume_db = linear_to_db(lerp(min_volume, max_volume, engine_volume.get_value()))

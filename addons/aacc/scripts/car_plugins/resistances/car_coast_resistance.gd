@@ -5,13 +5,14 @@ class_name CarCoastResistance extends CarPluginBase
 
 @onready var plugin_lvp: CarLocalVelocityProcessor = car.get_plugin(&"LocalVelocityProcessor")
 @onready var plugin_wp: CarWheelsProcessor = car.get_plugin(&"WheelsProcessor")
+@onready var plugin_engine: CarEngine = car.get_plugin(&"Engine")
 
 func process_plugin(delta: float) -> void:
 	if is_zero_approx(plugin_wp.ground_coefficient):
 		return
 
 	var local_velocity_linear: Vector3 = plugin_lvp.local_velocity_linear
-	var multiplier: float = 1.0 if car.get_meta(&"rpm_limiter") or abs(local_velocity_linear.z) > car.get_meta(&"engine_top_speed", 0.0) else (1.0 - car.get_meta(&"input_accelerate", 0.0))
+	var multiplier: float = 1.0 if plugin_engine.rpm_limiter or abs(local_velocity_linear.z) > plugin_engine.engine_top_speed else (1.0 - car.get_meta(&"input_accelerate", 0.0))
 
 	var force: float = clamp(local_velocity_linear.z / resistance_force_knee, -1.0, 1.0) * multiplier * resistance_force
 	if is_zero_approx(force):

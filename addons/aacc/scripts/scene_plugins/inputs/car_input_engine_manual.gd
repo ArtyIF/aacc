@@ -39,14 +39,15 @@ func _physics_process(delta: float) -> void:
 		gear_target -= 1
 
 	if auto_downshift and (input_backward > 0.0 or is_zero_approx(input_forward)):
-		var gear_current: int = car.get_meta(&"gear_current", 0)
-		var rpm_curve: Curve = car.get_meta(&"rpm_curve")
+		var gear_current: int = plugin_engine.gear_current
+		var rpm_curve: Curve = plugin_engine.rpm_curve
+		var rpm_ratio: float = plugin_engine.rpm_ratio.get_value()
 
 		var gear_perfect_shift_down: float = AACCCurveTools.get_gear_perfect_shift_down(gear_current, rpm_curve)
-		if car.get_meta(&"rpm_ratio", 0.0) < gear_perfect_shift_down and gear_target > 0:
-			gear_target = car.get_meta(&"gear_current", 1) - 1
+		if rpm_ratio < gear_perfect_shift_down and gear_target > 0:
+			gear_target = gear_current - 1
 
-	gear_target = clampi(gear_target, -1, car.get_meta(&"gearbox_gear_count", 0))
+	gear_target = clampi(gear_target, -1 if plugin_engine.gearbox_allow_reverse else 0, plugin_engine.gearbox_gear_count)
 	car.set_meta(&"input_gear_target", gear_target)
 
 	car.set_meta(&"input_accelerate", input_forward)

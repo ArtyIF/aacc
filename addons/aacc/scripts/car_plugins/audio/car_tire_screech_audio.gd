@@ -17,7 +17,7 @@ func process_plugin(delta: float) -> void:
 	if plugin_wp.ground_coefficient > 0.0:
 		player.global_position = plugin_wp.ground_average_point
 
-		var slip_total: float = car.get_meta(&"slip_total", 0.0)
+		var slip_total: float = car.get_meta(&"slip_total")
 		smooth_burnout_amount_volume.advance_to(slip_total, delta)
 		smooth_burnout_amount_pitch.advance_to(slip_total, delta)
 	else:

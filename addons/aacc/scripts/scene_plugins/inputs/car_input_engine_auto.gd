@@ -24,15 +24,15 @@ func calculate_gear_limit(gear: int, gear_count: int) -> float:
 	return float(gear) / gear_count
 
 func calculate_gear_target(input_handbrake: bool, local_velocity_z_sign: float) -> int:
-	var gear_target_car: int = car.get_meta(&"input_gear_target", 0)
+	var gear_target_car: int = car.get_meta(&"input_gear_target")
 
 	var local_velocity_linear: Vector3 = plugin_lvp.local_velocity_linear
 	var ground_coefficient: float = plugin_wp.ground_coefficient
 
-	var gear_current: int = car.get_meta(&"gear_current", 0)
-	var gear_count: int = car.get_meta(&"gearbox_gear_count", 0)
-	var engine_top_speed: float = car.get_meta(&"engine_top_speed", 0.0)
-	var rpm_curve: Curve = car.get_meta(&"rpm_curve")
+	var gear_current: int = plugin_engine.gear_current
+	var gear_count: int = plugin_engine.gearbox_gear_count
+	var engine_top_speed: float = plugin_engine.engine_top_speed
+	var rpm_curve: Curve = plugin_engine.rpm_curve
 
 	if (input_handbrake and local_velocity_linear.length() >= 0.25) or is_zero_approx(ground_coefficient):
 		return gear_target_car
@@ -62,7 +62,7 @@ func _physics_process(delta: float) -> void:
 
 	var input_forward: float = clamp(Input.get_action_strength(action_forward), 0.0, 1.0)
 	var input_backward: float = clamp(Input.get_action_strength(action_backward), 0.0, 1.0)
-	var input_handbrake: bool = car.get_meta(&"input_handbrake", false)
+	var input_handbrake: bool = car.get_meta(&"input_handbrake")
 
 	var local_velocity_z_sign: float = plugin_lvp.local_velocity_z_sign
 	if is_zero_approx(local_velocity_z_sign):
@@ -72,13 +72,12 @@ func _physics_process(delta: float) -> void:
 			local_velocity_z_sign = 1.0
 
 	gear_target = calculate_gear_target(input_handbrake, local_velocity_z_sign)
-	var gear_allow_reverse: bool = car.get_meta(&"gearbox_allow_reverse", false)
-	if not gear_allow_reverse:
+	if not plugin_engine.gearbox_allow_reverse:
 		gear_target = max(0, gear_target)
 	car.set_meta(&"input_gear_target", gear_target)
 
-	if gear_target == 0 or (sign(gear_target) != sign(car.get_meta(&"gear_current", 0))):
-		car.set_meta(&"input_accelerate", max(input_forward, input_backward) if gear_allow_reverse else input_forward)
+	if gear_target == 0 or (sign(gear_target) != sign(plugin_engine.gear_current)):
+		car.set_meta(&"input_accelerate", max(input_forward, input_backward) if plugin_engine.gearbox_allow_reverse else input_forward)
 		car.set_meta(&"input_brake", 1.0)
 	elif gear_target > 0:
 		car.set_meta(&"input_accelerate", input_forward)

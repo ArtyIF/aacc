@@ -17,8 +17,8 @@ func process_plugin(delta: float) -> void:
 	if is_zero_approx(plugin_wp.ground_coefficient):
 		return
 
-	var input_brake: float = car.get_meta(&"input_brake", 0.0)
-	var input_handbrake: bool = car.get_meta(&"input_handbrake", false)
+	var input_brake: float = car.get_meta(&"input_brake")
+	var input_handbrake: bool = car.get_meta(&"input_handbrake")
 
 	if is_zero_approx(input_brake) and not input_handbrake:
 		return
