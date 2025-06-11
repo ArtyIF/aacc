@@ -13,64 +13,62 @@ class_name CarSteer extends CarPluginBase
 @export var smooth_steer_smooth_sign: bool = true
 
 var smooth_steer: SmoothedFloat = SmoothedFloat.new()
-var smooth_sign: SmoothedFloat = SmoothedFloat.new()
-var use_smooth_sign: bool = false
+var steer_sign: SmoothedFloat = SmoothedFloat.new()
+var steer_sign_smooth: bool = false
 var input_handbrake_prev: bool = false
 
 @onready var plugin_lvp: CarLocalVelocityProcessor = car.get_plugin(&"LocalVelocityProcessor")
 @onready var plugin_wp: CarWheelsProcessor = car.get_plugin(&"WheelsProcessor")
+@onready var plugin_steer_offset: CarSteerOffsetProcessor = car.get_plugin(&"SteerOffsetProcessor")
 
 func _ready() -> void:
 	car.set_meta(&"input_steer", 0.0)
-	update_meta()
 
-func update_meta():
-	car.set_meta(&"distance_between_wheels", distance_between_wheels)
-	car.set_meta(&"steer_velocity_base", steer_velocity_base)
-	car.set_meta(&"steer_velocity_target", steer_velocity_target)
+	debuggable_parameters = [
+		&"smooth_steer",
+		&"steer_sign",
+		&"steer_sign_smooth",
+	]
 
 func process_plugin(delta: float) -> void:
-	if is_zero_approx(plugin_wp.ground_coefficient):
-		return
-
-	update_meta()
-
-	var local_velocity_linear: Vector3 = plugin_lvp.local_velocity_linear
-	var local_velocity_angular: Vector3 = plugin_lvp.local_velocity_angular
-
 	var input_steer: float = car.get_meta(&"input_steer")
 	smooth_steer.speed_up = smooth_steer_speed
 	smooth_steer.speed_down = smooth_steer_speed
 	smooth_steer.advance_to(input_steer, delta)
-	car.set_meta(&"input_steer_smooth", smooth_steer.get_value())
+
+	if is_zero_approx(plugin_wp.ground_coefficient):
+		return
+
+	var local_velocity_linear: Vector3 = plugin_lvp.local_velocity_linear
+	var local_velocity_angular: Vector3 = plugin_lvp.local_velocity_angular
 	var input_handbrake: bool = car.get_meta(&"input_handbrake")
 
 	if smooth_steer_smooth_sign:
 		if input_handbrake:
-			use_smooth_sign = input_handbrake_prev
+			steer_sign_smooth = input_handbrake_prev
 		else:
-			if use_smooth_sign and smooth_sign.get_value() == sign(local_velocity_linear.z):
-				use_smooth_sign = false
+			if steer_sign_smooth and steer_sign.get_value() == sign(local_velocity_linear.z):
+				steer_sign_smooth = false
 			if abs(local_velocity_angular.y) < (0.25 * steer_velocity_base / distance_between_wheels) and local_velocity_linear.length() < 0.25:
-				use_smooth_sign = false
+				steer_sign_smooth = false
 	else:
-		use_smooth_sign = false
+		steer_sign_smooth = false
 
 	var velocity_speed: float
 	var velocity_sign: float
-	if use_smooth_sign:
-		smooth_sign.advance_to(sign(local_velocity_linear.z), delta) # TODO: configurable speed
-		velocity_sign = smooth_sign.get_value()
+	if steer_sign_smooth:
+		steer_sign.advance_to(sign(local_velocity_linear.z), delta) # TODO: configurable speed
+		velocity_sign = steer_sign.get_value()
 		velocity_speed = local_velocity_linear.length()
 	else:
 		velocity_speed = abs(local_velocity_linear.z)
 		velocity_sign = sign(local_velocity_linear.z)
-		smooth_sign.force_current_value(sign(local_velocity_linear.z))
+		steer_sign.force_current_value(sign(local_velocity_linear.z))
 	if not steer_velocity_invert_on_reverse:
 		velocity_sign = -1.0
 
 	var steer_coefficient: float = velocity_sign * velocity_speed / distance_between_wheels
-	var steer_amount: float = (smooth_steer.get_value() * steer_coefficient) + car.get_meta(&"steer_offset")
+	var steer_amount: float = (smooth_steer.get_value() * steer_coefficient) + plugin_steer_offset.steer_offset
 
 	if is_zero_approx(steer_amount):
 		return

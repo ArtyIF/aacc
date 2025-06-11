@@ -17,12 +17,14 @@ var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
 var plugin_lvp: CarLocalVelocityProcessor
 var plugin_wp: CarWheelsProcessor
+var plugin_steer: CarSteer
 
 func _on_car_changed(new_car: Car) -> void:
 	super(new_car)
 	if is_instance_valid(car):
 		plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
 		plugin_wp = car.get_plugin(&"WheelsProcessor")
+		plugin_steer = car.get_plugin(&"Steer")
 
 func calculate_steer(input_steer: float, input_handbrake: bool, local_velocity_z_sign: float, delta: float) -> float:
 	var input_full_steer: float = (1.0 if input_handbrake else 0.0) if full_steer_on_handbrake else 0.0
@@ -32,9 +34,9 @@ func calculate_steer(input_steer: float, input_handbrake: bool, local_velocity_z
 		input_full_steer = 1.0
 
 	# TODO: add an ability to have the car send the info somehow, otherwise this is delayed by a frame
-	var distance_between_wheels: float = car.get_meta(&"distance_between_wheels")
-	var steer_velocity_base: float = car.get_meta(&"steer_velocity_base")
-	var steer_velocity_target: float = car.get_meta(&"steer_velocity_target")
+	var distance_between_wheels: float = plugin_steer.distance_between_wheels
+	var steer_velocity_base: float = plugin_steer.steer_velocity_base
+	var steer_velocity_target: float = plugin_steer.steer_velocity_target
 	var velocity_z: float = abs(plugin_lvp.local_velocity_linear.z)
 
 	var input_steer_multiplier: float = 1.0

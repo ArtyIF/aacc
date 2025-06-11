@@ -16,6 +16,7 @@ var burnout_particles: Dictionary[NodePath, GPUParticles3D] = {}
 
 @onready var plugin_lvp: CarLocalVelocityProcessor = car.get_plugin(&"LocalVelocityProcessor")
 @onready var plugin_engine: CarEngine = car.get_plugin(&"Engine")
+@onready var plugin_steer: CarSteer = car.get_plugin(&"Steer")
 
 func _ready() -> void:
 	for wheel in wheel_meshes.keys():
@@ -28,8 +29,8 @@ func _ready() -> void:
 
 func process_plugin(delta: float) -> void:
 	var local_velocity_linear: Vector3 = plugin_lvp.local_velocity_linear
-	var input_steer: float = car.get_meta(&"input_steer_smooth")
-	var steer_velocity_base: float = car.get_meta(&"steer_velocity_base")
+	var input_steer: float = plugin_steer.smooth_steer.get_value()
+	var steer_velocity_base: float = plugin_steer.steer_velocity_base
 	var input_handbrake: bool = car.get_meta(&"input_handbrake")
 
 	for wheel_path: NodePath in wheel_meshes.keys():
