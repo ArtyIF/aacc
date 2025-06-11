@@ -3,15 +3,28 @@ class_name CarContactProcessor extends CarPluginBase
 @export var ignore_shapes: Array[CollisionShape3D]
 
 var max_contacts: int = 0
+var process_hits: bool = false
+
+var contact_count: int = 0
 var contact_positions: PackedVector3Array = []
 var contact_normals: PackedVector3Array = []
 var contact_velocities: PackedVector3Array = []
 var contact_hits: PackedFloat32Array = []
 var contact_scrapes: PackedFloat32Array = []
-var process_hits: bool = false
 
 func _ready() -> void:
 	car.body_entered.connect(enable_process_hits)
+
+	debuggable_parameters = [
+		&"max_contacts",
+		&"process_hits",
+		&"contact_count",
+		&"contact_positions",
+		&"contact_normals",
+		&"contact_velocities",
+		&"contact_hits",
+		&"contact_scrapes",
+	]
 
 func enable_process_hits(_body: Node) -> void:
 	process_hits = true
@@ -19,6 +32,7 @@ func enable_process_hits(_body: Node) -> void:
 func process_plugin(delta: float) -> void:
 	var state: PhysicsDirectBodyState3D = PhysicsServer3D.body_get_direct_state(car.get_rid())
 
+	contact_count = 0
 	if car.max_contacts_reported != max_contacts:
 		max_contacts = car.max_contacts_reported
 		contact_positions.resize(max_contacts)
@@ -35,6 +49,7 @@ func process_plugin(delta: float) -> void:
 			continue
 
 		valid_contact_i += 1
+		contact_count += 1
 
 		var contact_position: Vector3 = state.get_contact_collider_position(valid_contact_i)
 		var contact_normal: Vector3 = state.get_contact_local_normal(valid_contact_i)
@@ -57,12 +72,5 @@ func process_plugin(delta: float) -> void:
 		contact_velocities[valid_contact_i] = contact_velocity
 		contact_hits[valid_contact_i] = contact_hit
 		contact_scrapes[valid_contact_i] = contact_scrape
-
-	car.set_meta(&"contact_count", valid_contact_i + 1)
-	car.set_meta(&"contact_positions", contact_positions)
-	car.set_meta(&"contact_normals", contact_normals)
-	car.set_meta(&"contact_velocities", contact_velocities)
-	car.set_meta(&"contact_hits", contact_hits)
-	car.set_meta(&"contact_scrapes", contact_scrapes)
 
 	process_hits = false

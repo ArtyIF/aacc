@@ -13,14 +13,19 @@ class_name AACCDemoCamera extends ScenePluginBase
 
 var use_hood_camera: bool = false
 
+var plugin_wp: CarWheelsProcessor
+
 func _ready() -> void:
 	process_priority = 1000
 
-func update_nodes() -> void:
-	# TODO: use plugins instead
-	follow_node = car.get_node("Visuals")
-	follow_offset_node = car.get_node("FollowCameraOffset")
-	hood_camera_node = car.get_node("HoodCamera")
+func _on_car_changed(new_car: Car) -> void:
+	super(new_car)
+	if is_instance_valid(car):
+		plugin_wp = car.get_plugin(&"WheelsProcessor")
+		# TODO: use a plugin instead
+		follow_node = car.get_node(^"Visuals")
+		follow_offset_node = car.get_node(^"FollowCameraOffset")
+		hood_camera_node = car.get_node(^"HoodCamera")
 
 func _process(delta: float) -> void:
 	if not is_instance_valid(car):
@@ -31,8 +36,6 @@ func _process(delta: float) -> void:
 		smoothed_up_vector = Vector3.UP
 		return
 
-	update_nodes()
-
 	var smooth_amount_direction: float = 10.0
 	var smooth_amount_up: float = 10.0
 	var node_transform: Transform3D = hood_camera_node.get_global_transform_interpolated() if use_hood_camera else follow_node.get_global_transform_interpolated()
@@ -42,7 +45,7 @@ func _process(delta: float) -> void:
 		direction_target = node_transform.basis.z
 		up_vector_target = node_transform.basis.y
 	else:
-		up_vector_target = car.get_meta(&"ground_average_normal", Vector3.UP)
+		up_vector_target = plugin_wp.ground_average_normal
 		var velocity: Vector3 = (last_position - node_transform.origin) / delta
 		velocity = velocity.slide(up_vector_target)
 		smooth_amount_direction = clamp(remap(velocity.length(), 0.0, 10.0, 0.0, 10.0), 0.0, 10.0)

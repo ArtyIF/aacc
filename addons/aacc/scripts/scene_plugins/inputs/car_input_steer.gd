@@ -15,18 +15,29 @@ class_name CarInputSteer extends ScenePluginBase
 
 var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
-func calculate_steer(input_steer: float, input_handbrake: bool, velocity_z_sign: float, delta: float) -> float:
+var plugin_lvp: CarLocalVelocityProcessor
+var plugin_wp: CarWheelsProcessor
+var plugin_steer: CarSteer
+
+func _on_car_changed(new_car: Car) -> void:
+	super(new_car)
+	if is_instance_valid(car):
+		plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
+		plugin_wp = car.get_plugin(&"WheelsProcessor")
+		plugin_steer = car.get_plugin(&"Steer")
+
+func calculate_steer(input_steer: float, input_handbrake: bool, local_velocity_z_sign: float, delta: float) -> float:
 	var input_full_steer: float = (1.0 if input_handbrake else 0.0) if full_steer_on_handbrake else 0.0
-	if is_zero_approx(car.get_meta(&"ground_coefficient", 1.0)):
+	if is_zero_approx(plugin_wp.ground_coefficient):
 		input_full_steer = 1.0
-	if full_steer_on_reverse and velocity_z_sign > 0:
+	if full_steer_on_reverse and local_velocity_z_sign > 0:
 		input_full_steer = 1.0
 
 	# TODO: add an ability to have the car send the info somehow, otherwise this is delayed by a frame
-	var distance_between_wheels: float = car.get_meta(&"distance_between_wheels", 1.0)
-	var steer_velocity_base: float = car.get_meta(&"steer_velocity_base", 1.0)
-	var steer_velocity_target: float = car.get_meta(&"steer_velocity_target", 1.0)
-	var velocity_z: float = abs(car.get_meta(&"local_linear_velocity", Vector3.ZERO).z)
+	var distance_between_wheels: float = plugin_steer.distance_between_wheels
+	var steer_velocity_base: float = plugin_steer.steer_velocity_base
+	var steer_velocity_target: float = plugin_steer.steer_velocity_target
+	var velocity_z: float = abs(plugin_lvp.local_velocity_linear.z)
 
 	var input_steer_multiplier: float = 1.0
 	if not always_full_steer:
@@ -48,11 +59,11 @@ func _physics_process(delta: float) -> void:
 	var input_steer: float = clamp(Input.get_action_strength(action_steer_right) - Input.get_action_strength(action_steer_left), -1.0, 1.0)
 	var input_handbrake: bool = Input.is_action_pressed(action_handbrake)
 
-	var velocity_z_sign: float = car.get_meta(&"velocity_z_sign", 0.0)
-	if is_zero_approx(velocity_z_sign):
+	var local_velocity_z_sign: float = plugin_lvp.local_velocity_z_sign
+	if is_zero_approx(local_velocity_z_sign):
 		if input_forward > 0.0 and is_zero_approx(input_backward):
-			velocity_z_sign = -1.0
+			local_velocity_z_sign = -1.0
 		elif input_backward > 0.0 and is_zero_approx(input_forward):
-			velocity_z_sign = 1.0
+			local_velocity_z_sign = 1.0
 
-	car.set_meta(&"input_steer", calculate_steer(input_steer, input_handbrake, velocity_z_sign, delta))
+	car.set_meta(&"input_steer", calculate_steer(input_steer, input_handbrake, local_velocity_z_sign, delta))

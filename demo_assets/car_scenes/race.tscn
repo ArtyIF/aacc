@@ -257,6 +257,8 @@ script = ExtResource("2_5exdd")
 metadata/_custom_type_script = "uid://wiw33iaw2pjg"
 
 [node name="Plugins" type="Node3D" parent="."]
+process_priority = -100
+process_physics_priority = -100
 
 [node name="LocalVelocityProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("3_cloqh")
@@ -319,6 +321,7 @@ engine_top_speed = 120.0
 boost_duration = 2.0
 gearbox_gear_count = 8
 gearbox_switch_time = 0.05
+gearbox_allow_reverse = false
 rpm_curve = SubResource("Curve_1amw3")
 rpm_limiter_offset = 0.0
 rpm_speed_up = 5.0
@@ -330,7 +333,7 @@ metadata/_custom_type_script = "uid://bvfqai7uunpc3"
 script = ExtResource("10_6qa4x")
 metadata/_custom_type_script = "uid://cil4ufto2v87g"
 
-[node name="HoldBoost" type="Node3D" parent="Plugins"]
+[node name="Boost" type="Node3D" parent="Plugins"]
 script = ExtResource("11_nhmty")
 boost_top_speed = 130.0
 metadata/_custom_type_script = "uid://un1kd6buaufw"

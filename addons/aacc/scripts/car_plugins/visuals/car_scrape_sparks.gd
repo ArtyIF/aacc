@@ -4,16 +4,19 @@ class_name CarScrapeSparks extends CarPluginBase
 
 var particles: Array[GPUParticles3D] = []
 
+@onready var plugin_cp: CarContactProcessor = car.get_plugin(&"ContactProcessor")
+
 func _ready() -> void:
 	for i in range(car.max_contacts_reported):
 		particles.append(scrape_sparks_scene.instantiate())
 		add_child(particles[i])
 
 func process_plugin(delta: float) -> void:
-	var contact_count: int = car.get_meta(&"contact_count", 0)
-	var contact_positions: PackedVector3Array = car.get_meta(&"contact_positions", [])
-	var contact_normals: PackedVector3Array = car.get_meta(&"contact_normals", [])
-	var contact_scrapes: PackedFloat32Array = car.get_meta(&"contact_scrapes", [])
+	var contact_count: int = plugin_cp.contact_count
+	# TODO: packed arrays are passed by reference, maybe not reassign it every time?
+	var contact_positions: PackedVector3Array = plugin_cp.contact_positions
+	var contact_normals: PackedVector3Array = plugin_cp.contact_normals
+	var contact_scrapes: PackedFloat32Array = plugin_cp.contact_scrapes
 
 	for i in range(len(particles)):
 		if i < contact_count:

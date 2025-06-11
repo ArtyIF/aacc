@@ -1,7 +1,7 @@
 class_name Car extends RigidBody3D
 
-# TODO: add an editor tool to compile plugins into one script for optimization
 # TODO: rewrite every plugin to just store parameters in their own object, no metas
+# TODO for the repo: https://docs.codeberg.org/git/using-lfs
 
 #region Forces
 class Force:
@@ -53,22 +53,23 @@ func get_torque_list() -> Array[StringName]:
 
 #region Plugins
 var plugins: Dictionary[StringName, CarPluginBase] = {}
-signal plugin_added(plugin_name: StringName)
-signal plugin_removed(plugin_name: StringName)
+signal plugin_added(plugin_name: StringName, plugin: CarPluginBase)
+signal plugin_removed(plugin_name: StringName, plugin: CarPluginBase)
 
 func add_plugin(plugin_name: StringName, plugin: CarPluginBase):
 	plugins[plugin_name] = plugin
-	plugin_added.emit(plugin_name)
+	plugin_added.emit(plugin_name, plugin)
 
-func get_plugin(plugin_name: StringName) -> CarPluginBase:
-	return plugins[plugin_name]
+func get_plugin(plugin_name: StringName, default: CarPluginBase = null) -> CarPluginBase:
+	return plugins.get(plugin_name, default)
 
 func has_plugin(plugin_name: StringName) -> bool:
-	return plugin_name in plugins.keys()
+	return plugins.has(plugin_name)
 
 func remove_plugin(plugin_name: StringName):
+	var plugin: CarPluginBase = get_plugin(plugin_name)
 	plugins.erase(plugin_name)
-	plugin_removed.emit(plugin_name)
+	plugin_removed.emit(plugin_name, plugin)
 #endregion
 
 func _physics_process(delta: float) -> void:
@@ -80,6 +81,9 @@ func _physics_process(delta: float) -> void:
 	if not torques.is_empty():
 		torques.clear()
 
+	# TODO: remove process_plugin and just use priority to make them run before
+	# and figure out how to clear the forces and torques in a way it still
+	# shows up in debug
 	for plugin_name in plugins.keys():
 		plugins[plugin_name].process_plugin(delta)
 

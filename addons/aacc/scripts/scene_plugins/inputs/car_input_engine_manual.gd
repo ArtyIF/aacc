@@ -11,18 +11,27 @@ class_name CarInputEngineManual extends ScenePluginBase
 
 var gear_target: int = 0
 
+var plugin_lvp: CarLocalVelocityProcessor
+var plugin_engine: CarEngine
+
+func _on_car_changed(new_car: Car) -> void:
+	super(new_car)
+	if is_instance_valid(car):
+		plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
+		plugin_engine = car.get_plugin(&"Engine")
+
 func _physics_process(delta: float) -> void:
 	if not is_instance_valid(car): return
 
 	var input_forward: float = clamp(Input.get_action_strength(action_forward), 0.0, 1.0)
 	var input_backward: float = clamp(Input.get_action_strength(action_backward), 0.0, 1.0)
 
-	var velocity_z_sign: float = car.get_meta(&"velocity_z_sign", 0.0)
-	if is_zero_approx(velocity_z_sign):
+	var local_velocity_z_sign: float = plugin_lvp.local_velocity_z_sign
+	if is_zero_approx(local_velocity_z_sign):
 		if input_forward > 0.0 and is_zero_approx(input_backward):
-			velocity_z_sign = -1.0
+			local_velocity_z_sign = -1.0
 		elif input_backward > 0.0 and is_zero_approx(input_forward):
-			velocity_z_sign = 1.0
+			local_velocity_z_sign = 1.0
 
 	if Input.is_action_just_pressed(action_gear_up):
 		gear_target += 1
@@ -30,11 +39,15 @@ func _physics_process(delta: float) -> void:
 		gear_target -= 1
 
 	if auto_downshift and (input_backward > 0.0 or is_zero_approx(input_forward)):
-		var gear_perfect_shift_down: float = AACCCurveTools.get_gear_perfect_shift_down(car)
-		if car.get_meta(&"rpm_ratio", 0.0) < gear_perfect_shift_down and gear_target > 0:
-			gear_target = car.get_meta(&"gear_current", 1) - 1
+		var gear_current: int = plugin_engine.gear_current
+		var rpm_curve: Curve = plugin_engine.rpm_curve
+		var rpm_ratio: float = plugin_engine.rpm_ratio.get_value()
 
-	gear_target = clampi(gear_target, -1, car.get_meta(&"gearbox_gear_count", 0))
+		var gear_perfect_shift_down: float = AACCCurveTools.get_gear_perfect_shift_down(gear_current, rpm_curve)
+		if rpm_ratio < gear_perfect_shift_down and gear_target > 0:
+			gear_target = gear_current - 1
+
+	gear_target = clampi(gear_target, -1 if plugin_engine.gearbox_allow_reverse else 0, plugin_engine.gearbox_gear_count)
 	car.set_meta(&"input_gear_target", gear_target)
 
 	car.set_meta(&"input_accelerate", input_forward)

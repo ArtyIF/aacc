@@ -72,26 +72,35 @@ func _process(_delta: float) -> void:
 		label.pop()
 		label.add_text("\n\n")
 
-		label.push_bgcolor(Color.BLACK)
-		label.add_text("METADATA\n")
-		label.pop()
+		for plugin_name in AACCGlobal.car.plugins.keys():
+			var plugin_parameters: Dictionary[StringName, String] = {}
+			for parameter_name in AACCGlobal.car.plugins[plugin_name].debuggable_parameters:
+				plugin_parameters[parameter_name] = str(AACCGlobal.car.plugins[plugin_name].get(parameter_name))
+			if plugin_parameters.is_empty():
+				continue
 
-		label.push_table(2)
-		label.push_cell()
-		label.add_text("NAME")
-		label.pop()
-		label.push_cell()
-		label.add_text("VALUE")
-		label.pop()
-		for meta: StringName in AACCGlobal.car.get_meta_list():
+			# TODO: include properties
+
+			label.push_bgcolor(Color.BLACK)
+			label.add_text("PLUGIN PARAMETERS: " + plugin_name + "\n")
+			label.pop()
+
+			label.push_table(2)
 			label.push_cell()
-			label.add_text(meta)
+			label.add_text("NAME")
 			label.pop()
 			label.push_cell()
-			label.add_text(str(AACCGlobal.car.get_meta(meta)))
+			label.add_text("VALUE")
 			label.pop()
-		label.pop()
-		label.add_text("\n\n")
+			for parameter_name in plugin_parameters.keys():
+				label.push_cell()
+				label.add_text(parameter_name)
+				label.pop()
+				label.push_cell()
+				label.add_text(plugin_parameters[parameter_name])
+				label.pop()
+			label.pop()
+			label.add_text("\n\n")
 
 		label.push_bgcolor(Color.BLACK)
 		label.add_text("FORCES\n")

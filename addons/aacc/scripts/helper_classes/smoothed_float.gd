@@ -24,10 +24,12 @@ func advance_to(target_value: float, speed_multiplier: float = 1.0) -> void:
 		_value = move_toward(_value, target_value, speed_up * speed_multiplier)
 
 ## Returns the current value.
+## TODO: change to property
 func get_value() -> float:
 	return _value
 
 ## Forces the current value to [param new_value].
+## TODO: change to property
 func force_current_value(new_value: float) -> void:
 	_value = new_value
 
@@ -38,3 +40,6 @@ func _init(start_value: float = 0.0, speed_up: float = 1.0, speed_down: float = 
 		self.speed_down = speed_down
 	else:
 		self.speed_down = speed_up
+
+func _to_string() -> String:
+	return "%f (speed up = %s, speed down = %s)" % [_value, speed_up, speed_down]
