@@ -42,15 +42,17 @@ var force_ratio: float = 0.0
 func _ready() -> void:
 	car.set_meta(&"input_accelerate", 0.0)
 	car.set_meta(&"input_gear_target", 0)
-	update_meta()
 
-func update_meta():
-	# TODO: remove
-	car.set_meta(&"rpm_ratio", rpm_ratio.get_value())
-	car.set_meta(&"rpm_curve", rpm_curve)
-	car.set_meta(&"rpm_min", rpm_min)
-	car.set_meta(&"rpm_max", rpm_max)
-	car.set_meta(&"rpm_limiter", rpm_limiter)
+	debuggable_properties = [
+		&"gear_current",
+		&"gear_target",
+		&"gear_switch_timer",
+		&"gear_switching",
+		&"boost_amount",
+		&"rpm_ratio",
+		&"rpm_limiter",
+		&"force_ratio",
+	]
 
 func update_gear(delta: float):
 	gear_target = clampi(gear_target, -1 if gearbox_allow_reverse else 0, gearbox_gear_count)
@@ -122,7 +124,6 @@ func process_plugin(delta: float) -> void:
 	gear_target = car.get_meta(&"input_gear_target")
 	update_gear(delta)
 	update_rpm_ratio(input_accelerate, ground_coefficient, local_velocity_linear, delta)
-	update_meta()
 
 	if not is_zero_approx(rpm_limiter_offset) and ((gear_current >= 0 and not gear_current == gearbox_gear_count) or is_zero_approx(ground_coefficient)):
 		if rpm_ratio.get_value() >= rpm_max:
@@ -131,7 +132,6 @@ func process_plugin(delta: float) -> void:
 			rpm_limiter = false
 	else:
 		rpm_limiter = false
-	car.set_meta(&"rpm_limiter", rpm_limiter)
 
 	boost_amount.advance_to(0.0, delta / boost_duration)
 
