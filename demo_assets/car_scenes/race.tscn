@@ -257,6 +257,8 @@ script = ExtResource("2_5exdd")
 metadata/_custom_type_script = "uid://wiw33iaw2pjg"
 
 [node name="Plugins" type="Node3D" parent="."]
+process_priority = -100
+process_physics_priority = -100
 
 [node name="LocalVelocityProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("3_cloqh")

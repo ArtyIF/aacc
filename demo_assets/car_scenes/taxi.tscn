@@ -14,7 +14,7 @@
 [ext_resource type="Script" uid="uid://bieogbd1wisbk" path="res://addons/aacc/scripts/car_plugins/processors/car_steer_offset_processor.gd" id="10_gh3hu"]
 [ext_resource type="Script" uid="uid://dbisg1nrvftc4" path="res://addons/aacc/scripts/car_plugins/grips/car_angular_grip.gd" id="10_r3t53"]
 [ext_resource type="Script" uid="uid://crrd7ugev6afh" path="res://addons/aacc/scripts/helper_classes/procedural_curve.gd" id="11_0wb0t"]
-[ext_resource type="Script" uid="uid://un1kd6buaufw" path="res://addons/aacc/scripts/car_plugins/extras/boosts/car_hold_boost.gd" id="12_4f48m"]
+[ext_resource type="Script" uid="uid://un1kd6buaufw" path="res://addons/aacc/scripts/car_plugins/boosts/car_hold_boost.gd" id="12_4f48m"]
 [ext_resource type="PackedScene" uid="uid://dutpfjvhdc2p1" path="res://demo_assets/kenney_car_kit/taxi.glb" id="12_r3t53"]
 [ext_resource type="Script" uid="uid://put3fygiiqh8" path="res://addons/aacc/scripts/car_plugins/resistances/car_coast_resistance.gd" id="13_iv7oc"]
 [ext_resource type="Script" uid="uid://cgyn0v8p7gfu6" path="res://addons/aacc/scripts/car_plugins/visuals/car_wheel_visuals.gd" id="14_n1pdp"]
@@ -170,6 +170,8 @@ script = ExtResource("1_ik2h1")
 metadata/_custom_type_script = "uid://wiw33iaw2pjg"
 
 [node name="Plugins" type="Node3D" parent="."]
+process_priority = -100
+process_physics_priority = -100
 
 [node name="LocalVelocityProcessor" type="Node3D" parent="Plugins"]
 script = ExtResource("3_tcv0s")
