@@ -23,7 +23,7 @@ func remap_points(points: PackedVector2Array) -> PackedVector2Array:
 	return points
 
 func _draw() -> void:
-	if not AACCGlobal.car: return
+	if not car: return
 
 	var gear_perfect_shift_up: float = 1.0
 	var gear_perfect_shift_down: float = 0.0
@@ -31,36 +31,30 @@ func _draw() -> void:
 	var points_current: PackedVector2Array = []
 	var points_next: PackedVector2Array = []
 	var points_prev: PackedVector2Array = []
-	if not AACCGlobal.car.has_meta(&"rpm_curve"):
+	if not plugin_engine.rpm_curve:
 		draw_string(ThemeDB.fallback_font, Vector2(0.0, size.y), "No RPM curve!")
 	else:
-		var rpm_curve: Curve = AACCGlobal.car.get_meta(&"rpm_curve")
-		var gear_current: float = float(AACCGlobal.car.get_meta(&"gear_current", 0))
-		points_current = remap_points(AACCCurveTools.get_curve_samples(rpm_curve))
+		var gear_current: float = float(plugin_engine.gear_current)
+		points_current = remap_points(AACCCurveTools.get_curve_samples(plugin_engine.rpm_curve))
 
-		if not AACCGlobal.car.get_meta(&"gear_switching", false):
+		if not plugin_engine.gear_switching:
 			if plugin_wp.ground_coefficient > 0.0:
-				if gear_current >= 0 and gear_current < AACCGlobal.car.get_meta(&"gearbox_gear_count", 0):
+				if gear_current > 0 and gear_current < plugin_engine.gearbox_gear_count:
 					var current_next_ratio: float = max(gear_current, 1.0) / max(gear_current + 1, 1.0)
 					if current_next_ratio < 1.0:
-						points_next = remap_points(AACCCurveTools.get_curve_samples(rpm_curve, current_next_ratio))
-
-				if gear_current > 1 and gear_current <= AACCGlobal.car.get_meta(&"gearbox_gear_count", 0):
-					var current_prev_ratio: float = max(gear_current, 1.0) / max(gear_current - 1, 1.0)
-					if current_prev_ratio > 1.0:
-						points_prev = remap_points(AACCCurveTools.get_curve_samples(rpm_curve, current_prev_ratio))
-
-				if (gear_current > 0 and gear_current < AACCGlobal.car.get_meta(&"gearbox_gear_count", 0)):
+						points_next = remap_points(AACCCurveTools.get_curve_samples(plugin_engine.rpm_curve, current_next_ratio))
 					gear_perfect_shift_up = AACCCurveTools.get_gear_perfect_shift_up(plugin_engine)
 
-				if (gear_current > 1 and gear_current <= AACCGlobal.car.get_meta(&"gearbox_gear_count", 0)):
+				if gear_current > 1 and gear_current <= plugin_engine.gearbox_gear_count:
+					var current_prev_ratio: float = max(gear_current, 1.0) / max(gear_current - 1, 1.0)
+					if current_prev_ratio > 1.0:
+						points_prev = remap_points(AACCCurveTools.get_curve_samples(plugin_engine.rpm_curve, current_prev_ratio))
 					gear_perfect_shift_down = AACCCurveTools.get_gear_perfect_shift_down(plugin_engine)
 
-	var rpm_max: float = AACCGlobal.car.get_meta(&"rpm_max", 1.0)
-	draw_rect(Rect2(0.0, 0.0, rpm_max * size.x, 0.05 * size.y), Color.WHITE)
-	draw_rect(Rect2(rpm_max * size.x, 0.0, (1.0 - rpm_max) * size.x, size.y), Color.RED)
+	draw_rect(Rect2(0.0, 0.0, plugin_engine.rpm_max * size.x, 0.05 * size.y), Color.WHITE)
+	draw_rect(Rect2(plugin_engine.rpm_max * size.x, 0.0, (1.0 - plugin_engine.rpm_max) * size.x, size.y), Color.RED)
 
-	var rpm_ratio: float = AACCGlobal.car.get_meta(&"rpm_ratio", 0.0)
+	var rpm_ratio: float = plugin_engine.rpm_ratio.get_value()
 	var rpm_bar_color: Color = Color.WHITE
 	if rpm_ratio <= gear_perfect_shift_down:
 		rpm_bar_color = Color.RED
