@@ -28,27 +28,24 @@ static func get_curve_samples_intersection(samples_1: PackedVector2Array, sample
 	return intersection
 
 # TODO: move somewhere else?
-static func get_gear_perfect_shift_up(plugin_engine: CarEngine) -> float:
+static func get_gear_perfect_shift_up(gear_current: int, rpm_curve: Curve) -> float:
 	var perfect: float = 0.0
 
-	var gear_current: int = plugin_engine.gear_current
-	var rpm_curve: Curve = plugin_engine.rpm_curve
 	var rpm_curve_samples_current: PackedVector2Array = get_curve_samples(rpm_curve)
 
-	var current_next_ratio: float = max(float(gear_current), 1.0) / max(float(gear_current) + 1, 1.0)
-	var rpm_curve_samples_next: PackedVector2Array = get_curve_samples(rpm_curve, current_next_ratio)
-	perfect = get_curve_samples_intersection(rpm_curve_samples_current, rpm_curve_samples_next)
+	if gear_current > -1:
+		var current_next_ratio: float = maxf(gear_current, 1.0) / maxf(gear_current + 1, 1.0)
+		var rpm_curve_samples_next: PackedVector2Array = get_curve_samples(rpm_curve, current_next_ratio)
+		perfect = get_curve_samples_intersection(rpm_curve_samples_current, rpm_curve_samples_next)
 	return perfect
 
-static func get_gear_perfect_shift_down(plugin_engine: CarEngine) -> float:
+static func get_gear_perfect_shift_down(gear_current: int, rpm_curve: Curve) -> float:
 	var perfect: float = 0.0
 
-	var gear_current: int = plugin_engine.gear_current
-	var rpm_curve: Curve = plugin_engine.rpm_curve
 	var rpm_curve_samples_current: PackedVector2Array = get_curve_samples(rpm_curve)
 
 	if gear_current > 1:
-		var current_prev_ratio: float = max(float(gear_current), 1.0) / max(float(gear_current) - 1, 1.0)
+		var current_prev_ratio: float = maxf(gear_current, 1.0) / maxf(gear_current - 1, 1.0)
 		var rpm_curve_samples_prev: PackedVector2Array = get_curve_samples(rpm_curve, current_prev_ratio, 1.0 / current_prev_ratio)
 		perfect = get_curve_samples_intersection(rpm_curve_samples_current, rpm_curve_samples_prev)
 	return perfect
