@@ -60,11 +60,11 @@ func add_plugin(plugin_name: StringName, plugin: CarPluginBase):
 	plugins[plugin_name] = plugin
 	plugin_added.emit(plugin_name, plugin)
 
-func get_plugin(plugin_name: StringName) -> CarPluginBase:
-	return plugins[plugin_name]
+func get_plugin(plugin_name: StringName, default: CarPluginBase = null) -> CarPluginBase:
+	return plugins.get(plugin_name, default)
 
 func has_plugin(plugin_name: StringName) -> bool:
-	return plugin_name in plugins.keys()
+	return plugins.has(plugin_name)
 
 func remove_plugin(plugin_name: StringName):
 	var plugin: CarPluginBase = get_plugin(plugin_name)
