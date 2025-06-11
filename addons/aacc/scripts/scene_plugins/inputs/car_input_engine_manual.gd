@@ -12,10 +12,13 @@ class_name CarInputEngineManual extends ScenePluginBase
 var gear_target: int = 0
 
 var plugin_lvp: CarLocalVelocityProcessor
+var plugin_engine: CarEngine
 
-func update_car(new_car: Car) -> void:
+func _on_car_changed(new_car: Car) -> void:
 	super(new_car)
-	plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
+	if is_instance_valid(car):
+		plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
+		plugin_engine = car.get_plugin(&"Engine")
 
 func _physics_process(delta: float) -> void:
 	if not is_instance_valid(car): return
@@ -36,7 +39,7 @@ func _physics_process(delta: float) -> void:
 		gear_target -= 1
 
 	if auto_downshift and (input_backward > 0.0 or is_zero_approx(input_forward)):
-		var gear_perfect_shift_down: float = AACCCurveTools.get_gear_perfect_shift_down(car)
+		var gear_perfect_shift_down: float = AACCCurveTools.get_gear_perfect_shift_down(plugin_engine)
 		if car.get_meta(&"rpm_ratio", 0.0) < gear_perfect_shift_down and gear_target > 0:
 			gear_target = car.get_meta(&"gear_current", 1) - 1
 

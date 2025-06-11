@@ -1,5 +1,17 @@
 extends Control
 
+var car: Car
+var plugin_engine: CarEngine
+
+func _ready() -> void:
+	car = AACCGlobal.car
+	AACCGlobal.car_changed.connect(_on_car_changed)
+
+func _on_car_changed(new_car: Car):
+	car = new_car
+	if is_instance_valid(car):
+		plugin_engine = car.get_plugin(&"Engine")
+
 func remap_points(points: PackedVector2Array) -> PackedVector2Array:
 	for i in range(len(points)):
 		var point: Vector2 = points[i]
@@ -35,10 +47,10 @@ func _draw() -> void:
 						points_prev = remap_points(AACCCurveTools.get_curve_samples(rpm_curve, current_prev_ratio))
 
 				if (gear_current > 0 and gear_current < AACCGlobal.car.get_meta(&"gearbox_gear_count", 0)):
-					gear_perfect_shift_up = AACCCurveTools.get_gear_perfect_shift_up(AACCGlobal.car)
+					gear_perfect_shift_up = AACCCurveTools.get_gear_perfect_shift_up(plugin_engine)
 
 				if (gear_current > 1 and gear_current <= AACCGlobal.car.get_meta(&"gearbox_gear_count", 0)):
-					gear_perfect_shift_down = AACCCurveTools.get_gear_perfect_shift_down(AACCGlobal.car)
+					gear_perfect_shift_down = AACCCurveTools.get_gear_perfect_shift_down(plugin_engine)
 
 	var rpm_max: float = AACCGlobal.car.get_meta(&"rpm_max", 1.0)
 	draw_rect(Rect2(0.0, 0.0, rpm_max * size.x, 0.05 * size.y), Color.WHITE)

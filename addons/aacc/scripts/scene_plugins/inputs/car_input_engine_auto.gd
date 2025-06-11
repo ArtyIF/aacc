@@ -10,10 +10,13 @@ class_name CarInputEngineAuto extends ScenePluginBase
 var gear_target: int = 0
 
 var plugin_lvp: CarLocalVelocityProcessor
+var plugin_engine: CarEngine
 
-func update_car(new_car: Car) -> void:
+func _on_car_changed(new_car: Car) -> void:
 	super(new_car)
-	plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
+	if is_instance_valid(car):
+		plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
+		plugin_engine = car.get_plugin(&"Engine")
 
 func calculate_gear_limit(gear: int, gear_count: int) -> float:
 	return float(gear) / gear_count
@@ -39,8 +42,8 @@ func calculate_gear_target(input_handbrake: bool, local_velocity_z_sign: float) 
 	if local_velocity_z_sign > 0:
 		return -1
 
-	var gear_perfect_shift_up: float = AACCCurveTools.get_gear_perfect_shift_up(car)
-	var gear_perfect_shift_down: float = AACCCurveTools.get_gear_perfect_shift_down(car) - downshift_offset
+	var gear_perfect_shift_up: float = AACCCurveTools.get_gear_perfect_shift_up(plugin_engine)
+	var gear_perfect_shift_down: float = AACCCurveTools.get_gear_perfect_shift_down(plugin_engine) - downshift_offset
 	var rpm_ratio: float = abs(local_velocity_linear.z) / (engine_top_speed * calculate_gear_limit(gear_current, gear_count))
 	rpm_ratio = lerp(car.get_meta(&"rpm_min"), car.get_meta(&"rpm_max"), rpm_ratio)
 

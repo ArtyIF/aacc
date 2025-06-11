@@ -27,28 +27,28 @@ static func get_curve_samples_intersection(samples_1: PackedVector2Array, sample
 
 	return intersection
 
-static func get_gear_perfect_shift_up(car: Car) -> float:
+# TODO: move somewhere else?
+static func get_gear_perfect_shift_up(plugin_engine: CarEngine) -> float:
 	var perfect: float = 0.0
 
-	var gear_current: int = car.get_meta(&"gear_current", 0)
-	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 0.0)
-	var rpm_curve: Curve = car.get_meta(&"rpm_curve")
-	var rpm_curve_samples_current: PackedVector2Array = AACCCurveTools.get_curve_samples(rpm_curve)
+	var gear_current: int = plugin_engine.gear_current
+	var rpm_curve: Curve = plugin_engine.rpm_curve
+	var rpm_curve_samples_current: PackedVector2Array = get_curve_samples(rpm_curve)
 
 	var current_next_ratio: float = max(float(gear_current), 1.0) / max(float(gear_current) + 1, 1.0)
-	var rpm_curve_samples_next: PackedVector2Array = AACCCurveTools.get_curve_samples(rpm_curve, current_next_ratio)
+	var rpm_curve_samples_next: PackedVector2Array = get_curve_samples(rpm_curve, current_next_ratio)
 	perfect = get_curve_samples_intersection(rpm_curve_samples_current, rpm_curve_samples_next)
 	return perfect
 
-static func get_gear_perfect_shift_down(car: Car) -> float:
+static func get_gear_perfect_shift_down(plugin_engine: CarEngine) -> float:
 	var perfect: float = 0.0
 
-	var gear_current: int = car.get_meta(&"gear_current", 0)
-	var rpm_curve: Curve = car.get_meta(&"rpm_curve")
-	var rpm_curve_samples_current: PackedVector2Array = AACCCurveTools.get_curve_samples(rpm_curve)
+	var gear_current: int = plugin_engine.gear_current
+	var rpm_curve: Curve = plugin_engine.rpm_curve
+	var rpm_curve_samples_current: PackedVector2Array = get_curve_samples(rpm_curve)
 
 	if gear_current > 1:
 		var current_prev_ratio: float = max(float(gear_current), 1.0) / max(float(gear_current) - 1, 1.0)
-		var rpm_curve_samples_prev: PackedVector2Array = AACCCurveTools.get_curve_samples(rpm_curve, current_prev_ratio, 1.0 / current_prev_ratio)
-		perfect = AACCCurveTools.get_curve_samples_intersection(rpm_curve_samples_current, rpm_curve_samples_prev)
+		var rpm_curve_samples_prev: PackedVector2Array = get_curve_samples(rpm_curve, current_prev_ratio, 1.0 / current_prev_ratio)
+		perfect = get_curve_samples_intersection(rpm_curve_samples_current, rpm_curve_samples_prev)
 	return perfect

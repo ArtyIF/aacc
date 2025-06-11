@@ -17,9 +17,10 @@ var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
 var plugin_lvp: CarLocalVelocityProcessor
 
-func update_car(new_car: Car) -> void:
+func _on_car_changed(new_car: Car) -> void:
 	super(new_car)
-	plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
+	if is_instance_valid(car):
+		plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
 
 func calculate_steer(input_steer: float, input_handbrake: bool, local_velocity_z_sign: float, delta: float) -> float:
 	var input_full_steer: float = (1.0 if input_handbrake else 0.0) if full_steer_on_handbrake else 0.0

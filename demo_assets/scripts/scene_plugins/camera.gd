@@ -18,13 +18,14 @@ var plugin_wp: CarWheelsProcessor
 func _ready() -> void:
 	process_priority = 1000
 
-func update_car(new_car: Car) -> void:
+func _on_car_changed(new_car: Car) -> void:
 	super(new_car)
-	plugin_wp = car.get_plugin(&"WheelsProcessor")
-	# TODO: use a plugin instead
-	follow_node = car.get_node(^"Visuals")
-	follow_offset_node = car.get_node(^"FollowCameraOffset")
-	hood_camera_node = car.get_node(^"HoodCamera")
+	if is_instance_valid(car):
+		plugin_wp = car.get_plugin(&"WheelsProcessor")
+		# TODO: use a plugin instead
+		follow_node = car.get_node(^"Visuals")
+		follow_offset_node = car.get_node(^"FollowCameraOffset")
+		hood_camera_node = car.get_node(^"HoodCamera")
 
 func _process(delta: float) -> void:
 	if not is_instance_valid(car):
