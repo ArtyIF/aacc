@@ -12,19 +12,29 @@ class_name CarWheelSuspension extends CarPluginBase
 
 var raycast_instance: RayCast3D
 
-var compression: float = 0.0
-var last_compression: float = 0.0
-var last_compression_set: bool = false
-
 var is_landed: bool = false
 var collision_point: Vector3 = Vector3.ZERO
 var collision_normal: Vector3 = Vector3.ZERO
 var distance: float = 0.0
 
+var compression: float = 0.0
+var compression_prev: float = 0.0
+var compression_prev_set: bool = false
+
 func _ready() -> void:
 	raycast_instance = RayCast3D.new()
 	add_child(raycast_instance)
 	configure_raycasts()
+
+	debuggable_properties = [
+		&"is_landed",
+		&"collision_point",
+		&"collision_normal",
+		&"distance",
+		&"compression",
+		&"compression_prev",
+		&"compression_prev_set",
+	]
 
 func configure_raycasts() -> void:
 	raycast_instance.position = Vector3.RIGHT * wheel_width
@@ -49,20 +59,21 @@ func process_plugin(delta: float) -> void:
 
 		compression = 1.0 - ((distance - wheel_radius) / suspension_length)
 		compression = clamp(compression, 0.0, 1.0) # TODO: choice between this and max(compression, 0.0)
-		if not last_compression_set:
-			last_compression = compression
-			last_compression_set = true
+		if not compression_prev_set:
+			compression_prev = compression
+			compression_prev_set = true
 
 		var suspension_magnitude: float = 0.0
 		suspension_magnitude += compression * suspension_spring
 
-		var compression_delta: float = (compression - last_compression) / delta
+		var compression_delta: float = (compression - compression_prev) / delta
 		suspension_magnitude += compression_delta * suspension_damper
-		last_compression = compression
+		compression_prev = compression
 
 		suspension_magnitude *= collision_normal.dot(global_basis.y)
 
 		car.set_force(name, collision_normal * suspension_magnitude, false, collision_point - car.global_position)
 	else:
 		is_landed = false
-		last_compression = 0.0
+		compression = 0.0
+		compression_prev = 0.0
