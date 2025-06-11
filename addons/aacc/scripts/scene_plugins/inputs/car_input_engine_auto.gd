@@ -10,12 +10,14 @@ class_name CarInputEngineAuto extends ScenePluginBase
 var gear_target: int = 0
 
 var plugin_lvp: CarLocalVelocityProcessor
+var plugin_wp: CarWheelsProcessor
 var plugin_engine: CarEngine
 
 func _on_car_changed(new_car: Car) -> void:
 	super(new_car)
 	if is_instance_valid(car):
 		plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
+		plugin_wp = car.get_plugin(&"WheelsProcessor")
 		plugin_engine = car.get_plugin(&"Engine")
 
 func calculate_gear_limit(gear: int, gear_count: int) -> float:
@@ -25,7 +27,7 @@ func calculate_gear_target(input_handbrake: bool, local_velocity_z_sign: float) 
 	var gear_target_car: int = car.get_meta(&"input_gear_target", 0)
 
 	var local_velocity_linear: Vector3 = plugin_lvp.local_velocity_linear
-	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 1.0)
+	var ground_coefficient: float = plugin_wp.ground_coefficient
 
 	var gear_current: int = car.get_meta(&"gear_current", 0)
 	var gear_count: int = car.get_meta(&"gearbox_gear_count", 0)

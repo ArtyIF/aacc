@@ -33,6 +33,7 @@ var rpm_ratio: SmoothedFloat = SmoothedFloat.new()
 var rpm_limiter: bool = false # TODO: rewrite rpm limiters
 
 @onready var plugin_lvp: CarLocalVelocityProcessor = car.get_plugin(&"LocalVelocityProcessor")
+@onready var plugin_wp: CarWheelsProcessor = car.get_plugin(&"WheelsProcessor")
 
 func _ready() -> void:
 	car.set_meta(&"input_accelerate", 0.0)
@@ -80,8 +81,7 @@ func update_gear(delta: float):
 func calculate_gear_limit(gear: int) -> float:
 	return abs(gear) / float(gearbox_gear_count)
 
-func update_rpm_ratio(input_accelerate: float, local_velocity_linear: Vector3, delta: float) -> void:
-	var ground_coefficient: float = car.get_meta(&"ground_coefficient", 0.0)
+func update_rpm_ratio(input_accelerate: float, ground_coefficient: float, local_velocity_linear: Vector3, delta: float) -> void:
 	if gear_current == 0 or gear_switching or rpm_limiter or is_zero_approx(ground_coefficient):
 		rpm_ratio.speed_up = rpm_speed_up_idle
 		rpm_ratio.speed_down = rpm_speed_down_idle
@@ -125,14 +125,15 @@ func calculate_acceleration_multiplier(speed_ratio: float) -> float:
 
 func process_plugin(delta: float) -> void:
 	var input_accelerate: float = car.get_meta(&"input_accelerate", 0.0)
+	var ground_coefficient: float = plugin_wp.ground_coefficient
 	var local_velocity_linear: Vector3 = plugin_lvp.local_velocity_linear
 
 	gear_target = car.get_meta(&"input_gear_target", 0)
 	update_gear(delta)
-	update_rpm_ratio(input_accelerate, local_velocity_linear, delta)
+	update_rpm_ratio(input_accelerate, ground_coefficient, local_velocity_linear, delta)
 	update_meta()
 
-	if not is_zero_approx(rpm_limiter_offset) and ((gear_current >= 0 and not gear_current == gearbox_gear_count) or is_zero_approx(car.get_meta(&"ground_coefficient", 0.0))):
+	if not is_zero_approx(rpm_limiter_offset) and ((gear_current >= 0 and not gear_current == gearbox_gear_count) or is_zero_approx(ground_coefficient)):
 		if rpm_ratio.get_value() >= rpm_max:
 			rpm_limiter = true
 		elif rpm_ratio.get_value() <= rpm_max - rpm_limiter_offset:

@@ -16,15 +16,17 @@ class_name CarInputSteer extends ScenePluginBase
 var smooth_steer: SmoothedFloat = SmoothedFloat.new()
 
 var plugin_lvp: CarLocalVelocityProcessor
+var plugin_wp: CarWheelsProcessor
 
 func _on_car_changed(new_car: Car) -> void:
 	super(new_car)
 	if is_instance_valid(car):
 		plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
+		plugin_wp = car.get_plugin(&"WheelsProcessor")
 
 func calculate_steer(input_steer: float, input_handbrake: bool, local_velocity_z_sign: float, delta: float) -> float:
 	var input_full_steer: float = (1.0 if input_handbrake else 0.0) if full_steer_on_handbrake else 0.0
-	if is_zero_approx(car.get_meta(&"ground_coefficient", 1.0)):
+	if is_zero_approx(plugin_wp.ground_coefficient):
 		input_full_steer = 1.0
 	if full_steer_on_reverse and local_velocity_z_sign > 0:
 		input_full_steer = 1.0

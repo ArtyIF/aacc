@@ -18,6 +18,7 @@ var use_smooth_sign: bool = false
 var input_handbrake_prev: bool = false
 
 @onready var plugin_lvp: CarLocalVelocityProcessor = car.get_plugin(&"LocalVelocityProcessor")
+@onready var plugin_wp: CarWheelsProcessor = car.get_plugin(&"WheelsProcessor")
 
 func _ready() -> void:
 	car.set_meta(&"input_steer", 0.0)
@@ -29,7 +30,7 @@ func update_meta():
 	car.set_meta(&"steer_velocity_target", steer_velocity_target)
 
 func process_plugin(delta: float) -> void:
-	if is_zero_approx(car.get_meta(&"ground_coefficient", 0.0)):
+	if is_zero_approx(plugin_wp.ground_coefficient):
 		return
 
 	update_meta()

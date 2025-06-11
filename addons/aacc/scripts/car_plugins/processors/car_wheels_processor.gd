@@ -59,6 +59,3 @@ func process_plugin(delta: float) -> void:
 		ground_average_normal = ground_average_normal.normalized()
 	else:
 		ground_average_normal = Vector3.UP
-
-	# TODO: remove
-	car.set_meta(&"ground_coefficient", ground_coefficient)

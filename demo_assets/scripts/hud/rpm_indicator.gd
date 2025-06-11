@@ -1,8 +1,11 @@
 extends Control
 
 var car: Car
-var plugin_engine: CarEngine
 
+var plugin_engine: CarEngine
+var plugin_wp: CarWheelsProcessor
+
+# TODO: move some of this stuff into demo HUD
 func _ready() -> void:
 	car = AACCGlobal.car
 	AACCGlobal.car_changed.connect(_on_car_changed)
@@ -10,6 +13,7 @@ func _ready() -> void:
 func _on_car_changed(new_car: Car):
 	car = new_car
 	if is_instance_valid(car):
+		plugin_wp = car.get_plugin(&"WheelsProcessor")
 		plugin_engine = car.get_plugin(&"Engine")
 
 func remap_points(points: PackedVector2Array) -> PackedVector2Array:
@@ -35,7 +39,7 @@ func _draw() -> void:
 		points_current = remap_points(AACCCurveTools.get_curve_samples(rpm_curve))
 
 		if not AACCGlobal.car.get_meta(&"gear_switching", false):
-			if AACCGlobal.car.get_meta(&"ground_coefficient", 0.0) > 0.0:
+			if plugin_wp.ground_coefficient > 0.0:
 				if gear_current >= 0 and gear_current < AACCGlobal.car.get_meta(&"gearbox_gear_count", 0):
 					var current_next_ratio: float = max(gear_current, 1.0) / max(gear_current + 1, 1.0)
 					if current_next_ratio < 1.0:

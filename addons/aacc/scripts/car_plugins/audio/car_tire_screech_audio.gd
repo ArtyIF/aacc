@@ -14,7 +14,7 @@ func _ready() -> void:
 	add_child(player)
 
 func process_plugin(delta: float) -> void:
-	if car.get_meta(&"ground_coefficient", 0.0) > 0.0:
+	if plugin_wp.ground_coefficient > 0.0:
 		player.global_position = plugin_wp.ground_average_point
 
 		var slip_total: float = car.get_meta(&"slip_total", 0.0)
