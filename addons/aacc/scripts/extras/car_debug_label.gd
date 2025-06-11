@@ -73,14 +73,16 @@ func _process(_delta: float) -> void:
 		label.add_text("\n\n")
 
 		for plugin_name in AACCGlobal.car.plugins.keys():
-			var plugin_properties: Dictionary[StringName, String] = {}
-			for property_name in AACCGlobal.car.plugins[plugin_name].debuggable_properties:
-				plugin_properties[property_name] = str(AACCGlobal.car.plugins[plugin_name].get(property_name))
-			if plugin_properties.is_empty():
+			var plugin_parameters: Dictionary[StringName, String] = {}
+			for parameter_name in AACCGlobal.car.plugins[plugin_name].debuggable_parameters:
+				plugin_parameters[parameter_name] = str(AACCGlobal.car.plugins[plugin_name].get(parameter_name))
+			if plugin_parameters.is_empty():
 				continue
 
+			# TODO: include properties
+
 			label.push_bgcolor(Color.BLACK)
-			label.add_text("PLUGIN PROPERTIES: " + plugin_name + "\n")
+			label.add_text("PLUGIN PARAMETERS: " + plugin_name + "\n")
 			label.pop()
 
 			label.push_table(2)
@@ -90,36 +92,15 @@ func _process(_delta: float) -> void:
 			label.push_cell()
 			label.add_text("VALUE")
 			label.pop()
-			for property_name in plugin_properties.keys():
+			for parameter_name in plugin_parameters.keys():
 				label.push_cell()
-				label.add_text(property_name)
+				label.add_text(parameter_name)
 				label.pop()
 				label.push_cell()
-				label.add_text(plugin_properties[property_name])
+				label.add_text(plugin_parameters[parameter_name])
 				label.pop()
 			label.pop()
 			label.add_text("\n\n")
-
-		label.push_bgcolor(Color.BLACK)
-		label.add_text("METADATA\n")
-		label.pop()
-
-		label.push_table(2)
-		label.push_cell()
-		label.add_text("NAME")
-		label.pop()
-		label.push_cell()
-		label.add_text("VALUE")
-		label.pop()
-		for meta: StringName in AACCGlobal.car.get_meta_list():
-			label.push_cell()
-			label.add_text(meta)
-			label.pop()
-			label.push_cell()
-			label.add_text(str(AACCGlobal.car.get_meta(meta)))
-			label.pop()
-		label.pop()
-		label.add_text("\n\n")
 
 		label.push_bgcolor(Color.BLACK)
 		label.add_text("FORCES\n")

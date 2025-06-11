@@ -333,7 +333,7 @@ metadata/_custom_type_script = "uid://bvfqai7uunpc3"
 script = ExtResource("10_6qa4x")
 metadata/_custom_type_script = "uid://cil4ufto2v87g"
 
-[node name="HoldBoost" type="Node3D" parent="Plugins"]
+[node name="Boost" type="Node3D" parent="Plugins"]
 script = ExtResource("11_nhmty")
 boost_top_speed = 130.0
 metadata/_custom_type_script = "uid://un1kd6buaufw"

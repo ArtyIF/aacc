@@ -26,7 +26,7 @@ func _ready() -> void:
 	add_child(raycast_instance)
 	configure_raycasts()
 
-	debuggable_properties = [
+	debuggable_parameters = [
 		&"is_landed",
 		&"collision_point",
 		&"collision_normal",

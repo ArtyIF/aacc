@@ -13,6 +13,10 @@ var boost_amount: SmoothedFloat = SmoothedFloat.new(0.0, boost_fill_speed, boost
 func _ready() -> void:
 	car.set_meta(&"input_boost", false)
 
+	debuggable_parameters = [
+		&"boost_amount",
+	]
+
 func process_plugin(delta: float) -> void:
 	boost_amount.speed_up = boost_fill_speed
 	boost_amount.speed_down = boost_use_speed
@@ -27,4 +31,3 @@ func process_plugin(delta: float) -> void:
 				car.set_force(&"boost_ground", Vector3.FORWARD * boost_force * ground_coefficient, true)
 	else:
 		boost_amount.advance_to(1.0, delta)
-	car.set_meta(&"boost_amount", boost_amount.get_value())

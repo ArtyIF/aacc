@@ -20,7 +20,7 @@ func _ready() -> void:
 	car.plugin_added.connect(_on_plugin_added)
 	car.plugin_removed.connect(_on_plugin_removed)
 
-	debuggable_properties = [
+	debuggable_parameters = [
 		&"wheels_total",
 		&"wheels_landed",
 		&"ground_coefficient",

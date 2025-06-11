@@ -43,7 +43,7 @@ func _ready() -> void:
 	car.set_meta(&"input_accelerate", 0.0)
 	car.set_meta(&"input_gear_target", 0)
 
-	debuggable_properties = [
+	debuggable_parameters = [
 		&"gear_current",
 		&"gear_target",
 		&"gear_switch_timer",

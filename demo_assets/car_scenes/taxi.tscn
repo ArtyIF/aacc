@@ -243,7 +243,7 @@ metadata/_custom_type_script = "uid://bvfqai7uunpc3"
 script = ExtResource("8_dm0ij")
 metadata/_custom_type_script = "uid://cil4ufto2v87g"
 
-[node name="HoldBoost" type="Node3D" parent="Plugins"]
+[node name="Boost" type="Node3D" parent="Plugins"]
 script = ExtResource("12_4f48m")
 metadata/_custom_type_script = "uid://un1kd6buaufw"
 

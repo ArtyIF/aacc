@@ -3,6 +3,7 @@ class_name AACCDemoHUD extends ScenePluginBase
 var plugin_lvp: CarLocalVelocityProcessor
 var plugin_wp: CarWheelsProcessor
 var plugin_engine: CarEngine
+var plugin_boost: CarHoldBoost
 
 func _on_car_changed(new_car: Car) -> void:
 	super(new_car)
@@ -10,6 +11,7 @@ func _on_car_changed(new_car: Car) -> void:
 		plugin_lvp = car.get_plugin(&"LocalVelocityProcessor")
 		plugin_wp = car.get_plugin(&"WheelsProcessor")
 		plugin_engine = car.get_plugin(&"Engine")
+		plugin_boost = car.get_plugin(&"Boost")
 
 func _process(_delta: float) -> void:
 	if not is_instance_valid(car): return
@@ -37,4 +39,4 @@ func _process(_delta: float) -> void:
 	$"HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer/ForwardSpeed".text = str(roundi(-plugin_lvp.local_velocity_linear.z * 3.6))
 	$"HUDMargin/HUD/SpeedPanel/VBox/SpeedContainer/SideSpeed".text = str(roundi(plugin_lvp.local_velocity_linear.x * 3.6))
 
-	$"HUDMargin/HUD/BoostPanel/VBox/BoostAmount".value = car.get_meta(&"boost_amount")
+	$"HUDMargin/HUD/BoostPanel/VBox/BoostAmount".value = plugin_boost.boost_amount.get_value()

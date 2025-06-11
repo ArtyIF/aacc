@@ -5,7 +5,7 @@ var local_velocity_angular: Vector3 = Vector3.ZERO
 var local_velocity_z_sign: float = 0.0
 
 func _ready() -> void:
-	debuggable_properties = [
+	debuggable_parameters = [
 		&"local_velocity_linear",
 		&"local_velocity_angular",
 		&"local_velocity_z_sign",

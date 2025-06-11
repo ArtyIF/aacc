@@ -2,7 +2,7 @@ abstract class_name CarPluginBase extends Node3D
 
 var car: Car
 
-var debuggable_properties: Array[StringName] = []
+var debuggable_parameters: Array[StringName] = []
 
 func _enter_tree() -> void:
 	var car_parent = get_parent()
