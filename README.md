@@ -1,3 +1,7 @@
+# THE GITHUB VERSION WILL NO LONGER BE UPDATED!
+
+I messed up while trying to migrate to LFS and Codeberg. I've started [a new repository on Codeberg](https://codeberg.org/ArtyIF/aacc). This version will be around for archival purposes.
+
 # AACC
 
 A very work-in-progress car controller. Includes a very basic demo.
