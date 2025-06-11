@@ -8,6 +8,7 @@ var smooth_burnout_amount_volume: SmoothedFloat = SmoothedFloat.new(0.0, 10.0, 1
 var smooth_burnout_amount_pitch: SmoothedFloat = SmoothedFloat.new(0.0, 10.0, 1.0)
 
 @onready var plugin_wp: CarWheelsProcessor = car.get_plugin(&"WheelsProcessor")
+@onready var plugin_sp: CarSlipProcessor = car.get_plugin(&"SlipProcessor")
 
 func _ready() -> void:
 	player = tire_screech_scene.instantiate()
@@ -17,7 +18,7 @@ func process_plugin(delta: float) -> void:
 	if plugin_wp.ground_coefficient > 0.0:
 		player.global_position = plugin_wp.ground_average_point
 
-		var slip_total: float = car.get_meta(&"slip_total")
+		var slip_total: float = plugin_sp.slip_total
 		smooth_burnout_amount_volume.advance_to(slip_total, delta)
 		smooth_burnout_amount_pitch.advance_to(slip_total, delta)
 	else:

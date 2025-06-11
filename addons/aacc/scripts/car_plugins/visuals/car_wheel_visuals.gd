@@ -17,6 +17,7 @@ var burnout_particles: Dictionary[NodePath, GPUParticles3D] = {}
 @onready var plugin_lvp: CarLocalVelocityProcessor = car.get_plugin(&"LocalVelocityProcessor")
 @onready var plugin_engine: CarEngine = car.get_plugin(&"Engine")
 @onready var plugin_steer: CarSteer = car.get_plugin(&"Steer")
+@onready var plugin_sp: CarSlipProcessor = car.get_plugin(&"SlipProcessor")
 
 func _ready() -> void:
 	for wheel in wheel_meshes.keys():
@@ -53,7 +54,7 @@ func process_plugin(delta: float) -> void:
 				if not (wheel_flags[wheel_path] & WheelFlag.HANDBRAKE and input_handbrake):
 					forward_rotation_speed -= local_velocity_linear.z * delta / wheel.wheel_radius
 					if wheel_flags[wheel_path] & WheelFlag.DRIVE and plugin_engine.gear_current == 0:
-						forward_rotation_speed += plugin_engine.engine_max_force * car.get_meta(&"slip_forward") * delta / wheel.wheel_radius / car.mass
+						forward_rotation_speed += plugin_engine.engine_max_force * plugin_sp.slip_forward * delta / wheel.wheel_radius / car.mass
 			forward_rotations[wheel_path] += forward_rotation_speed
 
 			if forward_rotations[wheel_path] > 2 * PI:
@@ -65,7 +66,7 @@ func process_plugin(delta: float) -> void:
 			burnout_particles[wheel_path].global_position = wheel.global_position
 			if wheel.is_landed:
 				if (plugin_engine.gear_current == 0 and forward_rotation_speed != 0.0) or (plugin_engine.gear_current != 0):
-					burnout_particles[wheel_path].amount_ratio = car.get_meta(&"slip_total")
+					burnout_particles[wheel_path].amount_ratio = plugin_sp.slip_total
 				else:
 					burnout_particles[wheel_path].amount_ratio = 0.0
 			else:

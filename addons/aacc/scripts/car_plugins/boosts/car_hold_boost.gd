@@ -1,4 +1,4 @@
-class_name CarHoldBoost extends CarPluginBase
+class_name CarHoldBoost extends CarPluginBase # TODO: separate boost and some other classes into a generic class
 
 @export var boost_force: float = 10000.0
 @export var boost_top_speed: float = 55.0
